@@ -23,6 +23,8 @@ define( 'PULSAR_BLOCKS_PATH', plugin_dir_path( __FILE__ ) );
  * through the block editor in the corresponding context.
  *
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
+ *
+ * @throws \Exception If no template.php file is found.
  */
 function pulsar_blocks_register() {
 	$blocks_directory = trailingslashit( PULSAR_BLOCKS_PATH . 'build' );
