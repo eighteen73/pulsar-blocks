@@ -2,15 +2,22 @@ import {
 	InnerBlocks,
 	useBlockProps,
 	useInnerBlocksProps,
-} from '@wordpress/block-editor';
+	BlockControls,
+} from "@wordpress/block-editor";
 
-import { useState, useEffect } from '@wordpress/element';
+import { Button } from "@wordpress/components";
 
-import Splide from '@splidejs/splide';
+import { useState, useEffect } from "@wordpress/element";
 
-import './editor.css';
+import { dispatch, select } from "@wordpress/data";
 
-const ALLOWED_BLOCKS = [ 'pulsar/carousel-slide' ];
+import { createBlock } from "@wordpress/blocks";
+
+import Splide from "@splidejs/splide";
+
+import "./editor.css";
+
+const ALLOWED_BLOCKS = ["pulsar/carousel-slide"];
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -24,35 +31,59 @@ const ALLOWED_BLOCKS = [ 'pulsar/carousel-slide' ];
  *
  *
  */
-export default function Edit( { attributes: { splide }, clientId } ) {
+export default function Edit({ attributes: { splide }, clientId }) {
 	const blockProps = useBlockProps();
 
-	const [ carousel, setCarousel ] = useState( {} );
+	const [carousel, setCarousel] = useState({});
 
-	useEffect( () => {
-		if ( Object.keys( carousel ).length === 0 ) {
-			const splide = new Splide( `#block-${ clientId }` );
-			setCarousel( splide.mount() );
+	useEffect(() => {
+		if (Object.keys(carousel).length === 0) {
+			const splide = new Splide(`#block-${clientId}`);
+			setCarousel(splide.mount());
 			return;
 		}
 		carousel.destroy(false);
-	}, [] );
+	}, []);
 
-	const innerBlocksProps = useInnerBlocksProps( { className: 'splide__list' }, {
-		orientation: 'horizontal',
-		allowedBlocks: ALLOWED_BLOCKS,
-		renderAppender: () => <InnerBlocks.ButtonBlockAppender />,
-	} );
+	const addBlock = () => {
+		const innerBlocks =
+			select("core/editor").getBlocksByClientId(clientId)[0].innerBlocks;
+		const block = createBlock("pulsar/carousel-slide");
+		dispatch("core/editor").insertBlock(
+			block,
+			innerBlocks.length,
+			clientId
+		);
+	};
+
+	const innerBlocksProps = useInnerBlocksProps(
+		{ className: "splide__list" },
+		{
+			orientation: "horizontal",
+			allowedBlocks: ALLOWED_BLOCKS,
+			renderAppender: () => <InnerBlocks.ButtonBlockAppender />,
+		}
+	);
 
 	return (
-		<div
-			{ ...useBlockProps( { className: 'splide' } ) }
-			aria-label=""
-			data-splide={JSON.stringify(splide)}
-		>
-			<div className="splide__track">
-				<div { ...innerBlocksProps }></div>
+		<>
+			<BlockControls>
+				<Button
+					style={{ borderRight: "1px solid #000" }}
+					onClick={addBlock}
+				>
+					Add Slide
+				</Button>
+			</BlockControls>
+			<div
+				{...useBlockProps({ className: "splide" })}
+				aria-label=""
+				data-splide={JSON.stringify(splide)}
+			>
+				<div className="splide__track">
+					<div {...innerBlocksProps}></div>
+				</div>
 			</div>
-		</div>
+		</>
 	);
 }
