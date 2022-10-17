@@ -13,8 +13,10 @@
     "splide": {
       "type": "object",
       "default": {
+        "type": "slide",
         "perPage": 1,
-        "arrows": false
+        "arrows": true,
+        "pagination": true
       }
     }
   }

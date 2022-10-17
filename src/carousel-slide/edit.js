@@ -5,14 +5,19 @@ import {
 	InnerBlocks,
 	useBlockProps,
 	useInnerBlocksProps,
-} from '@wordpress/block-editor';
-import { __ } from '@wordpress/i18n';
+} from "@wordpress/block-editor";
 
-const ALLOWED_BLOCKS = [ 'core/heading', 'core/paragraph', 'core/buttons' ];
+import { select } from "@wordpress/data";
 
-import Media from './components/media';
+import { useState } from "@wordpress/element";
 
-import './editor.css';
+import { __ } from "@wordpress/i18n";
+
+const ALLOWED_BLOCKS = ["core/heading", "core/paragraph", "core/buttons"];
+
+import Media from "./components/media";
+
+import "./editor.css";
 
 /**
  * The save function describes the structure of your block in the context of the
@@ -24,14 +29,14 @@ import './editor.css';
  * @param  root0.noticeUI
  * @return {WPElement} Element to render.
  */
-export default function Edit( { attributes, setAttributes, noticeUI } ) {
+export default function Edit({ attributes, setAttributes, noticeUI }) {
 	const { media } = attributes;
 
-	const blockProps = useBlockProps( { className: 'splide__slide' } );
+	const blockProps = useBlockProps({ className: "splide__slide" });
 
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'wp-block-pulsar-carousel-slide__content',
+			className: "wp-block-pulsar-carousel-slide__content",
 		},
 		{
 			allowedBlocks: ALLOWED_BLOCKS,
@@ -39,30 +44,30 @@ export default function Edit( { attributes, setAttributes, noticeUI } ) {
 		}
 	);
 
-	const onSelectMedia = ( media ) => {
-		setAttributes( { media } );
+	const onSelectMedia = (media) => {
+		setAttributes({ media });
 	};
 
 	const removeMedia = () => {
-		setAttributes( { media: undefined } );
+		setAttributes({ media: undefined });
 	};
 
-	const onUploadError = ( err ) => {
+	const onUploadError = (err) => {
 		noticeOperations.removeAllNotices();
-		noticeOperations.createErrorNotice( err );
+		noticeOperations.createErrorNotice(err);
 	};
 
 	return (
-		<div { ...blockProps }>
+		<div {...blockProps}>
 			<div className="wp-block-pulsar-carousel-slide__container">
 				<Media
-					media={ media }
-					onSelectMedia={ onSelectMedia }
-					removeMedia={ removeMedia }
-					noticeUI={ noticeUI }
-					onUploadError={ onUploadError }
+					media={media}
+					onSelectMedia={onSelectMedia}
+					removeMedia={removeMedia}
+					noticeUI={noticeUI}
+					onUploadError={onUploadError}
 				></Media>
-				{ media && <div { ...innerBlocksProps }></div> }
+				{media && <div {...innerBlocksProps}></div>}
 			</div>
 		</div>
 	);

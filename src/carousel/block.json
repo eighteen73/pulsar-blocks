@@ -1,20 +1,22 @@
 {
-	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 2,
-	"name": "pulsar/carousel",
-	"version": "0.1.0",
-	"title": "Carousel",
-	"category": "design",
-	"textdomain": "pulsar",
-	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css",
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "pulsar/carousel",
+  "version": "0.1.0",
+  "title": "Carousel",
+  "category": "design",
+  "textdomain": "pulsar",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
   "attributes": {
     "splide": {
       "type": "object",
       "default": {
+        "type": "slide",
         "perPage": 1,
-        "arrows": false
+        "arrows": true,
+        "pagination": true
       }
     }
   }
