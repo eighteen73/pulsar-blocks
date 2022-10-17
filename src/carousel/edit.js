@@ -36,7 +36,6 @@ export default function Edit({ attributes: { splide }, clientId }) {
 
 	const [carousel, setCarousel] = useState({});
 
-	/*
 	useEffect(() => {
 		if (Object.keys(carousel).length === 0) {
 			const splide = new Splide(`#block-${clientId}`);
@@ -46,16 +45,15 @@ export default function Edit({ attributes: { splide }, clientId }) {
 		carousel.destroy(false);
 	}, []);
 
-	*/
-
 	useEffect(() => {
 		const splide = new Splide(`#block-${clientId}`);
 		setCarousel(splide.mount());
 	}, []);
 
 	const refreshCarousel = () => {
-		carousel.destroy(false);
-		setCarousel(new Splide(`#block-${clientId}`).mount());
+		const innerBlocks = select("core/editor").getBlocksByClientId(clientId)[0];
+		carousel.refresh();
+		console.log(innerBlocks);
 	};
 
 	const addBlock = () => {
@@ -64,7 +62,10 @@ export default function Edit({ attributes: { splide }, clientId }) {
 		const block = createBlock("pulsar/carousel-slide");
 		dispatch("core/editor")
 			.insertBlock(block, innerBlocks.length, clientId)
-			.then(() => refreshCarousel());
+			.then(() => {
+				refreshCarousel();
+				carousel.go(innerBlocks.length)
+			});
 	};
 
 	const innerBlocksProps = useInnerBlocksProps(
