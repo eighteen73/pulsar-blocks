@@ -1,99 +1,103 @@
 import {
-	InnerBlocks,
 	useBlockProps,
 	useInnerBlocksProps,
 	BlockControls,
-} from "@wordpress/block-editor";
+} from '@wordpress/block-editor';
 
-import { Button } from "@wordpress/components";
+import { Button } from '@wordpress/components';
 
-import { useState, useEffect } from "@wordpress/element";
+import { useState, useEffect } from '@wordpress/element';
 
-import { dispatch, select } from "@wordpress/data";
+import { dispatch, select, subscribe } from '@wordpress/data';
 
-import { createBlock } from "@wordpress/blocks";
+import { createBlock } from '@wordpress/blocks';
 
-import Splide from "@splidejs/splide";
+import Splide from '@splidejs/splide';
 
-import "./editor.css";
+import './editor.css';
 
-const ALLOWED_BLOCKS = ["pulsar/carousel-slide"];
+const ALLOWED_BLOCKS = [ 'pulsar/carousel-slide' ];
 
 /**
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
- * @param {Object}   param0
- * @param {Object}   param0.clientId
- * @param {Object}   param0.attributes
- * @param {Function} param0.setAttributes
+ * @param {Object} param0
+ * @param {Object} param0.attributes
+ * @param          param0.attributes.splide
+ * @param {Object} param0.clientId
  * @return {WPElement} Element to render.
  *
  *
  */
-export default function Edit({ attributes: { splide }, clientId }) {
-	const blockProps = useBlockProps();
-
-	const [carousel, setCarousel] = useState({});
-
-	useEffect(() => {
-		if (Object.keys(carousel).length === 0) {
-			const splide = new Splide(`#block-${clientId}`);
-			setCarousel(splide.mount());
-			return;
-		}
-		carousel.destroy(false);
-	}, []);
-
-	useEffect(() => {
-		const splide = new Splide(`#block-${clientId}`);
-		setCarousel(splide.mount());
-	}, []);
+export default function Edit( { attributes: { splide }, clientId } ) {
+	const [ carousel, setCarousel ] = useState( {} );
 
 	const refreshCarousel = () => {
-		const innerBlocks = select("core/editor").getBlocksByClientId(clientId)[0];
 		carousel.refresh();
-		console.log(innerBlocks);
 	};
 
 	const addBlock = () => {
 		const innerBlocks =
-			select("core/editor").getBlocksByClientId(clientId)[0].innerBlocks;
-		const block = createBlock("pulsar/carousel-slide");
-		dispatch("core/editor")
-			.insertBlock(block, innerBlocks.length, clientId)
-			.then(() => {
+			select( 'core/editor' ).getBlocksByClientId( clientId )[ 0 ]
+				.innerBlocks;
+		const block = createBlock( 'pulsar/carousel-slide' );
+		dispatch( 'core/editor' )
+			.insertBlock( block, innerBlocks.length, clientId )
+			.then( () => {
 				refreshCarousel();
-				carousel.go(innerBlocks.length)
-			});
+				carousel.go( innerBlocks.length );
+			} );
 	};
 
 	const innerBlocksProps = useInnerBlocksProps(
-		{ className: "splide__list" },
+		{ className: 'splide__list' },
 		{
-			orientation: "horizontal",
+			orientation: 'horizontal',
 			allowedBlocks: ALLOWED_BLOCKS,
 			renderAppender: false,
 		}
 	);
 
+	// Set up the carousel.
+	useEffect( () => {
+		const splide = new Splide( `#block-${ clientId }` );
+		setCarousel( splide.mount() );
+	}, [] );
+
+	// Watch for a change in child blocks and refresh.
+	useEffect( () => {
+		const { getBlock } = select( 'core/block-editor' );
+		let blockList = getBlock( clientId ).innerBlocks;
+
+		subscribe( () => {
+			const newBlockList = getBlock( clientId ).innerBlocks;
+			const blockListChanged = newBlockList !== blockList;
+			blockList = newBlockList;
+
+			if ( blockListChanged ) {
+				// run refresh here
+			}
+		} );
+	}, [] );
+
 	return (
 		<>
 			<BlockControls>
 				<Button
-					style={{ borderRight: "1px solid #000" }}
-					onClick={addBlock}
+					style={ { borderRight: '1px solid #000' } }
+					onClick={ addBlock }
 				>
 					Add Slide
 				</Button>
 			</BlockControls>
 			<div
-				{...useBlockProps({ className: "splide" })}
+				{ ...useBlockProps( { className: 'splide' } ) }
 				aria-label=""
-				data-splide={JSON.stringify(splide)}
+				data-splide={ JSON.stringify( splide ) }
 			>
 				<div className="splide__track">
-					<div {...innerBlocksProps}></div>
+					<div { ...innerBlocksProps }></div>
 				</div>
 			</div>
 		</>

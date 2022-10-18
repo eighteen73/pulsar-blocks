@@ -2,7 +2,7 @@ module.exports = {
 	plugins: {
 		'postcss-import': {},
 		'tailwindcss/nesting': {},
-		'tailwindcss': {},
-		'autoprefixer': { grid: true },
-	}
-}
+		tailwindcss: {},
+		autoprefixer: { grid: true },
+	},
+};
