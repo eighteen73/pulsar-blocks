@@ -4,7 +4,7 @@ import {
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
 
-import './editor.css';
+import './editor.scss';
 
 const ALLOWED_BLOCKS = [ 'pulsar/accordion-item' ];
 

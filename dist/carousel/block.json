@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "pulsar/carousel",
   "version": "0.1.0",
   "title": "Carousel",
@@ -120,5 +120,6 @@
   "textdomain": "pulsar",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css"
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
 }

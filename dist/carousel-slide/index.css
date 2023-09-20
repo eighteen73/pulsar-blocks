@@ -1,0 +1,27 @@
+
+
+	.wp-block-pulsar-carousel-slide .block-editor-inner-blocks {
+		@apply h-full p-8;
+	}
+.wp-block-pulsar-carousel-slide .block-editor-inner-blocks .block-list-appender {
+			@apply bg-black text-white absolute bottom-0 left-auto right-auto;
+		}
+.wp-block-pulsar-carousel-slide .block-editor-inner-blocks .block-list-appender svg {
+				margin-top: 0;
+			}
+.wp-block-pulsar-carousel-slide .block-editor-block-list__layout {
+		@apply flex flex-col items-center justify-center pb-12 h-full;
+	}
+.wp-block-pulsar-carousel-slide .block-editor-block-list__layout *:first-child {
+			@apply mt-auto;
+		}
+.wp-block-pulsar-carousel-slide .block-editor-block-list__layout * + * {
+			@apply mt-4;
+		}
+.wp-block-pulsar-carousel-slide .block-editor-block-list__layout * + .wp-block-buttons {
+			@apply mt-auto basis-0;
+		}
+.wp-block-pulsar-carousel-slide .block-editor-block-list__layout *:last-child:not(.wp-block-buttons) {
+			@apply mb-auto;
+		}
+
