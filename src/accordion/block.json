@@ -13,6 +13,10 @@
     "startOpen": {
       "type": "boolean",
       "default": false
+    },
+    "level": {
+      "type": "number",
+			"default": 3
     }
   },
   "supports": {
@@ -20,6 +24,9 @@
       "blockGap": true,
       "margin": ["vertical"]
     }
+  },
+  "providesContext": {
+    "level": "level"
   },
   "selectors": {
     "root": ".wp-block-pulsar-accordion"

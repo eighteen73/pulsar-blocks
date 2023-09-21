@@ -9,10 +9,12 @@
  * @package Pulsar Blocks
  */
 
+$h = "h{$block->context['level']}";
 ?>
-<?php if ( isset( $attributes['title'] ) ) : ?>
+<?php if ( isset( $attributes['title'] ) && $h ) : ?>
 	<div class="wp-block-pulsar-accordion__item">
-		<h3 class="wp-block-pulsar-accordion__heading">
+
+		<<?php echo esc_attr( $h ); ?> class="wp-block-pulsar-accordion__heading">
 			<button
 				type="button"
 				aria-expanded="false"
@@ -23,7 +25,7 @@
 				<span class="wp-block-pulsar-accordion__title"><?php echo esc_html( $attributes['title'] ); ?></span>
 				<span class="wp-block-pulsar-accordion__icon"></span>
 			</button>
-		</h3>
+		</<?php echo esc_attr( $h ); ?>>
 
 		<div
 			id="panel-<?php echo esc_attr( $attributes['id'] ); ?>"

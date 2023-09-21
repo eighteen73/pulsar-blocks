@@ -26,9 +26,15 @@ import classNames from 'classnames';
  * @param  root0.attributes.id
  * @param  root0.attributes.showContent
  * @param  root0.attributes.openOnLoad
+ * @param  root0.context
  * @return {WPElement} Element to render.
  */
-export default function Edit({ attributes: { title, id }, setAttributes }) {
+export default function Edit({ attributes, setAttributes, context }) {
+	const { title, id } = attributes;
+
+	const { level } = context;
+	const TagName = 'h' + level;
+
 	const blockProps = useBlockProps({
 		className: 'wp-block-pulsar-accordion__item',
 	});
@@ -51,7 +57,7 @@ export default function Edit({ attributes: { title, id }, setAttributes }) {
 
 	return (
 		<div {...blockProps}>
-			<h3 className="wp-block-pulsar-accordion__heading">
+			<TagName className="wp-block-pulsar-accordion__heading">
 				<button className="wp-block-pulsar-accordion__trigger">
 					<RichText
 						tagName="span"
@@ -67,7 +73,7 @@ export default function Edit({ attributes: { title, id }, setAttributes }) {
 						dangerouslySetInnerHTML={{ __html: '&plus;' }}
 					></span>
 				</button>
-			</h3>
+			</TagName>
 
 			<div {...innerBlocksProps}></div>
 		</div>

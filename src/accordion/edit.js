@@ -5,7 +5,14 @@ import {
 	InspectorControls,
 } from '@wordpress/block-editor';
 
-import { PanelBody, ToggleControl } from '@wordpress/components';
+import {
+	PanelBody,
+	ToggleControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+} from '@wordpress/components';
 
 import { __ } from '@wordpress/i18n';
 
@@ -25,7 +32,7 @@ const ALLOWED_BLOCKS = ['pulsar/accordion-item'];
  */
 
 export default function Edit({
-	attributes: { openMultiple, startOpen },
+	attributes: { openMultiple, startOpen, level },
 	setAttributes,
 }) {
 	const TEMPLATE = [
@@ -76,6 +83,22 @@ export default function Edit({
 							setAttributes({ startOpen: value })
 						}
 					/>
+
+					<ToggleGroupControl
+						label={__('Heading level')}
+						onChange={(value) => {
+							setAttributes({ level: value });
+						}}
+						value={level}
+						isBlock
+						help={__(
+							'Set the appropriate heading level for your content.'
+						)}
+					>
+						<ToggleGroupControlOption value={2} label={__('H2')} />
+						<ToggleGroupControlOption value={3} label={__('H3')} />
+						<ToggleGroupControlOption value={4} label={__('H4')} />
+					</ToggleGroupControl>
 				</PanelBody>
 			</InspectorControls>
 
