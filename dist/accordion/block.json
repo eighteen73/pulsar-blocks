@@ -5,9 +5,31 @@
   "version": "0.1.0",
   "title": "Accordion",
   "category": "design",
+  "attributes": {
+    "openMultiple": {
+      "type": "boolean",
+      "default": true
+    },
+    "startOpen": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "spacing": {
+      "blockGap": true,
+      "margin": [
+        "vertical"
+      ]
+    }
+  },
+  "selectors": {
+    "root": ".wp-block-pulsar-accordion"
+  },
   "textdomain": "pulsar",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
   "render": "file:./render.php"
 }

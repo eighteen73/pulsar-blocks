@@ -1,20 +1,16 @@
 .wp-block-pulsar-accordion-item {
-	border: 1px solid #e6e6e6 !important;
-
-	& + & {
-		margin-top: 1rem;
-	}
-
 	&__title {
 		margin: 0;
-		font-size: 20px !important;
 	}
 
 	&__button {
-		padding: 1rem 1.5rem !important;
+		align-items: center;
+		background-color: transparent;
+		border: none;
+		box-shadow: none;
+		cursor: pointer;
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
 		width: 100%;
 	}
 
@@ -23,12 +19,8 @@
 	}
 
 	&__icon {
-		margin-left: 1rem;
-	}
-
-	&__container {}
-
-	&__content {
-		padding: 0 1.5rem 1rem;
+		font-size: 32px;
+		line-height: 1;
+		margin-left: 10px;
 	}
 }

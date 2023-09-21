@@ -8,15 +8,19 @@
   "parent": [
     "pulsar/accordion"
   ],
+  "supports": {
+    "inserter": false,
+    "reusable": false,
+    "html": false
+  },
   "textdomain": "pulsar",
   "attributes": {
     "title": {
       "type": "string",
-      "selector": ".wp-block-pulsar-accordion-item__text"
+      "selector": ".wp-block-pulsar-accordion__heading"
     },
     "id": {
-      "type": "string",
-      "default": ""
+      "type": "string"
     }
   },
   "editorStyle": "file:./index.css",

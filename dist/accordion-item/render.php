@@ -2,45 +2,36 @@
 /**
  * All of the parameters passed to the function where this file is being required are accessible in this scope:
  *
- * @param array    $attributes     The array of attributes for this block.
- * @param string   $content        Rendered block output. ie. <InnerBlocks.Content />.
- * @param WP_Block $block_instance The instance of the WP_Block class that represents the block being rendered.
+ * @param array    $attributes The array of attributes for this block.
+ * @param string   $content    Rendered block output. ie. <InnerBlocks.Content />.
+ * @param WP_Block $block      The instance of the WP_Block class that represents the block being rendered.
  *
- * @package Pulsar
+ * @package Pulsar Blocks
  */
 
 ?>
-
 <?php if ( isset( $attributes['title'] ) ) : ?>
-	<div
-		<?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>
-		x-data="{
-			id: '<?php echo esc_attr( $attributes['id'] ); ?>',
-			get expanded() {
-				return this.active === this.id
-			},
-			set expanded(value) {
-				this.active = value ? this.id : null
-			},
-		}"
-		role="region"
-	>
-		<h2 class="wp-block-pulsar-accordion-item__title">
+	<div class="wp-block-pulsar-accordion__item">
+		<h3 class="wp-block-pulsar-accordion__heading">
 			<button
-				x-on:click="expanded = !expanded"
-				:aria-expanded="expanded"
-				class="wp-block-pulsar-accordion-item__button"
+				type="button"
+				aria-expanded="false"
+				class="wp-block-pulsar-accordion__trigger"
+				aria-controls="panel-<?php echo esc_attr( $attributes['id'] ); ?>"
+				id="accordion-<?php echo esc_attr( $attributes['id'] ); ?>"
 			>
-				<span class="wp-block-pulsar-accordion-item__text"><?php echo esc_html( $attributes['title'] ); ?></span>
-				<span class="wp-block-pulsar-accordion-item__icon" x-show="expanded" aria-hidden="true">&minus;</span>
-				<span class="wp-block-pulsar-accordion-item__icon" x-show="!expanded" aria-hidden="true">&plus;</span>
+				<span class="wp-block-pulsar-accordion__title"><?php echo esc_html( $attributes['title'] ); ?></span>
+				<span class="wp-block-pulsar-accordion__icon"></span>
 			</button>
-		</h2>
+		</h3>
 
-		<div class="wp-block-pulsar-accordion-item__container" x-show="expanded">
-			<div class="wp-block-pulsar-accordion-item__content">
-				<?php echo $content; ?>
-			</div>
+		<div
+			id="panel-<?php echo esc_attr( $attributes['id'] ); ?>"
+			role="region"
+			aria-labelledby="accordion-<?php echo esc_attr( $attributes['id'] ); ?>"
+			class="wp-block-pulsar-accordion__panel"
+		>
+			<?php echo $content; ?>
 		</div>
 	</div>
 <?php endif; ?>
