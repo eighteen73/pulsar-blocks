@@ -1,10 +1,10 @@
 {
-	"$schema": "https://schemas.wp.org/trunk/block.json",
-	"apiVersion": 3,
-	"name": "pulsar/accordion",
-	"version": "0.1.0",
-	"title": "Accordion",
-	"category": "design",
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "pulsar/accordion",
+  "version": "0.1.0",
+  "title": "Accordion",
+  "category": "design",
   "attributes": {
     "openMultiple": {
       "type": "boolean",
@@ -16,25 +16,16 @@
     },
     "level": {
       "type": "number",
-			"default": 3
-    }
-  },
-  "supports": {
-    "spacing": {
-      "blockGap": true,
-      "margin": ["vertical"]
+      "default": 3
     }
   },
   "providesContext": {
     "level": "level"
   },
-  "selectors": {
-    "root": ".wp-block-pulsar-accordion"
-  },
-	"textdomain": "pulsar",
-	"editorScript": "file:./index.js",
-	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css",
+  "textdomain": "pulsar",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
   "viewScript": "file:./view.js",
   "render": "file:./render.php"
 }

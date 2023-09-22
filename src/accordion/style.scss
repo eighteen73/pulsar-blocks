@@ -1,22 +1,38 @@
 .wp-block-pulsar-accordion {
+	$block: &;
+	--font-size: var(--wp--custom--pulsar--accordion--font-size, 1.5rem);
+	--padding: var(--wp--custom--pulsar--accordion--padding, 1rem);
+	--gap: var(--wp--custom--pulsar--accordion--gap, 1rem);
+	--border: var(--wp--custom--pulsar--accordion--border, 1px solid #ddd);
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap);
 	margin: 0;
 	padding: 0;
 
 	&__heading {
-		margin-top: 1rem;
+		margin: 0;
 		padding: 0;
+
+		+ #{$block}__panel {
+			margin-top: 0;
+		}
 	}
 
 	&__trigger {
+		align-items: center;
 		background: none;
-		border: 1px solid #ddd;
+		border: var(--border);
 		box-shadow: none;
+		cursor: pointer;
 		display: flex;
 		font-size: inherit;
+		font-size: var(--font-size);
 		justify-content: space-between;
 		margin: 0;
 		outline: none;
-		padding: 1rem;
+		padding: var(--padding);
 		position: relative;
 		text-align: left;
 		width: 100%;
@@ -27,15 +43,29 @@
 	}
 
 	&__panel {
-		border: 1px solid #ddd;
+		border: var(--border);
 		border-top: 0;
 		display: none;
-		margin: 0 !important;
-		padding: 1rem;
+		margin: 0;
+		padding: var(--padding);
 
 		:where(.is-active) &,
 		.wp-block-pulsar-accordion__item:where(.is-selected, .has-child-selected) & {
 			display: block;
+		}
+	}
+
+	&__icon {
+		background-color: currentcolor;
+		height: 12px;
+		mask-image: url(../../assets/accordion-icon.svg);
+		mask-position: center;
+		mask-repeat: no-repeat;
+		mask-size: contain;
+		width: 12px;
+
+		:where(.is-active) & {
+			rotate: 180deg;
 		}
 	}
 }

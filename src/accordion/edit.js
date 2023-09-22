@@ -8,10 +8,13 @@ import {
 import {
 	PanelBody,
 	ToggleControl,
+	SelectControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl as ToggleGroupControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToolsPanelItem as ToolsPanelItem,
 } from '@wordpress/components';
 
 import { __ } from '@wordpress/i18n';
@@ -32,6 +35,7 @@ const ALLOWED_BLOCKS = ['pulsar/accordion-item'];
  */
 
 export default function Edit({
+	clientId,
 	attributes: { openMultiple, startOpen, level },
 	setAttributes,
 }) {
@@ -62,7 +66,7 @@ export default function Edit({
 
 	return (
 		<div {...useBlockProps()}>
-			<InspectorControls>
+			<InspectorControls group="settings">
 				<PanelBody>
 					<ToggleControl
 						label={__('Open multiple items')}
@@ -100,6 +104,42 @@ export default function Edit({
 						<ToggleGroupControlOption value={4} label={__('H4')} />
 					</ToggleGroupControl>
 				</PanelBody>
+			</InspectorControls>
+
+			<InspectorControls group="color">
+				<ToolsPanelItem
+					hasValue={() => !!openMultiple}
+					label={__('Name')}
+					onDeselect={() => console.log('deselected')}
+					onSelect={() => console.log('selected')}
+				>
+					<SelectControl
+						label={__('Animation Name')}
+						onChange={(value) => console.log(value)}
+						options={[
+							{
+								label: __('Fade In'),
+								value: 'fade-in',
+							},
+							{
+								label: __('Slide In Down'),
+								value: 'slide-in-down-fade',
+							},
+							{
+								label: __('Slide In Up'),
+								value: 'slide-in-up-fade',
+							},
+							{
+								label: __('Slide In Left'),
+								value: 'slide-in-left-fade',
+							},
+							{
+								label: __('Slide In Right'),
+								value: 'slide-in-right-fade',
+							},
+						]}
+					/>
+				</ToolsPanelItem>
 			</InspectorControls>
 
 			<div {...innerBlocksProps}></div>

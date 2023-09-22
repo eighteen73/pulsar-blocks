@@ -19,19 +19,8 @@
       "default": 3
     }
   },
-  "supports": {
-    "spacing": {
-      "blockGap": true,
-      "margin": [
-        "vertical"
-      ]
-    }
-  },
   "providesContext": {
     "level": "level"
-  },
-  "selectors": {
-    "root": ".wp-block-pulsar-accordion"
   },
   "textdomain": "pulsar",
   "editorScript": "file:./index.js",

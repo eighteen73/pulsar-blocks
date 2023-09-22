@@ -5,15 +5,10 @@ import {
 	RichText,
 	useBlockProps,
 	useInnerBlocksProps,
-	InspectorControls,
 } from '@wordpress/block-editor';
-import { PanelBody, ToggleControl } from '@wordpress/components';
 import { cleanForSlug } from '@wordpress/url';
 import { useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-
-import './editor.scss';
-import classNames from 'classnames';
 
 /**
  * The save function describes the structure of your block in the context of the
