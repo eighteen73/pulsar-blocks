@@ -8,13 +8,10 @@ import {
 import {
 	PanelBody,
 	ToggleControl,
-	SelectControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl as ToggleGroupControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToolsPanelItem as ToolsPanelItem,
 } from '@wordpress/components';
 
 import { __ } from '@wordpress/i18n';
@@ -35,8 +32,7 @@ const ALLOWED_BLOCKS = ['pulsar/accordion-item'];
  */
 
 export default function Edit({
-	clientId,
-	attributes: { openMultiple, startOpen, level },
+	attributes: { openMultiple, startOpen, level, hasSchema },
 	setAttributes,
 }) {
 	const TEMPLATE = [
@@ -67,7 +63,7 @@ export default function Edit({
 	return (
 		<div {...useBlockProps()}>
 			<InspectorControls group="settings">
-				<PanelBody>
+				<PanelBody title={__('Settings')}>
 					<ToggleControl
 						label={__('Open multiple items')}
 						help={__('Allow multiple items to be opened at once.')}
@@ -104,42 +100,19 @@ export default function Edit({
 						<ToggleGroupControlOption value={4} label={__('H4')} />
 					</ToggleGroupControl>
 				</PanelBody>
-			</InspectorControls>
 
-			<InspectorControls group="color">
-				<ToolsPanelItem
-					hasValue={() => !!openMultiple}
-					label={__('Name')}
-					onDeselect={() => console.log('deselected')}
-					onSelect={() => console.log('selected')}
-				>
-					<SelectControl
-						label={__('Animation Name')}
-						onChange={(value) => console.log(value)}
-						options={[
-							{
-								label: __('Fade In'),
-								value: 'fade-in',
-							},
-							{
-								label: __('Slide In Down'),
-								value: 'slide-in-down-fade',
-							},
-							{
-								label: __('Slide In Up'),
-								value: 'slide-in-up-fade',
-							},
-							{
-								label: __('Slide In Left'),
-								value: 'slide-in-left-fade',
-							},
-							{
-								label: __('Slide In Right'),
-								value: 'slide-in-right-fade',
-							},
-						]}
+				<PanelBody title={__('Schema settings')}>
+					<ToggleControl
+						label={__('Output schema for FAQs')}
+						help={__(
+							'If the accordion will be used to display FAQs, then enable this option to display schema data for search engines.'
+						)}
+						checked={hasSchema}
+						onChange={(value) =>
+							setAttributes({ hasSchema: value })
+						}
 					/>
-				</ToolsPanelItem>
+				</PanelBody>
 			</InspectorControls>
 
 			<div {...innerBlocksProps}></div>

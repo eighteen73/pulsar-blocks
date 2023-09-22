@@ -17,6 +17,10 @@
     "level": {
       "type": "number",
       "default": 3
+    },
+    "hasSchema": {
+      "type": "boolean",
+      "default": false
     }
   },
   "providesContext": {
