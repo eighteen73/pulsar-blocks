@@ -9,15 +9,26 @@
     "pulsar/carousel"
   ],
   "attributes": {
-    "slideType": {
+    "backgroundType": {
       "type": "string",
-      "default": "blank"
+      "default": "none"
     },
-    "imageId": {
+    "backgroundImageId": {
       "type": "number"
     },
     "focalPoint": {
-      "type": "object"
+      "type": "object",
+      "default": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "overlayColor": {
+      "type": "string"
+    },
+    "overlayOpacity": {
+      "type": "number",
+      "default": 50
     },
     "backgroundColor": {
       "type": "string"
@@ -28,9 +39,14 @@
     }
   },
   "supports": {
-    "color": {
-      "background": true,
-      "text": false
+    "spacing": {
+      "blockGap": true,
+      "padding": true
+    }
+  },
+  "selectors": {
+    "spacing": {
+      "blockGap": ".wp-block-pulsar-carousel-slide__content"
     }
   },
   "textdomain": "pulsar",

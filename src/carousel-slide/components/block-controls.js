@@ -8,31 +8,15 @@ import {
 
 import { __ } from '@wordpress/i18n';
 
-import MediaToolbar from './media-toolbar';
-
 const CarouselSlideBlockControls = (props) => {
-	const {
-		contentPosition,
-		onChangeContentPosition,
-		imageId,
-		onSelectImage,
-		onRemoveImage,
-		hasInnerBlocks,
-	} = props;
+	const { contentPosition, onContentPositionChange, isDisabled } = props;
 	return (
 		<BlockControls group="block">
 			<BlockAlignmentMatrixControl
 				label={__('Change content position')}
 				value={contentPosition}
-				onChange={onChangeContentPosition}
-				isDisabled={!hasInnerBlocks}
-			/>
-
-			<MediaToolbar
-				isOptional
-				id={imageId}
-				onSelect={onSelectImage}
-				onRemove={onRemoveImage}
+				onChange={onContentPositionChange}
+				isDisabled={isDisabled}
 			/>
 		</BlockControls>
 	);
