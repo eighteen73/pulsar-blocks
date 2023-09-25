@@ -110,8 +110,6 @@ export default function Edit(props) {
 	const onBackgroundImageRemove = () => {
 		setAttributes({
 			backgroundImageId: undefined,
-			overlayColor: undefined,
-			overlayOpacity: undefined,
 		});
 	};
 
@@ -129,7 +127,7 @@ export default function Edit(props) {
 
 	const onOverlayOpacityChange = (value) => {
 		setAttributes({
-			overlayOpacity: parseInt(value),
+			overlayOpacity: value,
 		});
 	};
 

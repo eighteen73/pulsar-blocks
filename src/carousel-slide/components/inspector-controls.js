@@ -134,6 +134,7 @@ const CarouselSlideInspectorControls = (props) => {
 							__nextHasNoMarginBottom
 							label={__('Overlay opacity')}
 							value={overlayOpacity}
+							currentInput={overlayOpacity}
 							onChange={onOverlayOpacityChange}
 							min={0}
 							max={100}
