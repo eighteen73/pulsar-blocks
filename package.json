@@ -25,6 +25,8 @@
 		"@wordpress/browserslist-config": "^5.25.0",
 		"@wordpress/prettier-config": "^2.25.0",
 		"@wordpress/scripts": "^24.0.0",
+		"colord": "^2.9.3",
+		"fast-average-color": "^9.4.0",
 		"postcss-preset-env": "^9.0.0"
 	},
 	"dependencies": {

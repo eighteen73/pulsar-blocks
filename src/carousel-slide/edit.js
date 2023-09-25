@@ -5,14 +5,34 @@ import {
 	InnerBlocks,
 	useBlockProps,
 	useInnerBlocksProps,
+	store as blockEditorStore,
+	BlockControls,
+	InspectorControls,
+	__experimentalBlockAlignmentMatrixControl as BlockAlignmentMatrixControl,
 } from '@wordpress/block-editor';
+import {
+	PanelBody,
+	Placeholder,
+	Spinner,
+	FocalPointPicker,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+} from '@wordpress/components';
+
+import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
-const ALLOWED_BLOCKS = [ 'core/heading', 'core/paragraph', 'core/buttons' ];
+import classnames from 'classnames';
 
-import Media from './components/media';
+import { getPositionClassName } from './utils';
+import Image from './components/image';
 
-import './editor.css';
+import CarouselSlideInspectorControls from './components/inspector-controls';
+
+import './editor.scss';
+import CarouselSlideBlockControls from './components/block-controls';
 
 /**
  * The save function describes the structure of your block in the context of the
@@ -21,49 +41,80 @@ import './editor.css';
  * @param  root0
  * @param  root0.attributes
  * @param  root0.setAttributes
- * @param  root0.noticeUI
+ * @param  root0.clientId
  * @return {WPElement} Element to render.
  */
-export default function Edit( { attributes, setAttributes, noticeUI } ) {
-	const { media } = attributes;
+export default function Edit({ attributes, setAttributes, clientId }) {
+	const { contentPosition, slideType, imageId, focalPoint } = attributes;
 
-	const blockProps = useBlockProps( { className: 'splide__slide' } );
-
-	const innerBlocksProps = useInnerBlocksProps(
-		{
-			className: 'wp-block-pulsar-carousel-slide__content',
-		},
-		{
-			allowedBlocks: ALLOWED_BLOCKS,
-			renderAppender: () => <InnerBlocks.ButtonBlockAppender />,
-		}
+	const hasInnerBlocks = useSelect(
+		(select) =>
+			select(blockEditorStore).getBlock(clientId).innerBlocks.length > 0,
+		[clientId]
 	);
 
-	const onSelectMedia = ( media ) => {
-		setAttributes( { media } );
+	const isImageSlideType = slideType === 'image';
+
+	const blockProps = useBlockProps({ className: 'splide__slide' });
+
+	const innerBlocksProps = useInnerBlocksProps({
+		className: classnames(
+			'wp-block-pulsar-carousel-slide__content',
+			getPositionClassName(contentPosition)
+		),
+	});
+
+	const onChangeFocalPoint = (value) => {
+		setAttributes({
+			focalPoint: value,
+		});
 	};
 
-	const removeMedia = () => {
-		setAttributes( { media: undefined } );
+	const onSelectImage = (image) => {
+		setAttributes({
+			imageId: image.id,
+		});
 	};
 
-	const onUploadError = ( err ) => {
-		noticeOperations.removeAllNotices();
-		noticeOperations.createErrorNotice( err );
+	const onRemoveImage = () => {
+		setAttributes({
+			imageId: null,
+		});
+	};
+
+	const onChangeContentPosition = (value) => {
+		setAttributes({
+			contentPosition: value,
+		});
 	};
 
 	return (
-		<div { ...blockProps }>
-			<div className="wp-block-pulsar-carousel-slide__container">
-				<Media
-					media={ media }
-					onSelectMedia={ onSelectMedia }
-					removeMedia={ removeMedia }
-					noticeUI={ noticeUI }
-					onUploadError={ onUploadError }
-				></Media>
-				{ media && <div { ...innerBlocksProps }></div> }
-			</div>
+		<div {...blockProps}>
+			<CarouselSlideBlockControls
+				hasInnerBlocks={hasInnerBlocks}
+				slideType={slideType}
+				imageId={imageId}
+				onChangeContentPosition={onChangeContentPosition}
+				onSelectImage={onSelectImage}
+				onRemoveImage={onRemoveImage}
+			/>
+
+			<CarouselSlideInspectorControls
+				slideType={slideType}
+				imageId={imageId}
+				size="full"
+				focalPoint={focalPoint}
+				onChangeFocalPoint={onChangeFocalPoint}
+			/>
+
+			<Image
+				isActive={isImageSlideType}
+				id={imageId}
+				size="full"
+				focalPoint={focalPoint}
+			/>
+
+			<div {...innerBlocksProps}></div>
 		</div>
 	);
 }

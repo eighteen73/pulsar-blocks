@@ -7,6 +7,7 @@
 	0% {
 		transform: rotate(0);
 	}
+
 	to {
 		transform: rotate(1turn);
 	}
@@ -16,7 +17,6 @@
  * Base splide styles. Best not to remove unless really needed.
  */
 .wp-block-pulsar-carousel {
-
 	.splide__track--draggable {
 		user-select: none;
 	}
@@ -26,6 +26,7 @@
 		opacity: 0;
 		z-index: 0;
 	}
+
 	.splide__track--fade > .splide__list > .splide__slide.is-active {
 		opacity: 1;
 		z-index: 1;
@@ -122,8 +123,8 @@
 	}
 
 	.splide__sr {
-		clip: rect(0 0 0 0);
 		border: 0;
+		clip: rect(0 0 0 0);
 		height: 1px;
 		margin: -1px;
 		overflow: hidden;
@@ -152,17 +153,21 @@
  * Opinionated block styles can go here.
  */
 .wp-block-pulsar-carousel {
-
 	.splide__arrows {
 		display: flex;
 		justify-content: space-between;
-		width: 100%;
-		position: absolute;
 		left: 0;
+		pointer-events: none;
+		position: absolute;
 		right: 0;
 		top: 50%;
 		transform: translateY(-50%);
+		width: 100%;
 		z-index: 1;
+	}
+
+	.splide__arrow {
+		pointer-events: all;
 	}
 
 	.splide__arrow--prev {
@@ -170,17 +175,17 @@
 	}
 
 	.splide__pagination {
-		position: absolute;
 		bottom: 10px;
 		left: 0;
+		position: absolute;
 		right: 0;
 
 		li {
 			background-color: black;
 			border-radius: 9999px;
-			width: 10px;
 			height: 10px;
 			margin: 0 2px;
+			width: 10px;
 		}
 	}
 }

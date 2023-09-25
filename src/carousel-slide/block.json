@@ -3,16 +3,37 @@
 	"apiVersion": 3,
 	"name": "pulsar/carousel-slide",
 	"version": "0.1.0",
-	"title": "Slide",
+	"title": "Carousel slide",
 	"category": "design",
 	"parent": [ "pulsar/carousel" ],
   "attributes": {
-    "media": {
-      "type": "object"
+		"slideType": {
+			"type": "string",
+			"default": "blank"
+		},
+    "imageId": {
+			"type": "number"
+		},
+		"focalPoint": {
+			"type": "object"
+		},
+    "backgroundColor": {
+      "type": "string"
+    },
+		"contentPosition": {
+			"type": "string",
+      "default": "center center"
+		}
+  },
+  "supports": {
+    "color": {
+      "background": true,
+      "text": false
     }
   },
 	"textdomain": "pulsar",
 	"editorStyle": "file:./index.css",
 	"editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
   "render": "file:./render.php"
 }

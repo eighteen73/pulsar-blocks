@@ -29,7 +29,7 @@ const { name } = json;
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType( name, {
+registerBlockType(name, {
 	...json,
 
 	/**
@@ -46,4 +46,4 @@ registerBlockType( name, {
 	 * @see ./save.js
 	 */
 	save: Save,
-} );
+});
