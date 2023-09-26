@@ -12,11 +12,45 @@
   "script": "file:./script.js",
   "render": "file:./render.php",
   "attributes": {
+    "type": {
+      "type": "string",
+      "default": "slide"
+    },
+    "rewind": {
+      "type": "boolean",
+      "default": false
+    },
+    "perPage": {
+      "type": "number",
+      "default": 3
+    },
+    "perMove": {
+      "type": "number",
+      "default": 1
+    },
+    "gap": {
+      "type": "number"
+    },
+    "arrows": {
+      "type": "boolean",
+      "default": true
+    },
+    "pagination": {
+      "type": "boolean",
+      "default": true
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "interval": {
+      "type": "number"
+    },
     "splide": {
       "type": "object",
       "default": {
         "type": "slide",
-        "perPage": 2,
+        "perPage": 3,
         "gap": "2rem",
         "arrows": true,
         "pagination": true
