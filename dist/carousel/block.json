@@ -12,49 +12,38 @@
   "script": "file:./script.js",
   "render": "file:./render.php",
   "attributes": {
-    "type": {
-      "type": "string",
-      "default": "slide"
-    },
-    "rewind": {
-      "type": "boolean",
-      "default": false
-    },
-    "perPage": {
-      "type": "number",
-      "default": 3
-    },
-    "perMove": {
-      "type": "number",
-      "default": 1
-    },
-    "gap": {
-      "type": "number"
-    },
-    "arrows": {
-      "type": "boolean",
-      "default": true
-    },
-    "pagination": {
-      "type": "boolean",
-      "default": true
-    },
-    "autoplay": {
-      "type": "boolean",
-      "default": false
-    },
-    "interval": {
-      "type": "number"
-    },
-    "splide": {
+    "carouselSettings": {
       "type": "object",
       "default": {
         "type": "slide",
         "perPage": 3,
-        "gap": "2rem",
+        "perMove": 1,
+        "gap": "30px",
         "arrows": true,
-        "pagination": true
+        "pagination": true,
+        "autoplay": false,
+        "interval": 5000,
+        "focus": "center",
+        "breakpoints": {
+          "640": {
+            "perPage": 1,
+            "perMove": 1,
+            "arrows": true,
+            "pagination": false,
+            "gap": "30px"
+          },
+          "1024": {
+            "perPage": 2,
+            "perMove": 1,
+            "arrows": true,
+            "pagination": false,
+            "gap": "30px"
+          }
+        }
       }
+    },
+    "advancedCarouselSettings": {
+      "type": "object"
     }
   }
 }

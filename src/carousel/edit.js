@@ -9,21 +9,17 @@ import {
 	PanelBody,
 	ToggleControl,
 	Button,
-	BaseControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl as ToggleGroupControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalNumberControl as NumberControl,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToolsPanel as ToolsPanel,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToolsPanelItem as ToolsPanelItem,
+	__experimentalUnitControl as UnitControl,
 	TextareaControl,
 } from '@wordpress/components';
 
-import { useState, useEffect, useCallback } from '@wordpress/element';
+import { useRef, useState, useEffect, useCallback } from '@wordpress/element';
 
 import { dispatch, select, subscribe } from '@wordpress/data';
 
@@ -49,26 +45,13 @@ const ALLOWED_BLOCKS = ['pulsar/carousel-slide'];
  * @return {WPElement} Element to render.
  */
 export default function Edit({ attributes, setAttributes, clientId }) {
-	const {
-		type,
-		perPage,
-		perMove,
-		arrows,
-		pagination,
-		autoplay,
-		interval,
-		tabletPerPage,
-		tabletPerMove,
-		tabletArrows,
-		tabletPagination,
-		mobilePerPage,
-		mobilePerMove,
-		mobileArrows,
-		mobilePagination,
-		splide,
-	} = attributes;
+	const { carouselSettings, advancedCarouselSettings } = attributes;
+
+	const ref = useRef();
 
 	const [carousel, setCarousel] = useState({});
+
+	const [splide, setSplide] = useState(carouselSettings);
 
 	const refreshCarousel = () => {
 		if (Object.keys(carousel).length !== 0) {
@@ -103,8 +86,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 	// Set up the carousel.
 	useEffect(() => {
-		const splide = new Splide(`#block-${clientId}`);
-		setCarousel(splide.mount());
+		const splideInstance = new Splide(`#block-${clientId}`);
+		setCarousel(splideInstance.mount());
 
 		return function cleanup() {
 			setCarousel(null);
@@ -127,99 +110,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		});
 	});
 
-	const handleChangeType = (value) => {
+	const handleChangeAdvancedCarouselSettings = (value) => {
 		setAttributes({
-			type: value,
-		});
-	};
-
-	const handleChangePerPage = (value) => {
-		setAttributes({
-			perPage: value,
-		});
-	};
-
-	const handleChangePerMove = (value) => {
-		setAttributes({
-			perMove: value,
-		});
-	};
-
-	const handleChangeArrows = (value) => {
-		setAttributes({
-			arrows: value,
-		});
-	};
-
-	const handleChangePagination = (value) => {
-		setAttributes({
-			pagination: value,
-		});
-	};
-
-	const handleChangeAutoplay = (value) => {
-		setAttributes({
-			autoplay: value,
-		});
-	};
-
-	const handleChangeInterval = (value) => {
-		setAttributes({
-			interval: value,
-		});
-	};
-
-	const handleChangeTabletPerPage = (value) => {
-		setAttributes({
-			tabletPerPage: value,
-		});
-	};
-
-	const handleChangeTabletPerMove = (value) => {
-		setAttributes({
-			tabletPerMove: value,
-		});
-	};
-
-	const handleChangeTabletArrows = (value) => {
-		setAttributes({
-			tabletArrows: value,
-		});
-	};
-
-	const handleChangeTabletPagination = (value) => {
-		setAttributes({
-			tabletPagination: value,
-		});
-	};
-
-	const handleChangeMobilePerPage = (value) => {
-		setAttributes({
-			mobilePerPage: value,
-		});
-	};
-
-	const handleChangeMobilePerMove = (value) => {
-		setAttributes({
-			mobilePerMove: value,
-		});
-	};
-
-	const handleChangeMobileArrows = (value) => {
-		setAttributes({
-			mobileArrows: value,
-		});
-	};
-
-	const handleChangeMobilePagination = (value) => {
-		setAttributes({
-			mobilePagination: value,
-		});
-	};
-
-	const handleChangeSplide = (value) => {
-		setAttributes({
-			splide: JSON.parse(value),
+			advancedCarouselSettings: JSON.parse(value),
 		});
 	};
 
@@ -235,8 +128,15 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				<PanelBody title={__('Settings')}>
 					<ToggleGroupControl
 						label={__('Type')}
-						onChange={handleChangeType}
-						value={type}
+						onChange={(value) => {
+							setAttributes({
+								carouselSettings: {
+									...carouselSettings,
+									type: value,
+								},
+							});
+						}}
+						value={carouselSettings.type}
 						isBlock
 					>
 						<ToggleGroupControlOption
@@ -257,128 +157,365 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 					<ToggleControl
 						label={__('Autoplay')}
-						checked={autoplay}
-						onChange={handleChangeAutoplay}
+						checked={carouselSettings.autoplay}
+						onChange={(value) => {
+							setAttributes({
+								carouselSettings: {
+									...carouselSettings,
+									autoplay: value,
+								},
+							});
+						}}
 					/>
 
-					{autoplay && (
+					{carouselSettings.autoplay && (
 						<NumberControl
-							label={__('Interval')}
+							label={__('Autoplay interval')}
+							min={0}
+							step={250}
 							isShiftStepEnabled={true}
-							onChange={handleChangeInterval}
+							onChange={(value) => {
+								setAttributes({
+									carouselSettings: {
+										...carouselSettings,
+										interval: value,
+									},
+								});
+							}}
 							shiftStep={1000}
-							value={interval}
+							value={carouselSettings.interval}
 						/>
 					)}
 				</PanelBody>
 
 				<PanelBody title={__('Desktop settings')} initialOpen={true}>
-					<NumberControl
-						label={__('Per page')}
-						isShiftStepEnabled={true}
-						onChange={handleChangePerPage}
-						shiftStep={1}
-						value={perPage}
-					/>
+					{carouselSettings.type !== 'fade' && (
+						<>
+							<NumberControl
+								label={__('Per page')}
+								isShiftStepEnabled={true}
+								onChange={(value) => {
+									setAttributes({
+										carouselSettings: {
+											...carouselSettings,
+											perPage: value,
+										},
+									});
+								}}
+								shiftStep={1}
+								value={carouselSettings.perPage}
+							/>
 
-					<NumberControl
-						label={__('Per move')}
-						isShiftStepEnabled={true}
-						onChange={handleChangePerMove}
-						shiftStep={1}
-						value={perMove}
-					/>
+							<NumberControl
+								label={__('Per move')}
+								isShiftStepEnabled={true}
+								onChange={(value) => {
+									setAttributes({
+										carouselSettings: {
+											...carouselSettings,
+											perMove: value,
+										},
+									});
+								}}
+								shiftStep={1}
+								value={carouselSettings.perMove}
+							/>
+
+							<UnitControl
+								label={__('Gap')}
+								onChange={(value) => {
+									setAttributes({
+										carouselSettings: {
+											...carouselSettings,
+											gap: value,
+										},
+									});
+								}}
+								value={carouselSettings.gap}
+							/>
+						</>
+					)}
 
 					<ToggleControl
 						label={__('Arrows')}
-						checked={arrows}
-						onChange={handleChangeArrows}
+						checked={carouselSettings.arrows}
+						onChange={(value) => {
+							setAttributes({
+								carouselSettings: {
+									...carouselSettings,
+									arrows: value,
+								},
+							});
+						}}
 					/>
 
 					<ToggleControl
 						label={__('Pagination')}
-						checked={pagination}
-						onChange={handleChangePagination}
+						checked={carouselSettings.pagination}
+						onChange={(value) => {
+							setAttributes({
+								carouselSettings: {
+									...carouselSettings,
+									pagination: value,
+								},
+							});
+						}}
 					/>
 				</PanelBody>
 
 				<PanelBody title={__('Tablet settings')} initialOpen={false}>
-					<NumberControl
-						label={__('Per page')}
-						isShiftStepEnabled={true}
-						onChange={handleChangeTabletPerPage}
-						shiftStep={1}
-						value={tabletPerPage}
-					/>
+					{carouselSettings.type !== 'fade' && (
+						<>
+							<NumberControl
+								label={__('Per page')}
+								isShiftStepEnabled={true}
+								onChange={(value) => {
+									setAttributes({
+										carouselSettings: {
+											...carouselSettings,
+											breakpoints: {
+												...carouselSettings.breakpoints,
+												1024: {
+													...carouselSettings
+														.breakpoints['1024'],
+													perPage: value,
+												},
+											},
+										},
+									});
+								}}
+								shiftStep={1}
+								value={
+									carouselSettings.breakpoints['1024'].perPage
+								}
+							/>
 
-					<NumberControl
-						label={__('Per move')}
-						isShiftStepEnabled={true}
-						onChange={handleChangeTabletPerMove}
-						shiftStep={1}
-						value={tabletPerMove}
-					/>
+							<NumberControl
+								label={__('Per move')}
+								isShiftStepEnabled={true}
+								onChange={(value) => {
+									setAttributes({
+										carouselSettings: {
+											...carouselSettings,
+											breakpoints: {
+												...carouselSettings.breakpoints,
+												1024: {
+													...carouselSettings
+														.breakpoints['1024'],
+													perMove: value,
+												},
+											},
+										},
+									});
+								}}
+								shiftStep={1}
+								value={
+									carouselSettings.breakpoints['1024'].perMove
+								}
+							/>
+
+							<UnitControl
+								label={__('Gap')}
+								onChange={(value) => {
+									setAttributes({
+										carouselSettings: {
+											...carouselSettings,
+											breakpoints: {
+												...carouselSettings.breakpoints,
+												1024: {
+													...carouselSettings
+														.breakpoints['1024'],
+													gap: value,
+												},
+											},
+										},
+									});
+								}}
+								value={carouselSettings.breakpoints['1024'].gap}
+							/>
+						</>
+					)}
 
 					<ToggleControl
 						label={__('Arrows')}
-						checked={tabletArrows}
-						onChange={handleChangeTabletArrows}
+						checked={carouselSettings.breakpoints['1024'].arrows}
+						onChange={(value) => {
+							setAttributes({
+								carouselSettings: {
+									...carouselSettings,
+									breakpoints: {
+										...carouselSettings.breakpoints,
+										1024: {
+											...carouselSettings.breakpoints[
+												'1024'
+											],
+											arrows: value,
+										},
+									},
+								},
+							});
+						}}
 					/>
 
 					<ToggleControl
 						label={__('Pagination')}
-						checked={tabletPagination}
-						onChange={handleChangeTabletPagination}
+						checked={
+							carouselSettings.breakpoints['1024'].pagination
+						}
+						onChange={(value) => {
+							setAttributes({
+								carouselSettings: {
+									...carouselSettings,
+									breakpoints: {
+										...carouselSettings.breakpoints,
+										1024: {
+											...carouselSettings.breakpoints[
+												'1024'
+											],
+											pagination: value,
+										},
+									},
+								},
+							});
+						}}
 					/>
 				</PanelBody>
 
 				<PanelBody title={__('Mobile settings')} initialOpen={false}>
-					<NumberControl
-						label={__('Per page')}
-						isShiftStepEnabled={true}
-						onChange={handleChangeMobilePerPage}
-						shiftStep={1}
-						value={mobilePerPage}
-					/>
+					{carouselSettings.type !== 'fade' && (
+						<>
+							<NumberControl
+								label={__('Per page')}
+								isShiftStepEnabled={true}
+								onChange={(value) => {
+									setAttributes({
+										carouselSettings: {
+											...carouselSettings,
+											breakpoints: {
+												...carouselSettings.breakpoints,
+												640: {
+													...carouselSettings
+														.breakpoints['640'],
+													perPage: value,
+												},
+											},
+										},
+									});
+								}}
+								shiftStep={1}
+								value={
+									carouselSettings.breakpoints['640'].perPage
+								}
+							/>
 
-					<NumberControl
-						label={__('Per move')}
-						isShiftStepEnabled={true}
-						onChange={handleChangeMobilePerMove}
-						shiftStep={1}
-						value={mobilePerMove}
-					/>
+							<NumberControl
+								label={__('Per move')}
+								isShiftStepEnabled={true}
+								onChange={(value) => {
+									setAttributes({
+										carouselSettings: {
+											...carouselSettings,
+											breakpoints: {
+												...carouselSettings.breakpoints,
+												640: {
+													...carouselSettings
+														.breakpoints['640'],
+													perMove: value,
+												},
+											},
+										},
+									});
+								}}
+								shiftStep={1}
+								value={
+									carouselSettings.breakpoints['640'].perMove
+								}
+							/>
+
+							<UnitControl
+								label={__('Gap')}
+								onChange={(value) => {
+									setAttributes({
+										carouselSettings: {
+											...carouselSettings,
+											breakpoints: {
+												...carouselSettings.breakpoints,
+												640: {
+													...carouselSettings
+														.breakpoints['640'],
+													gap: value,
+												},
+											},
+										},
+									});
+								}}
+								value={carouselSettings.breakpoints['640'].gap}
+							/>
+						</>
+					)}
 
 					<ToggleControl
 						label={__('Arrows')}
-						checked={mobileArrows}
-						onChange={handleChangeMobileArrows}
+						checked={carouselSettings.breakpoints['640'].arrows}
+						onChange={(value) => {
+							setAttributes({
+								carouselSettings: {
+									...carouselSettings,
+									breakpoints: {
+										...carouselSettings.breakpoints,
+										640: {
+											...carouselSettings.breakpoints[
+												'640'
+											],
+											arrows: value,
+										},
+									},
+								},
+							});
+						}}
 					/>
 
 					<ToggleControl
 						label={__('Pagination')}
-						checked={mobilePagination}
-						onChange={handleChangeMobilePagination}
+						checked={carouselSettings.breakpoints['640'].pagination}
+						onChange={(value) => {
+							setAttributes({
+								carouselSettings: {
+									...carouselSettings,
+									breakpoints: {
+										...carouselSettings.breakpoints,
+										640: {
+											...carouselSettings.breakpoints[
+												'640'
+											],
+											pagination: value,
+										},
+									},
+								},
+							});
+						}}
 					/>
 				</PanelBody>
 			</InspectorControls>
 
 			<InspectorControls group="advanced">
 				<TextareaControl
-					label={__('Splide settings')}
+					label={__('Advanced carousel settings')}
 					help={__(
-						'Override the Splide settings with a custom Splide JSON object of settings.'
+						'Override the carousel settings with a custom Splide JSON object.'
 					)}
 					rows={12}
-					onChange={handleChangeSplide}
-					value={JSON.stringify(splide, null, 2)}
+					onChange={handleChangeAdvancedCarouselSettings}
+					value={JSON.stringify(advancedCarouselSettings, null, 2)}
 				/>
 			</InspectorControls>
 
 			<div
 				{...useBlockProps({ className: 'splide' })}
 				aria-label=""
-				data-splide={JSON.stringify(splide)}
+				data-splide={JSON.stringify(
+					advancedCarouselSettings ?? carouselSettings
+				)}
 			>
 				<div className="splide__track">
 					<div {...innerBlocksProps}></div>
@@ -386,4 +523,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			</div>
 		</>
 	);
+}
+{
 }

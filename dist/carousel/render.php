@@ -9,8 +9,10 @@
  * @package Pulsar
  */
 
+$settings = $attributes['advancedCarouselSettings'] ?? $attributes['carouselSettings'];
 ?>
-<section data-splide="<?php echo esc_html( wp_json_encode( $attributes['splide'], JSON_PRETTY_PRINT ) ); ?>" <?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => 'splide' ] ) ); ?>>
+
+<section data-splide="<?php echo esc_html( wp_json_encode( $settings, JSON_PRETTY_PRINT ) ); ?>" <?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => 'splide' ] ) ); ?>>
 	<div class="splide__track">
 		<div class="splide__list">
 			<?php echo $content; ?>
