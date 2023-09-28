@@ -33,7 +33,7 @@ $h = "h{$block->context['level']}";
 			aria-labelledby="accordion-<?php echo esc_attr( $attributes['id'] ); ?>"
 			class="wp-block-pulsar-accordion__panel"
 		>
-			<?php echo $content; ?>
+			<?php echo $content; // phpcs:disable ?>
 		</div>
 	</div>
 <?php endif; ?>

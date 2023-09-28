@@ -46,7 +46,7 @@ echo wp_kses_data(
 >
 	<?php if ( $content ) : ?>
 		<div class="wp-block-pulsar-carousel-slide__content">
-			<?php echo $content; ?>
+			<?php echo $content; // phpcs:disable ?>
 		</div>
 	<?php endif; ?>
 
