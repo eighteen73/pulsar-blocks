@@ -14,7 +14,13 @@ import {
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 
+import { useSelect } from '@wordpress/data';
+
 import { __ } from '@wordpress/i18n';
+
+import { plus } from '@wordpress/icons';
+
+import SingleBlockTypeAppender from './components/single-block-type-appender';
 
 import './editor.scss';
 
@@ -34,6 +40,8 @@ const ALLOWED_BLOCKS = ['pulsar/accordion-item'];
 export default function Edit({
 	attributes: { openMultiple, startOpen, level, hasSchema },
 	setAttributes,
+	clientId,
+	isSelected,
 }) {
 	const TEMPLATE = [
 		[
@@ -50,18 +58,31 @@ export default function Edit({
 		],
 	];
 
-	const innerBlocksProps = useInnerBlocksProps(
-		{ className: 'wp-block-pulsar-accordion__items' },
-		{
-			orientation: 'vertical',
-			allowedBlocks: ALLOWED_BLOCKS,
-			template: TEMPLATE,
-			renderAppender: () => <InnerBlocks.ButtonBlockAppender />,
-		}
+	const isInnerBlockSelected = useSelect((select) =>
+		select('core/block-editor').hasSelectedInnerBlock(clientId, true)
 	);
 
+	const blockProps = useBlockProps();
+	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
+		orientation: 'vertical',
+		allowedBlocks: ALLOWED_BLOCKS,
+		template: TEMPLATE,
+		renderAppender: () => (
+			<SingleBlockTypeAppender
+				variant="secondary"
+				icon={plus}
+				iconPosition="left"
+				text={__('Add item')}
+				allowedBlock="pulsar/accordion-item"
+				style={{ width: '100%', justifyContent: 'center' }}
+				clientId={clientId}
+				isSelected={isSelected || isInnerBlockSelected}
+			/>
+		),
+	});
+
 	return (
-		<div {...useBlockProps()}>
+		<div {...innerBlocksProps}>
 			<InspectorControls group="settings">
 				<PanelBody title={__('Settings')}>
 					<ToggleControl
@@ -115,7 +136,7 @@ export default function Edit({
 				</PanelBody>
 			</InspectorControls>
 
-			<div {...innerBlocksProps}></div>
+			{children}
 		</div>
 	);
 }

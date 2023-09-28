@@ -15,5 +15,5 @@
 	data-start-open="<?php echo $attributes['startOpen'] ? 'true' : 'false'; ?>"
 	data-open-multiple="<?php echo $attributes['openMultiple'] ? 'true' : 'false'; ?>"
 >
-	<?php echo $content; ?>
+	<?php echo $content; // phpcs:disable ?>
 </div>
