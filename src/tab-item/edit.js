@@ -50,6 +50,31 @@ export default function Edit({ clientId, attributes: {id}, setAttributes }) {
 		}
 	}, []);
 
+	function focusNextTab(currentTabPanel, currentTab, nextTab) {
+
+		currentTabPanel.classList.add('deleted')
+		currentTab.classList.add('deleted')
+		let tabpanels = Array.from(currentTab.parentElement.parentElement.parentElement.querySelectorAll('.wp-block-pulsar-tab-item:not(.deleted)'));
+		let tabs = Array.from(currentTab.parentElement.querySelectorAll('.wp-block-pulsar-tab-title:not(.deleted)'));
+
+
+		for (var i = 0; i < tabs.length; i ++) {
+			var tab = tabs[i];
+
+			if (nextTab === tab) {
+				tab.setAttribute('aria-selected', 'true');
+				tab.removeAttribute('tabindex');
+				tabpanels[i].classList.remove('is-hidden');
+				tab.focus();
+			} else {
+				tab.setAttribute('aria-selected', 'false');
+				tab.tabIndex = -1;
+				tabpanels[i].classList.add('is-hidden');
+			}
+		}
+	}
+
+
 	function removeTab() {
 		// // find tab with id
 		let tabItem = document.getElementById('tabpanel-' + id);
@@ -59,12 +84,21 @@ export default function Edit({ clientId, attributes: {id}, setAttributes }) {
 		let tab = document.getElementById('tab-' + id);
 		let tab_id = tab.dataset.block;
 
+		let nextTab;
+
+		//find next tab to focus on
+		if (tab.nextElementSibling !== null && tab.nextElementSibling.classList.contains('wp-block-pulsar-tab-title')) {
+			nextTab = tab.nextElementSibling
+		} else if (tab.previousElementSibling !== null && tab.previousElementSibling.classList.contains('wp-block-pulsar-tab-title')) {
+			nextTab = tab.previousElementSibling
+		}
+
 		//check there's a tab and panel to remove
 		if (tabItem_id && tab_id) {
 			wp.data.dispatch( 'core/block-editor' ).removeBlock( tabItem_id );
 			wp.data.dispatch( 'core/block-editor' ).removeBlock( tab_id );
+			focusNextTab(tabItem, tab, nextTab);
 		}
-
 	}
 
 	return (
@@ -77,7 +111,7 @@ export default function Edit({ clientId, attributes: {id}, setAttributes }) {
 
 			<div { ...innerBlocksProps }></div>
 
-			<Button className="components-button--remove is-secondary has-icon" onClick={() => removeTab()}>Remove Tab</Button>
+			<Button className="components-button--remove is-secondary has-icon" onClick={() => removeTab(id)}>Remove Tab</Button>
 
 		</div>
 	);

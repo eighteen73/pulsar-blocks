@@ -32,8 +32,6 @@ const ALLOWED_BLOCKS = ['pulsar/tab-titles', 'pulsar/tab-items'];
 export default function Edit({ clientId, attributes: { vertical, id}, setAttributes }) {
 
 	// TODO
-	// Open first tab on load
-	// When tab is removed focus on next tab if there is one, or prevs if not
 	// keyboard controls
 	// horizontal / vertical styling
 
@@ -48,6 +46,17 @@ export default function Edit({ clientId, attributes: { vertical, id}, setAttribu
 		template: TEMPLATE,
 
 	});
+
+let this_element = document.getElementById('block-' + clientId);
+
+
+	if (this_element !== null) {
+		let tabpanels = this_element.querySelectorAll('.wp-block-pulsar-tab-item');
+		if (tabpanels.length === 1) {
+			tabpanels[0].classList.remove('is-hidden')
+		}
+	}
+
 
 	class TabsAutomatic {
 		constructor(groupNode, newTab) {
