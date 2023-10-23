@@ -1,0 +1,8 @@
+.wp-block-pulsar-tab-items .block-list-appender .block-editor-button-block-appender {
+		display: none;
+	}
+
+	.wp-block-pulsar-tab-items .block-list-appender .components-dropdown .block-editor-button-block-appender {
+		display: block;
+	}
+
