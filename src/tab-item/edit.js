@@ -41,7 +41,9 @@ export default function Edit({ clientId, attributes: {id}, setAttributes }) {
 	// // Set the ID.
 	useEffect(() => {
 		if (id === "") {
-			let titles = document.querySelectorAll('.wp-block-pulsar-tab-title');
+			let this_item = document.querySelector('[data-block="' + clientId + '"]');
+			let parent_item = this_item.parentElement.parentElement.parentElement.parentElement;
+			let titles = parent_item.querySelectorAll('.wp-block-pulsar-tab-title');
 			let last_title = titles[titles.length - 1];
 			let title_id = last_title.dataset.block;
 			setAttributes({ id: title_id });
@@ -75,7 +77,7 @@ export default function Edit({ clientId, attributes: {id}, setAttributes }) {
 
 			<div { ...innerBlocksProps }></div>
 
-			<Button onClick={() => removeTab()}>Remove Tab</Button>
+			<Button className="components-button--remove is-secondary has-icon" onClick={() => removeTab()}>Remove Tab</Button>
 
 		</div>
 	);

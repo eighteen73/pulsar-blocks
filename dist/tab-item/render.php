@@ -9,15 +9,14 @@
  * @package Pulsar
  */
 
-
 ?>
 
-
-<div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
-	<div role="tablist"
-	   aria-labelledby="tablist-1"
-	   class="automatic">
-	   	<?php echo $content ?>
-  	</div>
+<div
+	class="wp-block-pulsar-tab-item <?php echo esc_attr( $attributes['id'] ) === 1 ? '' : 'is-hidden'; ?>"
+	id="tabpanel-<?php echo esc_attr( $attributes['id'] ); ?>"
+	role="tabpanel"
+	tabindex="0"
+	aria-labelledby="tab-<?php echo esc_attr( $attributes['id'] ); ?>">
+	<?php echo $content; // phpcs:disable ?>
 </div>
 

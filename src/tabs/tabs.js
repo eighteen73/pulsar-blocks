@@ -1,5 +1,4 @@
 
-console.log('Copy of what\s in app.js');
 class TabsAutomatic {
   constructor(groupNode) {
 

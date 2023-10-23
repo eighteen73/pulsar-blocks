@@ -1,24 +1,26 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 2,
-  "name": "pulsar/tabs",
+  "name": "pulsar/tab-title",
   "version": "0.1.0",
-  "title": "Tabs",
+  "title": "Tab Title",
   "category": "design",
+  "parent": [
+    "pulsar/tab"
+  ],
   "textdomain": "pulsar",
   "attributes": {
-    "vertical": {
-      "type": "boolean",
-      "default": false
-    },
     "id": {
+      "type": "string",
+      "default": ""
+    },
+    "title": {
       "type": "string",
       "default": ""
     }
   },
-  "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
+  "editorScript": "file:./index.js",
   "style": "file:./style-index.css",
-  "viewScript": "file:./tabs.js",
   "render": "file:./render.php"
 }

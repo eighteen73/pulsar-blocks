@@ -9,11 +9,19 @@
  * @package Pulsar
  */
 
-
 ?>
 
 
-
-<?php echo $content ?>
-
+<button
+	<?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>
+	id="tab-<?php echo esc_attr( $attributes['id'] ); ?>"
+	type="button"
+	role="tab"
+	aria-selected="<?php echo esc_attr( $attributes['id'] ) === 1 ? 'true' : 'false'; ?>"
+	aria-controls="tabpanel-<?php echo esc_attr( $attributes['id'] ); ?>"
+>
+	<span class="focus">
+	  <?php echo esc_attr( $attributes['title'] ); ?>
+	</span>
+</button>
 

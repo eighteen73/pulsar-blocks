@@ -11,17 +11,9 @@
 
 ?>
 
-
-<button
-	<?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>
-	id="tab-<?php echo $attributes['id']?>"
-	type="button"
-	role="tab"
-	aria-selected="<?php echo $attributes['id'] === 1 ? 'true' : 'false' ?>"
-	aria-controls="tabpanel-<?php echo $attributes['id']?>"
->
-	<span class="focus">
-	  <?php echo $attributes['title']; ?>
-	</span>
-</button>
+<div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
+	<div role="tablist" aria-labelledby="tablist-1" class="automatic">
+	   <?php echo $content; // phpcs:disable ?>
+  	</div>
+</div>
 

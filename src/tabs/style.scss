@@ -3,9 +3,7 @@
  * and in the editor.
  */
 
-
- .wp-block-pulsar-tabs {
-
+.wp-block-pulsar-tabs {
 	.wp-block-pulsar-tab-titles .wp-block-pulsar-tabs__items {
 		display: flex;
 	}
@@ -17,32 +15,32 @@
 	[role="tab"],
 	[role="tab"]:focus,
 	[role="tab"]:hover {
-		display: inline-block;
-		position: relative;
-		z-index: 2;
-		top: 2px;
-		margin: 0;
-		margin-top: 4px;
-		padding: 3px 3px 4px;
+		background: hsl(220deg 20% 94%);
 		border: 1px solid hsl(219deg 1% 72%);
 		border-bottom: 2px solid hsl(219deg 1% 72%);
 		border-radius: 5px 5px 0 0;
-		background: hsl(220deg 20% 94%);
-		outline: none;
-		font-weight: bold;
-		overflow: hidden;
-		text-align: left;
 		cursor: pointer;
+		display: inline-block;
+		font-weight: 700;
+		margin: 0;
+		margin-top: 4px;
+		outline: none;
+		overflow: hidden;
+		padding: 3px 3px 4px;
+		position: relative;
+		text-align: left;
+		top: 2px;
+		z-index: 2;
 	}
 
 	[role="tab"][aria-selected="true"] {
-		padding: 2px 2px 4px;
-		margin-top: 0;
+		background: hsl(220deg 43% 99%);
+		border-bottom-color: hsl(220deg 43% 99%);
+		border-top-color: rgb(36 116 214);
 		border-width: 2px;
 		border-top-width: 6px;
-		border-top-color: rgb(36 116 214);
-		border-bottom-color: hsl(220deg 43% 99%);
-		background: hsl(220deg 43% 99%);
+		margin-top: 0;
+		padding: 2px 2px 4px;
 	}
 
 	[role="tab"][aria-selected="false"] {
@@ -58,19 +56,19 @@
 	[role="tab"]:hover span.focus,
 	[role="tab"]:focus span.focus,
 	[role="tab"]:active span.focus {
-		padding: 2px 4px;
 		border: 2px solid rgb(36 116 214);
 		border-radius: 3px;
+		padding: 2px 4px;
 	}
 
 	[role="tabpanel"] {
-		padding: 5px;
+		background: hsl(220deg 43% 99%);
 		border: 2px solid hsl(219deg 1% 72%);
 		border-radius: 0 5px 5px;
-		background: hsl(220deg 43% 99%);
 		min-height: 10em;
-		width: 100%;
 		overflow: auto;
+		padding: 5px;
+		width: 100%;
 	}
 
 	[role="tabpanel"].is-hidden {
@@ -83,5 +81,9 @@
 
 	.block-editor-button-block-appender {
 		width: auto;
+	}
+
+	.components-button--add {
+		width: 100%;
 	}
 }

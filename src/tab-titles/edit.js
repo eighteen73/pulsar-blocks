@@ -39,7 +39,7 @@ export default function Edit({ clientId, attributes: { vertical, id }, setAttrib
 	const innerBlocksProps = useInnerBlocksProps({
 		className: 'wp-block-pulsar-tabs__items automatic'
 	}, {
-		orientation: "vertical",
+		orientation: "horizontal",
 		allowedBlocks: ALLOWED_BLOCKS,
 		template: TEMPLATE,
 		renderAppender: () => <InnerBlocks.ButtonBlockAppender />,

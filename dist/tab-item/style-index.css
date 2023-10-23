@@ -1,13 +1,12 @@
 .wp-block-pulsar-tab-item {
 	position: relative;
-
-	.block-list-appender {
+}
+.wp-block-pulsar-tab-item .block-list-appender {
 		height: 24px;
 		top: 0;
 		width: 24px;
 	}
-
-	.block-editor-button-block-appender.components-button.components-button {
+.wp-block-pulsar-tab-item .block-editor-button-block-appender.components-button.components-button {
 		background-color: #000;
 		color: #fff;
 		height: 24px;
@@ -16,11 +15,10 @@
 		width: 24px;
 
 	}
-
-	.components-button--remove {
+.wp-block-pulsar-tab-item .components-button--remove {
 		bottom: 5px;
 		position: absolute;
 		right: 5px;
 		width: auto;
 	}
-}
+

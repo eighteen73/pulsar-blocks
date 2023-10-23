@@ -12,12 +12,16 @@
 ?>
 
 
-<div
-	class="wp-block-pulsar-tab-item <?php echo $attributes['id'] === 1 ? '' : 'is-hidden'?>"
-	id="tabpanel-<?php echo $attributes['id']?>"
-	role="tabpanel"
-	tabindex="0"
-	aria-labelledby="tab-<?php echo $attributes['id']?>">
-	<?php echo $content ?>
-</div>
+<button
+	<?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>
+	id="tab-<?php echo esc_attr( $attributes['id'] ); ?>"
+	type="button"
+	role="tab"
+	aria-selected="<?php echo esc_attr( $attributes['id'] ) === 1 ? 'true' : 'false'; ?>"
+	aria-controls="tabpanel-<?php echo esc_attr( $attributes['id'] ); ?>"
+>
+	<span class="focus">
+	  <?php echo esc_attr( $attributes['title'] ); ?>
+	</span>
+</button>
 

@@ -35,7 +35,6 @@ export default function Edit({ clientId, attributes: { vertical, id}, setAttribu
 	// Open first tab on load
 	// When tab is removed focus on next tab if there is one, or prevs if not
 	// keyboard controls
-	// drag and drop to reorder?
 	// horizontal / vertical styling
 
 	const TEMPLATE = [
@@ -50,7 +49,6 @@ export default function Edit({ clientId, attributes: { vertical, id}, setAttribu
 
 	});
 
-
 	class TabsAutomatic {
 		constructor(groupNode, newTab) {
 
@@ -62,8 +60,6 @@ export default function Edit({ clientId, attributes: { vertical, id}, setAttribu
 		  this.lastTab = null;
 
 		  this.tabs = Array.from(this.tablistNode.querySelectorAll('.wp-block-pulsar-tab-title'));
-
-
 		  this.tabpanels = [];
 
 		  for (var i = 0; i < this.tabs.length; i += 1) {
@@ -231,12 +227,12 @@ export default function Edit({ clientId, attributes: { vertical, id}, setAttribu
 			}
 		}
 
-		async function myFunction() {
+		async function insertBlocks() {
 			wp.data.dispatch( 'core/block-editor' ).insertBlock( title, tabTitles.length, titlesId);
 			wp.data.dispatch( 'core/block-editor' ).insertBlock( tab, tabItems.length, itemsId);
 		}
 
-		myFunction().then(
+		insertBlocks().then(
 			() => {
 				resetTabs();
 			}
@@ -265,9 +261,9 @@ export default function Edit({ clientId, attributes: { vertical, id}, setAttribu
 			<div id="wp-block-pulsar-tabs-container"
 				{...useBlockProps()}
 			>
-				<Button onClick={() => insertTabs(clientId)}>Add New Tab</Button>
-
 				<div {...innerBlocksProps}></div>
+
+				<Button className="components-button--add is-secondary has-icon" onClick={() => insertTabs(clientId)}>Add New Tab</Button>
 			</div>
 		</>
 	);
