@@ -33,7 +33,6 @@ export default function Edit({ clientId, attributes: { vertical, id}, setAttribu
 
 	// TODO
 	// keyboard controls
-	// horizontal / vertical styling
 
 	const TEMPLATE = [
 		['pulsar/tab-titles'],
@@ -47,8 +46,7 @@ export default function Edit({ clientId, attributes: { vertical, id}, setAttribu
 
 	});
 
-let this_element = document.getElementById('block-' + clientId);
-
+	let this_element = document.getElementById('block-' + clientId);
 
 	if (this_element !== null) {
 		let tabpanels = this_element.querySelectorAll('.wp-block-pulsar-tab-item');
@@ -61,130 +59,129 @@ let this_element = document.getElementById('block-' + clientId);
 	class TabsAutomatic {
 		constructor(groupNode, newTab) {
 
-		  this.tablistNode = groupNode;
+			this.tablistNode = groupNode;
 
-		  this.tabs = [];
+			this.tabs = [];
 
-		  this.firstTab = null;
-		  this.lastTab = null;
+			this.firstTab = null;
+			this.lastTab = null;
 
-		  this.tabs = Array.from(this.tablistNode.querySelectorAll('.wp-block-pulsar-tab-title'));
-		  this.tabpanels = [];
+			this.tabs = Array.from(this.tablistNode.querySelectorAll('.wp-block-pulsar-tab-title'));
+			this.tabpanels = [];
 
-		  for (var i = 0; i < this.tabs.length; i += 1) {
+			for (var i = 0; i < this.tabs.length; i += 1) {
 
-			var tab = this.tabs[i];
-			var tab_id = tab.id.replace('tab-','');;
+				var tab = this.tabs[i];
+				var tab_id = tab.id.replace('tab-','');;
 
-			var tabpanel = document.querySelector('#tabpanel-' + tab_id);
+				var tabpanel = document.querySelector('#tabpanel-' + tab_id);
 
-			tab.tabIndex = -1;
-			tab.setAttribute('aria-selected', 'false');
-			this.tabpanels.push(tabpanel);
+				tab.tabIndex = -1;
+				tab.setAttribute('aria-selected', 'false');
+				this.tabpanels.push(tabpanel);
 
-			tab.addEventListener('keydown', this.onKeydown.bind(this));
-			tab.addEventListener('click', this.onClick.bind(this));
+				tab.addEventListener('keydown', this.onKeydown.bind(this));
+				tab.addEventListener('click', this.onClick.bind(this));
 
-			if (!this.firstTab) {
-			  this.firstTab = tab;
+				if (!this.firstTab) {
+					this.firstTab = tab;
+				}
+				this.lastTab = tab;
+		  	}
+
+
+			if (newTab === true) {
+				this.setSelectedTab(this.lastTab, false);
+			} else {
+				this.setSelectedTab(this.firstTab, false);
 			}
-			this.lastTab = tab;
-		  }
-
-
-		  if (newTab === true) {
-			this.setSelectedTab(this.lastTab, false);
-		  } else {
-			this.setSelectedTab(this.firstTab, false);
-		  }
 
 		}
 
 		setSelectedTab(currentTab, setFocus) {
 
-		  if (typeof setFocus !== 'boolean') {
-			setFocus = true;
-		  }
-		  for (var i = 0; i < this.tabs.length; i += 1) {
-			var tab = this.tabs[i];
-			if (currentTab === tab) {
-
-			  tab.setAttribute('aria-selected', 'true');
-			  tab.removeAttribute('tabindex');
-			  this.tabpanels[i].classList.remove('is-hidden');
-			  if (setFocus) {
-				tab.focus();
-			  }
-			} else {
-			  tab.setAttribute('aria-selected', 'false');
-			  tab.tabIndex = -1;
-			  this.tabpanels[i].classList.add('is-hidden');
+			if (typeof setFocus !== 'boolean') {
+				setFocus = true;
 			}
-		  }
+		  	for (var i = 0; i < this.tabs.length; i += 1) {
+				var tab = this.tabs[i];
+				if (currentTab === tab) {
+
+					tab.setAttribute('aria-selected', 'true');
+					tab.removeAttribute('tabindex');
+					this.tabpanels[i].classList.remove('is-hidden');
+					if (setFocus) {
+						tab.focus();
+					}
+				} else {
+					tab.setAttribute('aria-selected', 'false');
+					tab.tabIndex = -1;
+					this.tabpanels[i].classList.add('is-hidden');
+				}
+			}
 		}
 
 		setSelectedToPreviousTab(currentTab) {
-		  var index;
+		  	var index;
 
-		  if (currentTab === this.firstTab) {
-			this.setSelectedTab(this.lastTab);
-		  } else {
-			index = this.tabs.indexOf(currentTab);
-			this.setSelectedTab(this.tabs[index - 1]);
-		  }
+			if (currentTab === this.firstTab) {
+				this.setSelectedTab(this.lastTab);
+			} else {
+				index = this.tabs.indexOf(currentTab);
+				this.setSelectedTab(this.tabs[index - 1]);
+			}
 		}
 
 		setSelectedToNextTab(currentTab) {
-		  var index;
+			var index;
 
-		  if (currentTab === this.lastTab) {
-			this.setSelectedTab(this.firstTab);
-		  } else {
-			index = this.tabs.indexOf(currentTab);
-			this.setSelectedTab(this.tabs[index + 1]);
-		  }
+			if (currentTab === this.lastTab) {
+				this.setSelectedTab(this.firstTab);
+			} else {
+				index = this.tabs.indexOf(currentTab);
+				this.setSelectedTab(this.tabs[index + 1]);
+			}
 		}
 
 		/* EVENT HANDLERS */
 
 		onKeydown(event) {
-		  var tgt = event.currentTarget,
+		  	var tgt = event.currentTarget,
 			flag = false;
 
-		  switch (event.key) {
-			case 'ArrowLeft':
-			  this.setSelectedToPreviousTab(tgt);
-			  flag = true;
-			  break;
+			switch (event.key) {
+				case 'ArrowLeft':
+				this.setSelectedToPreviousTab(tgt);
+				flag = true;
+				break;
 
-			case 'ArrowRight':
-			  this.setSelectedToNextTab(tgt);
-			  flag = true;
-			  break;
+				case 'ArrowRight':
+				this.setSelectedToNextTab(tgt);
+				flag = true;
+				break;
 
-			case 'Home':
-			  this.setSelectedTab(this.firstTab);
-			  flag = true;
-			  break;
+				case 'Home':
+				this.setSelectedTab(this.firstTab);
+				flag = true;
+				break;
 
-			case 'End':
-			  this.setSelectedTab(this.lastTab);
-			  flag = true;
-			  break;
+				case 'End':
+				this.setSelectedTab(this.lastTab);
+				flag = true;
+				break;
 
-			default:
-			  break;
-		  }
+				default:
+				break;
+			}
 
-		  if (flag) {
-			event.stopPropagation();
-			event.preventDefault();
-		  }
+			if (flag) {
+				event.stopPropagation();
+				event.preventDefault();
+			}
 		}
 
 		onClick(event) {
-
-		  this.setSelectedTab(event.currentTarget);
+		  	this.setSelectedTab(event.currentTarget);
 		}
 	  }
 

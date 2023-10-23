@@ -12,7 +12,7 @@
 ?>
 
 <div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?> >
-	<div class="tabs">
+	<div class="tabs <?php echo $attributes['vertical'] ? 'vertical' : ''; ?>">
 		<?php echo $content; // phpcs:disable ?>
 	</div>
 </div>

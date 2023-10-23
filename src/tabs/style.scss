@@ -4,8 +4,34 @@
  */
 
 .wp-block-pulsar-tabs {
-	.wp-block-pulsar-tab-titles .wp-block-pulsar-tabs__items {
+	.tabs.vertical {
+
 		display: flex;
+
+		.automatic {
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+		}
+
+		.wp-block-pulsar-tab-title {
+			white-space: nowrap;
+		}
+
+		[role="tab"],
+		[role="tab"]:focus,
+		[role="tab"]:hover {
+			border-radius: 5px 0 0 5px;
+			left: 2px;
+			margin-top: 0;
+			top: 0;
+		}
+
+		[role="tab"][aria-selected="true"] {
+			border: 2px solid hsl(219deg 1% 72%);
+			border-left: 4px solid rgb(36 116 214);
+			border-right-color: hsl(220deg 43% 99%);
+		}
 	}
 
 	[role="tablist"] {
