@@ -16,6 +16,7 @@
       "type": "object",
       "default": {
         "type": "slide",
+        "drag": false,
         "perPage": 3,
         "perMove": 1,
         "gap": "30px",
@@ -23,7 +24,6 @@
         "pagination": true,
         "autoplay": false,
         "interval": 5000,
-        "focus": "center",
         "breakpoints": {
           "640": {
             "perPage": 1,

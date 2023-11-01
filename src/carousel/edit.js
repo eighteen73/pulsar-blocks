@@ -21,13 +21,13 @@ import {
 
 import { useRef } from '@wordpress/element';
 
-import { dispatch, select, subscribe } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 
 import { createBlock } from '@wordpress/blocks';
 
 import { __ } from '@wordpress/i18n';
 
-import { Splide, SplideTrack, SplideSlide } from '@splidejs/react-splide';
+import { Splide, SplideTrack } from '@splidejs/react-splide';
 
 import './editor.scss';
 
@@ -54,11 +54,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		const innerBlocks =
 			select('core/editor').getBlocksByClientId(clientId)[0].innerBlocks;
 		const block = createBlock('pulsar/carousel-slide');
-		dispatch('core/editor')
-			.insertBlock(block, innerBlocks.length, clientId)
-			.then(() => {
-				console.log(ref.current.splide);
-			});
+		dispatch('core/editor').insertBlock(
+			block,
+			innerBlocks.length,
+			clientId
+		);
 	};
 
 	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
@@ -457,9 +457,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 			<InspectorControls group="advanced">
 				<TextareaControl
-					label={__('Advanced carousel settings')}
+					label={__('Carousel settings')}
 					help={__(
-						'Override the carousel settings with a custom Splide JSON object.'
+						'Override the carousel settings with a custom Splide JSON object. Intended for developer use only.'
 					)}
 					rows={12}
 					onChange={handleChangeAdvancedCarouselSettings}

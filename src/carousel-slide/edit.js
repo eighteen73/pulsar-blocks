@@ -9,6 +9,7 @@ import {
 } from '@wordpress/block-editor';
 import { Placeholder } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
+import { forwardRef } from '@wordpress/element';
 import { SplideSlide } from '@splidejs/react-splide';
 
 /**
@@ -23,6 +24,16 @@ import { getPositionClassName, useMedia } from './components/utils';
 import CarouselSlideBlockControls from './components/block-controls';
 import CarouselSlideInspectorControls from './components/inspector-controls';
 import './editor.scss';
+
+const Slide = forwardRef((props, ref) => {
+	const { children, ...innerBlocksProps } = props;
+
+	return (
+		<SplideSlide ref={ref} {...innerBlocksProps}>
+			{children}
+		</SplideSlide>
+	);
+});
 
 /**
  * The save function describes the structure of your block in the context of the
@@ -139,61 +150,61 @@ export default function Edit(props) {
 	};
 
 	const blockProps = useBlockProps({
-		className: classnames(getPositionClassName(contentPosition), {
-			[`has-overlay`]: overlayColor,
-			[`has-overlay-opacity`]: overlayOpacity,
-			[`has-background`]: backgroundColor,
-		}),
+		className: classnames(
+			'splide__slide',
+			getPositionClassName(contentPosition),
+			{
+				[`has-overlay`]: overlayColor,
+				[`has-overlay-opacity`]: overlayOpacity,
+				[`has-background`]: backgroundColor,
+			}
+		),
 		style: styles,
 	});
 
-	const innerBlocksProps = useInnerBlocksProps({
-		className: classnames('wp-block-pulsar-carousel-slide__content'),
-	});
+	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps);
 
 	return (
-		<SplideSlide>
-			<div {...blockProps}>
-				<CarouselSlideBlockControls
-					contentPosition={contentPosition}
-					onContentPositionChange={onContentPositionChange}
-					isDisabled={!hasInnerBlocks}
-				/>
+		<li {...innerBlocksProps}>
+			<CarouselSlideBlockControls
+				contentPosition={contentPosition}
+				onContentPositionChange={onContentPositionChange}
+				isDisabled={!hasInnerBlocks}
+			/>
 
-				<CarouselSlideInspectorControls
-					imageUrl={imageUrl}
-					palette={palette}
-					backgroundType={backgroundType}
-					backgroundImageId={backgroundImageId}
-					backgroundColor={backgroundColor}
-					overlayColor={overlayColor}
-					overlayOpacity={overlayColor}
-					focalPoint={focalPoint}
-					onBackgroundTypeChange={onBackgroundTypeChange}
-					onBackgroundImageSelect={onBackgroundImageSelect}
-					onBackgroundImageRemove={onBackgroundImageRemove}
-					onBackgroundColorChange={onBackgroundColorChange}
-					onOverlayColorChange={onOverlayColorChange}
-					onOverlayOpacityChange={onOverlayOpacityChange}
-					onFocalPointChange={onFocalPointChange}
-				/>
+			<CarouselSlideInspectorControls
+				imageUrl={imageUrl}
+				palette={palette}
+				backgroundType={backgroundType}
+				backgroundImageId={backgroundImageId}
+				backgroundColor={backgroundColor}
+				overlayColor={overlayColor}
+				overlayOpacity={overlayColor}
+				focalPoint={focalPoint}
+				onBackgroundTypeChange={onBackgroundTypeChange}
+				onBackgroundImageSelect={onBackgroundImageSelect}
+				onBackgroundImageRemove={onBackgroundImageRemove}
+				onBackgroundColorChange={onBackgroundColorChange}
+				onOverlayColorChange={onOverlayColorChange}
+				onOverlayOpacityChange={onOverlayOpacityChange}
+				onFocalPointChange={onFocalPointChange}
+			/>
 
-				<div {...innerBlocksProps}></div>
+			{children}
 
-				{backgroundType === 'image' && (
-					<figure className="wp-block-pulsar-carousel-slide__background-image">
-						{backgroundImageId && imageUrl && !isResolvingMedia ? (
-							<img
-								style={focalPointStyle}
-								src={imageUrl}
-								alt={altText}
-							/>
-						) : (
-							<Placeholder withIllustration />
-						)}
-					</figure>
-				)}
-			</div>
-		</SplideSlide>
+			{backgroundType === 'image' && (
+				<figure className="wp-block-pulsar-carousel-slide__background-image">
+					{backgroundImageId && imageUrl && !isResolvingMedia ? (
+						<img
+							style={focalPointStyle}
+							src={imageUrl}
+							alt={altText}
+						/>
+					) : (
+						<Placeholder withIllustration />
+					)}
+				</figure>
+			)}
+		</li>
 	);
 }
