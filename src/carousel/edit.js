@@ -19,7 +19,7 @@ import {
 	TextareaControl,
 } from '@wordpress/components';
 
-import { useRef, useState, useEffect, useCallback } from '@wordpress/element';
+import { useRef } from '@wordpress/element';
 
 import { dispatch, select, subscribe } from '@wordpress/data';
 
@@ -27,7 +27,7 @@ import { createBlock } from '@wordpress/blocks';
 
 import { __ } from '@wordpress/i18n';
 
-import Splide from '@splidejs/splide';
+import { Splide, SplideTrack, SplideSlide } from '@splidejs/react-splide';
 
 import './editor.scss';
 
@@ -48,16 +48,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	const { carouselSettings, advancedCarouselSettings } = attributes;
 
 	const ref = useRef();
-
-	const [carousel, setCarousel] = useState({});
-
-	const [splide, setSplide] = useState(carouselSettings);
-
-	const refreshCarousel = () => {
-		if (Object.keys(carousel).length !== 0) {
-			carousel.refresh();
-		}
-	};
+	const blockProps = useBlockProps();
 
 	const addBlock = () => {
 		const innerBlocks =
@@ -66,48 +57,14 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		dispatch('core/editor')
 			.insertBlock(block, innerBlocks.length, clientId)
 			.then(() => {
-				refreshCarousel();
-				carousel.go(innerBlocks.length);
+				console.log(ref.current.splide);
 			});
 	};
 
-	const innerBlocksProps = useInnerBlocksProps(
-		{ className: 'splide__list' },
-		{
-			orientation: 'horizontal',
-			allowedBlocks: ALLOWED_BLOCKS,
-			renderAppender: false,
-		}
-	);
-
-	const callback = useCallback(() => {
-		refreshCarousel();
-	});
-
-	// Set up the carousel.
-	useEffect(() => {
-		const splideInstance = new Splide(`#block-${clientId}`);
-		setCarousel(splideInstance.mount());
-
-		return function cleanup() {
-			setCarousel(null);
-		};
-	}, []);
-
-	// Watch for a change in child blocks and refresh.
-	useEffect(() => {
-		const { getBlock } = select('core/block-editor');
-		let blockList = getBlock(clientId).innerBlocks;
-
-		subscribe(() => {
-			const newBlockList = getBlock(clientId).innerBlocks;
-			const blockListChanged = newBlockList !== blockList;
-			blockList = newBlockList;
-
-			if (blockListChanged) {
-				callback();
-			}
-		});
+	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
+		orientation: 'horizontal',
+		allowedBlocks: ALLOWED_BLOCKS,
+		renderAppender: false,
 	});
 
 	const handleChangeAdvancedCarouselSettings = (value) => {
@@ -510,16 +467,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				/>
 			</InspectorControls>
 
-			<div
-				{...useBlockProps({ className: 'splide' })}
-				aria-label=""
-				data-splide={JSON.stringify(
-					advancedCarouselSettings ?? carouselSettings
-				)}
-			>
-				<div className="splide__track">
-					<div {...innerBlocksProps}></div>
-				</div>
+			<div {...innerBlocksProps}>
+				<Splide options={carouselSettings} ref={ref} hasTrack={false}>
+					<SplideTrack>{children}</SplideTrack>
+				</Splide>
 			</div>
 		</>
 	);

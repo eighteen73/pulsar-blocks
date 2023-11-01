@@ -9,6 +9,7 @@ import {
 } from '@wordpress/block-editor';
 import { Placeholder } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
+import { SplideSlide } from '@splidejs/react-splide';
 
 /**
  * Third party dependencies
@@ -138,15 +139,11 @@ export default function Edit(props) {
 	};
 
 	const blockProps = useBlockProps({
-		className: classnames(
-			'splide__slide',
-			getPositionClassName(contentPosition),
-			{
-				[`has-overlay`]: overlayColor,
-				[`has-overlay-opacity`]: overlayOpacity,
-				[`has-background`]: backgroundColor,
-			}
-		),
+		className: classnames(getPositionClassName(contentPosition), {
+			[`has-overlay`]: overlayColor,
+			[`has-overlay-opacity`]: overlayOpacity,
+			[`has-background`]: backgroundColor,
+		}),
 		style: styles,
 	});
 
@@ -155,46 +152,48 @@ export default function Edit(props) {
 	});
 
 	return (
-		<div {...blockProps}>
-			<CarouselSlideBlockControls
-				contentPosition={contentPosition}
-				onContentPositionChange={onContentPositionChange}
-				isDisabled={!hasInnerBlocks}
-			/>
+		<SplideSlide>
+			<div {...blockProps}>
+				<CarouselSlideBlockControls
+					contentPosition={contentPosition}
+					onContentPositionChange={onContentPositionChange}
+					isDisabled={!hasInnerBlocks}
+				/>
 
-			<CarouselSlideInspectorControls
-				imageUrl={imageUrl}
-				palette={palette}
-				backgroundType={backgroundType}
-				backgroundImageId={backgroundImageId}
-				backgroundColor={backgroundColor}
-				overlayColor={overlayColor}
-				overlayOpacity={overlayColor}
-				focalPoint={focalPoint}
-				onBackgroundTypeChange={onBackgroundTypeChange}
-				onBackgroundImageSelect={onBackgroundImageSelect}
-				onBackgroundImageRemove={onBackgroundImageRemove}
-				onBackgroundColorChange={onBackgroundColorChange}
-				onOverlayColorChange={onOverlayColorChange}
-				onOverlayOpacityChange={onOverlayOpacityChange}
-				onFocalPointChange={onFocalPointChange}
-			/>
+				<CarouselSlideInspectorControls
+					imageUrl={imageUrl}
+					palette={palette}
+					backgroundType={backgroundType}
+					backgroundImageId={backgroundImageId}
+					backgroundColor={backgroundColor}
+					overlayColor={overlayColor}
+					overlayOpacity={overlayColor}
+					focalPoint={focalPoint}
+					onBackgroundTypeChange={onBackgroundTypeChange}
+					onBackgroundImageSelect={onBackgroundImageSelect}
+					onBackgroundImageRemove={onBackgroundImageRemove}
+					onBackgroundColorChange={onBackgroundColorChange}
+					onOverlayColorChange={onOverlayColorChange}
+					onOverlayOpacityChange={onOverlayOpacityChange}
+					onFocalPointChange={onFocalPointChange}
+				/>
 
-			<div {...innerBlocksProps}></div>
+				<div {...innerBlocksProps}></div>
 
-			{backgroundType === 'image' && (
-				<figure className="wp-block-pulsar-carousel-slide__background-image">
-					{backgroundImageId && imageUrl && !isResolvingMedia ? (
-						<img
-							style={focalPointStyle}
-							src={imageUrl}
-							alt={altText}
-						/>
-					) : (
-						<Placeholder withIllustration />
-					)}
-				</figure>
-			)}
-		</div>
+				{backgroundType === 'image' && (
+					<figure className="wp-block-pulsar-carousel-slide__background-image">
+						{backgroundImageId && imageUrl && !isResolvingMedia ? (
+							<img
+								style={focalPointStyle}
+								src={imageUrl}
+								alt={altText}
+							/>
+						) : (
+							<Placeholder withIllustration />
+						)}
+					</figure>
+				)}
+			</div>
+		</SplideSlide>
 	);
 }
