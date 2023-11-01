@@ -23,17 +23,8 @@ import classnames from 'classnames';
 import { getPositionClassName, useMedia } from './components/utils';
 import CarouselSlideBlockControls from './components/block-controls';
 import CarouselSlideInspectorControls from './components/inspector-controls';
+
 import './editor.scss';
-
-const Slide = forwardRef((props, ref) => {
-	const { children, ...innerBlocksProps } = props;
-
-	return (
-		<SplideSlide ref={ref} {...innerBlocksProps}>
-			{children}
-		</SplideSlide>
-	);
-});
 
 /**
  * The save function describes the structure of your block in the context of the
@@ -190,7 +181,9 @@ export default function Edit(props) {
 				onFocalPointChange={onFocalPointChange}
 			/>
 
-			{children}
+			<div className="wp-block-pulsar-carousel-slide__content">
+				{children}
+			</div>
 
 			{backgroundType === 'image' && (
 				<figure className="wp-block-pulsar-carousel-slide__background-image">

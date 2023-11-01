@@ -16,7 +16,7 @@
       "type": "object",
       "default": {
         "type": "slide",
-        "drag": false,
+        "drag": true,
         "perPage": 3,
         "perMove": 1,
         "gap": "30px",

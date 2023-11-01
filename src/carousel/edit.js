@@ -21,6 +21,8 @@ import {
 
 import { useRef } from '@wordpress/element';
 
+import { useState, useEffect } from '@wordpress/element';
+
 import { dispatch, select } from '@wordpress/data';
 
 import { createBlock } from '@wordpress/blocks';
@@ -28,6 +30,8 @@ import { createBlock } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 
 import { Splide, SplideTrack } from '@splidejs/react-splide';
+
+import CarouselInspectorControls from './components/inspector-controls';
 
 import './editor.scss';
 
@@ -46,6 +50,30 @@ const ALLOWED_BLOCKS = ['pulsar/carousel-slide'];
  */
 export default function Edit({ attributes, setAttributes, clientId }) {
 	const { carouselSettings, advancedCarouselSettings } = attributes;
+
+	const [editorCarouselSettings, setEditorCarouselSettings] = useState(false);
+
+	// Certain Splide settings we dont want to be active in the editor.
+	const editorSafeSettings = (settings) => {
+		settings.autoplay = false;
+		settings.drag = false;
+
+		return settings;
+	};
+
+	// @TODO
+	// Refresh carousel when a slide is deleted
+	// Refresh when inner blocks are rearranged
+
+	useEffect(() => {
+		if (advancedCarouselSettings) {
+			setEditorCarouselSettings(
+				editorSafeSettings(advancedCarouselSettings)
+			);
+		} else {
+			setEditorCarouselSettings(editorSafeSettings(carouselSettings));
+		}
+	}, [setEditorCarouselSettings, carouselSettings, advancedCarouselSettings]);
 
 	const ref = useRef();
 	const blockProps = useBlockProps();
@@ -81,385 +109,16 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				</Button>
 			</BlockControls>
 
-			<InspectorControls>
-				<PanelBody title={__('Settings')}>
-					<ToggleGroupControl
-						label={__('Type')}
-						onChange={(value) => {
-							setAttributes({
-								carouselSettings: {
-									...carouselSettings,
-									type: value,
-								},
-							});
-						}}
-						value={carouselSettings.type}
-						isBlock
-					>
-						<ToggleGroupControlOption
-							value={'slide'}
-							label={__('Slide')}
-						/>
-
-						<ToggleGroupControlOption
-							value={'loop'}
-							label={__('Loop')}
-						/>
-
-						<ToggleGroupControlOption
-							value={'fade'}
-							label={__('Fade')}
-						/>
-					</ToggleGroupControl>
-
-					<ToggleControl
-						label={__('Autoplay')}
-						checked={carouselSettings.autoplay}
-						onChange={(value) => {
-							setAttributes({
-								carouselSettings: {
-									...carouselSettings,
-									autoplay: value,
-								},
-							});
-						}}
-					/>
-
-					{carouselSettings.autoplay && (
-						<NumberControl
-							label={__('Autoplay interval')}
-							min={0}
-							step={250}
-							isShiftStepEnabled={true}
-							onChange={(value) => {
-								setAttributes({
-									carouselSettings: {
-										...carouselSettings,
-										interval: value,
-									},
-								});
-							}}
-							shiftStep={1000}
-							value={carouselSettings.interval}
-						/>
-					)}
-				</PanelBody>
-
-				<PanelBody title={__('Desktop settings')} initialOpen={true}>
-					{carouselSettings.type !== 'fade' && (
-						<>
-							<NumberControl
-								label={__('Per page')}
-								isShiftStepEnabled={true}
-								onChange={(value) => {
-									setAttributes({
-										carouselSettings: {
-											...carouselSettings,
-											perPage: value,
-										},
-									});
-								}}
-								shiftStep={1}
-								value={carouselSettings.perPage}
-							/>
-
-							<NumberControl
-								label={__('Per move')}
-								isShiftStepEnabled={true}
-								onChange={(value) => {
-									setAttributes({
-										carouselSettings: {
-											...carouselSettings,
-											perMove: value,
-										},
-									});
-								}}
-								shiftStep={1}
-								value={carouselSettings.perMove}
-							/>
-
-							<UnitControl
-								label={__('Gap')}
-								onChange={(value) => {
-									setAttributes({
-										carouselSettings: {
-											...carouselSettings,
-											gap: value,
-										},
-									});
-								}}
-								value={carouselSettings.gap}
-							/>
-						</>
-					)}
-
-					<ToggleControl
-						label={__('Arrows')}
-						checked={carouselSettings.arrows}
-						onChange={(value) => {
-							setAttributes({
-								carouselSettings: {
-									...carouselSettings,
-									arrows: value,
-								},
-							});
-						}}
-					/>
-
-					<ToggleControl
-						label={__('Pagination')}
-						checked={carouselSettings.pagination}
-						onChange={(value) => {
-							setAttributes({
-								carouselSettings: {
-									...carouselSettings,
-									pagination: value,
-								},
-							});
-						}}
-					/>
-				</PanelBody>
-
-				<PanelBody title={__('Tablet settings')} initialOpen={false}>
-					{carouselSettings.type !== 'fade' && (
-						<>
-							<NumberControl
-								label={__('Per page')}
-								isShiftStepEnabled={true}
-								onChange={(value) => {
-									setAttributes({
-										carouselSettings: {
-											...carouselSettings,
-											breakpoints: {
-												...carouselSettings.breakpoints,
-												1024: {
-													...carouselSettings
-														.breakpoints['1024'],
-													perPage: value,
-												},
-											},
-										},
-									});
-								}}
-								shiftStep={1}
-								value={
-									carouselSettings.breakpoints['1024'].perPage
-								}
-							/>
-
-							<NumberControl
-								label={__('Per move')}
-								isShiftStepEnabled={true}
-								onChange={(value) => {
-									setAttributes({
-										carouselSettings: {
-											...carouselSettings,
-											breakpoints: {
-												...carouselSettings.breakpoints,
-												1024: {
-													...carouselSettings
-														.breakpoints['1024'],
-													perMove: value,
-												},
-											},
-										},
-									});
-								}}
-								shiftStep={1}
-								value={
-									carouselSettings.breakpoints['1024'].perMove
-								}
-							/>
-
-							<UnitControl
-								label={__('Gap')}
-								onChange={(value) => {
-									setAttributes({
-										carouselSettings: {
-											...carouselSettings,
-											breakpoints: {
-												...carouselSettings.breakpoints,
-												1024: {
-													...carouselSettings
-														.breakpoints['1024'],
-													gap: value,
-												},
-											},
-										},
-									});
-								}}
-								value={carouselSettings.breakpoints['1024'].gap}
-							/>
-						</>
-					)}
-
-					<ToggleControl
-						label={__('Arrows')}
-						checked={carouselSettings.breakpoints['1024'].arrows}
-						onChange={(value) => {
-							setAttributes({
-								carouselSettings: {
-									...carouselSettings,
-									breakpoints: {
-										...carouselSettings.breakpoints,
-										1024: {
-											...carouselSettings.breakpoints[
-												'1024'
-											],
-											arrows: value,
-										},
-									},
-								},
-							});
-						}}
-					/>
-
-					<ToggleControl
-						label={__('Pagination')}
-						checked={
-							carouselSettings.breakpoints['1024'].pagination
-						}
-						onChange={(value) => {
-							setAttributes({
-								carouselSettings: {
-									...carouselSettings,
-									breakpoints: {
-										...carouselSettings.breakpoints,
-										1024: {
-											...carouselSettings.breakpoints[
-												'1024'
-											],
-											pagination: value,
-										},
-									},
-								},
-							});
-						}}
-					/>
-				</PanelBody>
-
-				<PanelBody title={__('Mobile settings')} initialOpen={false}>
-					{carouselSettings.type !== 'fade' && (
-						<>
-							<NumberControl
-								label={__('Per page')}
-								isShiftStepEnabled={true}
-								onChange={(value) => {
-									setAttributes({
-										carouselSettings: {
-											...carouselSettings,
-											breakpoints: {
-												...carouselSettings.breakpoints,
-												640: {
-													...carouselSettings
-														.breakpoints['640'],
-													perPage: value,
-												},
-											},
-										},
-									});
-								}}
-								shiftStep={1}
-								value={
-									carouselSettings.breakpoints['640'].perPage
-								}
-							/>
-
-							<NumberControl
-								label={__('Per move')}
-								isShiftStepEnabled={true}
-								onChange={(value) => {
-									setAttributes({
-										carouselSettings: {
-											...carouselSettings,
-											breakpoints: {
-												...carouselSettings.breakpoints,
-												640: {
-													...carouselSettings
-														.breakpoints['640'],
-													perMove: value,
-												},
-											},
-										},
-									});
-								}}
-								shiftStep={1}
-								value={
-									carouselSettings.breakpoints['640'].perMove
-								}
-							/>
-
-							<UnitControl
-								label={__('Gap')}
-								onChange={(value) => {
-									setAttributes({
-										carouselSettings: {
-											...carouselSettings,
-											breakpoints: {
-												...carouselSettings.breakpoints,
-												640: {
-													...carouselSettings
-														.breakpoints['640'],
-													gap: value,
-												},
-											},
-										},
-									});
-								}}
-								value={carouselSettings.breakpoints['640'].gap}
-							/>
-						</>
-					)}
-
-					<ToggleControl
-						label={__('Arrows')}
-						checked={carouselSettings.breakpoints['640'].arrows}
-						onChange={(value) => {
-							setAttributes({
-								carouselSettings: {
-									...carouselSettings,
-									breakpoints: {
-										...carouselSettings.breakpoints,
-										640: {
-											...carouselSettings.breakpoints[
-												'640'
-											],
-											arrows: value,
-										},
-									},
-								},
-							});
-						}}
-					/>
-
-					<ToggleControl
-						label={__('Pagination')}
-						checked={carouselSettings.breakpoints['640'].pagination}
-						onChange={(value) => {
-							setAttributes({
-								carouselSettings: {
-									...carouselSettings,
-									breakpoints: {
-										...carouselSettings.breakpoints,
-										640: {
-											...carouselSettings.breakpoints[
-												'640'
-											],
-											pagination: value,
-										},
-									},
-								},
-							});
-						}}
-					/>
-				</PanelBody>
-			</InspectorControls>
+			<CarouselInspectorControls
+				onChange={setAttributes}
+				carouselSettings={carouselSettings}
+			/>
 
 			<InspectorControls group="advanced">
 				<TextareaControl
 					label={__('Carousel settings')}
 					help={__(
-						'Override the carousel settings with a custom Splide JSON object. Intended for developer use only.'
+						'Override the carousel settings with a custom Splide JSON object.'
 					)}
 					rows={12}
 					onChange={handleChangeAdvancedCarouselSettings}
@@ -468,12 +127,14 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			</InspectorControls>
 
 			<div {...innerBlocksProps}>
-				<Splide options={carouselSettings} ref={ref} hasTrack={false}>
+				<Splide
+					options={editorCarouselSettings}
+					ref={ref}
+					hasTrack={false}
+				>
 					<SplideTrack>{children}</SplideTrack>
 				</Splide>
 			</div>
 		</>
 	);
-}
-{
 }
