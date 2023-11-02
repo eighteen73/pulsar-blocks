@@ -1,15 +1,15 @@
 import { InspectorControls } from '@wordpress/block-editor';
-
 import { PanelBody } from '@wordpress/components';
-
 import { __ } from '@wordpress/i18n';
 
 import GlobalControls from './global-controls';
 import BreakpointControls from './breakpoint-controls';
+import AdvancedControls from './advanced-controls';
 
 export default function CarouselInspectorControls({
 	onChange,
 	carouselSettings,
+	advancedCarouselSettings,
 }) {
 	return (
 		<>
@@ -44,6 +44,13 @@ export default function CarouselInspectorControls({
 						size={640}
 					/>
 				</PanelBody>
+			</InspectorControls>
+
+			<InspectorControls group="advanced">
+				<AdvancedControls
+					onChange={onChange}
+					advancedCarouselSettings={advancedCarouselSettings}
+				/>
 			</InspectorControls>
 		</>
 	);

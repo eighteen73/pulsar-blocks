@@ -1,71 +1,76 @@
-import {
-	useBlockProps,
-	useInnerBlocksProps,
-	BlockControls,
-	InspectorControls,
-} from '@wordpress/block-editor';
-
-import {
-	PanelBody,
-	ToggleControl,
-	Button,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControl as ToggleGroupControl,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
-	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
-	__experimentalNumberControl as NumberControl,
-	__experimentalUnitControl as UnitControl,
-	TextareaControl,
-} from '@wordpress/components';
-
-import { useRef } from '@wordpress/element';
-
-import { useState, useEffect } from '@wordpress/element';
-
-import { dispatch, select } from '@wordpress/data';
-
-import { createBlock } from '@wordpress/blocks';
-
+/**
+ * WordPress dependencies
+ */
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import { useRef, useState, useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Third party dependencies
+ */
 import { Splide, SplideTrack } from '@splidejs/react-splide';
 
+/**
+ * Block dependencies
+ */
 import CarouselInspectorControls from './components/inspector-controls';
+import SingleBlockTypeAppender from '../utils/single-block-type-appender';
 
 import './editor.scss';
-
-const ALLOWED_BLOCKS = ['pulsar/carousel-slide'];
 
 /**
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
- * @param {Object} param0
- * @param {Object} param0.attributes
- * @param          param0.attributes.splide
- * @param {Object} param0.clientId
- * @param          param0.setAttributes
+ * @param {Object}   param0
+ * @param {Object}   param0.attributes
+ * @param {Function} param0.setAttributes
+ * @param {string}   param0.clientId
+ * @param {boolean}  param0.isSelected
  * @return {WPElement} Element to render.
  */
-export default function Edit({ attributes, setAttributes, clientId }) {
+export default function Edit({
+	attributes,
+	setAttributes,
+	clientId,
+	isSelected,
+}) {
 	const { carouselSettings, advancedCarouselSettings } = attributes;
+
+	const ref = useRef(null);
+	const blockProps = useBlockProps();
+	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
+		orientation: 'horizontal',
+		allowedBlocks: [],
+		renderAppender: false,
+	});
 
 	const [editorCarouselSettings, setEditorCarouselSettings] = useState(false);
 
-	// Certain Splide settings we dont want to be active in the editor.
-	const editorSafeSettings = (settings) => {
-		settings.autoplay = false;
-		settings.drag = false;
-
-		return settings;
-	};
+	const isInnerBlockSelected = useSelect((select) =>
+		select('core/block-editor').hasSelectedInnerBlock(clientId, true)
+	);
 
 	// @TODO
 	// Refresh carousel when a slide is deleted
 	// Refresh when inner blocks are rearranged
 
 	useEffect(() => {
+		/**
+		 * Set specific Splide options that cause issues in the editor.
+		 * This only affects the editor.
+		 *
+		 * @param {Object} settings
+		 * @return {Object} Object of settings
+		 */
+		const editorSafeSettings = (settings) => {
+			settings.autoplay = false;
+			settings.drag = false;
+
+			return settings;
+		};
+
 		if (advancedCarouselSettings) {
 			setEditorCarouselSettings(
 				editorSafeSettings(advancedCarouselSettings)
@@ -75,56 +80,24 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		}
 	}, [setEditorCarouselSettings, carouselSettings, advancedCarouselSettings]);
 
-	const ref = useRef();
-	const blockProps = useBlockProps();
+	useEffect(() => {
+		if (ref.current) {
+			const splide = ref.current.splide;
 
-	const addBlock = () => {
-		const innerBlocks =
-			select('core/editor').getBlocksByClientId(clientId)[0].innerBlocks;
-		const block = createBlock('pulsar/carousel-slide');
-		dispatch('core/editor').insertBlock(
-			block,
-			innerBlocks.length,
-			clientId
-		);
-	};
-
-	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
-		orientation: 'horizontal',
-		allowedBlocks: ALLOWED_BLOCKS,
-		renderAppender: false,
-	});
-
-	const handleChangeAdvancedCarouselSettings = (value) => {
-		setAttributes({
-			advancedCarouselSettings: JSON.parse(value),
-		});
-	};
+			splide.on('refresh', function () {
+				splide.destroy(false);
+				splide.mount();
+			});
+		}
+	}, [ref, isInnerBlockSelected]);
 
 	return (
 		<>
-			<BlockControls group="block">
-				<Button variant="secondary" onClick={addBlock}>
-					{__('Add slide')}
-				</Button>
-			</BlockControls>
-
 			<CarouselInspectorControls
 				onChange={setAttributes}
 				carouselSettings={carouselSettings}
+				advancedCarouselSettings={advancedCarouselSettings}
 			/>
-
-			<InspectorControls group="advanced">
-				<TextareaControl
-					label={__('Carousel settings')}
-					help={__(
-						'Override the carousel settings with a custom Splide JSON object.'
-					)}
-					rows={12}
-					onChange={handleChangeAdvancedCarouselSettings}
-					value={JSON.stringify(advancedCarouselSettings, null, 2)}
-				/>
-			</InspectorControls>
 
 			<div {...innerBlocksProps}>
 				<Splide
@@ -134,6 +107,17 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				>
 					<SplideTrack>{children}</SplideTrack>
 				</Splide>
+
+				<SingleBlockTypeAppender
+					variant="secondary"
+					icon={false}
+					iconPosition="left"
+					text={__('Add Slide')}
+					allowedBlock="pulsar/carousel-slide"
+					style={{ width: '100%', justifyContent: 'center' }}
+					clientId={clientId}
+					isSelected={isSelected || isInnerBlockSelected}
+				/>
 			</div>
 		</>
 	);

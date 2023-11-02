@@ -20,7 +20,7 @@ import { __ } from '@wordpress/i18n';
 
 import { plus } from '@wordpress/icons';
 
-import SingleBlockTypeAppender from './components/single-block-type-appender';
+import SingleBlockTypeAppender from '../utils/single-block-type-appender';
 
 import './editor.scss';
 

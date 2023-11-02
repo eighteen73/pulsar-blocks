@@ -9,8 +9,8 @@ import {
 } from '@wordpress/block-editor';
 import { Placeholder } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { forwardRef } from '@wordpress/element';
-import { SplideSlide } from '@splidejs/react-splide';
+import { useRef, forwardRef } from '@wordpress/element';
+import { SplideSlide } from './components/splide-slide';
 
 /**
  * Third party dependencies
@@ -153,10 +153,14 @@ export default function Edit(props) {
 		style: styles,
 	});
 
-	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps);
+	const {
+		children,
+		ref: ref,
+		...innerBlocksProps
+	} = useInnerBlocksProps(blockProps);
 
 	return (
-		<li {...innerBlocksProps}>
+		<SplideSlide {...innerBlocksProps} ref={ref}>
 			<CarouselSlideBlockControls
 				contentPosition={contentPosition}
 				onContentPositionChange={onContentPositionChange}
@@ -198,6 +202,6 @@ export default function Edit(props) {
 					)}
 				</figure>
 			)}
-		</li>
+		</SplideSlide>
 	);
 }
