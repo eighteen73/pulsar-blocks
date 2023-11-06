@@ -44,6 +44,19 @@
     },
     "advancedCarouselSettings": {
       "type": "object"
+    },
+    "allowedBlocks": {
+      "type": "array",
+      "default": [
+        "pulsar/carousel-slide"
+      ]
+    },
+    "template": {
+      "type": "array"
+    },
+    "includeTrack": {
+      "type": "boolean",
+      "default": true
     }
   }
 }

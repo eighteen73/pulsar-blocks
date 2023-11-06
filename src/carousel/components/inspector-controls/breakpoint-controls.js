@@ -1,4 +1,5 @@
 import {
+	Disabled,
 	ToggleControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalNumberControl as NumberControl,
@@ -12,6 +13,7 @@ export default function BreakpointControls({
 	carouselSettings,
 	onChange,
 	size,
+	isDisabled = false,
 }) {
 	const handleChange = (key, newValue) => {
 		if (size) {
@@ -45,7 +47,7 @@ export default function BreakpointControls({
 	};
 
 	return (
-		<>
+		<Disabled isDisabled={isDisabled}>
 			{carouselSettings.type !== 'fade' && (
 				<>
 					<NumberControl
@@ -83,6 +85,6 @@ export default function BreakpointControls({
 				checked={getValue('pagination')}
 				onChange={(value) => handleChange('pagination', value)}
 			/>
-		</>
+		</Disabled>
 	);
 }

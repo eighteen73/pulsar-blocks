@@ -15,7 +15,7 @@ import { Splide, SplideTrack } from '@splidejs/react-splide';
  * Block dependencies
  */
 import CarouselInspectorControls from './components/inspector-controls';
-import SingleBlockTypeAppender from '../utils/single-block-type-appender';
+import ButtonBlockAppender from '../utils/button-block-appender';
 
 import './editor.scss';
 
@@ -36,21 +36,38 @@ export default function Edit({
 	clientId,
 	isSelected,
 }) {
-	const { carouselSettings, advancedCarouselSettings } = attributes;
+	const {
+		carouselSettings,
+		advancedCarouselSettings,
+		hasTrack,
+		allowedBlocks,
+		template,
+	} = attributes;
 
 	const ref = useRef(null);
 	const blockProps = useBlockProps();
 	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
 		orientation: 'horizontal',
-		allowedBlocks: [],
+		allowedBlocks,
+		template,
 		renderAppender: false,
 	});
 
 	const [editorCarouselSettings, setEditorCarouselSettings] = useState(false);
+	const [splide, setSplide] = useState(false);
 
 	const isInnerBlockSelected = useSelect((select) =>
 		select('core/block-editor').hasSelectedInnerBlock(clientId, true)
 	);
+
+	const isSlideSelected = useSelect((select) =>
+		select('core/block-editor').hasSelectedInnerBlock(clientId, false)
+	);
+
+	useEffect(() => {
+		setSplide(ref.current.splide);
+		console.log(isSlideSelected);
+	}, [isSlideSelected]);
 
 	// @TODO
 	// Refresh carousel when a slide is deleted
@@ -80,17 +97,6 @@ export default function Edit({
 		}
 	}, [setEditorCarouselSettings, carouselSettings, advancedCarouselSettings]);
 
-	useEffect(() => {
-		if (ref.current) {
-			const splide = ref.current.splide;
-
-			splide.on('refresh', function () {
-				splide.destroy(false);
-				splide.mount();
-			});
-		}
-	}, [ref, isInnerBlockSelected]);
-
 	return (
 		<>
 			<CarouselInspectorControls
@@ -103,19 +109,14 @@ export default function Edit({
 				<Splide
 					options={editorCarouselSettings}
 					ref={ref}
-					hasTrack={false}
+					hasTrack={hasTrack}
 				>
-					<SplideTrack>{children}</SplideTrack>
+					{children}
 				</Splide>
 
-				<SingleBlockTypeAppender
-					variant="secondary"
-					icon={false}
-					iconPosition="left"
-					text={__('Add Slide')}
-					allowedBlock="pulsar/carousel-slide"
-					style={{ width: '100%', justifyContent: 'center' }}
-					clientId={clientId}
+				<ButtonBlockAppender
+					rootClientId={clientId}
+					text={false}
 					isSelected={isSelected || isInnerBlockSelected}
 				/>
 			</div>

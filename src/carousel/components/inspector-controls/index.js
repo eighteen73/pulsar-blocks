@@ -18,6 +18,7 @@ export default function CarouselInspectorControls({
 					<GlobalControls
 						onChange={onChange}
 						carouselSettings={carouselSettings}
+						isDisabled={advancedCarouselSettings}
 					></GlobalControls>
 				</PanelBody>
 
@@ -26,6 +27,7 @@ export default function CarouselInspectorControls({
 						onChange={onChange}
 						carouselSettings={carouselSettings}
 						size={false}
+						isDisabled={advancedCarouselSettings}
 					/>
 				</PanelBody>
 
@@ -34,6 +36,7 @@ export default function CarouselInspectorControls({
 						onChange={onChange}
 						carouselSettings={carouselSettings}
 						size={1024}
+						isDisabled={advancedCarouselSettings}
 					/>
 				</PanelBody>
 
@@ -42,6 +45,7 @@ export default function CarouselInspectorControls({
 						onChange={onChange}
 						carouselSettings={carouselSettings}
 						size={640}
+						isDisabled={advancedCarouselSettings}
 					/>
 				</PanelBody>
 			</InspectorControls>

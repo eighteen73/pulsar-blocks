@@ -1,4 +1,5 @@
 import {
+	Disabled,
 	ToggleControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl as ToggleGroupControl,
@@ -10,9 +11,13 @@ import {
 
 import { __ } from '@wordpress/i18n';
 
-export default function GlobalControls({ onChange, carouselSettings }) {
+export default function GlobalControls({
+	onChange,
+	carouselSettings,
+	isDisabled = false,
+}) {
 	return (
-		<>
+		<Disabled isDisabled={isDisabled}>
 			<ToggleGroupControl
 				label={__('Type')}
 				onChange={(value) => {
@@ -62,6 +67,6 @@ export default function GlobalControls({ onChange, carouselSettings }) {
 					value={carouselSettings.interval}
 				/>
 			)}
-		</>
+		</Disabled>
 	);
 }
