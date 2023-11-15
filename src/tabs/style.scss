@@ -4,18 +4,23 @@
  */
 
 .wp-block-pulsar-tabs {
-	.tabs.vertical {
+	.tabs.vertical,
+	.wp-block-pulsar-tabs__items.vertical {
+		.wp-block-pulsar-tab-items {
+			width: 100%;
+		}
 
 		display: flex;
 
-		.automatic {
+		[role="tablist"] {
 			display: flex;
 			flex-direction: column;
 			gap: 4px;
 		}
 
-		.wp-block-pulsar-tab-title {
-			white-space: nowrap;
+		.wp-block-pulsar-tab-title,
+		.wp-block-pulsar-tab-button span {
+			white-space: nowrap !important;
 		}
 
 		[role="tab"],

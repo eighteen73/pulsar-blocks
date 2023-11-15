@@ -39,7 +39,7 @@ export default function Edit({ clientId, attributes: { vertical, id}, setAttribu
 		['pulsar/tab-items'],
 	];
 
-	const innerBlocksProps = useInnerBlocksProps({ className: 'wp-block-pulsar-tabs__items' }, {
+	const innerBlocksProps = useInnerBlocksProps({ className: `wp-block-pulsar-tabs__items ${vertical ? 'vertical' : ''}`}, {
 		orientation: "vertical",
 		allowedBlocks: ALLOWED_BLOCKS,
 		template: TEMPLATE,
