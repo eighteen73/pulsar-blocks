@@ -12,16 +12,14 @@
 $settings = $attributes['advancedCarouselSettings'] ?? $attributes['carouselSettings'];
 ?>
 
-<div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
-	<section
-		class="splide"
-		data-splide="<?php echo esc_html( wp_json_encode( $settings, JSON_PRETTY_PRINT ) ); ?>"
-		aria-label="<?php esc_html_e( 'Carousel' ); ?>"
-	>
-		<div class="splide__track">
-			<ul class="splide__list">
-				<?php echo $content; // phpcs:disable ?>
-			</ul>
-		</div>
-	</section>
-</div>
+<section
+	data-splide="<?php echo esc_html( wp_json_encode( $settings, JSON_PRETTY_PRINT ) ); ?>"
+	<?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => 'splide' ] ) ); ?>
+	aria-label="<?php esc_html_e( 'Carousel' ); ?>"
+>
+	<div class="splide__track">
+		<ul class="splide__list">
+			<?php echo $content; // phpcs:disable ?>
+		</ul>
+	</div>
+</section>
