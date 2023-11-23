@@ -55,6 +55,7 @@ export default function BreakpointControls({
 						isShiftStepEnabled={true}
 						onChange={(value) => handleChange('perPage', value)}
 						shiftStep={1}
+						min={1}
 						value={getValue('perPage')}
 					/>
 
@@ -63,6 +64,7 @@ export default function BreakpointControls({
 						isShiftStepEnabled={true}
 						onChange={(value) => handleChange('perMove', value)}
 						shiftStep={1}
+						min={1}
 						value={getValue('perMove')}
 					/>
 
@@ -70,6 +72,7 @@ export default function BreakpointControls({
 						label={__('Gap')}
 						onChange={(value) => handleChange('gap', value)}
 						value={getValue('gap')}
+						min={0}
 					/>
 				</>
 			)}
