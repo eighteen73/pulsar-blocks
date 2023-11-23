@@ -21,6 +21,8 @@ export default function GlobalControls({
 			<ToggleGroupControl
 				label={__('Type')}
 				onChange={(value) => {
+					const isFade = value === 'fade';
+
 					onChange({
 						carouselSettings: {
 							...carouselSettings,

@@ -42,7 +42,7 @@ const CarouselSlideInspectorControls = (props) => {
 	} = props;
 	return (
 		<InspectorControls>
-			<PanelBody title={__('Background settings')}>
+			<PanelBody title={__('Slide settings')}>
 				<ToggleGroupControl
 					label={__('Background type')}
 					onChange={onBackgroundTypeChange}
@@ -121,7 +121,7 @@ const CarouselSlideInspectorControls = (props) => {
 							</MediaUploadCheck>
 						</BaseControl>
 
-						<BaseControl label={'Overlay color'}>
+						<BaseControl label={__('Overlay color')}>
 							<ColorPalette
 								colors={palette}
 								disableCustomColors={true}
@@ -145,7 +145,7 @@ const CarouselSlideInspectorControls = (props) => {
 				)}
 
 				{backgroundType === 'color' && (
-					<BaseControl label={'Background color'}>
+					<BaseControl label={__('Background color')}>
 						<ColorPalette
 							colors={palette}
 							disableCustomColors={true}

@@ -53,10 +53,6 @@
     },
     "template": {
       "type": "array"
-    },
-    "hasTrack": {
-      "type": "boolean",
-      "default": true
     }
   }
 }

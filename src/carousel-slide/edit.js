@@ -9,7 +9,6 @@ import {
 } from '@wordpress/block-editor';
 import { Placeholder } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { useRef, forwardRef } from '@wordpress/element';
 import { SplideSlide } from './components/splide-slide';
 
 /**
@@ -30,10 +29,6 @@ import './editor.scss';
  * The save function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
- * @param  root0
- * @param  root0.attributes
- * @param  root0.setAttributes
- * @param  root0.clientId
  * @param  props
  * @return {WPElement} Element to render.
  */
