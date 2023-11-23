@@ -3,7 +3,7 @@
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { useRef, useState, useEffect, useCallback } from '@wordpress/element';
-import { useSelect, dispatch, select, subscribe } from '@wordpress/data';
+import { useSelect, select, subscribe } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -16,12 +16,9 @@ import Splide from '@splidejs/splide';
  * Block dependencies
  */
 import CarouselInspectorControls from './components/inspector-controls';
-import ButtonBlockAppender from '../utils/button-block-appender';
 import SingleBlockTypeAppender from '../utils/single-block-type-appender';
 
 import './editor.scss';
-import { edit } from '@wordpress/icons';
-
 /**
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
@@ -68,6 +65,7 @@ export default function Edit({
 	);
 
 	const [carousel, setCarousel] = useState({});
+	const [slides, setSlides] = useState({});
 
 	/**
 	 * Refresh the carousel.
@@ -138,11 +136,15 @@ export default function Edit({
 			/>
 
 			<div {...innerBlocksProps}>
-				<div className="splide" ref={ref}>
+				<section
+					className="splide"
+					ref={ref}
+					aria-label={__('Carousel')}
+				>
 					<div className="splide__track">
 						<ul className="splide__list">{children}</ul>
 					</div>
-				</div>
+				</section>
 
 				<SingleBlockTypeAppender
 					onClickAfter={() => {
@@ -150,7 +152,6 @@ export default function Edit({
 						carousel.go(innerBlocks.length);
 					}}
 					variant="secondary"
-					iconPosition="left"
 					text={__('Add slide')}
 					allowedBlock="pulsar/carousel-slide"
 					style={{ width: '100%', justifyContent: 'center' }}
