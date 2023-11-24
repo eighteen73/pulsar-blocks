@@ -108,8 +108,6 @@ export default function Edit({
 				drag: false,
 			};
 
-			console.log(editorSettings);
-
 			const splide = new Splide(ref.current, editorSettings);
 			setCarousel(splide.mount());
 		}
