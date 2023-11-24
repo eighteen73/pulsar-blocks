@@ -84,12 +84,6 @@ export default function Edit({
 	 * @param {Object} settings
 	 * @return {Object} Object of settings
 	 */
-	const editorSafeSettings = (settings) => {
-		// settings.autoplay = false;
-		// settings.drag = false;
-
-		return settings;
-	};
 
 	const refreshCarouselCallback = useCallback(() => {
 		refreshCarousel();
@@ -98,11 +92,19 @@ export default function Edit({
 	// Set up the carousel.
 	useEffect(() => {
 		if (ref.current) {
-			const settings = editorSafeSettings(
-				advancedCarouselSettings ?? carouselSettings
-			);
+			// Create a local variable to store modified settings
+			// Some settings cause issues in the editor, so we need to modify them.
+			let editorSettings = {
+				...(advancedCarouselSettings ?? carouselSettings),
+			};
 
-			const splide = new Splide(ref.current, settings);
+			editorSettings = {
+				...editorSettings,
+				autoplay: false,
+				drag: false,
+			};
+
+			const splide = new Splide(ref.current, editorSettings);
 			setCarousel(splide.mount());
 		}
 

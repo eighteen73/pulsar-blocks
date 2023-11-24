@@ -35,9 +35,9 @@ export default function AdvancedControls({
 				advancedCarouselSettings: parsedJson,
 			});
 
-			// Format the JSON value for better readability in the textarea
-			setTempInputValue(JSON.stringify(parsedJson, null, 2));
-		}, 500);
+			// @TODO - work out how to allow the textarea to be updated, without messing up user input if they are typing.
+			// setTempInputValue(JSON.stringify(parsedJson, null, 2));
+		}, 250);
 	};
 
 	const jsonText = jsonValid ? __('JSON is valid') : __('JSON is invalid');
