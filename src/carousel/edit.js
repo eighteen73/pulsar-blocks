@@ -85,8 +85,8 @@ export default function Edit({
 	 * @return {Object} Object of settings
 	 */
 	const editorSafeSettings = (settings) => {
-		settings.autoplay = false;
-		settings.drag = false;
+		// settings.autoplay = false;
+		// settings.drag = false;
 
 		return settings;
 	};
