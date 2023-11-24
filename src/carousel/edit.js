@@ -67,15 +67,13 @@ export default function Edit({
 	 * @returns {boolean} Has an empty slide
 	 */
 	const hasEmptySlide = () => {
-		const slides = select('core/block-editor').getBlock(clientId).innerBlocks ?? [];
-
 		// Empty carousel
-		if (slides.length === 0) {
+		if (innerBlocks.length === 0) {
 			return false;
 		}
 
 		// Truly empty slide
-		const lastSlide = slides[slides.length - 1];
+		const lastSlide = innerBlocks[innerBlocks.length - 1];
 		if (lastSlide.innerBlocks.length === 0) {
 			return true;
 		}
@@ -89,7 +87,7 @@ export default function Edit({
 	};
 
 	const innerBlocks = useSelect(
-		(select) => select('core/block-editor').getBlock(clientId).innerBlocks ?? []
+		(select) => select('core/block-editor').getBlock(clientId) ? select('core/block-editor').getBlock(clientId).innerBlocks : []
 	);
 
 	const [carousel, setCarousel] = useState({});
@@ -142,11 +140,10 @@ export default function Edit({
 
 	// Watch for a change in child blocks and refresh.
 	useEffect(() => {
-		const { getBlock } = select('core/block-editor');
-		let previousBlockIds = allBlockIds(getBlock(clientId).innerBlocks) ?? [];
+		let previousBlockIds = allBlockIds(innerBlocks);
 
 		subscribe(() => {
-			const newBlockIds = allBlockIds(getBlock(clientId).innerBlocks) ?? [];
+			const newBlockIds = allBlockIds(innerBlocks);
 			if (newBlockIds !== previousBlockIds) {
 				previousBlockIds = newBlockIds;
 				refreshCarouselCallback();
