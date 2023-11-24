@@ -1,6 +1,8 @@
-import { TextareaControl, Notice } from '@wordpress/components';
+import { TextareaControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
+
+import './advanced-controls.scss';
 
 export default function AdvancedControls({
 	onChange,
@@ -8,7 +10,9 @@ export default function AdvancedControls({
 }) {
 	const [jsonValid, setJsonValid] = useState(null);
 	const [tempInputValue, setTempInputValue] = useState(
-		JSON.stringify(advancedCarouselSettings, null, 2)
+		advancedCarouselSettings
+			? JSON.stringify(advancedCarouselSettings, null, 2)
+			: ''
 	);
 
 	const handleInputChange = (value) => {
@@ -17,7 +21,7 @@ export default function AdvancedControls({
 			if (value.trim() === '') {
 				setJsonValid(true);
 				onChange({
-					advancedCarouselSettings: value,
+					advancedCarouselSettings: null,
 				});
 			} else {
 				const parsedJson = JSON.parse(value);
@@ -40,40 +44,35 @@ export default function AdvancedControls({
 		}, 250);
 	};
 
-	const jsonText = jsonValid ? __('JSON is valid') : __('JSON is invalid');
-
 	useEffect(() => {
 		handleInputChange(tempInputValue);
 	}, []);
 
-	const help = (
-		<>
-			{advancedCarouselSettings ? (
-				<Notice
-					isDismissible={false}
-					status={jsonValid ? 'success' : 'error'}
-				>
-					<p style={{ color: '#1e1e1e', margin: 0 }}>{jsonText}</p>
-				</Notice>
-			) : (
-				<p style={{ margin: 0 }}>
-					{__(
-						'Override the carousel settings with a custom Splide JSON object.'
-					)}
-				</p>
-			)}
-		</>
-	);
+	const classNames = () => {
+		if (tempInputValue) {
+			return jsonValid ? 'is-valid' : 'is-invalid';
+		}
+
+		return null;
+	};
+
+	const jsonText = jsonValid ? __('JSON is valid') : __('JSON is invalid');
+
+	const helpText = tempInputValue
+		? jsonText
+		: __(
+				'Override the carousel settings with a custom Splide JSON object.'
+		  );
 
 	return (
 		<>
 			<TextareaControl
+				help={helpText}
 				label={__('Carousel Settings')}
-				help={help}
 				rows={12}
 				onChange={(value) => handleInputChange(value)}
 				value={tempInputValue}
-				className={!jsonValid ? 'is-invalid-input' : ''}
+				className={classNames()}
 			/>
 		</>
 	);
