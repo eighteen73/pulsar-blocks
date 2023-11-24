@@ -15,7 +15,6 @@ export default function AdvancedControls({
 		setTempInputValue(value);
 		try {
 			if (value.trim() === '') {
-				// If input is empty, set advancedCarouselSettings to an empty object
 				setJsonValid(true);
 				onChange({
 					advancedCarouselSettings: value,
