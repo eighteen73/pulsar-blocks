@@ -53,7 +53,9 @@ export default function BreakpointControls({
 					<NumberControl
 						label={__('Per page')}
 						isShiftStepEnabled={true}
-						onChange={(value) => handleChange('perPage', value)}
+						onChange={(value) =>
+							handleChange('perPage', parseInt(value))
+						}
 						shiftStep={1}
 						min={1}
 						value={getValue('perPage')}
@@ -62,7 +64,9 @@ export default function BreakpointControls({
 					<NumberControl
 						label={__('Per move')}
 						isShiftStepEnabled={true}
-						onChange={(value) => handleChange('perMove', value)}
+						onChange={(value) =>
+							handleChange('perMove', parseInt(value))
+						}
 						shiftStep={1}
 						min={1}
 						value={getValue('perMove')}

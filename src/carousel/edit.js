@@ -100,9 +100,15 @@ export default function Edit({
 
 			editorSettings = {
 				...editorSettings,
+				type:
+					editorSettings.type === 'loop'
+						? 'slide'
+						: editorSettings.type,
 				autoplay: false,
 				drag: false,
 			};
+
+			console.log(editorSettings);
 
 			const splide = new Splide(ref.current, editorSettings);
 			setCarousel(splide.mount());
