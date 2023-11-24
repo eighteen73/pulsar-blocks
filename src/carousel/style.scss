@@ -1,9 +1,14 @@
 @import "@splidejs/splide/dist/css/splide-core.min";
 
-/**
- * Opinionated block styles can go here.
- */
 .wp-block-pulsar-carousel {
+	--accent-color: var(--wp--custom--pulsar--carousel--accent-color, #1f1f1f);
+	--transition-duration: var(--wp--custom--pulsar--carousel--transition-duration, 250ms);
+	--arrow-color: var(--wp--custom--pulsar--carousel--arrow-color, #fff);
+	--arrow-color-active: var(--wp--custom--pulsar--carousel--arrow-color-active, var(--accent-color));
+	--pagination-color: var(--wp--custom--pulsar--carousel--pagination-color, #fff);
+	--pagination-color-active: var(--wp--custom--pulsar--carousel--pagination-color-active, var(--accent-color));
+	--pagination-offset: var(--wp--custom--pulsar--carousel--pagination-offset, 20px);
+
 	.splide__arrows {
 		display: flex;
 		justify-content: space-between;
@@ -18,29 +23,63 @@
 	}
 
 	.splide__arrow {
+		background-color: unset;
+		border: unset;
+		box-shadow: unset;
+		color: var(--arrow-color);
+		cursor: pointer;
 		pointer-events: all;
-	}
+		transition: color var(--transition-duration) linear;
 
-	.splide__arrow--prev {
-		transform: rotate(180deg);
+		&:hover {
+			color: var(--arrow-color-active);
+		}
+
+		&:where(:disabled) {
+			opacity: 0.3;
+			pointer-events: none;
+		}
+
+		svg {
+			fill: currentcolor;
+		}
+
+		&--prev {
+			transform: rotate(180deg);
+		}
 	}
 
 	.splide__pagination {
-		bottom: 10px;
+		align-items: center;
+		bottom: var(--pagination-offset);
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
 		left: 0;
+		margin: 0;
 		padding: 0;
+		pointer-events: none;
 		position: absolute;
 		right: 0;
 
 		button {
-			background-color: black;
+			background: var(--pagination-color);
 			border: 0;
-			border-radius: 9999px;
-			box-shadow: none;
+			border-radius: 50%;
 			cursor: pointer;
+			display: inline-block;
 			height: 10px;
-			margin: 0 2px;
+			margin: 3px;
+			padding: 0;
+			position: relative;
+			transition: background-color var(--transition-duration) linear, transform var(--transition-duration) linear;
 			width: 10px;
+
+			&:where(.is-active) {
+				background: var(--pagination-color-active);
+				transform: scale(1.4);
+				z-index: 1;
+			}
 		}
 	}
 }
