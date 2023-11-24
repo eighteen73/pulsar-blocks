@@ -102,7 +102,7 @@ export default function GlobalControls({
 					onChange({
 						carouselSettings: {
 							...carouselSettings,
-							autoplay: parseInt(value),
+							autoplay: value,
 						},
 					});
 				}}
@@ -118,7 +118,7 @@ export default function GlobalControls({
 						onChange({
 							carouselSettings: {
 								...carouselSettings,
-								interval: value,
+								interval: parseInt(value),
 							},
 						});
 					}}
