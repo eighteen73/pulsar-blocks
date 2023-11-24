@@ -68,16 +68,6 @@ export default function Edit({
 	const [slides, setSlides] = useState({});
 
 	/**
-	 * Refresh the carousel.
-	 */
-	const refreshCarousel = () => {
-		if (Object.keys(carousel).length !== 0) {
-			carousel.destroy(false);
-			carousel.mount();
-		}
-	};
-
-	/**
 	 * Set specific Splide options that cause issues in the editor.
 	 * This only affects the editor.
 	 *
@@ -92,8 +82,13 @@ export default function Edit({
 	};
 
 	const refreshCarouselCallback = useCallback(() => {
-		refreshCarousel();
-	}, []);
+		if (Object.keys(carousel).length === 0) {
+			return;
+		}
+
+		// Refresh at end of the current thread (giving DOM a change to update beforehand)
+		setTimeout(() => { carousel.refresh() }, 0);
+	}, [carousel]);
 
 	// Set up the carousel.
 	useEffect(() => {
@@ -114,18 +109,24 @@ export default function Edit({
 	// Watch for a change in child blocks and refresh.
 	useEffect(() => {
 		const { getBlock } = select('core/block-editor');
-		let blockList = getBlock(clientId).innerBlocks;
+		let previousBlockIds = allBlockIds(getBlock(clientId).innerBlocks);
 
 		subscribe(() => {
-			const newBlockList = getBlock(clientId).innerBlocks;
-			const blockListChanged = newBlockList !== blockList;
-			blockList = newBlockList;
-
-			if (blockListChanged) {
+			const newBlockIds = allBlockIds(getBlock(clientId).innerBlocks);
+			if (newBlockIds !== previousBlockIds) {
+				previousBlockIds = newBlockIds;
 				refreshCarouselCallback();
 			}
 		});
 	});
+
+	const allBlockIds = (blocks) => {
+		let allBlockIds = '';
+		for (const block of blocks) {
+			allBlockIds += block.clientId
+		};
+		return allBlockIds;
+	};
 
 	return (
 		<>
@@ -148,7 +149,7 @@ export default function Edit({
 
 				<SingleBlockTypeAppender
 					onClickAfter={() => {
-						refreshCarousel();
+						refreshCarouselCallback();
 						carousel.go(innerBlocks.length);
 					}}
 					variant="secondary"
