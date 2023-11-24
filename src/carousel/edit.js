@@ -60,8 +60,36 @@ export default function Edit({
 		select('core/block-editor').hasSelectedInnerBlock(clientId, false)
 	);
 
+	/**
+	 * Detects if the carousel already ends with an empty slide so only one may be
+	 * added at a time.
+	 * 
+	 * @returns {boolean} Has an empty slide
+	 */
+	const hasEmptySlide = () => {
+		const slides = select('core/block-editor').getBlock(clientId).innerBlocks ?? [];
+
+		// Empty carousel
+		if (slides.length === 0) {
+			return false;
+		}
+
+		// Truly empty slide
+		const lastSlide = slides[slides.length - 1];
+		if (lastSlide.innerBlocks.length === 0) {
+			return true;
+		}
+
+		// Empty slide with no content yet
+		if (lastSlide.innerBlocks.length === 1 && lastSlide.innerBlocks[0].attributes.content === '') {
+			return true;
+		}
+
+		return false;
+	};
+
 	const innerBlocks = useSelect(
-		(select) => select('core/block-editor').getBlock(clientId).innerBlocks
+		(select) => select('core/block-editor').getBlock(clientId).innerBlocks ?? []
 	);
 
 	const [carousel, setCarousel] = useState({});
@@ -81,7 +109,7 @@ export default function Edit({
 		}
 
 		// Refresh at end of the current thread (giving DOM a change to update beforehand)
-		setTimeout(() => { carousel.refresh() }, 0);
+		setTimeout(() => {  carousel.refresh() }, 0);
 	}, [carousel]);
 
 	// Set up the carousel.
@@ -115,10 +143,10 @@ export default function Edit({
 	// Watch for a change in child blocks and refresh.
 	useEffect(() => {
 		const { getBlock } = select('core/block-editor');
-		let previousBlockIds = allBlockIds(getBlock(clientId).innerBlocks);
+		let previousBlockIds = allBlockIds(getBlock(clientId).innerBlocks) ?? [];
 
 		subscribe(() => {
-			const newBlockIds = allBlockIds(getBlock(clientId).innerBlocks);
+			const newBlockIds = allBlockIds(getBlock(clientId).innerBlocks) ?? [];
 			if (newBlockIds !== previousBlockIds) {
 				previousBlockIds = newBlockIds;
 				refreshCarouselCallback();
@@ -164,6 +192,7 @@ export default function Edit({
 					style={{ width: '100%', justifyContent: 'center' }}
 					clientId={clientId}
 					isSelected={isSelected || isInnerBlockSelected}
+					disabled={hasEmptySlide()}
 				/>
 			</div>
 		</>
