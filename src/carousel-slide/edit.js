@@ -9,7 +9,7 @@ import {
 } from '@wordpress/block-editor';
 import { Placeholder } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { SplideSlide } from './components/splide-slide';
+import { SplideSlide } from '../utils/splide-slide';
 
 /**
  * Third party dependencies

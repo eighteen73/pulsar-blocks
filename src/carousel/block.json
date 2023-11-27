@@ -45,6 +45,14 @@
     "advancedCarouselSettings": {
       "type": "object"
     },
+    "ariaLabel": {
+      "type": "string",
+      "default": "Carousel"
+    },
+    "hasList": {
+      "type": "boolean",
+      "default": true
+    },
     "allowedBlocks": {
       "type": "array",
       "default": [

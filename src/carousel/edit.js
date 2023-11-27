@@ -9,7 +9,6 @@ import { __ } from '@wordpress/i18n';
 /**
  * Third party dependencies
  */
-// import { Splide } from '@splidejs/react-splide';
 import Splide from '@splidejs/splide';
 
 /**
@@ -17,6 +16,9 @@ import Splide from '@splidejs/splide';
  */
 import CarouselInspectorControls from './components/inspector-controls';
 import SingleBlockTypeAppender from '../utils/single-block-type-appender';
+import SplideContainer from '../utils/splide-container';
+import SplideTrack from '../utils/splide-track';
+import SplideList from '../utils/splide-list';
 
 import './editor.scss';
 /**
@@ -39,6 +41,8 @@ export default function Edit({
 	const {
 		carouselSettings,
 		advancedCarouselSettings,
+		ariaLabel,
+		hasList,
 		allowedBlocks,
 		template,
 	} = attributes;
@@ -166,20 +170,19 @@ export default function Edit({
 		<>
 			<CarouselInspectorControls
 				onChange={setAttributes}
-				carouselSettings={carouselSettings}
-				advancedCarouselSettings={advancedCarouselSettings}
+				attributes={attributes}
 			/>
 
 			<div {...innerBlocksProps}>
-				<section
-					className="splide"
-					ref={ref}
-					aria-label={__('Carousel')}
-				>
-					<div className="splide__track">
-						<ul className="splide__list">{children}</ul>
-					</div>
-				</section>
+				<SplideContainer ref={ref} ariaLabel={__('Carousel')}>
+					<SplideTrack>
+						{hasList ? (
+							<SplideList>{children}</SplideList>
+						) : (
+							children
+						)}
+					</SplideTrack>
+				</SplideContainer>
 
 				<SingleBlockTypeAppender
 					onClickAfter={() => {

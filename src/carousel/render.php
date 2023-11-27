@@ -9,17 +9,27 @@
  * @package Pulsar
  */
 
-$settings = $attributes['advancedCarouselSettings'] ?? $attributes['carouselSettings'];
+$settings   = $attributes['advancedCarouselSettings'] ?? $attributes['carouselSettings'];
+$has_list   = $attributes['hasList'] ?? false;
+$aria_label = $attributes['ariaLabel'] ?? __( 'Carousel', 'pulsar' );
 ?>
 
-<section
-	data-splide="<?php echo esc_html( wp_json_encode( $settings, JSON_PRETTY_PRINT ) ); ?>"
-	<?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => 'splide' ] ) ); ?>
-	aria-label="<?php esc_html_e( 'Carousel' ); ?>"
->
-	<div class="splide__track">
-		<ul class="splide__list">
-			<?php echo $content; // phpcs:disable ?>
-		</ul>
-	</div>
-</section>
+<div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
+	<section
+		class="splide"
+		data-splide="<?php echo esc_html( wp_json_encode( $settings, JSON_PRETTY_PRINT ) ); ?>"
+		aria-label="<?php echo esc_html( $aria_label ); ?>"
+	>
+		<div class="splide__track">
+			<?php if ( $has_list ) : ?>
+				<ul class="splide__list">
+			<?php endif; ?>
+
+				<?php echo $content; // phpcs:disable ?>
+
+			<?php if ( $has_list ) : ?>
+				</ul>
+			<?php endif; ?>
+		</div>
+	</section>
+</div>

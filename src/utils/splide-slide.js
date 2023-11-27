@@ -14,3 +14,5 @@ export const SplideSlide = forwardRef(
 		);
 	}
 );
+
+export default SplideSlide;
