@@ -3,7 +3,7 @@
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { useRef, useState, useEffect, useCallback } from '@wordpress/element';
-import { useSelect, subscribe } from '@wordpress/data';
+import { useSelect, select, subscribe } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -102,19 +102,6 @@ export default function Edit({
 	);
 
 	/**
-	 *
-	 * @param {Array} blocks An array of inner blocks
-	 * @return {Array} An array of block IDs
-	 */
-	const allBlockIds = (blocks) => {
-		let blockIds = '';
-		for (const block of blocks) {
-			blockIds += block.clientId;
-		}
-		return blockIds;
-	};
-
-	/**
 	 * Refresh the carousel.
 	 */
 	const refreshCarouselCallback = useCallback(() => {
@@ -161,12 +148,15 @@ export default function Edit({
 
 	// Watch for a change in child blocks and refresh.
 	useEffect(() => {
-		let previousBlockIds = allBlockIds(innerBlocks);
+		const { getBlock } = select('core/block-editor');
+		let blockList = getBlock(clientId).innerBlocks;
 
 		subscribe(() => {
-			const newBlockIds = allBlockIds(innerBlocks);
-			if (newBlockIds !== previousBlockIds) {
-				previousBlockIds = newBlockIds;
+			const newBlockList = getBlock(clientId).innerBlocks;
+			const blockListChanged = newBlockList !== blockList;
+			blockList = newBlockList;
+
+			if (blockListChanged) {
 				refreshCarouselCallback();
 			}
 		});
