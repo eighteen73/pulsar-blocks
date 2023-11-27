@@ -16,9 +16,9 @@ import Splide from '@splidejs/splide';
  */
 import CarouselInspectorControls from './components/inspector-controls';
 import SingleBlockTypeAppender from '../utils/single-block-type-appender';
-import SplideContainer from '../utils/splide-container';
-import SplideTrack from '../utils/splide-track';
-import SplideList from '../utils/splide-list';
+import Carousel from '../utils/carousel';
+import CarouselTrack from '../utils/carousel-track';
+import CarouselList from '../utils/carousel-list';
 
 import './editor.scss';
 /**
@@ -120,7 +120,7 @@ export default function Edit({
 	}, [carousel]);
 
 	/**
-	 * Initialize the Splide carousel.
+	 * Initialize the carousel.
 	 * Also set editor settings to avoid issues.
 	 */
 	useEffect(() => {
@@ -174,15 +174,15 @@ export default function Edit({
 			/>
 
 			<div {...innerBlocksProps}>
-				<SplideContainer ref={ref} ariaLabel={__('Carousel')}>
-					<SplideTrack>
+				<Carousel ref={ref} ariaLabel={ariaLabel}>
+					<CarouselTrack>
 						{hasList ? (
-							<SplideList>{children}</SplideList>
+							<CarouselList>{children}</CarouselList>
 						) : (
 							children
 						)}
-					</SplideTrack>
-				</SplideContainer>
+					</CarouselTrack>
+				</Carousel>
 
 				<SingleBlockTypeAppender
 					onClickAfter={() => {

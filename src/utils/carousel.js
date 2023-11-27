@@ -1,7 +1,7 @@
 import { forwardRef } from '@wordpress/element';
 import classnames from 'classnames';
 
-export const SplideContainer = forwardRef(
+export const Carousel = forwardRef(
 	({ children, className, ariaLabel, ...props }, ref) => {
 		return (
 			<section
@@ -16,4 +16,4 @@ export const SplideContainer = forwardRef(
 	}
 );
 
-export default SplideContainer;
+export default Carousel;

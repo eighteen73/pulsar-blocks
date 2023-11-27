@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 
-export const SplideTrack = ({ children, className, ...props }) => {
+export const CarouselTrack = ({ children, className, ...props }) => {
 	return (
 		<div className={classnames('splide__track', className)} {...props}>
 			{children}
@@ -8,4 +8,4 @@ export const SplideTrack = ({ children, className, ...props }) => {
 	);
 };
 
-export default SplideTrack;
+export default CarouselTrack;

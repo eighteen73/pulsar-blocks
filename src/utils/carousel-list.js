@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 
-export const SplideList = ({ children, className, ...props }) => {
+export const CarouselList = ({ children, className, ...props }) => {
 	return (
 		<ul className={classnames('splide__list', className)} {...props}>
 			{children}
@@ -8,4 +8,4 @@ export const SplideList = ({ children, className, ...props }) => {
 	);
 };
 
-export default SplideList;
+export default CarouselList;

@@ -1,7 +1,7 @@
 import { forwardRef } from '@wordpress/element';
 import classnames from 'classnames';
 
-export const SplideSlide = forwardRef(
+export const CarouselSlide = forwardRef(
 	({ children, className, ...props }, ref) => {
 		return (
 			<li
@@ -15,4 +15,4 @@ export const SplideSlide = forwardRef(
 	}
 );
 
-export default SplideSlide;
+export default CarouselSlide;
