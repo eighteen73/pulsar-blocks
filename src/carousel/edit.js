@@ -3,7 +3,7 @@
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { useRef, useState, useEffect, useCallback } from '@wordpress/element';
-import { useSelect, select, subscribe } from '@wordpress/data';
+import { useSelect, subscribe } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -52,6 +52,8 @@ export default function Edit({
 		renderAppender: false,
 	});
 
+	const [carousel, setCarousel] = useState({});
+
 	const isInnerBlockSelected = useSelect((select) =>
 		select('core/block-editor').hasSelectedInnerBlock(clientId, true)
 	);
@@ -63,8 +65,8 @@ export default function Edit({
 	/**
 	 * Detects if the carousel already ends with an empty slide so only one may be
 	 * added at a time.
-	 * 
-	 * @returns {boolean} Has an empty slide
+	 *
+	 * @return {boolean} Has an empty slide
 	 */
 	const hasEmptySlide = () => {
 		// Empty carousel
@@ -79,38 +81,57 @@ export default function Edit({
 		}
 
 		// Empty slide with no content yet
-		if (lastSlide.innerBlocks.length === 1 && lastSlide.innerBlocks[0].attributes.content === '') {
+		if (
+			lastSlide.innerBlocks.length === 1 &&
+			lastSlide.innerBlocks[0].attributes.content === ''
+		) {
 			return true;
 		}
 
 		return false;
 	};
 
-	const innerBlocks = useSelect(
-		(select) => select('core/block-editor').getBlock(clientId) ? select('core/block-editor').getBlock(clientId).innerBlocks : []
+	/**
+	 * Get the inner blocks of the current block.
+	 * This is used to watch for changes in the inner blocks.
+	 */
+	const innerBlocks = useSelect((select) =>
+		select('core/block-editor').getBlock(clientId)
+			? select('core/block-editor').getBlock(clientId).innerBlocks
+			: []
 	);
 
-	const [carousel, setCarousel] = useState({});
-	const [slides, setSlides] = useState({});
+	/**
+	 *
+	 * @param {Array} blocks An array of inner blocks
+	 * @return {Array} An array of block IDs
+	 */
+	const allBlockIds = (blocks) => {
+		let blockIds = '';
+		for (const block of blocks) {
+			blockIds += block.clientId;
+		}
+		return blockIds;
+	};
 
 	/**
-	 * Set specific Splide options that cause issues in the editor.
-	 * This only affects the editor.
-	 *
-	 * @param {Object} settings
-	 * @return {Object} Object of settings
+	 * Refresh the carousel.
 	 */
-
 	const refreshCarouselCallback = useCallback(() => {
 		if (Object.keys(carousel).length === 0) {
 			return;
 		}
 
 		// Refresh at end of the current thread (giving DOM a change to update beforehand)
-		setTimeout(() => {  carousel.refresh() }, 0);
+		setTimeout(() => {
+			carousel.refresh();
+		}, 0);
 	}, [carousel]);
 
-	// Set up the carousel.
+	/**
+	 * Initialize the Splide carousel.
+	 * Also set editor settings to avoid issues.
+	 */
 	useEffect(() => {
 		if (ref.current) {
 			// Create a local variable to store modified settings
@@ -151,14 +172,6 @@ export default function Edit({
 		});
 	});
 
-	const allBlockIds = (blocks) => {
-		let allBlockIds = '';
-		for (const block of blocks) {
-			allBlockIds += block.clientId
-		};
-		return allBlockIds;
-	};
-
 	return (
 		<>
 			<CarouselInspectorControls
@@ -188,7 +201,9 @@ export default function Edit({
 					allowedBlock="pulsar/carousel-slide"
 					style={{ width: '100%', justifyContent: 'center' }}
 					clientId={clientId}
-					isSelected={isSelected || isInnerBlockSelected}
+					isSelected={
+						isSelected || isInnerBlockSelected || isSlideSelected
+					}
 					disabled={hasEmptySlide()}
 				/>
 			</div>
