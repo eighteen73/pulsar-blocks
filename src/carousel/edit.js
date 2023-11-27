@@ -153,10 +153,10 @@ export default function Edit({
 	// Watch for a change in child blocks and refresh.
 	useEffect(() => {
 		const { getBlock } = select('core/block-editor');
-		let blockList = getBlock(clientId).innerBlocks;
+		let blockList = getBlock(clientId) ? getBlock(clientId).innerBlocks : [];
 
 		subscribe(() => {
-			const newBlockList = getBlock(clientId).innerBlocks;
+			const newBlockList = getBlock(clientId) ? getBlock(clientId).innerBlocks : [];
 			const blockListChanged = newBlockList !== blockList;
 			blockList = newBlockList;
 
