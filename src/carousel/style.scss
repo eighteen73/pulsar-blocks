@@ -83,3 +83,21 @@
 		}
 	}
 }
+
+.embla {
+	--slide-width: 50%;
+	overflow: hidden;
+}
+
+.embla__container {
+	backface-visibility: hidden;
+	display: flex;
+	margin-left: calc(var(--slide-spacing) * -1);
+	touch-action: pan-y;
+}
+
+.embla__slide {
+	flex: 0 0 var(--slide-width);
+	min-width: 0;
+	position: relative;
+}

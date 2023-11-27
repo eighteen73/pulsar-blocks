@@ -2,9 +2,9 @@ import classnames from 'classnames';
 
 export const CarouselList = ({ children, className, ...props }) => {
 	return (
-		<ul className={classnames('splide__list', className)} {...props}>
+		<div className={classnames('embla__container', className)} {...props}>
 			{children}
-		</ul>
+		</div>
 	);
 };
 

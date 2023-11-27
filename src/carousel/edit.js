@@ -10,6 +10,7 @@ import { __ } from '@wordpress/i18n';
  * Third party dependencies
  */
 import Splide from '@splidejs/splide';
+import EmblaCarousel from 'embla-carousel';
 
 /**
  * Block dependencies
@@ -67,59 +68,6 @@ export default function Edit({
 	);
 
 	/**
-	 * Detects if the carousel already ends with an empty slide so only one may be
-	 * added at a time.
-	 *
-	 * @return {boolean} Has an empty slide
-	 */
-	const hasEmptySlide = () => {
-		// Empty carousel
-		if (innerBlocks.length === 0) {
-			return false;
-		}
-
-		// Truly empty slide
-		const lastSlide = innerBlocks[innerBlocks.length - 1];
-		if (lastSlide.innerBlocks.length === 0) {
-			return true;
-		}
-
-		// Empty slide with no content yet
-		if (
-			lastSlide.innerBlocks.length === 1 &&
-			lastSlide.innerBlocks[0].attributes.content === ''
-		) {
-			return true;
-		}
-
-		return false;
-	};
-
-	/**
-	 * Get the inner blocks of the current block.
-	 * This is used to watch for changes in the inner blocks.
-	 */
-	const innerBlocks = useSelect((select) =>
-		select('core/block-editor').getBlock(clientId)
-			? select('core/block-editor').getBlock(clientId).innerBlocks
-			: []
-	);
-
-	/**
-	 * Refresh the carousel.
-	 */
-	const refreshCarouselCallback = useCallback(() => {
-		if (Object.keys(carousel).length === 0) {
-			return;
-		}
-
-		// Refresh at end of the current thread (giving DOM a change to update beforehand)
-		setTimeout(() => {
-			carousel.refresh();
-		}, 0);
-	}, [carousel]);
-
-	/**
 	 * Initialize the carousel.
 	 * Also set editor settings to avoid issues.
 	 */
@@ -141,30 +89,27 @@ export default function Edit({
 				drag: false,
 			};
 
-			const splide = new Splide(ref.current, editorSettings);
-			setCarousel(splide.mount());
+			const rootNode = ref.current;
+			const viewportNode = rootNode.querySelector('.embla__viewport');
+			const prevButtonNode = rootNode.querySelector('.embla__prev');
+			const nextButtonNode = rootNode.querySelector('.embla__next');
+
+			const embla = EmblaCarousel(viewportNode, {
+				align: 'start',
+				slidesToScroll: 1,
+				containScroll: 'trimSnaps',
+			});
+
+			prevButtonNode.addEventListener('click', embla.scrollPrev, false);
+			nextButtonNode.addEventListener('click', embla.scrollNext, false);
+
+			setCarousel(embla);
 		}
 
 		return function cleanup() {
 			setCarousel(null);
 		};
 	}, [carouselSettings, advancedCarouselSettings]);
-
-	// Watch for a change in child blocks and refresh.
-	useEffect(() => {
-		const { getBlock } = select('core/block-editor');
-		let blockList = getBlock(clientId) ? getBlock(clientId).innerBlocks : [];
-
-		subscribe(() => {
-			const newBlockList = getBlock(clientId) ? getBlock(clientId).innerBlocks : [];
-			const blockListChanged = newBlockList !== blockList;
-			blockList = newBlockList;
-
-			if (blockListChanged) {
-				refreshCarouselCallback();
-			}
-		});
-	});
 
 	return (
 		<>
@@ -182,13 +127,12 @@ export default function Edit({
 							children
 						)}
 					</CarouselTrack>
+					<button className="embla__prev">Prev</button>
+					<button className="embla__next">Next</button>
 				</Carousel>
 
 				<SingleBlockTypeAppender
-					onClickAfter={() => {
-						refreshCarouselCallback();
-						carousel.go(innerBlocks.length);
-					}}
+					onClickAfter={() => {}}
 					variant="secondary"
 					text={__('Add slide')}
 					allowedBlock="pulsar/carousel-slide"
@@ -197,7 +141,7 @@ export default function Edit({
 					isSelected={
 						isSelected || isInnerBlockSelected || isSlideSelected
 					}
-					disabled={hasEmptySlide()}
+					disabled={false}
 				/>
 			</div>
 		</>

@@ -5,7 +5,7 @@ export const Carousel = forwardRef(
 	({ children, className, ariaLabel, ...props }, ref) => {
 		return (
 			<section
-				className={classnames('splide', className)}
+				className={classnames('embla', className)}
 				ref={ref}
 				aria-label={ariaLabel}
 				{...props}
