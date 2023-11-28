@@ -136,15 +136,11 @@ export default function Edit(props) {
 	};
 
 	const blockProps = useBlockProps({
-		className: classnames(
-			'splide__slide',
-			getPositionClassName(contentPosition),
-			{
-				[`has-overlay`]: overlayColor,
-				[`has-overlay-opacity`]: overlayOpacity,
-				[`has-background`]: backgroundColor,
-			}
-		),
+		className: classnames(getPositionClassName(contentPosition), {
+			[`has-overlay`]: overlayColor,
+			[`has-overlay-opacity`]: overlayOpacity,
+			[`has-background`]: backgroundColor,
+		}),
 		style: styles,
 	});
 

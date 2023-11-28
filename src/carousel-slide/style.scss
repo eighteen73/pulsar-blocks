@@ -4,6 +4,7 @@
 	flex-direction: row;
 	isolation: isolate;
 	min-height: 400px;
+	overflow: hidden;
 	width: 100%;
 
 	// Position: Top
@@ -55,10 +56,12 @@
 	}
 
 	&__background-image {
+		bottom: 0;
 		height: 100%;
-		inset: 0;
+		left: var(--slide-spacing);
 		margin: 0;
 		position: absolute;
+		top: 0;
 		width: 100%;
 		z-index: -2;
 
@@ -72,10 +75,14 @@
 	&:where(.has-overlay) {
 		&::before {
 			background-color: var(--overlay-color);
+			bottom: 0;
 			content: "";
 			inset: 0;
+			left: var(--slide-spacing);
 			opacity: calc(var(--overlay-opacity) / 100);
 			position: absolute;
+			right: 0;
+			top: 0;
 			z-index: -1;
 		}
 	}

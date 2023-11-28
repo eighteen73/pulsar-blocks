@@ -1,11 +1,10 @@
-import { Splide } from '@splidejs/splide';
+import EmblaCarousel from 'embla-carousel';
 
-const carousels = document.getElementsByClassName('wp-block-pulsar-carousel');
+const carousels = document.getElementsByClassName('embla');
 
 document.addEventListener('DOMContentLoaded', () => {
 	for (let i = 0; i < carousels.length; i++) {
-		const carouselContainer = carousels[i].querySelector('.splide');
-		const carousel = new Splide(carouselContainer);
-		carousel.mount();
+		const options = carousels[i].dataset.embla;
+		const emblaApi = EmblaCarousel(carousels[i], options);
 	}
 });

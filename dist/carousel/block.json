@@ -18,6 +18,7 @@
         "type": "slide",
         "loop": false,
         "align": "start",
+        "containScroll": "trimSnaps",
         "perPage": 3,
         "perMove": 1,
         "gap": "30px",
@@ -50,7 +51,7 @@
       "type": "string",
       "default": "Carousel"
     },
-    "hasList": {
+    "hasContainer": {
       "type": "boolean",
       "default": true
     },

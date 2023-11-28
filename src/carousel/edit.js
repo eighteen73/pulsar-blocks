@@ -7,22 +7,17 @@ import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 /**
- * Third party dependencies
- */
-import EmblaCarousel from 'embla-carousel';
-import useEmblaCarousel from 'embla-carousel-react';
-
-/**
  * Block dependencies
  */
 import CarouselInspectorControls from './components/inspector-controls';
 import SingleBlockTypeAppender from '../utils/single-block-type-appender';
 
-import Carousel from '../utils/carousel';
-import CarouselTrack from '../utils/carousel-track';
-import CarouselList from '../utils/carousel-list';
-import CarouselNavigation from '../utils/carousel-navigation';
-import CarouselPagination from '../utils/carousel-pagination';
+// import Carousel from '../utils/carousel';
+// import CarouselTrack from '../utils/carousel-track';
+// import CarouselList from '../utils/carousel-list';
+// import CarouselNavigation from '../utils/carousel-navigation';
+// import CarouselPagination from '../utils/carousel-pagination';
+import Carousel from '../components/embla-carousel';
 
 import './editor.scss';
 
@@ -47,7 +42,7 @@ export default function Edit({
 		carouselSettings,
 		advancedCarouselSettings,
 		ariaLabel,
-		hasList,
+		hasContainer,
 		allowedBlocks,
 		template,
 	} = attributes;
@@ -68,48 +63,7 @@ export default function Edit({
 		select('core/block-editor').hasSelectedInnerBlock(clientId, false)
 	);
 
-	const [emblaRef, emblaApi] = useEmblaCarousel(
-		advancedCarouselSettings ?? carouselSettings
-	);
-	const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
-	const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
-	const [selectedIndex, setSelectedIndex] = useState(0);
-	const [scrollSnaps, setScrollSnaps] = useState([]);
-
-	const scrollPrev = useCallback(
-		() => emblaApi && emblaApi.scrollPrev(),
-		[emblaApi]
-	);
-	const scrollNext = useCallback(
-		() => emblaApi && emblaApi.scrollNext(),
-		[emblaApi]
-	);
-	const scrollTo = useCallback(
-		(index) => emblaApi && emblaApi.scrollTo(index),
-		[emblaApi]
-	);
-
-	const onInit = useCallback((emblaApi) => {
-		setScrollSnaps(emblaApi.scrollSnapList());
-	}, []);
-
-	const onSelect = useCallback((emblaApi) => {
-		setSelectedIndex(emblaApi.selectedScrollSnap());
-		setPrevBtnDisabled(!emblaApi.canScrollPrev());
-		setNextBtnDisabled(!emblaApi.canScrollNext());
-	}, []);
-
-	useEffect(() => {
-		if (!emblaApi) return;
-
-		onInit(emblaApi);
-		onSelect(emblaApi);
-		emblaApi.on('reInit', onInit);
-		emblaApi.on('reInit', onSelect);
-		emblaApi.on('select', onSelect);
-	}, [emblaApi, onInit, onSelect]);
-
-	const Styles = {
+	const carouselStyles = {
 		'--slide-width': 'calc(100% / ' + carouselSettings.perPage + ')',
 		'--slide-spacing': carouselSettings.gap,
 		'--slide-type': carouselSettings.type,
@@ -124,23 +78,15 @@ export default function Edit({
 			/>
 
 			<div {...innerBlocksProps}>
-				<Carousel ariaLabel={ariaLabel} style={Styles}>
-					<CarouselTrack ref={emblaRef}>
-						{hasList ? (
-							<CarouselList>{children}</CarouselList>
-						) : (
-							children
-						)}
-					</CarouselTrack>
-
-					<CarouselPagination />
-
-					<CarouselNavigation
-						scrollPrev={scrollPrev}
-						scrollNext={scrollNext}
-						prevDisabled={prevBtnDisabled}
-						nextDisabled={nextBtnDisabled}
-					/>
+				<Carousel
+					options={advancedCarouselSettings ?? carouselSettings}
+					pagination={carouselSettings.pagination}
+					arrows={carouselSettings.arrows}
+					style={carouselStyles}
+					aria-label={ariaLabel}
+					hasContainer={hasContainer}
+				>
+					{children}
 				</Carousel>
 
 				<SingleBlockTypeAppender

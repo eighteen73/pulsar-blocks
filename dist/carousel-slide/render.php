@@ -11,24 +11,24 @@
 
 namespace Eighteen73\PulsarBlocks;
 
-$background_type = $attributes['backgroundType'];
-$position_class = Carousel::get_position_class_name( $attributes['contentPosition'] );
-$focal_point    = isset( $attributes['focalPoint'] ) ? Carousel::get_focal_point( $attributes['focalPoint'] ) : false;
-$overlay_color = $background_type === 'image' && isset( $attributes['overlayColor'] ) ? $attributes['overlayColor'] : false;
+$background_type  = $attributes['backgroundType'];
+$position_class   = Carousel::get_position_class_name( $attributes['contentPosition'] );
+$focal_point      = isset( $attributes['focalPoint'] ) ? Carousel::get_focal_point( $attributes['focalPoint'] ) : false;
+$overlay_color    = $background_type === 'image' && isset( $attributes['overlayColor'] ) ? $attributes['overlayColor'] : false;
 $background_color = $background_type === 'color' && isset( $attributes['backgroundColor'] ) ? $attributes['backgroundColor'] : false;
-$overlay_opacity = $attributes['overlayOpacity'];
-$classes = [ 'splide__slide', $position_class ];
-$styles = [];
+$overlay_opacity  = $attributes['overlayOpacity'];
+$classes          = [ 'embla__slide', $position_class ];
+$styles           = [];
 
 if ( $overlay_color ) {
 	$classes[] = 'has-overlay';
-	$styles[] = "--overlay-color: {$overlay_color}";
-	$styles[] = "--overlay-opacity: {$overlay_opacity}";
+	$styles[]  = "--overlay-color: {$overlay_color}";
+	$styles[]  = "--overlay-opacity: {$overlay_opacity}";
 }
 
 if ( $background_color ) {
 	$classes[] = 'has-background';
-	$styles[] = "--background-color: {$background_color}";
+	$styles[]  = "--background-color: {$background_color}";
 }
 ?>
 
