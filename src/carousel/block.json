@@ -16,14 +16,15 @@
       "type": "object",
       "default": {
         "type": "slide",
-        "drag": true,
+        "loop": false,
+        "align": "start",
         "perPage": 3,
         "perMove": 1,
         "gap": "30px",
         "arrows": true,
         "pagination": true,
         "autoplay": false,
-        "interval": 5000,
+        "autoplayInterval": 5000,
         "breakpoints": {
           "1024": {
             "perPage": 2,

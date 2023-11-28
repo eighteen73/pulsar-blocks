@@ -50,10 +50,6 @@ export default function GlobalControls({
 				return __(
 					'Slide between slides. Supports multiple slides per page.'
 				);
-			case 'loop':
-				return __(
-					'Continually loop through the slides. Disabled in the editor preview.'
-				);
 			case 'fade':
 				return __(
 					'Fade between slides. Supports a single slide per page.'
@@ -105,14 +101,24 @@ export default function GlobalControls({
 						label={__('Slide')}
 					/>
 					<ToggleGroupControlOption
-						value={'loop'}
-						label={__('Loop')}
-					/>
-					<ToggleGroupControlOption
 						value={'fade'}
 						label={__('Fade')}
 					/>
 				</ToggleGroupControl>
+
+				<ToggleControl
+					label={__('Loop')}
+					help={__('Enable infinite looping through the slides.')}
+					checked={carouselSettings.loop}
+					onChange={(value) => {
+						onChange({
+							carouselSettings: {
+								...carouselSettings,
+								loop: value,
+							},
+						});
+					}}
+				/>
 
 				<ToggleControl
 					label={__('Autoplay')}
@@ -140,12 +146,12 @@ export default function GlobalControls({
 							onChange({
 								carouselSettings: {
 									...carouselSettings,
-									interval: parseInt(value),
+									autoplayInterval: parseInt(value),
 								},
 							});
 						}}
 						shiftStep={1000}
-						value={carouselSettings.interval}
+						value={carouselSettings.autoplayInterval}
 					/>
 				)}
 			</Disabled>

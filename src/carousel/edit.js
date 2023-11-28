@@ -2,26 +2,30 @@
  * WordPress dependencies
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import { useRef, useState, useEffect, useCallback } from '@wordpress/element';
-import { useSelect, select, subscribe } from '@wordpress/data';
+import { useEffect, useCallback, useState } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 /**
  * Third party dependencies
  */
-import Splide from '@splidejs/splide';
 import EmblaCarousel from 'embla-carousel';
+import useEmblaCarousel from 'embla-carousel-react';
 
 /**
  * Block dependencies
  */
 import CarouselInspectorControls from './components/inspector-controls';
 import SingleBlockTypeAppender from '../utils/single-block-type-appender';
+
 import Carousel from '../utils/carousel';
 import CarouselTrack from '../utils/carousel-track';
 import CarouselList from '../utils/carousel-list';
+import CarouselNavigation from '../utils/carousel-navigation';
+import CarouselPagination from '../utils/carousel-pagination';
 
 import './editor.scss';
+
 /**
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
@@ -48,7 +52,6 @@ export default function Edit({
 		template,
 	} = attributes;
 
-	const ref = useRef(null);
 	const blockProps = useBlockProps({ className: 'splide' });
 	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
 		orientation: 'horizontal',
@@ -56,8 +59,6 @@ export default function Edit({
 		template,
 		renderAppender: false,
 	});
-
-	const [carousel, setCarousel] = useState({});
 
 	const isInnerBlockSelected = useSelect((select) =>
 		select('core/block-editor').hasSelectedInnerBlock(clientId, true)
@@ -67,49 +68,53 @@ export default function Edit({
 		select('core/block-editor').hasSelectedInnerBlock(clientId, false)
 	);
 
-	/**
-	 * Initialize the carousel.
-	 * Also set editor settings to avoid issues.
-	 */
+	const [emblaRef, emblaApi] = useEmblaCarousel(
+		advancedCarouselSettings ?? carouselSettings
+	);
+	const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
+	const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
+	const [selectedIndex, setSelectedIndex] = useState(0);
+	const [scrollSnaps, setScrollSnaps] = useState([]);
+
+	const scrollPrev = useCallback(
+		() => emblaApi && emblaApi.scrollPrev(),
+		[emblaApi]
+	);
+	const scrollNext = useCallback(
+		() => emblaApi && emblaApi.scrollNext(),
+		[emblaApi]
+	);
+	const scrollTo = useCallback(
+		(index) => emblaApi && emblaApi.scrollTo(index),
+		[emblaApi]
+	);
+
+	const onInit = useCallback((emblaApi) => {
+		setScrollSnaps(emblaApi.scrollSnapList());
+	}, []);
+
+	const onSelect = useCallback((emblaApi) => {
+		setSelectedIndex(emblaApi.selectedScrollSnap());
+		setPrevBtnDisabled(!emblaApi.canScrollPrev());
+		setNextBtnDisabled(!emblaApi.canScrollNext());
+	}, []);
+
 	useEffect(() => {
-		if (ref.current) {
-			// Create a local variable to store modified settings
-			// Some settings cause issues in the editor, so we need to modify them.
-			let editorSettings = {
-				...(advancedCarouselSettings ?? carouselSettings),
-			};
+		if (!emblaApi) return;
 
-			editorSettings = {
-				...editorSettings,
-				type:
-					editorSettings.type === 'loop'
-						? 'slide'
-						: editorSettings.type,
-				autoplay: false,
-				drag: false,
-			};
+		onInit(emblaApi);
+		onSelect(emblaApi);
+		emblaApi.on('reInit', onInit);
+		emblaApi.on('reInit', onSelect);
+		emblaApi.on('select', onSelect);
+	}, [emblaApi, onInit, onSelect]);
 
-			const rootNode = ref.current;
-			const viewportNode = rootNode.querySelector('.embla__viewport');
-			const prevButtonNode = rootNode.querySelector('.embla__prev');
-			const nextButtonNode = rootNode.querySelector('.embla__next');
-
-			const embla = EmblaCarousel(viewportNode, {
-				align: 'start',
-				slidesToScroll: 1,
-				containScroll: 'trimSnaps',
-			});
-
-			prevButtonNode.addEventListener('click', embla.scrollPrev, false);
-			nextButtonNode.addEventListener('click', embla.scrollNext, false);
-
-			setCarousel(embla);
-		}
-
-		return function cleanup() {
-			setCarousel(null);
-		};
-	}, [carouselSettings, advancedCarouselSettings]);
+	const Styles = {
+		'--slide-width': 'calc(100% / ' + carouselSettings.perPage + ')',
+		'--slide-spacing': carouselSettings.gap,
+		'--slide-type': carouselSettings.type,
+		'--slide-loop': carouselSettings.loop,
+	};
 
 	return (
 		<>
@@ -119,16 +124,23 @@ export default function Edit({
 			/>
 
 			<div {...innerBlocksProps}>
-				<Carousel ref={ref} ariaLabel={ariaLabel}>
-					<CarouselTrack>
+				<Carousel ariaLabel={ariaLabel} style={Styles}>
+					<CarouselTrack ref={emblaRef}>
 						{hasList ? (
 							<CarouselList>{children}</CarouselList>
 						) : (
 							children
 						)}
 					</CarouselTrack>
-					<button className="embla__prev">Prev</button>
-					<button className="embla__next">Next</button>
+
+					<CarouselPagination />
+
+					<CarouselNavigation
+						scrollPrev={scrollPrev}
+						scrollNext={scrollNext}
+						prevDisabled={prevBtnDisabled}
+						nextDisabled={nextBtnDisabled}
+					/>
 				</Carousel>
 
 				<SingleBlockTypeAppender
