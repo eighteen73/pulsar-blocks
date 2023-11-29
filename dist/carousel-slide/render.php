@@ -17,7 +17,7 @@ $focal_point    = isset( $attributes['focalPoint'] ) ? Carousel::get_focal_point
 $overlay_color = $background_type === 'image' && isset( $attributes['overlayColor'] ) ? $attributes['overlayColor'] : false;
 $background_color = $background_type === 'color' && isset( $attributes['backgroundColor'] ) ? $attributes['backgroundColor'] : false;
 $overlay_opacity = $attributes['overlayOpacity'];
-$classes = [ 'splide__slide', $position_class ];
+$classes = [ $position_class ];
 $styles = [];
 
 if ( $overlay_color ) {
@@ -32,37 +32,39 @@ if ( $background_color ) {
 }
 ?>
 
-<div
-<?php
-echo wp_kses_data(
-	get_block_wrapper_attributes(
-		[
-			'class' => implode( ' ', $classes ),
-			'style' => ! empty( $styles ) ? implode( ';', $styles ) : null,
-		]
-	)
-);
-?>
->
-	<?php if ( $content ) : ?>
-		<div class="wp-block-pulsar-carousel-slide__content">
-			<?php echo $content; // phpcs:disable ?>
-		</div>
-	<?php endif; ?>
+<li class="splide__slide">
+	<div
+	<?php
+	echo wp_kses_data(
+		get_block_wrapper_attributes(
+			[
+				'class' => implode( ' ', $classes ),
+				'style' => ! empty( $styles ) ? implode( ';', $styles ) : null,
+			]
+		)
+	);
+	?>
+	>
+		<?php if ( $content ) : ?>
+			<div class="wp-block-pulsar-carousel-slide__content">
+				<?php echo $content; // phpcs:disable ?>
+			</div>
+		<?php endif; ?>
 
-	<?php if ( isset( $attributes['backgroundImageId'] ) && $attributes['backgroundType'] === 'image' ) : ?>
-		<figure class="wp-block-pulsar-carousel-slide__background-image">
-			<?php
-			echo wp_get_attachment_image(
-				$attributes['backgroundImageId'],
-				'large',
-				false,
-				[
-					'class' => 'wp-block-pulsar-carousel-slide__background-image',
-					'style' => $focal_point ? 'object-position: ' . $focal_point : null,
-				]
-			);
-			?>
-		</figure>
-	<?php endif; ?>
-</div>
+		<?php if ( isset( $attributes['backgroundImageId'] ) && $attributes['backgroundType'] === 'image' ) : ?>
+			<figure class="wp-block-pulsar-carousel-slide__background-image">
+				<?php
+				echo wp_get_attachment_image(
+					$attributes['backgroundImageId'],
+					'large',
+					false,
+					[
+						'class' => 'wp-block-pulsar-carousel-slide__background-image',
+						'style' => $focal_point ? 'object-position: ' . $focal_point : null,
+					]
+				);
+				?>
+			</figure>
+		<?php endif; ?>
+	</div>
+</li>

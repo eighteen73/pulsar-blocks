@@ -6,10 +6,10 @@ import {
 	useInnerBlocksProps,
 	store as blockEditorStore,
 	useSetting,
+	InnerBlocks,
 } from '@wordpress/block-editor';
 import { Placeholder } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { CarouselSlide } from '../utils/carousel-slide';
 
 /**
  * Third party dependencies
@@ -19,7 +19,7 @@ import classnames from 'classnames';
 /**
  * Block dependencies
  */
-import { getPositionClassName, useMedia } from './components/utils';
+import { getPositionClassName, useMedia } from '../utils/media';
 import CarouselSlideBlockControls from './components/block-controls';
 import CarouselSlideInspectorControls from './components/inspector-controls';
 
@@ -125,7 +125,7 @@ export default function Edit(props) {
 
 	const onOverlayOpacityChange = (value) => {
 		setAttributes({
-			overlayOpacity: value,
+			overlayOpacity: parseInt(value),
 		});
 	};
 
@@ -136,26 +136,18 @@ export default function Edit(props) {
 	};
 
 	const blockProps = useBlockProps({
-		className: classnames(
-			'splide__slide',
-			getPositionClassName(contentPosition),
-			{
-				[`has-overlay`]: overlayColor,
-				[`has-overlay-opacity`]: overlayOpacity,
-				[`has-background`]: backgroundColor,
-			}
-		),
+		className: classnames(getPositionClassName(contentPosition), {
+			[`has-overlay`]: overlayColor,
+			[`has-overlay-opacity`]: overlayOpacity,
+			[`has-background`]: backgroundColor,
+		}),
 		style: styles,
 	});
 
-	const {
-		children,
-		ref: ref,
-		...innerBlocksProps
-	} = useInnerBlocksProps(blockProps);
+	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps);
 
 	return (
-		<CarouselSlide {...innerBlocksProps} ref={ref}>
+		<li className="splide__slide">
 			<CarouselSlideBlockControls
 				contentPosition={contentPosition}
 				onContentPositionChange={onContentPositionChange}
@@ -180,8 +172,10 @@ export default function Edit(props) {
 				onFocalPointChange={onFocalPointChange}
 			/>
 
-			<div className="wp-block-pulsar-carousel-slide__content">
-				{children}
+			<div {...innerBlocksProps}>
+				<div className="wp-block-pulsar-carousel-slide__content">
+					{children}
+				</div>
 			</div>
 
 			{backgroundType === 'image' && (
@@ -197,6 +191,6 @@ export default function Edit(props) {
 					)}
 				</figure>
 			)}
-		</CarouselSlide>
+		</li>
 	);
 }

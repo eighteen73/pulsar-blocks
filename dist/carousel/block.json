@@ -60,7 +60,11 @@
       ]
     },
     "template": {
-      "type": "array"
+      "type": "array",
+      "default": []
+    },
+    "templateLock": {
+      "type": "string"
     }
   }
 }

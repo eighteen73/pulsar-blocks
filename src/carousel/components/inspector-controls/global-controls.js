@@ -52,7 +52,7 @@ export default function GlobalControls({
 				);
 			case 'loop':
 				return __(
-					'Continually loop through the slides. Disabled in the editor preview.'
+					'Continually loop through the slides. Disabled in the editor.'
 				);
 			case 'fade':
 				return __(
@@ -117,7 +117,7 @@ export default function GlobalControls({
 				<ToggleControl
 					label={__('Autoplay')}
 					help={__(
-						'Automatically move to the next slide. Disabled in the editor preview.'
+						'Automatically move to the next slide. Disabled in the editor.'
 					)}
 					checked={carouselSettings.autoplay}
 					onChange={(value) => {

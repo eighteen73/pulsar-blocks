@@ -2,15 +2,20 @@ import { forwardRef } from '@wordpress/element';
 import classnames from 'classnames';
 
 export const Carousel = forwardRef(
-	({ children, className, ariaLabel, ...props }, ref) => {
+	({ children, className, hasList, ...props }, ref) => {
 		return (
 			<section
 				className={classnames('splide', className)}
 				ref={ref}
-				aria-label={ariaLabel}
 				{...props}
 			>
-				{children}
+				<div className="splide__track">
+					{hasList ? (
+						<ul className="splide__list">{children}</ul>
+					) : (
+						children
+					)}
+				</div>
 			</section>
 		);
 	}

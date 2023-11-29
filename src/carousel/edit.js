@@ -15,10 +15,8 @@ import Splide from '@splidejs/splide';
  * Block dependencies
  */
 import CarouselInspectorControls from './components/inspector-controls';
-import SingleBlockTypeAppender from '../utils/single-block-type-appender';
-import Carousel from '../utils/carousel';
-import CarouselTrack from '../utils/carousel-track';
-import CarouselList from '../utils/carousel-list';
+import SingleBlockTypeAppender from '../components/single-block-type-appender';
+import Carousel from '../components/carousel';
 
 import './editor.scss';
 /**
@@ -45,14 +43,16 @@ export default function Edit({
 		hasList,
 		allowedBlocks,
 		template,
+		templateLock,
 	} = attributes;
 
 	const ref = useRef(null);
-	const blockProps = useBlockProps({ className: 'splide' });
+	const blockProps = useBlockProps();
 	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
 		orientation: 'horizontal',
 		allowedBlocks,
 		template,
+		templateLock,
 		renderAppender: false,
 	});
 
@@ -65,35 +65,6 @@ export default function Edit({
 	const isSlideSelected = useSelect((select) =>
 		select('core/block-editor').hasSelectedInnerBlock(clientId, false)
 	);
-
-	/**
-	 * Detects if the carousel already ends with an empty slide so only one may be
-	 * added at a time.
-	 *
-	 * @return {boolean} Has an empty slide
-	 */
-	const hasEmptySlide = () => {
-		// Empty carousel
-		if (innerBlocks.length === 0) {
-			return false;
-		}
-
-		// Truly empty slide
-		const lastSlide = innerBlocks[innerBlocks.length - 1];
-		if (lastSlide.innerBlocks.length === 0) {
-			return true;
-		}
-
-		// Empty slide with no content yet
-		if (
-			lastSlide.innerBlocks.length === 1 &&
-			lastSlide.innerBlocks[0].attributes.content === ''
-		) {
-			return true;
-		}
-
-		return false;
-	};
 
 	/**
 	 * Get the inner blocks of the current block.
@@ -153,10 +124,14 @@ export default function Edit({
 	// Watch for a change in child blocks and refresh.
 	useEffect(() => {
 		const { getBlock } = select('core/block-editor');
-		let blockList = getBlock(clientId) ? getBlock(clientId).innerBlocks : [];
+		let blockList = getBlock(clientId)
+			? getBlock(clientId).innerBlocks
+			: [];
 
 		subscribe(() => {
-			const newBlockList = getBlock(clientId) ? getBlock(clientId).innerBlocks : [];
+			const newBlockList = getBlock(clientId)
+				? getBlock(clientId).innerBlocks
+				: [];
 			const blockListChanged = newBlockList !== blockList;
 			blockList = newBlockList;
 
@@ -174,20 +149,18 @@ export default function Edit({
 			/>
 
 			<div {...innerBlocksProps}>
-				<Carousel ref={ref} ariaLabel={ariaLabel}>
-					<CarouselTrack>
-						{hasList ? (
-							<CarouselList>{children}</CarouselList>
-						) : (
-							children
-						)}
-					</CarouselTrack>
+				<Carousel ref={ref} hasList={hasList} aria-label={ariaLabel}>
+					{children}
 				</Carousel>
 
 				<SingleBlockTypeAppender
 					onClickAfter={() => {
 						refreshCarouselCallback();
-						carousel.go(innerBlocks.length);
+
+						// Add a delay to ensure the carousel is refreshed before going to the next slide.
+						setTimeout(() => {
+							carousel.go(innerBlocks.length);
+						}, 0);
 					}}
 					variant="secondary"
 					text={__('Add slide')}
@@ -197,7 +170,6 @@ export default function Edit({
 					isSelected={
 						isSelected || isInnerBlockSelected || isSlideSelected
 					}
-					disabled={hasEmptySlide()}
 				/>
 			</div>
 		</>
