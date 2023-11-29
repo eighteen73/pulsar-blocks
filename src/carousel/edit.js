@@ -57,6 +57,7 @@ export default function Edit({
 	});
 
 	const [carousel, setCarousel] = useState({});
+	const [options, setOptions] = useState({});
 
 	// Check if any inner block is selected.
 	const isInnerBlockSelected = useSelect((select) =>
@@ -94,24 +95,29 @@ export default function Edit({
 
 	/**
 	 * Return the carousel options with the correct values for the editor.
-	 *
+	 * @param {Object} optionsObj The carousel options.
 	 * @return {Object} The modified carousel options.
 	 */
-	const editorSafeOptions = () => {
-		const options = getOptions(
-			carouselOptions,
-			advancedCarouselOptions,
-			mergeOptions
-		);
-
+	const editorSafeOptions = (optionsObj) => {
 		return {
-			...options,
-			type: options.type === 'loop' ? 'slide' : options.type,
+			...optionsObj,
+			type: optionsObj.type === 'loop' ? 'slide' : optionsObj.type,
 			autoplay: false,
 			drag: false,
 			arrows: true,
 		};
 	};
+
+	/**
+	 * Set the carousel options to use.
+	 * Options need to modified for the editor only.
+	 */
+	useEffect(() => {
+		const editorOptions = editorSafeOptions(
+			getOptions(carouselOptions, advancedCarouselOptions, mergeOptions)
+		);
+		setOptions(editorOptions);
+	}, [carouselOptions, advancedCarouselOptions, mergeOptions]);
 
 	/**
 	 * Set the carousel instance for access later.
@@ -122,6 +128,19 @@ export default function Edit({
 		}
 	}, []);
 
+	/**
+	 * If the carousels type changes, destroy and remount the carousel.
+	 */
+	useEffect(() => {
+		if (carousel) {
+			carousel.destroy(false).then(() => {
+				if (carousel) {
+					carousel.mount();
+				}
+			});
+		}
+	}, [options.type, carousel]);
+
 	return (
 		<>
 			<CarouselInspectorControls
@@ -131,7 +150,7 @@ export default function Edit({
 
 			<div {...innerBlocksProps}>
 				<Splide
-					options={editorSafeOptions()}
+					options={options}
 					hasTrack={hasTrack}
 					ref={ref}
 					aria-label={ariaLabel}

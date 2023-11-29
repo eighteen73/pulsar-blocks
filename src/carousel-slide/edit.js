@@ -15,6 +15,7 @@ import { useSelect } from '@wordpress/data';
  * Third party dependencies
  */
 import classnames from 'classnames';
+import { SplideSlide } from '@splidejs/react-splide';
 
 /**
  * Block dependencies
@@ -147,7 +148,7 @@ export default function Edit(props) {
 	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps);
 
 	return (
-		<li className="splide__slide">
+		<SplideSlide>
 			<CarouselSlideBlockControls
 				contentPosition={contentPosition}
 				onContentPositionChange={onContentPositionChange}
@@ -191,6 +192,6 @@ export default function Edit(props) {
 					)}
 				</figure>
 			)}
-		</li>
+		</SplideSlide>
 	);
 }

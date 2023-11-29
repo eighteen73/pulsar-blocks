@@ -9,7 +9,8 @@
  * @package Pulsar
  */
 
-$settings   = $attributes['advancedCarouselOptions'] ?? $attributes['carouselOptions'];
+$options   = $attributes['advancedCarouselOptions'] ?? $attributes['carouselOptions'];
+$merge_options = $attributes['mergeOptions'] ?? false;
 $has_track  = $attributes['hasTrack'] ?? false;
 $aria_label = $attributes['ariaLabel'] ?? __( 'Carousel', 'pulsar' );
 ?>
@@ -17,7 +18,7 @@ $aria_label = $attributes['ariaLabel'] ?? __( 'Carousel', 'pulsar' );
 <div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
 	<section
 		class="splide"
-		data-splide="<?php echo esc_html( wp_json_encode( $settings, JSON_PRETTY_PRINT ) ); ?>"
+		data-splide="<?php echo esc_html( wp_json_encode( $options, JSON_PRETTY_PRINT ) ); ?>"
 		aria-label="<?php echo esc_html( $aria_label ); ?>"
 	>
 		<?php if ( $has_track ) : ?>
