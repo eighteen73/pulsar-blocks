@@ -83,6 +83,7 @@ export default function BreakpointControls({
 
 			<ToggleControl
 				label={__('Arrows')}
+				help={__('Always visible in the editor.')}
 				checked={getValue('arrows')}
 				onChange={(value) => handleChange('arrows', value)}
 			/>

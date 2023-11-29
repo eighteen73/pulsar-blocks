@@ -45,6 +45,10 @@
     "advancedCarouselSettings": {
       "type": "object"
     },
+    "mergeSettings": {
+      "type": "boolean",
+      "default": false
+    },
     "ariaLabel": {
       "type": "string",
       "default": "Carousel"
@@ -64,7 +68,8 @@
       "default": []
     },
     "templateLock": {
-      "type": "string"
+      "type": "string",
+      "default": false
     }
   }
 }

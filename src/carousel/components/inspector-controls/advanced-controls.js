@@ -1,4 +1,4 @@
-import { TextareaControl } from '@wordpress/components';
+import { TextareaControl, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 
@@ -7,6 +7,7 @@ import './advanced-controls.scss';
 export default function AdvancedControls({
 	onChange,
 	advancedCarouselSettings,
+	mergeSettings,
 }) {
 	const [jsonValid, setJsonValid] = useState(null);
 	const [tempInputValue, setTempInputValue] = useState(
@@ -68,11 +69,20 @@ export default function AdvancedControls({
 		<>
 			<TextareaControl
 				help={helpText}
-				label={__('Carousel Settings')}
+				label={__('Advanced Carousel Settings')}
 				rows={12}
 				onChange={(value) => handleInputChange(value)}
 				value={tempInputValue}
 				className={classNames()}
+			/>
+
+			<ToggleControl
+				label={__('Merge Settings')}
+				help={__(
+					'Should the custom settings be merged with the default settings, or override them?'
+				)}
+				checked={mergeSettings}
+				onChange={(value) => onChange({ mergeSettings: value })}
 			/>
 		</>
 	);

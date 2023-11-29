@@ -7,7 +7,11 @@ import BreakpointControls from './breakpoint-controls';
 import AdvancedControls from './advanced-controls';
 
 export default function CarouselInspectorControls({ onChange, attributes }) {
-	const { carouselSettings, advancedCarouselSettings } = attributes;
+	const { carouselSettings, advancedCarouselSettings, mergeSettings } =
+		attributes;
+
+	const isDisabled = advancedCarouselSettings && !mergeSettings;
+
 	return (
 		<>
 			<InspectorControls>
@@ -15,7 +19,7 @@ export default function CarouselInspectorControls({ onChange, attributes }) {
 					<GlobalControls
 						onChange={onChange}
 						attributes={attributes}
-						isDisabled={advancedCarouselSettings}
+						isDisabled={isDisabled}
 					></GlobalControls>
 				</PanelBody>
 
@@ -24,7 +28,7 @@ export default function CarouselInspectorControls({ onChange, attributes }) {
 						onChange={onChange}
 						carouselSettings={carouselSettings}
 						size={false}
-						isDisabled={advancedCarouselSettings}
+						isDisabled={isDisabled}
 					/>
 				</PanelBody>
 
@@ -33,7 +37,7 @@ export default function CarouselInspectorControls({ onChange, attributes }) {
 						onChange={onChange}
 						carouselSettings={carouselSettings}
 						size={1024}
-						isDisabled={advancedCarouselSettings}
+						isDisabled={isDisabled}
 					/>
 				</PanelBody>
 
@@ -42,7 +46,7 @@ export default function CarouselInspectorControls({ onChange, attributes }) {
 						onChange={onChange}
 						carouselSettings={carouselSettings}
 						size={640}
-						isDisabled={advancedCarouselSettings}
+						isDisabled={isDisabled}
 					/>
 				</PanelBody>
 			</InspectorControls>
@@ -51,6 +55,7 @@ export default function CarouselInspectorControls({ onChange, attributes }) {
 				<AdvancedControls
 					onChange={onChange}
 					advancedCarouselSettings={advancedCarouselSettings}
+					mergeSettings={mergeSettings}
 				/>
 			</InspectorControls>
 		</>

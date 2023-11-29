@@ -39,6 +39,7 @@ export default function Edit({
 	const {
 		carouselSettings,
 		advancedCarouselSettings,
+		mergeSettings,
 		ariaLabel,
 		hasList,
 		allowedBlocks,
@@ -57,6 +58,17 @@ export default function Edit({
 	});
 
 	const [carousel, setCarousel] = useState({});
+
+	// Set specific settings for the editor.
+	const editorSafeSettings = (settings) => {
+		return {
+			...settings,
+			type: settings.type === 'loop' ? 'slide' : settings.type,
+			autoplay: false,
+			drag: false,
+			arrows: true,
+		};
+	};
 
 	const isInnerBlockSelected = useSelect((select) =>
 		select('core/block-editor').hasSelectedInnerBlock(clientId, true)
@@ -110,10 +122,15 @@ export default function Edit({
 						: editorSettings.type,
 				autoplay: false,
 				drag: false,
+				arrows: true,
 			};
 
-			const splide = new Splide(ref.current, editorSettings);
-			setCarousel(splide.mount());
+			const blockHasList = ref.current.querySelector('.splide__list');
+
+			if (blockHasList) {
+				const splide = new Splide(ref.current, editorSettings);
+				setCarousel(splide.mount());
+			}
 		}
 
 		return function cleanup() {
@@ -167,7 +184,7 @@ export default function Edit({
 					allowedBlock="pulsar/carousel-slide"
 					style={{ width: '100%', justifyContent: 'center' }}
 					clientId={clientId}
-					isSelected={
+					isEnabled={
 						isSelected || isInnerBlockSelected || isSlideSelected
 					}
 				/>

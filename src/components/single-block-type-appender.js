@@ -15,7 +15,7 @@ import { compose } from '@wordpress/compose';
  * @param          props.clientId
  * @param          props.allowedBlock
  * @param          props.innerBlocks
- * @param          props.isSelected
+ * @param          props.isEnabled
  */
 const SingleBlockTypeAppender = ({
 	onClick,
@@ -23,10 +23,10 @@ const SingleBlockTypeAppender = ({
 	clientId,
 	allowedBlock,
 	innerBlocks,
-	isSelected = true,
+	isEnabled = true,
 	...props
 }) => {
-	if (isSelected) {
+	if (isEnabled) {
 		return <Button onClick={() => onClick(onClickAfter)} {...props} />;
 	}
 };
