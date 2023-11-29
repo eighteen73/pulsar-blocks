@@ -10,7 +10,7 @@ import {
 import { __ } from '@wordpress/i18n';
 
 export default function BreakpointControls({
-	carouselSettings,
+	carouselOptions,
 	onChange,
 	size,
 	isDisabled = false,
@@ -18,12 +18,12 @@ export default function BreakpointControls({
 	const handleChange = (key, newValue) => {
 		if (size) {
 			onChange({
-				carouselSettings: {
-					...carouselSettings,
+				carouselOptions: {
+					...carouselOptions,
 					breakpoints: {
-						...carouselSettings.breakpoints,
+						...carouselOptions.breakpoints,
 						[size]: {
-							...carouselSettings.breakpoints[size],
+							...carouselOptions.breakpoints[size],
 							[key]: newValue,
 						},
 					},
@@ -31,8 +31,8 @@ export default function BreakpointControls({
 			});
 		} else {
 			onChange({
-				carouselSettings: {
-					...carouselSettings,
+				carouselOptions: {
+					...carouselOptions,
 					[key]: newValue,
 				},
 			});
@@ -41,14 +41,14 @@ export default function BreakpointControls({
 
 	const getValue = (key) => {
 		if (size) {
-			return carouselSettings.breakpoints[size][key];
+			return carouselOptions.breakpoints[size][key];
 		}
-		return carouselSettings[key];
+		return carouselOptions[key];
 	};
 
 	return (
 		<Disabled isDisabled={isDisabled}>
-			{carouselSettings.type !== 'fade' && (
+			{carouselOptions.type !== 'fade' && (
 				<>
 					<NumberControl
 						label={__('Per page')}

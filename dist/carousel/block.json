@@ -12,7 +12,7 @@
   "viewScript": "file:./view.js",
   "render": "file:./render.php",
   "attributes": {
-    "carouselSettings": {
+    "carouselOptions": {
       "type": "object",
       "default": {
         "type": "slide",
@@ -42,10 +42,10 @@
         }
       }
     },
-    "advancedCarouselSettings": {
+    "advancedCarouselOptions": {
       "type": "object"
     },
-    "mergeSettings": {
+    "mergeOptions": {
       "type": "boolean",
       "default": false
     },
@@ -53,7 +53,7 @@
       "type": "string",
       "default": "Carousel"
     },
-    "hasList": {
+    "hasTrack": {
       "type": "boolean",
       "default": true
     },

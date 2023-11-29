@@ -9,8 +9,8 @@
  * @package Pulsar
  */
 
-$settings   = $attributes['advancedCarouselSettings'] ?? $attributes['carouselSettings'];
-$has_list   = $attributes['hasList'] ?? false;
+$settings   = $attributes['advancedCarouselOptions'] ?? $attributes['carouselOptions'];
+$has_track  = $attributes['hasTrack'] ?? false;
 $aria_label = $attributes['ariaLabel'] ?? __( 'Carousel', 'pulsar' );
 ?>
 
@@ -20,16 +20,14 @@ $aria_label = $attributes['ariaLabel'] ?? __( 'Carousel', 'pulsar' );
 		data-splide="<?php echo esc_html( wp_json_encode( $settings, JSON_PRETTY_PRINT ) ); ?>"
 		aria-label="<?php echo esc_html( $aria_label ); ?>"
 	>
-		<div class="splide__track">
-			<?php if ( $has_list ) : ?>
+		<?php if ( $has_track ) : ?>
+			<div class="splide__track">
 				<ul class="splide__list">
-			<?php endif; ?>
-
-				<?php echo $content; // phpcs:disable ?>
-
-			<?php if ( $has_list ) : ?>
+					<?php echo $content; // phpcs:disable ?>
 				</ul>
+			</div>
+			<?php else : ?>
+				<?php echo $content; // phpcs:disable ?>
 			<?php endif; ?>
-		</div>
 	</section>
 </div>

@@ -9,13 +9,13 @@ import { compose } from '@wordpress/compose';
 /**
  * Custom Appender meant to be used when there is only one type of block that can be inserted to an InnerBlocks instance.
  *
- * @param {Object} props
- * @param          props.onClick
- * @param          props.onClickAfter
- * @param          props.clientId
- * @param          props.allowedBlock
- * @param          props.innerBlocks
- * @param          props.isEnabled
+ * @param {Object}   props
+ * @param {Function} props.onClick
+ * @param {Function} props.onClickAfter
+ * @param {string}   props.clientId
+ * @param {Array}    props.allowedBlock
+ * @param {Array}    props.innerBlocks
+ * @param {boolean}  props.isEnabled
  */
 const SingleBlockTypeAppender = ({
 	onClick,

@@ -6,13 +6,13 @@ import './advanced-controls.scss';
 
 export default function AdvancedControls({
 	onChange,
-	advancedCarouselSettings,
-	mergeSettings,
+	advancedCarouselOptions,
+	mergeOptions,
 }) {
 	const [jsonValid, setJsonValid] = useState(null);
 	const [tempInputValue, setTempInputValue] = useState(
-		advancedCarouselSettings
-			? JSON.stringify(advancedCarouselSettings, null, 2)
+		advancedCarouselOptions
+			? JSON.stringify(advancedCarouselOptions, null, 2)
 			: ''
 	);
 
@@ -22,7 +22,7 @@ export default function AdvancedControls({
 			if (value.trim() === '') {
 				setJsonValid(true);
 				onChange({
-					advancedCarouselSettings: null,
+					advancedCarouselOptions: null,
 				});
 			} else {
 				const parsedJson = JSON.parse(value);
@@ -37,7 +37,7 @@ export default function AdvancedControls({
 	const updateSettings = (parsedJson) => {
 		setTimeout(() => {
 			onChange({
-				advancedCarouselSettings: parsedJson,
+				advancedCarouselOptions: parsedJson,
 			});
 
 			// @TODO - work out how to allow the textarea to be updated, without messing up user input if they are typing.
@@ -61,15 +61,13 @@ export default function AdvancedControls({
 
 	const helpText = tempInputValue
 		? jsonText
-		: __(
-				'Override the carousel settings with a custom Splide JSON object.'
-		  );
+		: __('Override the user selected options with a custom JSON object.');
 
 	return (
 		<>
 			<TextareaControl
 				help={helpText}
-				label={__('Advanced Carousel Settings')}
+				label={__('Advanced Carousel Options')}
 				rows={12}
 				onChange={(value) => handleInputChange(value)}
 				value={tempInputValue}
@@ -77,12 +75,12 @@ export default function AdvancedControls({
 			/>
 
 			<ToggleControl
-				label={__('Merge Settings')}
+				label={__('Merge Options')}
 				help={__(
-					'Should the custom settings be merged with the default settings, or override them?'
+					'Should the custom options be merged with the user selected options, or override them?'
 				)}
-				checked={mergeSettings}
-				onChange={(value) => onChange({ mergeSettings: value })}
+				checked={mergeOptions}
+				onChange={(value) => onChange({ mergeOptions: value })}
 			/>
 		</>
 	);

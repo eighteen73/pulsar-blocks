@@ -7,10 +7,10 @@ import BreakpointControls from './breakpoint-controls';
 import AdvancedControls from './advanced-controls';
 
 export default function CarouselInspectorControls({ onChange, attributes }) {
-	const { carouselSettings, advancedCarouselSettings, mergeSettings } =
+	const { carouselOptions, advancedCarouselOptions, mergeOptions } =
 		attributes;
 
-	const isDisabled = advancedCarouselSettings && !mergeSettings;
+	const isDisabled = advancedCarouselOptions && !mergeOptions;
 
 	return (
 		<>
@@ -26,7 +26,7 @@ export default function CarouselInspectorControls({ onChange, attributes }) {
 				<PanelBody title={__('Desktop settings')} initialOpen={true}>
 					<BreakpointControls
 						onChange={onChange}
-						carouselSettings={carouselSettings}
+						carouselOptions={carouselOptions}
 						size={false}
 						isDisabled={isDisabled}
 					/>
@@ -35,7 +35,7 @@ export default function CarouselInspectorControls({ onChange, attributes }) {
 				<PanelBody title={__('Tablet settings')} initialOpen={false}>
 					<BreakpointControls
 						onChange={onChange}
-						carouselSettings={carouselSettings}
+						carouselOptions={carouselOptions}
 						size={1024}
 						isDisabled={isDisabled}
 					/>
@@ -44,7 +44,7 @@ export default function CarouselInspectorControls({ onChange, attributes }) {
 				<PanelBody title={__('Mobile settings')} initialOpen={false}>
 					<BreakpointControls
 						onChange={onChange}
-						carouselSettings={carouselSettings}
+						carouselOptions={carouselOptions}
 						size={640}
 						isDisabled={isDisabled}
 					/>
@@ -54,8 +54,8 @@ export default function CarouselInspectorControls({ onChange, attributes }) {
 			<InspectorControls group="advanced">
 				<AdvancedControls
 					onChange={onChange}
-					advancedCarouselSettings={advancedCarouselSettings}
-					mergeSettings={mergeSettings}
+					advancedCarouselOptions={advancedCarouselOptions}
+					mergeOptions={mergeOptions}
 				/>
 			</InspectorControls>
 		</>

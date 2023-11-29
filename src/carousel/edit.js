@@ -2,21 +2,20 @@
  * WordPress dependencies
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
-import { useRef, useState, useEffect, useCallback } from '@wordpress/element';
-import { useSelect, select, subscribe } from '@wordpress/data';
+import { useRef, useState, useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 /**
  * Third party dependencies
  */
-import Splide from '@splidejs/splide';
+import { Splide } from '@splidejs/react-splide';
 
 /**
  * Block dependencies
  */
 import CarouselInspectorControls from './components/inspector-controls';
 import SingleBlockTypeAppender from '../components/single-block-type-appender';
-import Carousel from '../components/carousel';
 
 import './editor.scss';
 /**
@@ -37,11 +36,11 @@ export default function Edit({
 	isSelected,
 }) {
 	const {
-		carouselSettings,
-		advancedCarouselSettings,
-		mergeSettings,
+		carouselOptions,
+		advancedCarouselOptions,
+		mergeOptions,
 		ariaLabel,
-		hasList,
+		hasTrack,
 		allowedBlocks,
 		template,
 		templateLock,
@@ -59,21 +58,12 @@ export default function Edit({
 
 	const [carousel, setCarousel] = useState({});
 
-	// Set specific settings for the editor.
-	const editorSafeSettings = (settings) => {
-		return {
-			...settings,
-			type: settings.type === 'loop' ? 'slide' : settings.type,
-			autoplay: false,
-			drag: false,
-			arrows: true,
-		};
-	};
-
+	// Check if any inner block is selected.
 	const isInnerBlockSelected = useSelect((select) =>
 		select('core/block-editor').hasSelectedInnerBlock(clientId, true)
 	);
 
+	// Check if if a slide is selected.
 	const isSlideSelected = useSelect((select) =>
 		select('core/block-editor').hasSelectedInnerBlock(clientId, false)
 	);
@@ -89,74 +79,48 @@ export default function Edit({
 	);
 
 	/**
-	 * Refresh the carousel.
+	 *
+	 * @param {Object}  baseOptions       Carousel options
+	 * @param {Object}  additionalOptions Additional options to merge with the base options
+	 * @param {boolean} shouldMerge       If true, the additional options will be merged with the base options
+	 * @return {Object}                   The carousel options
 	 */
-	const refreshCarouselCallback = useCallback(() => {
-		if (Object.keys(carousel).length === 0) {
-			return;
+	const getOptions = (baseOptions, additionalOptions, shouldMerge) => {
+		if (shouldMerge && additionalOptions) {
+			return { ...baseOptions, ...additionalOptions };
 		}
-
-		// Refresh at end of the current thread (giving DOM a change to update beforehand)
-		setTimeout(() => {
-			carousel.refresh();
-		}, 0);
-	}, [carousel]);
+		return additionalOptions || baseOptions;
+	};
 
 	/**
-	 * Initialize the carousel.
-	 * Also set editor settings to avoid issues.
+	 * Return the carousel options with the correct values for the editor.
+	 *
+	 * @return {Object} The modified carousel options.
+	 */
+	const editorSafeOptions = () => {
+		const options = getOptions(
+			carouselOptions,
+			advancedCarouselOptions,
+			mergeOptions
+		);
+
+		return {
+			...options,
+			type: options.type === 'loop' ? 'slide' : options.type,
+			autoplay: false,
+			drag: false,
+			arrows: true,
+		};
+	};
+
+	/**
+	 * Set the carousel instance for access later.
 	 */
 	useEffect(() => {
 		if (ref.current) {
-			// Create a local variable to store modified settings
-			// Some settings cause issues in the editor, so we need to modify them.
-			let editorSettings = {
-				...(advancedCarouselSettings ?? carouselSettings),
-			};
-
-			editorSettings = {
-				...editorSettings,
-				type:
-					editorSettings.type === 'loop'
-						? 'slide'
-						: editorSettings.type,
-				autoplay: false,
-				drag: false,
-				arrows: true,
-			};
-
-			const blockHasList = ref.current.querySelector('.splide__list');
-
-			if (blockHasList) {
-				const splide = new Splide(ref.current, editorSettings);
-				setCarousel(splide.mount());
-			}
+			setCarousel(ref.current.splide);
 		}
-
-		return function cleanup() {
-			setCarousel(null);
-		};
-	}, [carouselSettings, advancedCarouselSettings]);
-
-	// Watch for a change in child blocks and refresh.
-	useEffect(() => {
-		const { getBlock } = select('core/block-editor');
-		let blockList = getBlock(clientId)
-			? getBlock(clientId).innerBlocks
-			: [];
-
-		subscribe(() => {
-			const newBlockList = getBlock(clientId)
-				? getBlock(clientId).innerBlocks
-				: [];
-			const blockListChanged = newBlockList !== blockList;
-			blockList = newBlockList;
-
-			if (blockListChanged) {
-				refreshCarouselCallback();
-			}
-		});
-	});
+	}, []);
 
 	return (
 		<>
@@ -166,18 +130,18 @@ export default function Edit({
 			/>
 
 			<div {...innerBlocksProps}>
-				<Carousel ref={ref} hasList={hasList} aria-label={ariaLabel}>
+				<Splide
+					options={editorSafeOptions()}
+					hasTrack={hasTrack}
+					ref={ref}
+					aria-label={ariaLabel}
+				>
 					{children}
-				</Carousel>
+				</Splide>
 
 				<SingleBlockTypeAppender
 					onClickAfter={() => {
-						refreshCarouselCallback();
-
-						// Add a delay to ensure the carousel is refreshed before going to the next slide.
-						setTimeout(() => {
-							carousel.go(innerBlocks.length);
-						}, 0);
+						carousel.go(innerBlocks.length);
 					}}
 					variant="secondary"
 					text={__('Add slide')}

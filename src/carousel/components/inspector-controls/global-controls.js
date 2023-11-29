@@ -17,7 +17,7 @@ export default function GlobalControls({
 	attributes,
 	isDisabled = false,
 }) {
-	const { ariaLabel, carouselSettings } = attributes;
+	const { ariaLabel, carouselOptions } = attributes;
 
 	// Updated function to conditionally update perPage to 1 if the type is 'fade'
 	function updatePerPageTo1(settings) {
@@ -77,27 +77,27 @@ export default function GlobalControls({
 			<Disabled isDisabled={isDisabled}>
 				<ToggleGroupControl
 					label={__('Type')}
-					help={helpText(carouselSettings.type)}
+					help={helpText(carouselOptions.type)}
 					onChange={(value) => {
 						const isFade = value === 'fade';
 
 						const updatedSettings = {
-							carouselSettings: {
-								...carouselSettings,
+							carouselOptions: {
+								...carouselOptions,
 								type: value,
 							},
 						};
 
 						// If the value is 'fade', update perPage to 1
 						if (isFade) {
-							updatedSettings.carouselSettings = updatePerPageTo1(
-								updatedSettings.carouselSettings
+							updatedSettings.carouselOptions = updatePerPageTo1(
+								updatedSettings.carouselOptions
 							);
 						}
 
 						onChange(updatedSettings);
 					}}
-					value={carouselSettings.type}
+					value={carouselOptions.type}
 					isBlock
 				>
 					<ToggleGroupControlOption
@@ -119,18 +119,18 @@ export default function GlobalControls({
 					help={__(
 						'Automatically move to the next slide. Disabled in the editor.'
 					)}
-					checked={carouselSettings.autoplay}
+					checked={carouselOptions.autoplay}
 					onChange={(value) => {
 						onChange({
-							carouselSettings: {
-								...carouselSettings,
+							carouselOptions: {
+								...carouselOptions,
 								autoplay: value,
 							},
 						});
 					}}
 				/>
 
-				{carouselSettings.autoplay && (
+				{carouselOptions.autoplay && (
 					<NumberControl
 						label={__('Autoplay interval')}
 						min={0}
@@ -138,14 +138,14 @@ export default function GlobalControls({
 						isShiftStepEnabled={true}
 						onChange={(value) => {
 							onChange({
-								carouselSettings: {
-									...carouselSettings,
+								carouselOptions: {
+									...carouselOptions,
 									interval: parseInt(value),
 								},
 							});
 						}}
 						shiftStep={1000}
-						value={carouselSettings.interval}
+						value={carouselOptions.interval}
 					/>
 				)}
 			</Disabled>
