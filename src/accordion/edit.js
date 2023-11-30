@@ -67,18 +67,7 @@ export default function Edit({
 		orientation: 'vertical',
 		allowedBlocks: ALLOWED_BLOCKS,
 		template: TEMPLATE,
-		renderAppender: () => (
-			<SingleBlockTypeAppender
-				variant="secondary"
-				icon={plus}
-				iconPosition="left"
-				text={__('Add item')}
-				allowedBlock="pulsar/accordion-item"
-				style={{ width: '100%', justifyContent: 'center' }}
-				clientId={clientId}
-				isSelected={isSelected || isInnerBlockSelected}
-			/>
-		),
+		renderAppender: () => false,
 	});
 
 	return (
@@ -137,6 +126,17 @@ export default function Edit({
 			</InspectorControls>
 
 			{children}
+
+			<SingleBlockTypeAppender
+				variant="secondary"
+				icon={plus}
+				iconPosition="left"
+				text={__('Add item')}
+				allowedBlock="pulsar/accordion-item"
+				style={{ width: '100%', justifyContent: 'center' }}
+				clientId={clientId}
+				isEnabled={isSelected || isInnerBlockSelected}
+			/>
 		</div>
 	);
 }
