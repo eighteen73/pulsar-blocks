@@ -27,14 +27,14 @@ export default function AdvancedControls({
 			} else {
 				const parsedJson = JSON.parse(value);
 				setJsonValid(true);
-				updateSettings(parsedJson);
+				updateOptions(parsedJson);
 			}
 		} catch (error) {
 			setJsonValid(false);
 		}
 	};
 
-	const updateSettings = (parsedJson) => {
+	const updateOptions = (parsedJson) => {
 		setTimeout(() => {
 			onChange({
 				advancedCarouselOptions: parsedJson,

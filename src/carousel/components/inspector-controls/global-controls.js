@@ -20,28 +20,25 @@ export default function GlobalControls({
 	const { ariaLabel, carouselOptions } = attributes;
 
 	// Updated function to conditionally update perPage to 1 if the type is 'fade'
-	function updatePerPageTo1(settings) {
-		if (settings && typeof settings === 'object') {
+	function updatePerPageTo1(options) {
+		if (options && typeof options === 'object') {
 			// Conditionally update perPage to 1 based on the type
-			if (
-				settings.type === 'fade' &&
-				settings.hasOwnProperty('perPage')
-			) {
-				settings = { ...settings, perPage: 1 };
+			if (options.type === 'fade' && options.hasOwnProperty('perPage')) {
+				options = { ...options, perPage: 1 };
 			}
 
 			// Recursively update perPage in nested objects
-			for (const key in settings) {
+			for (const key in options) {
 				if (
-					settings.hasOwnProperty(key) &&
-					typeof settings[key] === 'object'
+					options.hasOwnProperty(key) &&
+					typeof options[key] === 'object'
 				) {
-					settings[key] = updatePerPageTo1(settings[key]);
+					options[key] = updatePerPageTo1(options[key]);
 				}
 			}
 		}
 
-		return settings;
+		return options;
 	}
 
 	const helpText = (type) => {
@@ -81,7 +78,7 @@ export default function GlobalControls({
 					onChange={(value) => {
 						const isFade = value === 'fade';
 
-						const updatedSettings = {
+						const updatedOptions = {
 							carouselOptions: {
 								...carouselOptions,
 								type: value,
@@ -90,12 +87,12 @@ export default function GlobalControls({
 
 						// If the value is 'fade', update perPage to 1
 						if (isFade) {
-							updatedSettings.carouselOptions = updatePerPageTo1(
-								updatedSettings.carouselOptions
+							updatedOptions.carouselOptions = updatePerPageTo1(
+								updatedOptions.carouselOptions
 							);
 						}
 
-						onChange(updatedSettings);
+						onChange(updatedOptions);
 					}}
 					value={carouselOptions.type}
 					isBlock
