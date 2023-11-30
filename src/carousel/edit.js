@@ -3,6 +3,7 @@
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { useRef, useState, useEffect } from '@wordpress/element';
+import { Spinner, Placeholder } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
@@ -67,6 +68,18 @@ export default function Edit({
 	const isSlideSelected = useSelect((select) =>
 		select('core/block-editor').hasSelectedInnerBlock(clientId, false)
 	);
+
+	/**
+	 * Check if the carousel is ready to be rendered.
+	 */
+	const isReady = useSelect((select) => {
+		if (hasTrack) {
+			return true;
+		}
+
+		const block = select('core/block-editor').getBlock(clientId);
+		return block && block.innerBlocks.length > 0;
+	});
 
 	/**
 	 * Get the inner blocks of the current block.
@@ -140,18 +153,25 @@ export default function Edit({
 			/>
 
 			<div {...innerBlocksProps}>
-				<Splide
-					options={options}
-					hasTrack={false}
-					ref={ref}
-					aria-label={ariaLabel}
-				>
-					{hasTrack ? (
-						<SplideTrack>{children}</SplideTrack>
-					) : (
-						children
-					)}
-				</Splide>
+				{isReady ? (
+					<Splide
+						options={options}
+						hasTrack={false}
+						ref={ref}
+						aria-label={ariaLabel}
+					>
+						{hasTrack ? (
+							<SplideTrack>{children}</SplideTrack>
+						) : (
+							children
+						)}
+					</Splide>
+				) : (
+					<>
+						<Spinner />
+						{children}
+					</>
+				)}
 
 				<SingleBlockTypeAppender
 					onClickAfter={() => {
@@ -163,7 +183,8 @@ export default function Edit({
 					style={{ width: '100%', justifyContent: 'center' }}
 					clientId={clientId}
 					isEnabled={
-						isSelected || isInnerBlockSelected || isSlideSelected
+						hasTrack &&
+						(isSelected || isInnerBlockSelected || isSlideSelected)
 					}
 				/>
 			</div>
