@@ -57,19 +57,15 @@
       "type": "boolean",
       "default": true
     },
-    "allowedBlocks": {
-      "type": "array",
-      "default": [
-        "pulsar/carousel-slide"
-      ]
-    },
     "template": {
-      "type": "array",
-      "default": []
+      "type": "array"
     },
     "templateLock": {
-      "type": "string",
-      "default": false
-    }
+			"type": [ "string", "boolean" ],
+			"enum": [ "all", "insert", "contentOnly", false ]
+		},
+    "allowedBlocks": {
+			"type": "array"
+		}
   }
 }

@@ -9,7 +9,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * Third party dependencies
  */
-import { Splide } from '@splidejs/react-splide';
+import { Splide, SplideTrack } from '@splidejs/react-splide';
 
 /**
  * Block dependencies
@@ -56,7 +56,6 @@ export default function Edit({
 		renderAppender: false,
 	});
 
-	const [carousel, setCarousel] = useState({});
 	const [options, setOptions] = useState({});
 
 	// Check if any inner block is selected.
@@ -94,11 +93,13 @@ export default function Edit({
 	};
 
 	/**
-	 * Return the carousel options with the correct values for the editor.
+	 * Return the carousel options with safe values for the editor.
+	 * @see https://splidejs.com/options/
+	 *
 	 * @param {Object} optionsObj The carousel options.
 	 * @return {Object} The modified carousel options.
 	 */
-	const editorSafeOptions = (optionsObj) => {
+	const sanitizeOptions = (optionsObj) => {
 		return {
 			...optionsObj,
 			type: optionsObj.type === 'loop' ? 'slide' : optionsObj.type,
@@ -113,33 +114,23 @@ export default function Edit({
 	 * Options need to modified for the editor only.
 	 */
 	useEffect(() => {
-		const editorOptions = editorSafeOptions(
+		const editorOptions = sanitizeOptions(
 			getOptions(carouselOptions, advancedCarouselOptions, mergeOptions)
 		);
 		setOptions(editorOptions);
 	}, [carouselOptions, advancedCarouselOptions, mergeOptions]);
 
 	/**
-	 * Set the carousel instance for access later.
+	 * If the carousels type changes, destroy and remount the carousel.
+	 * @todo test if this is still required.
 	 */
 	useEffect(() => {
 		if (ref.current) {
-			setCarousel(ref.current.splide);
+			const carousel = ref.current.splide;
+			carousel.destroy(true);
+			carousel.mount();
 		}
-	}, []);
-
-	/**
-	 * If the carousels type changes, destroy and remount the carousel.
-	 */
-	useEffect(() => {
-		if (carousel) {
-			carousel.destroy(false).then(() => {
-				if (carousel) {
-					carousel.mount();
-				}
-			});
-		}
-	}, [options.type, carousel]);
+	}, [options.type]);
 
 	return (
 		<>
@@ -151,16 +142,20 @@ export default function Edit({
 			<div {...innerBlocksProps}>
 				<Splide
 					options={options}
-					hasTrack={hasTrack}
+					hasTrack={false}
 					ref={ref}
 					aria-label={ariaLabel}
 				>
-					{children}
+					{hasTrack ? (
+						<SplideTrack>{children}</SplideTrack>
+					) : (
+						children
+					)}
 				</Splide>
 
 				<SingleBlockTypeAppender
 					onClickAfter={() => {
-						carousel.go(innerBlocks.length);
+						ref.current.splide.go(innerBlocks.length);
 					}}
 					variant="secondary"
 					text={__('Add slide')}
