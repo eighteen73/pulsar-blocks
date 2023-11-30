@@ -27,7 +27,7 @@ export default function GlobalControls({
 				settings.type === 'fade' &&
 				settings.hasOwnProperty('perPage')
 			) {
-				settings = { ...settings, perPage: '1' };
+				settings = { ...settings, perPage: 1 };
 			}
 
 			// Recursively update perPage in nested objects
