@@ -19,7 +19,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import json from './block.json';
 import Edit from './edit';
 import Save from './save';
-import Icon from './components/icon';
+import { AccordionItem as Icon } from '../components/icons';
 
 const { name } = json;
 
