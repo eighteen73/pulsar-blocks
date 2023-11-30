@@ -116,7 +116,7 @@ export default function Edit({
 	const sanitizeOptions = (optionsObj) => {
 		return {
 			...optionsObj,
-			type: optionsObj.type === 'loop' ? 'slide' : optionsObj.type,
+			type: optionsObj.type === 'fade' ? 'fade' : 'slide',
 			autoplay: false,
 			drag: false,
 			arrows: true,

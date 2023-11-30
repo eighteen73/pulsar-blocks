@@ -72,8 +72,6 @@ export default function GlobalControls({
 					label={__('Type')}
 					help={typeHelpText(carouselOptions.type)}
 					onChange={(value) => {
-						const isFade = value === 'fade';
-
 						const updatedOptions = {
 							carouselOptions: {
 								...carouselOptions,
@@ -82,7 +80,7 @@ export default function GlobalControls({
 						};
 
 						// If the value is 'fade', update perPage to 1
-						if (isFade) {
+						if (value === 'fade') {
 							updatedOptions.carouselOptions = updatePerPageTo1(
 								updatedOptions.carouselOptions
 							);
@@ -106,14 +104,23 @@ export default function GlobalControls({
 				<ToggleControl
 					label={__('Loop')}
 					help={__(
-						'Continually loop through the slides. Disabled in the editor.'
+						'Continually loop through the slides (not reflected in this editor).'
 					)}
+					checked={carouselOptions.loop}
+					onChange={(value) => {
+						onChange({
+							carouselOptions: {
+								...carouselOptions,
+								loop: value,
+							},
+						});
+					}}
 				/>
 
 				<ToggleControl
 					label={__('Autoplay')}
 					help={__(
-						'Automatically move to the next slide. Disabled in the editor.'
+						"Automatically move to the next slide (not reflected in this editor)."
 					)}
 					checked={carouselOptions.autoplay}
 					onChange={(value) => {

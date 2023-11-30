@@ -16,6 +16,7 @@
       "type": "object",
       "default": {
         "type": "slide",
+        "loop": false,
         "drag": true,
         "perPage": 3,
         "perMove": 1,

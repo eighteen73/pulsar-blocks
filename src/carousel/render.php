@@ -13,6 +13,17 @@ $options   = $attributes['advancedCarouselOptions'] ?? $attributes['carouselOpti
 $merge_options = $attributes['mergeOptions'] ?? false;
 $has_track  = $attributes['hasTrack'] ?? false;
 $aria_label = $attributes['ariaLabel'] ?? __( 'Carousel', 'pulsar' );
+
+// Translate our settings into Splide options
+if ( isset( $options['loop'] ) ) {
+	$options['type'] = $options['type'] === 'slide' && $options['loop'] ? 'loop' : $options['type'];
+	$options['rewind'] = $options['type'] === 'fade' && $options['loop'];
+	unset( $options['loop'] );
+} else {
+	$options['type'] = $options['type'] === 'fade' ?? 'slide';
+}
+
+
 ?>
 
 <div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
