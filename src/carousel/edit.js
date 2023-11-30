@@ -17,6 +17,7 @@ import { Splide, SplideTrack } from '@splidejs/react-splide';
  */
 import CarouselInspectorControls from './components/inspector-controls';
 import SingleBlockTypeAppender from '../components/single-block-type-appender';
+import CarouselPlaceholder from './components/placeholder';
 
 import './editor.scss';
 /**
@@ -153,7 +154,11 @@ export default function Edit({
 			/>
 
 			<div {...innerBlocksProps}>
-				{isReady ? (
+				{!isReady || innerBlocks.length === 0 ? (
+					<CarouselPlaceholder clientId={clientId}>
+						{children}
+					</CarouselPlaceholder>
+				) : (
 					<Splide
 						options={options}
 						hasTrack={false}
@@ -166,11 +171,6 @@ export default function Edit({
 							children
 						)}
 					</Splide>
-				) : (
-					<>
-						<Spinner />
-						{children}
-					</>
 				)}
 
 				<SingleBlockTypeAppender
@@ -184,7 +184,9 @@ export default function Edit({
 					clientId={clientId}
 					isEnabled={
 						hasTrack &&
-						(isSelected || isInnerBlockSelected || isSlideSelected)
+						((isSelected && innerBlocks.length > 0) ||
+							isInnerBlockSelected ||
+							isSlideSelected)
 					}
 				/>
 			</div>

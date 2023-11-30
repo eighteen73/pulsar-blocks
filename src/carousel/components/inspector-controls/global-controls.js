@@ -41,15 +41,11 @@ export default function GlobalControls({
 		return options;
 	}
 
-	const helpText = (type) => {
+	const typeHelpText = (type) => {
 		switch (type) {
 			case 'slide':
 				return __(
 					'Slide between slides. Supports multiple slides per page.'
-				);
-			case 'loop':
-				return __(
-					'Continually loop through the slides. Disabled in the editor.'
 				);
 			case 'fade':
 				return __(
@@ -74,7 +70,7 @@ export default function GlobalControls({
 			<Disabled isDisabled={isDisabled}>
 				<ToggleGroupControl
 					label={__('Type')}
-					help={helpText(carouselOptions.type)}
+					help={typeHelpText(carouselOptions.type)}
 					onChange={(value) => {
 						const isFade = value === 'fade';
 
@@ -102,14 +98,17 @@ export default function GlobalControls({
 						label={__('Slide')}
 					/>
 					<ToggleGroupControlOption
-						value={'loop'}
-						label={__('Loop')}
-					/>
-					<ToggleGroupControlOption
 						value={'fade'}
 						label={__('Fade')}
 					/>
 				</ToggleGroupControl>
+
+				<ToggleControl
+					label={__('Loop')}
+					help={__(
+						'Continually loop through the slides. Disabled in the editor.'
+					)}
+				/>
 
 				<ToggleControl
 					label={__('Autoplay')}
