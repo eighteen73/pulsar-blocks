@@ -23,16 +23,13 @@ export default function GlobalControls({
 	function updatePerPageTo1(options) {
 		if (options && typeof options === 'object') {
 			// Conditionally update perPage to 1 based on the type
-			if (options.type === 'fade' && options.hasOwnProperty('perPage')) {
+			if (options.hasOwnProperty('blockSettings') && options.blockSettings.type === 'fade' && options.hasOwnProperty('perPage')) {
 				options = { ...options, perPage: 1 };
 			}
 
 			// Recursively update perPage in nested objects
 			for (const key in options) {
-				if (
-					options.hasOwnProperty(key) &&
-					typeof options[key] === 'object'
-				) {
+				if (typeof options[key] === 'object') {
 					options[key] = updatePerPageTo1(options[key]);
 				}
 			}
@@ -70,12 +67,15 @@ export default function GlobalControls({
 			<Disabled isDisabled={isDisabled}>
 				<ToggleGroupControl
 					label={__('Type')}
-					help={typeHelpText(carouselOptions.type)}
+					help={typeHelpText(carouselOptions.blockSettings.type)}
 					onChange={(value) => {
 						const updatedOptions = {
 							carouselOptions: {
 								...carouselOptions,
-								type: value,
+								blockSettings: {
+									...carouselOptions.blockSettings,
+									type: value
+								}
 							},
 						};
 
@@ -88,7 +88,7 @@ export default function GlobalControls({
 
 						onChange(updatedOptions);
 					}}
-					value={carouselOptions.type}
+					value={carouselOptions.blockSettings.type}
 					isBlock
 				>
 					<ToggleGroupControlOption
@@ -104,14 +104,17 @@ export default function GlobalControls({
 				<ToggleControl
 					label={__('Loop')}
 					help={__(
-						'Continually loop through the slides (not reflected in this editor).'
+						'Continually loop through the slides.'
 					)}
-					checked={carouselOptions.loop}
+					checked={carouselOptions.blockSettings.loop}
 					onChange={(value) => {
 						onChange({
 							carouselOptions: {
 								...carouselOptions,
-								loop: value,
+								blockSettings: {
+									...carouselOptions.blockSettings,
+									loop: value
+								}
 							},
 						});
 					}}

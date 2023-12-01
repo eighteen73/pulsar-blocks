@@ -14,13 +14,14 @@ $merge_options = $attributes['mergeOptions'] ?? false;
 $has_track  = $attributes['hasTrack'] ?? false;
 $aria_label = $attributes['ariaLabel'] ?? __( 'Carousel', 'pulsar' );
 
-// Translate our settings into Splide options
-if ( isset( $options['loop'] ) ) {
-	$options['type'] = $options['type'] === 'slide' && $options['loop'] ? 'loop' : $options['type'];
-	$options['rewind'] = $options['type'] === 'fade' && $options['loop'];
-	unset( $options['loop'] );
+// Translate our custom settings into Splide options
+// Note this also needs to happen in edit.js for the CMS
+if ( $options['blockSettings']['loop'] ?? false ) {
+	$options['type'] = $options['blockSettings']['type'] === 'fade' ? 'fade' : 'loop';
+	$options['rewind'] = $options['blockSettings']['type'] === 'fade';
 } else {
-	$options['type'] = $options['type'] === 'fade' ?? 'slide';
+	$options['type'] = $options['blockSettings']['type'];
+	$options['rewind'] = false;
 }
 
 

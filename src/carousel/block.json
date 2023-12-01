@@ -15,8 +15,10 @@
     "carouselOptions": {
       "type": "object",
       "default": {
-        "type": "slide",
-        "loop": false,
+        "blockSettings": {
+          "type": "slide",
+          "loop": false
+        },
         "drag": true,
         "perPage": 3,
         "perMove": 1,
