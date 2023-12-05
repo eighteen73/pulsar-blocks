@@ -9,7 +9,7 @@ import classnames from 'classnames';
 import { Button, Tooltip, VisuallyHidden } from '@wordpress/components';
 import { forwardRef } from '@wordpress/element';
 import { _x, sprintf } from '@wordpress/i18n';
-import { Icon, create } from '@wordpress/icons';
+import { create } from '@wordpress/icons';
 import { Inserter } from '@wordpress/block-editor';
 
 function ButtonBlockAppender(

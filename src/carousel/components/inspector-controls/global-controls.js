@@ -23,7 +23,11 @@ export default function GlobalControls({
 	function updatePerPageTo1(options) {
 		if (options && typeof options === 'object') {
 			// Conditionally update perPage to 1 based on the type
-			if (options.hasOwnProperty('blockSettings') && options.blockSettings.type === 'fade' && options.hasOwnProperty('perPage')) {
+			if (
+				options.hasOwnProperty('blockSettings') &&
+				options.blockSettings.type === 'fade' &&
+				options.hasOwnProperty('perPage')
+			) {
 				options = { ...options, perPage: 1 };
 			}
 
@@ -74,8 +78,8 @@ export default function GlobalControls({
 								...carouselOptions,
 								blockSettings: {
 									...carouselOptions.blockSettings,
-									type: value
-								}
+									type: value,
+								},
 							},
 						};
 
@@ -103,9 +107,7 @@ export default function GlobalControls({
 
 				<ToggleControl
 					label={__('Loop')}
-					help={__(
-						'Continually loop through the slides.'
-					)}
+					help={__('Continually loop through the slides.')}
 					checked={carouselOptions.blockSettings.loop}
 					onChange={(value) => {
 						onChange({
@@ -113,8 +115,8 @@ export default function GlobalControls({
 								...carouselOptions,
 								blockSettings: {
 									...carouselOptions.blockSettings,
-									loop: value
-								}
+									loop: value,
+								},
 							},
 						});
 					}}
@@ -123,7 +125,7 @@ export default function GlobalControls({
 				<ToggleControl
 					label={__('Autoplay')}
 					help={__(
-						"Automatically move to the next slide (not reflected in this editor)."
+						'Automatically move to the next slide (not reflected in this editor).'
 					)}
 					checked={carouselOptions.autoplay}
 					onChange={(value) => {

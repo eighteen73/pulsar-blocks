@@ -3,7 +3,6 @@
  */
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { useRef, useState, useEffect } from '@wordpress/element';
-import { Spinner, Placeholder } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
@@ -105,7 +104,8 @@ export default function Edit({
 		// Translate our custom settings into Splide options
 		// Note this also needs to happen in render.php for the front end
 		if (options.blockSettings.loop) {
-			options.type =  options.blockSettings.type === 'fade' ? 'fade' : 'loop';
+			options.type =
+				options.blockSettings.type === 'fade' ? 'fade' : 'loop';
 			if (options.blockSettings.type === 'fade') {
 				options.rewind = true;
 			}
@@ -136,6 +136,7 @@ export default function Edit({
 	const sanitizeOptions = (optionsObj) => {
 		return {
 			...optionsObj,
+			type: 'slide', // force slide type for the editor for now.
 			autoplay: false,
 			drag: false,
 			arrows: true,
