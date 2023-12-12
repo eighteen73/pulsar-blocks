@@ -20,7 +20,7 @@ import './style.scss';
 import json from './block.json';
 import Edit from './edit';
 import Save from './save';
-import Icon from './components/icon';
+import { Carousel as Icon } from '../components/icons';
 
 const { name } = json;
 

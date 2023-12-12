@@ -3,92 +3,70 @@
  */
 import {
 	RichText,
-	InnerBlocks,
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { useEffect } from "@wordpress/element";
+import { cleanForSlug } from '@wordpress/url';
+import { useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-
-import './editor.css';
-
-const ALLOWED_BLOCKS = [ 'core/heading', 'core/paragraph', 'core/buttons' ];
 
 /**
  * The save function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
- * @param  root0
- * @param  root0.clientId
- * @param  root0.attributes
- * @param  root0.setAttributes
+ * @param {Object}   param0               The props passed to the save function.
+ * @param {Object}   param0.attributes    The block's attributes as saved.
+ * @param {Function} param0.setAttributes Function to set the block's attributes.
+ * @param {Object}   param0.context       The block's context.
  * @return {WPElement} Element to render.
  */
-export default function Edit( { clientId, attributes: { title, id }, setAttributes } ) {
+export default function Edit({ attributes, setAttributes, context }) {
+	const { title, id } = attributes;
 
-	const blockProps = useBlockProps();
+	const { level } = context;
+	const TagName = 'h' + level;
 
-	const innerBlocksProps = useInnerBlocksProps(
-		{
-			className: "wp-block-pulsar-accordion-item__content"
-		},
-		{
-			orientation: "vertical",
-			allowedBlocks: ALLOWED_BLOCKS,
-			renderAppender: () => <InnerBlocks.ButtonBlockAppender />,
-		}
-	);
+	const blockProps = useBlockProps({
+		className: 'wp-block-pulsar-accordion__item',
+	});
 
 	// Set the ID.
 	useEffect(() => {
-		id === '' &&
-		setAttributes({ id: clientId });
+		setAttributes({ id: cleanForSlug(title) });
+	}, [title, id, setAttributes]);
 
-        // Listen for a click on the block. If its the richtext element, disable open/close.
-        const element = document.querySelector( `#block-${clientId}` );
-        element.addEventListener( 'click', function(e) {
-            if(e.target.classList.contains('wp-block-pulsar-accordion-item__text')) {
-                e.preventDefault();
-            }
-        } );
-	}, []);
+	const innerBlocksProps = useInnerBlocksProps(
+		{
+			className: 'wp-block-pulsar-accordion__panel',
+		},
+		{
+			orientation: 'vertical',
+			__experimentalCaptureToolbars: true,
+			templateInsertUpdatesSelection: false,
+		}
+	);
 
 	return (
-		<details
-			{ ...blockProps }
-		>
-			<summary className="wp-block-pulsar-accordion-item__title">
-				<div
-					className="wp-block-pulsar-accordion-item__button"
-				>
+		<div {...blockProps}>
+			<TagName className="wp-block-pulsar-accordion__heading">
+				<button className="wp-block-pulsar-accordion__trigger">
 					<RichText
 						tagName="span"
-						className="wp-block-pulsar-accordion-item__text"
-						allowedFormats={ [ 'core/bold', 'core/italic' ] }
-						onChange={ (title) => setAttributes( { title } ) }
-						value={ title }
-						placeholder={ __( 'Add a title...' ) }
+						className="wp-block-pulsar-accordion__title"
+						allowedFormats={['core/bold', 'core/italic']}
+						onChange={(value) => setAttributes({ title: value })}
+						value={title}
+						placeholder={__('Add a title…')}
 					/>
 
 					<span
-						className="wp-block-pulsar-accordion-item__icon wp-block-pulsar-accordion-item__icon--open"
-						aria-hidden="true"
-						dangerouslySetInnerHTML={{__html: '&plus;'}}
-					>
-					</span>
+						className="wp-block-pulsar-accordion__icon"
+						dangerouslySetInnerHTML={{ __html: '&plus;' }}
+					></span>
+				</button>
+			</TagName>
 
-					<span
-						className="wp-block-pulsar-accordion-item__icon wp-block-pulsar-accordion-item__icon--close"
-						aria-hidden="true"
-						dangerouslySetInnerHTML={{__html: '&minus;'}}
-					>
-					</span>
-				</div>
-			</summary>
-
-			<div className="wp-block-pulsar-accordion-item__container">
-				<div { ...innerBlocksProps }></div>
-			</div>
-		</details>
+			<div {...innerBlocksProps}></div>
+		</div>
 	);
 }

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "pulsar/accordion",
+  "version": "0.1.0",
+  "title": "Accordion",
+  "category": "design",
+  "attributes": {
+    "openMultiple": {
+      "type": "boolean",
+      "default": true
+    },
+    "startOpen": {
+      "type": "boolean",
+      "default": false
+    },
+    "level": {
+      "type": "number",
+      "default": 3
+    },
+    "hasSchema": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "providesContext": {
+    "level": "level"
+  },
+  "textdomain": "pulsar",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php"
+}

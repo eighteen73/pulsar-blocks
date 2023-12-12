@@ -1,0 +1,80 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "pulsar/carousel",
+  "version": "0.1.0",
+  "title": "Carousel",
+  "category": "design",
+  "textdomain": "pulsar",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php",
+  "attributes": {
+    "carouselOptions": {
+      "type": "object",
+      "default": {
+        "type": "slide",
+        "drag": true,
+        "perPage": 3,
+        "perMove": 1,
+        "gap": "30px",
+        "rewind": false,
+        "arrows": true,
+        "pagination": true,
+        "autoplay": false,
+        "interval": 5000,
+        "breakpoints": {
+          "640": {
+            "perPage": 1,
+            "perMove": 1,
+            "arrows": true,
+            "pagination": false,
+            "gap": "30px"
+          },
+          "1024": {
+            "perPage": 2,
+            "perMove": 1,
+            "arrows": true,
+            "pagination": false,
+            "gap": "30px"
+          }
+        }
+      }
+    },
+    "advancedCarouselOptions": {
+      "type": "object"
+    },
+    "mergeOptions": {
+      "type": "boolean",
+      "default": false
+    },
+    "ariaLabel": {
+      "type": "string",
+      "default": "Carousel"
+    },
+    "hasTrack": {
+      "type": "boolean",
+      "default": true
+    },
+    "template": {
+      "type": "array"
+    },
+    "templateLock": {
+      "type": [
+        "string",
+        "boolean"
+      ],
+      "enum": [
+        "all",
+        "insert",
+        "contentOnly",
+        false
+      ]
+    },
+    "allowedBlocks": {
+      "type": "array"
+    }
+  }
+}

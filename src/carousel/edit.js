@@ -1,250 +1,193 @@
-import {
-	useBlockProps,
-	useInnerBlocksProps,
-	BlockControls,
-} from "@wordpress/block-editor";
+/**
+ * WordPress dependencies
+ */
+import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
+import { useRef, useState, useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
+import { __ } from '@wordpress/i18n';
 
-import { useState, useEffect } from "@wordpress/element";
+/**
+ * Third party dependencies
+ */
+import { Splide, SplideTrack } from '@splidejs/react-splide';
 
-import CarouselControls from "./components/CarouselControls";
+/**
+ * Block dependencies
+ */
+import CarouselInspectorControls from './components/inspector-controls';
+import SingleBlockTypeAppender from '../components/single-block-type-appender';
+import CarouselPlaceholder from './components/placeholder';
 
-import Splide from "@splidejs/splide";
-
-import { dispatch, select } from "@wordpress/data";
-
-import {
-	DropdownMenu,
-	Toolbar,
-	ToolbarItem,
-	MenuGroup,
-	MenuItem,
-	Dropdown,
-	Button,
-} from "@wordpress/components";
-
-import { createBlock } from "@wordpress/blocks";
-
-import { more, plus } from "@wordpress/icons";
-
-import "./editor.scss";
-
+import './editor.scss';
 /**
  * The edit function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
  * @param {Object}   param0
- * @param {Object}   param0.clientId
  * @param {Object}   param0.attributes
  * @param {Function} param0.setAttributes
+ * @param {string}   param0.clientId
+ * @param {boolean}  param0.isSelected
  * @return {WPElement} Element to render.
- *
- *
  */
-
-export default function Edit({ clientId, attributes, setAttributes }) {
+export default function Edit({
+	attributes,
+	setAttributes,
+	clientId,
+	isSelected,
+}) {
 	const {
-		mediaQuery,
-		autoplay,
-		arrows,
-		pagination,
-		type,
-		mobileOptions,
-		tabletOptions,
-		desktopOptions,
+		carouselOptions,
+		advancedCarouselOptions,
+		mergeOptions,
+		ariaLabel,
+		hasTrack,
+		allowedBlocks,
+		template,
+		templateLock,
 	} = attributes;
 
-	const [carousel, setCarousel] = useState({});
+	const ref = useRef(null);
+	const blockProps = useBlockProps();
+	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
+		orientation: 'horizontal',
+		allowedBlocks,
+		template,
+		templateLock,
+		renderAppender: false,
+	});
 
-	const onChangeAutoplayEnabled = () => {
-		setAttributes({ autoplay: !autoplay });
-		setSplideJSONData({ ...splideJSONData, autoplay: !autoplay });
-	};
+	const [options, setOptions] = useState({});
 
-	const onChangeArrowsEnabled = () => {
-		setAttributes({ arrows: !arrows });
-		setSplideJSONData({ ...splideJSONData, arrows: !arrows });
-	};
+	// Check if any inner block is selected.
+	const isInnerBlockSelected = useSelect((select) =>
+		select('core/block-editor').hasSelectedInnerBlock(clientId, true)
+	);
 
-	const onChangePaginationEnabled = () => {
-		setAttributes({ pagination: !pagination });
-		setSplideJSONData({ ...splideJSONData, pagination: !pagination });
-	};
+	// Check if if a slide is selected.
+	const isSlideSelected = useSelect((select) =>
+		select('core/block-editor').hasSelectedInnerBlock(clientId, false)
+	);
 
-	const onChangeAnimationMode = (mode) => {
-		setAttributes({ type: mode });
-		setSplideJSONData({ ...splideJSONData, type: mode });
-	};
+	/**
+	 * Check if the carousel is ready to be rendered.
+	 */
+	const isReady = useSelect((select) => {
+		if (hasTrack) {
+			return true;
+		}
 
-	const onChangeMobileAttributes = (object) => {
-		setAttributes({ mobileOptions: object });
-	};
+		const block = select('core/block-editor').getBlock(clientId);
+		return block && block.innerBlocks.length > 0;
+	});
 
-	const onChangeTabletAttributes = (object) => {
-		setAttributes({ tabletOptions: object });
-	};
+	/**
+	 * Get the inner blocks of the current block.
+	 * This is used to watch for changes in the inner blocks.
+	 */
+	const innerBlocks = useSelect((select) =>
+		select('core/block-editor').getBlock(clientId)
+			? select('core/block-editor').getBlock(clientId).innerBlocks
+			: []
+	);
 
-	const onChangeDesktopAttributes = (object) => {
-		setAttributes({ desktopOptions: object });
+	/**
+	 *
+	 * @param {Object}  baseOptions       Carousel options
+	 * @param {Object}  additionalOptions Additional options to merge with the base options
+	 * @param {boolean} shouldMerge       If true, the additional options will be merged with the base options
+	 * @return {Object}                   The carousel options
+	 */
+	const getOptions = (baseOptions, additionalOptions, shouldMerge) => {
+		if (shouldMerge && additionalOptions) {
+			return { ...baseOptions, ...additionalOptions };
+		}
+		return additionalOptions || baseOptions;
 	};
 
 	/**
-	 * Transform FocusType and FocusPosition into
-	 * a single key 'focus' for each breakpoint screen
-	 * https://splidejs.com/guides/options/#focus
+	 * Return the carousel options with safe values for the editor.
+	 * @see https://splidejs.com/options/
+	 *
+	 * @param {Object} optionsObj The carousel options.
+	 * @return {Object} The modified carousel options.
 	 */
-	const transformFocusType = () => {
-		const mobile = { ...mobileOptions };
-		mobile.focus =
-			mobile.focusType === "number"
-				? mobile.focusPosition
-				: mobile.focusType;
-		delete mobile.focusPosition;
-		delete mobile.focusType;
-
-		const tablet = { ...tabletOptions };
-		tablet.focus =
-			tablet.focusType === "number"
-				? tablet.focusPosition
-				: tablet.focusType;
-		delete tablet.focusPosition;
-		delete tablet.focusType;
-
-		const desktop = { ...desktopOptions };
-		desktop.focus =
-			desktop.focusType === "number"
-				? desktop.focusPosition
-				: desktop.focusType;
-		delete desktop.focusPosition;
-		delete desktop.focusType;
-
-		return { desktop, tablet, mobile };
+	const sanitizeOptions = (optionsObj) => {
+		return {
+			...optionsObj,
+			type: 'slide',
+			autoplay: false,
+			drag: false,
+			arrows: true,
+		};
 	};
 
-	const focusPositions = transformFocusType();
-	const [splideJSONData, setSplideJSONData] = useState({
-		mediaQuery,
-		autoplay,
-		arrows,
-		pagination,
-		type,
-		breakpoints: {
-			640: focusPositions.mobile,
-			1024: focusPositions.tablet,
-			1280: focusPositions.desktop,
-		},
-		//trimSpace: false,
-	});
-
+	/**
+	 * Set the carousel options to use.
+	 * Options need to modified for the editor only.
+	 */
 	useEffect(() => {
-		if (Object.keys(carousel).length === 0) {
-			const splide = new Splide(`#block-${clientId}`, splideJSONData);
-			setCarousel(splide.mount());
-			return;
-		}
-		carousel.destroy(false); //Only works if you pass in false. Passing in true prevents you from focusing on the carousel.
-		carousel.options = splideJSONData;
-		carousel.mount();
-	}, [splideJSONData]);
-
-	useEffect(() => {
-		const breakpoints = transformFocusType();
-		setSplideJSONData({
-			...splideJSONData,
-			breakpoints: {
-				640: breakpoints.mobile,
-				1024: breakpoints.tablet,
-				1280: breakpoints.desktop,
-			},
-		});
-	}, [desktopOptions, mobileOptions, tabletOptions]);
-
-	let ALLOWED_INNER_BLOCKS = [];
-	const [blocks, setBlocks] = useState(null);
-	useEffect(() => {
-		ALLOWED_INNER_BLOCKS = select("core/block-editor")
-			.getInserterItems(clientId)
-			.map((item) => {
-				return {
-					id: item.id,
-					title: item.title,
-					icon: more,
-					onClick: () => addBlock(item.id),
-				};
-			});
-		setBlocks(ALLOWED_INNER_BLOCKS);
-	}, []);
-
-	const addBlock = (id) => {
-		const innerBlocks =
-			select("core/editor").getBlocksByClientId(clientId)[0].innerBlocks;
-		const block = createBlock(id);
-		dispatch("core/editor").insertBlock(
-			block,
-			innerBlocks.length,
-			clientId
+		const editorOptions = sanitizeOptions(
+			getOptions(carouselOptions, advancedCarouselOptions, mergeOptions)
 		);
-	};
+		setOptions(editorOptions);
+	}, [carouselOptions, advancedCarouselOptions, mergeOptions]);
 
-	const blockProps = useBlockProps({ className: "splide__list" });
-
-	const innerBlocksProps = useInnerBlocksProps(blockProps, {
-		orientation: "horizontal",
-		allowedBlocks: ALLOWED_INNER_BLOCKS,
-		renderAppender: () => (
-			<Dropdown
-				className=""
-				contentClassName=""
-				position="top center"
-				renderToggle={({ isOpen, onToggle, onClose }) => (
-					<Button isPrimary onClick={onToggle} aria-expanded={isOpen}>
-						Add slide
-					</Button>
-				)}
-				renderContent={({ isOpen, onToggle, onClose }) => (
-					<MenuGroup>
-						{blocks &&
-							blocks.map((block, index) => (
-								<MenuItem
-									key={index}
-									icon={more}
-									onClick={() => addBlock(block.id)}
-								>
-									{block.title}
-								</MenuItem>
-							))}
-					</MenuGroup>
-				)}
-			/>
-		),
-	});
+	/**
+	 * If the carousels type changes, destroy and remount the carousel.
+	 * @todo test if this is still required.
+	 */
+	useEffect(() => {
+		if (ref.current) {
+			const carousel = ref.current.splide;
+			carousel.destroy(true);
+			carousel.mount();
+		}
+	}, [options.type]);
 
 	return (
 		<>
-			<BlockControls>
-				<DropdownMenu icon={plus} label="Add slide" controls={blocks} />
-			</BlockControls>
-
-			<CarouselControls
-				autoplay={autoplay}
-				arrows={arrows}
-				pagination={pagination}
-				type={type}
-				mobileOptions={mobileOptions}
-				tabletOptions={tabletOptions}
-				desktopOptions={desktopOptions}
-				onChangeAutoplayEnabled={onChangeAutoplayEnabled}
-				onChangeArrowsEnabled={onChangeArrowsEnabled}
-				onChangePaginationEnabled={onChangePaginationEnabled}
-				onChangeAnimationMode={onChangeAnimationMode}
-				onChangeMobileAttributes={onChangeMobileAttributes}
-				onChangeTabletAttributes={onChangeTabletAttributes}
-				onChangeDesktopAttributes={onChangeDesktopAttributes}
+			<CarouselInspectorControls
+				onChange={setAttributes}
+				attributes={attributes}
 			/>
 
-			<div {...useBlockProps({ className: "splide" })} aria-label="">
-				<div className="splide__track">
-					<ul {...innerBlocksProps}></ul>
-				</div>
+			<div {...innerBlocksProps}>
+				{!isReady || innerBlocks.length === 0 ? (
+					<CarouselPlaceholder clientId={clientId}>
+						{children}
+					</CarouselPlaceholder>
+				) : (
+					<Splide
+						options={options}
+						hasTrack={false}
+						ref={ref}
+						aria-label={ariaLabel}
+					>
+						{hasTrack ? (
+							<SplideTrack>{children}</SplideTrack>
+						) : (
+							children
+						)}
+					</Splide>
+				)}
+
+				<SingleBlockTypeAppender
+					onClickAfter={() => {
+						ref.current.splide.go(innerBlocks.length);
+					}}
+					variant="secondary"
+					text={__('Add slide')}
+					allowedBlock="pulsar/carousel-slide"
+					style={{ width: '100%', justifyContent: 'center' }}
+					clientId={clientId}
+					isEnabled={
+						hasTrack &&
+						((isSelected && innerBlocks.length > 0) ||
+							isInnerBlockSelected ||
+							isSlideSelected)
+					}
+				/>
 			</div>
 		</>
 	);

@@ -12,7 +12,6 @@ import { registerBlockType } from '@wordpress/blocks';
  *
  * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
  */
-import './style.css';
 
 /**
  * Internal dependencies
@@ -20,7 +19,7 @@ import './style.css';
 import json from './block.json';
 import Edit from './edit';
 import Save from './save';
-import Icon from './components/icon';
+import { AccordionItem as Icon } from '../components/icons';
 
 const { name } = json;
 
@@ -29,7 +28,7 @@ const { name } = json;
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType( name, {
+registerBlockType(name, {
 	...json,
 
 	/**
@@ -46,4 +45,4 @@ registerBlockType( name, {
 	 * @see ./save.js
 	 */
 	save: Save,
-} );
+});
