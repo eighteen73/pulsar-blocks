@@ -8,6 +8,8 @@ import {
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalNumberControl as NumberControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 
@@ -168,6 +170,23 @@ export default function GlobalControls({
 					)}
 					checked={loop}
 					onChange={(value) => handleLoopChange(value)}
+				/>
+
+				<UnitControl
+					label={__('Height')}
+					help={__(
+						'Set the height of the carousel. If left blank, the carousel will use the height of the content.'
+					)}
+					onChange={(value) => {
+						onChange({
+							carouselOptions: {
+								...carouselOptions,
+								height: value,
+							},
+						});
+					}}
+					value={carouselOptions.height}
+					min={0}
 				/>
 
 				<ToggleControl
