@@ -15,6 +15,14 @@ export default function BreakpointControls({
 	size,
 	isDisabled = false,
 }) {
+	/**
+	 * Handle the change of a carousel option.
+	 *
+	 * @param {string} key      The key to update
+	 * @param {string} newValue The new value
+	 *
+	 * @return {void}
+	 */
 	const handleChange = (key, newValue) => {
 		if (size) {
 			onChange({
@@ -39,6 +47,14 @@ export default function BreakpointControls({
 		}
 	};
 
+	/**
+	 * Get the value of a carousel option.
+	 * If a size is set, it will return the value of the option for that size.
+	 *
+	 * @param {string} key The key to get
+	 *
+	 * @return {Mixed} The value of the option
+	 */
 	const getValue = (key) => {
 		if (size) {
 			return carouselOptions.breakpoints[size][key];

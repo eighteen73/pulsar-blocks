@@ -9,22 +9,14 @@
  * @package Pulsar
  */
 
-$options   = $attributes['advancedCarouselOptions'] ?? $attributes['carouselOptions'];
 $merge_options = $attributes['mergeOptions'] ?? false;
-$has_track  = $attributes['hasTrack'] ?? false;
-$aria_label = $attributes['ariaLabel'] ?? __( 'Carousel', 'pulsar' );
+$options       = $attributes['carouselOptions'];
+$has_track     = $attributes['hasTrack'] ?? false;
+$aria_label    = $attributes['ariaLabel'] ?? __( 'Carousel', 'pulsar' );
 
-// Translate our custom settings into Splide options
-// Note this also needs to happen in edit.js for the CMS
-if ( $options['blockSettings']['loop'] ?? false ) {
-	$options['type'] = $options['blockSettings']['type'] === 'fade' ? 'fade' : 'loop';
-	$options['rewind'] = $options['blockSettings']['type'] === 'fade';
-} else {
-	$options['type'] = $options['blockSettings']['type'];
-	$options['rewind'] = false;
+if ( $merge_options && $attributes['advancedCarouselOptions'] ) {
+	$options = array_merge( $options, $attributes['carouselOptions'] );
 }
-
-
 ?>
 
 <div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>

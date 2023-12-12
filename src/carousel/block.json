@@ -15,14 +15,12 @@
     "carouselOptions": {
       "type": "object",
       "default": {
-        "blockSettings": {
-          "type": "slide",
-          "loop": false
-        },
+        "type": "slide",
         "drag": true,
         "perPage": 3,
         "perMove": 1,
         "gap": "30px",
+        "rewind": false,
         "arrows": true,
         "pagination": true,
         "autoplay": false,

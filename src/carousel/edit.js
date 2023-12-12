@@ -99,31 +99,10 @@ export default function Edit({
 	 * @return {Object}                   The carousel options
 	 */
 	const getOptions = (baseOptions, additionalOptions, shouldMerge) => {
-		let options = baseOptions;
-
-		// Translate our custom settings into Splide options
-		// Note this also needs to happen in render.php for the front end
-		if (options.blockSettings.loop) {
-			options.type =
-				options.blockSettings.type === 'fade' ? 'fade' : 'loop';
-			if (options.blockSettings.type === 'fade') {
-				options.rewind = true;
-			}
-		} else {
-			options.type = options.blockSettings.type;
-			if (options.blockSettings.type === 'fade') {
-				options.rewind = false;
-			}
+		if (shouldMerge && additionalOptions) {
+			return { ...baseOptions, ...additionalOptions };
 		}
-
-		// Merge/override with additional options?
-		if (additionalOptions && shouldMerge) {
-			options = { ...baseOptions, ...additionalOptions };
-		} else if (additionalOptions) {
-			options = additionalOptions;
-		}
-
-		return options;
+		return additionalOptions || baseOptions;
 	};
 
 	/**
@@ -136,7 +115,7 @@ export default function Edit({
 	const sanitizeOptions = (optionsObj) => {
 		return {
 			...optionsObj,
-			type: 'slide', // force slide type for the editor for now.
+			type: 'slide',
 			autoplay: false,
 			drag: false,
 			arrows: true,

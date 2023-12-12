@@ -9,6 +9,7 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalNumberControl as NumberControl,
 } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 
 import { __ } from '@wordpress/i18n';
 
@@ -18,43 +19,117 @@ export default function GlobalControls({
 	isDisabled = false,
 }) {
 	const { ariaLabel, carouselOptions } = attributes;
+	const [type, setType] = useState(carouselOptions.type);
+	const [loop, setLoop] = useState(
+		(carouselOptions.rewind && type === 'fade') ||
+			carouselOptions.type === 'loop'
+	);
 
-	// Updated function to conditionally update perPage to 1 if the type is 'fade'
-	function updatePerPageTo1(options) {
+	/**
+	 * Handle the type toggle change.
+	 *
+	 * @param {string} value The value of the type toggle
+	 *
+	 * @return {void}
+	 */
+	const handleTypeChange = (value) => {
+		const updatedOptions = {
+			carouselOptions: {
+				...carouselOptions,
+			},
+		};
+
+		// if loop is true and the value is 'slide', set type to 'loop'
+		if (value === 'slide') {
+			updatedOptions.carouselOptions.type = loop ? 'loop' : 'slide';
+			setType(loop ? 'loop' : 'slide');
+		}
+
+		if (value === 'fade') {
+			updatedOptions.carouselOptions.rewind = loop ? true : false;
+			updatedOptions.carouselOptions.type = 'fade';
+			updatedOptions.carouselOptions = updatePerPageTo1(
+				updatedOptions.carouselOptions
+			);
+			setType('fade');
+		}
+
+		onChange(updatedOptions);
+	};
+
+	/**
+	 * Handle the loop toggle change.
+	 *
+	 * @param {boolean} value The value of the loop toggle
+	 *
+	 * @return {void}
+	 */
+	const handleLoopChange = (value) => {
+		const updatedOptions = {
+			carouselOptions: {
+				...carouselOptions,
+			},
+		};
+
+		if (type === 'fade') {
+			updatedOptions.carouselOptions.rewind = value;
+		}
+
+		if (type === 'slide' && value === true) {
+			updatedOptions.carouselOptions.type = 'loop';
+			updatedOptions.carouselOptions.rewind = false;
+			setType('loop');
+		}
+
+		if (type === 'loop' && value === false) {
+			updatedOptions.carouselOptions.type = 'slide';
+			updatedOptions.carouselOptions.rewind = false;
+			setType('slide');
+		}
+
+		setLoop(value);
+		onChange(updatedOptions);
+	};
+
+	/**
+	 * Recursively update perPage to 1 in the options object.
+	 *
+	 * @param {Object} options The carousel options object
+	 * @return {Object} The updated options object
+	 */
+	const updatePerPageTo1 = (options) => {
 		if (options && typeof options === 'object') {
 			// Conditionally update perPage to 1 based on the type
-			if (
-				options.hasOwnProperty('blockSettings') &&
-				options.blockSettings.type === 'fade' &&
-				options.hasOwnProperty('perPage')
-			) {
+			if (options.type === 'fade' && options.hasOwnProperty('perPage')) {
 				options = { ...options, perPage: 1 };
 			}
 
 			// Recursively update perPage in nested objects
 			for (const key in options) {
-				if (typeof options[key] === 'object') {
+				if (
+					options.hasOwnProperty(key) &&
+					typeof options[key] === 'object'
+				) {
 					options[key] = updatePerPageTo1(options[key]);
 				}
 			}
 		}
 
 		return options;
-	}
+	};
 
-	const typeHelpText = (type) => {
-		switch (type) {
-			case 'slide':
-				return __(
-					'Slide between slides. Supports multiple slides per page.'
-				);
-			case 'fade':
-				return __(
-					'Fade between slides. Supports a single slide per page.'
-				);
-			default:
-				return null;
+	/**
+	 * Get the help text for the type toggle.
+	 *
+	 * @param {string} carouselType The type of carousel
+	 *
+	 * @return {string} The help text
+	 */
+	const typeHelpText = (carouselType) => {
+		if (carouselType === 'fade') {
+			return __('Fade between slides. Supports a single slide per page.');
 		}
+		return __('Slide between slides. Supports multiple slides per page.');
 	};
 
 	return (
@@ -71,32 +146,13 @@ export default function GlobalControls({
 			<Disabled isDisabled={isDisabled}>
 				<ToggleGroupControl
 					label={__('Type')}
-					help={typeHelpText(carouselOptions.blockSettings.type)}
-					onChange={(value) => {
-						const updatedOptions = {
-							carouselOptions: {
-								...carouselOptions,
-								blockSettings: {
-									...carouselOptions.blockSettings,
-									type: value,
-								},
-							},
-						};
-
-						// If the value is 'fade', update perPage to 1
-						if (value === 'fade') {
-							updatedOptions.carouselOptions = updatePerPageTo1(
-								updatedOptions.carouselOptions
-							);
-						}
-
-						onChange(updatedOptions);
-					}}
-					value={carouselOptions.blockSettings.type}
+					help={typeHelpText(carouselOptions.type)}
+					onChange={(value) => handleTypeChange(value)}
+					value={type}
 					isBlock
 				>
 					<ToggleGroupControlOption
-						value={'slide'}
+						value={type === 'loop' ? 'loop' : 'slide'}
 						label={__('Slide')}
 					/>
 					<ToggleGroupControlOption
@@ -107,19 +163,11 @@ export default function GlobalControls({
 
 				<ToggleControl
 					label={__('Loop')}
-					help={__('Continually loop through the slides.')}
-					checked={carouselOptions.blockSettings.loop}
-					onChange={(value) => {
-						onChange({
-							carouselOptions: {
-								...carouselOptions,
-								blockSettings: {
-									...carouselOptions.blockSettings,
-									loop: value,
-								},
-							},
-						});
-					}}
+					help={__(
+						'Determines whether to loop the carousel or not when the last slide is reached.'
+					)}
+					checked={loop}
+					onChange={(value) => handleLoopChange(value)}
 				/>
 
 				<ToggleControl
