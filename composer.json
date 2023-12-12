@@ -2,7 +2,21 @@
 	"name": "eighteen73/pulsar-blocks",
 	"description": "A collection of blocks for use with the Pulsar theme.",
 	"type": "wordpress-plugin",
+  "version": "0.1.0",
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "blocks",
+    "gutenberg",
+    "pulsar"
+  ],
 	"license": "MIT",
+  "authors": [
+		{
+			"name": "Brett Mason",
+			"email": "brett@orphans.co.uk"
+		}
+	],
 	"minimum-stability": "stable",
 	"require": {
 	  "php": ">=7.4"

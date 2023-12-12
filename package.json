@@ -1,9 +1,5 @@
 {
-	"name": "carousel",
-	"version": "0.1.0",
-	"description": "A flexible carousel block.",
-	"author": "The WordPress Contributors",
-	"license": "GPL-2.0-or-later",
+	"name": "pulsar-blocks",
 	"scripts": {
 		"watch": "wp-scripts start --output-path=dist --webpack-copy-php",
 		"hot": "wp-scripts start --hot --output-path=dist --webpack-copy-php",
