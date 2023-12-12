@@ -67,7 +67,7 @@ export default function Edit(props) {
 	const altText = media?.alt_text;
 
 	// Gets the variations as registered in `theme.json`.
-	const palette = useSetting('color.palette');
+	const palette = useSetting('color.palette.theme');
 
 	const onContentPositionChange = (value) => {
 		setAttributes({

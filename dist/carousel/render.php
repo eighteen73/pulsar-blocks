@@ -18,11 +18,12 @@ if ( $merge_options && $attributes['advancedCarouselOptions'] ) {
 	$options = array_merge( $options, $attributes['carouselOptions'] );
 }
 
+
 // Check the number of slides and disable the carousel if there are not enough.
-$inner_blocks_count    = count( $block->inner_blocks );
-$options['drag']       = $inner_blocks_count >= $options['perPage'] ? false : true;
-$options['arrows']     = $inner_blocks_count >= $options['arrows'] ? false : true;
-$options['pagination'] = $inner_blocks_count >= $options['pagination'] ? false : true;
+$carousel_enabled      = count( $block->inner_blocks ) > $options['perPage'];
+$options['drag']       = $carousel_enabled;
+$options['arrows']     = $carousel_enabled ? $options['arrows'] : false;
+$options['pagination'] = $carousel_enabled ? $options['pagination'] : false;
 ?>
 
 <div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
