@@ -72,8 +72,7 @@ export default function Edit({
 			<InspectorControls group="settings">
 				<PanelBody title={__('Settings')}>
 					<ToggleControl
-						label={__('Open multiple items')}
-						help={__('Allow multiple items to be opened at once.')}
+						label={__('Multiple items can be opened')}
 						checked={openMultiple}
 						onChange={(value) =>
 							setAttributes({ openMultiple: value })
@@ -81,10 +80,7 @@ export default function Edit({
 					/>
 
 					<ToggleControl
-						label={__('Start open')}
-						help={__(
-							'Load the page with the first item already open.'
-						)}
+						label={__('First item open by default')}
 						checked={startOpen}
 						onChange={(value) =>
 							setAttributes({ startOpen: value })
@@ -111,9 +107,7 @@ export default function Edit({
 				<PanelBody title={__('Schema settings')}>
 					<ToggleControl
 						label={__('Output schema for FAQs')}
-						help={__(
-							'If the accordion will be used to display FAQs, then enable this option to display schema data for search engines.'
-						)}
+						help={__('If using for FAQs, enable this for SEO.')}
 						checked={hasSchema}
 						onChange={(value) =>
 							setAttributes({ hasSchema: value })
