@@ -163,20 +163,9 @@ export default function GlobalControls({
 					/>
 				</ToggleGroupControl>
 
-				<ToggleControl
-					label={__('Loop')}
-					help={__(
-						'Determines whether to loop the carousel or not when the last slide is reached.'
-					)}
-					checked={loop}
-					onChange={(value) => handleLoopChange(value)}
-				/>
-
 				<UnitControl
 					label={__('Height')}
-					help={__(
-						'Set the height of the carousel. If left blank, the carousel will use the height of the content.'
-					)}
+					help={__('Leave blank to use the slide content height.')}
 					onChange={(value) => {
 						onChange({
 							carouselOptions: {
@@ -190,10 +179,13 @@ export default function GlobalControls({
 				/>
 
 				<ToggleControl
+					label={__('Loop on last slide')}
+					checked={loop}
+					onChange={(value) => handleLoopChange(value)}
+				/>
+
+				<ToggleControl
 					label={__('Autoplay')}
-					help={__(
-						'Automatically move to the next slide (not reflected in this editor).'
-					)}
 					checked={carouselOptions.autoplay}
 					onChange={(value) => {
 						onChange({
