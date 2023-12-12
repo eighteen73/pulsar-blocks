@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       Pulsar Blocks
- * Description:       A collection of blocks for use with the Pulsar theme.
+ * Description:       A collection of blocks we use at eighteen73.
  * Requires at least: 6.3
  * Requires PHP:      7.4
  * Version:           0.1.0
