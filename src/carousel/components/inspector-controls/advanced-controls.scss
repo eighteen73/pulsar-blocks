@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .is-valid {
 	$color: #4ab866;
 
@@ -7,7 +9,7 @@
 
 	.components-base-control__help {
 		align-items: center;
-		background-color: lighten($color, 45%);
+		background-color: color.adjust($color, $lightness: 45%);
 		border-left: 4px solid $color;
 		display: flex;
 		padding: 8px 12px;
@@ -23,7 +25,7 @@
 
 	.components-base-control__help {
 		align-items: center;
-		background-color: lighten($color, 45%);
+		background-color: color.adjust($color, $lightness: 45%);
 		border-left: 4px solid $color;
 		display: flex;
 		padding: 8px 12px;

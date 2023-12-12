@@ -39,6 +39,7 @@ const CarouselSlideInspectorControls = (props) => {
 		onOverlayColorChange,
 		onOverlayOpacityChange,
 		onFocalPointChange,
+		clientId,
 	} = props;
 	return (
 		<InspectorControls>
@@ -67,7 +68,7 @@ const CarouselSlideInspectorControls = (props) => {
 
 				{backgroundType === 'image' && (
 					<>
-						<BaseControl>
+						<BaseControl id={`select-image-control-${clientId}`}>
 							<MediaUploadCheck>
 								<MediaUpload
 									allowedTypes={'image'}
@@ -121,7 +122,10 @@ const CarouselSlideInspectorControls = (props) => {
 							</MediaUploadCheck>
 						</BaseControl>
 
-						<BaseControl label={__('Overlay color')}>
+						<BaseControl
+							id={`overlay-color-control-${clientId}`}
+							label={__('Overlay color')}
+						>
 							<ColorPalette
 								colors={palette}
 								disableCustomColors={true}
@@ -145,7 +149,10 @@ const CarouselSlideInspectorControls = (props) => {
 				)}
 
 				{backgroundType === 'color' && (
-					<BaseControl label={__('Background color')}>
+					<BaseControl
+						id={`background-color-control-${clientId}`}
+						label={__('Background color')}
+					>
 						<ColorPalette
 							colors={palette}
 							disableCustomColors={true}

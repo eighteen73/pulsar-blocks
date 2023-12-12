@@ -2,9 +2,9 @@
 	background-color: var(--background-color);
 	display: flex;
 	flex-direction: row;
+	height: 100%;
 	isolation: isolate;
-	min-height: 400px;
-	width: 100%;
+	overflow: clip;
 
 	// Position: Top
 	&:where(.is-position-top-left) {

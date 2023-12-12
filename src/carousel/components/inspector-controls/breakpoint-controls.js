@@ -53,7 +53,7 @@ export default function BreakpointControls({
 	 *
 	 * @param {string} key The key to get
 	 *
-	 * @return {Mixed} The value of the option
+	 * @return {string} The value of the option
 	 */
 	const getValue = (key) => {
 		if (size) {

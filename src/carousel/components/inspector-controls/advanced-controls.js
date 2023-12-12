@@ -16,6 +16,13 @@ export default function AdvancedControls({
 			: ''
 	);
 
+	/**
+	 * Handle the change of the textarea.
+	 *
+	 * @param {string} value The value of the textarea
+	 *
+	 * @return {void}
+	 */
 	const handleInputChange = (value) => {
 		setTempInputValue(value);
 		try {
@@ -34,6 +41,13 @@ export default function AdvancedControls({
 		}
 	};
 
+	/**
+	 * Update the options.
+	 *
+	 * @param {Object} parsedJson The parsed JSON object
+	 *
+	 * @return {void}
+	 */
 	const updateOptions = (parsedJson) => {
 		setTimeout(() => {
 			onChange({
@@ -47,7 +61,7 @@ export default function AdvancedControls({
 
 	useEffect(() => {
 		handleInputChange(tempInputValue);
-	}, []);
+	});
 
 	const classNames = () => {
 		if (tempInputValue) {

@@ -1,5 +1,4 @@
 import {
-	InnerBlocks,
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
@@ -21,8 +20,6 @@ import { __ } from '@wordpress/i18n';
 import { plus } from '@wordpress/icons';
 
 import SingleBlockTypeAppender from '../components/single-block-type-appender';
-
-import './editor.scss';
 
 const ALLOWED_BLOCKS = ['pulsar/accordion-item'];
 
@@ -128,6 +125,7 @@ export default function Edit({
 			{children}
 
 			<SingleBlockTypeAppender
+				onClickAfter={() => {}}
 				variant="secondary"
 				icon={plus}
 				iconPosition="left"

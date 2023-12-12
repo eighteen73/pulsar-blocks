@@ -6,7 +6,6 @@ import {
 	useInnerBlocksProps,
 	store as blockEditorStore,
 	useSetting,
-	InnerBlocks,
 } from '@wordpress/block-editor';
 import { Placeholder } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
@@ -30,7 +29,7 @@ import './editor.scss';
  * The save function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
- * @param  props
+ * @param {Object} props The props passed to the save function.
  * @return {WPElement} Element to render.
  */
 export default function Edit(props) {
@@ -171,6 +170,7 @@ export default function Edit(props) {
 				onOverlayColorChange={onOverlayColorChange}
 				onOverlayOpacityChange={onOverlayOpacityChange}
 				onFocalPointChange={onFocalPointChange}
+				clientId={clientId}
 			/>
 
 			<div {...innerBlocksProps}>

@@ -3,6 +3,7 @@
  */
 import {
 	BlockControls,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalBlockAlignmentMatrixControl as BlockAlignmentMatrixControl,
 } from '@wordpress/block-editor';
 

@@ -48,15 +48,13 @@ class AccordionItem {
 		// If data-open-multiple is enabled, toggle the item's state
 		if (this.accordion.openMultiple) {
 			this.toggle();
-		} else {
+		} else if (this.isOpen) {
 			// If data-open-multiple is not enabled, close the active item if it's already open
-			if (this.isOpen) {
-				this.close();
-			} else {
-				// Otherwise, open the item and close others
-				this.accordion.closeAll();
-				this.openItem();
-			}
+			this.close();
+		} else {
+			// Otherwise, open the item and close others
+			this.accordion.closeAll();
+			this.openItem();
 		}
 	}
 

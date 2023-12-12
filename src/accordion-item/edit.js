@@ -14,14 +14,10 @@ import { __ } from '@wordpress/i18n';
  * The save function describes the structure of your block in the context of the
  * editor. This represents what the editor will render when the block is used.
  *
- * @param  root0
- * @param  root0.attributes
- * @param  root0.setAttributes
- * @param  root0.attributes.title
- * @param  root0.attributes.id
- * @param  root0.attributes.showContent
- * @param  root0.attributes.openOnLoad
- * @param  root0.context
+ * @param {Object}   param0               The props passed to the save function.
+ * @param {Object}   param0.attributes    The block's attributes as saved.
+ * @param {Function} param0.setAttributes Function to set the block's attributes.
+ * @param {Object}   param0.context       The block's context.
  * @return {WPElement} Element to render.
  */
 export default function Edit({ attributes, setAttributes, context }) {
