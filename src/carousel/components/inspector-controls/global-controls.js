@@ -195,6 +195,19 @@ export default function GlobalControls({
 				/>
 
 				<ToggleControl
+					label={__('Progress bar', 'pulsar-blocks')}
+					checked={carouselOptions.progressBar}
+					onChange={(value) => {
+						onChange({
+							carouselOptions: {
+								...carouselOptions,
+								progressBar: value,
+							},
+						});
+					}}
+				/>
+
+				<ToggleControl
 					label={__('Autoplay', 'pulsar-blocks')}
 					checked={carouselOptions.autoplay}
 					onChange={(value) => {

@@ -13,6 +13,8 @@ $merge_options = $attributes['mergeOptions'] ?? false;
 $options       = $attributes['carouselOptions'];
 $has_track     = $attributes['hasTrack'] ?? false;
 $aria_label    = $attributes['ariaLabel'] ?? __( 'Carousel', 'pulsar-blocks' );
+$autoplay      = $options['autoplay'] ?? false;
+$progress_bar  = $options['progressBar'] ?? false;
 
 if ( $merge_options && $attributes['advancedCarouselOptions'] ) {
 	$options = array_merge( $options, $attributes['carouselOptions'] );
@@ -38,8 +40,38 @@ $options['pagination'] = $carousel_enabled ? $options['pagination'] : false;
 					<?php echo $content; // phpcs:disable ?>
 				</ul>
 			</div>
-			<?php else : ?>
-				<?php echo $content; // phpcs:disable ?>
-			<?php endif; ?>
+		<?php else : ?>
+			<?php echo $content; // phpcs:disable ?>
+		<?php endif; ?>
+
+		<!-- Arrows -->
+		<div class="splide__arrows">
+			<button
+				class="splide__arrow splide__arrow--prev"
+				aria-label="<?php esc_html_e( 'Previous slide', 'pulsar-blocks' ); ?>"
+			></button>
+
+			<button
+				class="splide__arrow splide__arrow--next"
+				aria-label="<?php esc_html_e( 'Next slide', 'pulsar-blocks' ); ?>"
+			></button>
+		</div>
+		<!-- / Arrows -->
+
+		<!-- Autoplay controls -->
+		<?php if ( $autoplay ) : ?>
+			<button class="splide__toggle" type="button">
+				<span class="splide__toggle__play" aria-label="<?php esc_html_e( 'Play', 'pulsar-blocks' ); ?>"></span>
+				<span class="splide__toggle__pause" aria-label="<?php esc_html_e( 'Pause', 'pulsar-blocks' ); ?>"></span>
+			</button>
+		<?php endif; ?>
+		<!-- / Autoplay controls -->
+
+		<!-- Progress bar -->
+		<?php if ( $progress_bar ) : ?>
+			<div class="splide__progress">
+				<div class="splide__progress__bar"></div>
+			</div>
+		<?php endif; ?>
 	</section>
 </div>

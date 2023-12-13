@@ -145,6 +145,25 @@ export default function Edit({
 		}
 	}, [options.type]);
 
+	useEffect(() => {
+		if (ref.current) {
+			const carousel = ref.current.splide;
+			const pageProgressBar = carousel.root.querySelector(
+				'.splide__progress__bar'
+			);
+
+			if (pageProgressBar && options.progressBar && !options.autoplay) {
+				carousel.on('mounted move', function () {
+					const end = carousel.Components.Controller.getEnd() + 1;
+					const rate = Math.min((carousel.index + 1) / end, 1);
+					pageProgressBar.style.width = String(100 * rate) + '%';
+					pageProgressBar.style.transitionDuration =
+						carousel.options.speed + 'ms';
+				});
+			}
+		}
+	}, [options.progressBar, options.autoplay]);
+
 	return (
 		<>
 			<CarouselInspectorControls
@@ -169,6 +188,25 @@ export default function Edit({
 						) : (
 							children
 						)}
+
+						<div className="splide__arrows">
+							<button
+								className="splide__arrow splide__arrow--prev"
+								aria-label={__(
+									'Previous slide',
+									'pulsar-blocks'
+								)}
+							></button>
+
+							<button
+								className="splide__arrow splide__arrow--next"
+								aria-label={__('Next slide', 'pulsar-blocks')}
+							></button>
+						</div>
+
+						<div className="splide__progress">
+							<div className="splide__progress__bar"></div>
+						</div>
 					</Splide>
 				)}
 
