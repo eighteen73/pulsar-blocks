@@ -2,7 +2,6 @@
 	"name": "eighteen73/pulsar-blocks",
 	"description": "A collection of blocks we use at eighteen73.",
 	"type": "wordpress-plugin",
-	"version": "0.2.0",
 	"keywords": [
 		"wordpress",
 		"plugin",
