@@ -129,17 +129,24 @@ export default function GlobalControls({
 	 */
 	const typeHelpText = (carouselType) => {
 		if (carouselType === 'fade') {
-			return __('Fade between slides. Supports a single slide per page.');
+			return __(
+				'Fade between slides. Supports a single slide per page.',
+				'pulsar-blocks'
+			);
 		}
-		return __('Slide between slides. Supports multiple slides per page.');
+		return __(
+			'Slide between slides. Supports multiple slides per page.',
+			'pulsar-blocks'
+		);
 	};
 
 	return (
 		<>
 			<TextControl
-				label={__('Label')}
+				label={__('Label', 'pulsar-blocks')}
 				help={__(
-					"Used to describe the carousel to screen readers and won't be seen visually."
+					"Used to describe the carousel to screen readers and won't be seen visually.",
+					'pulsar-blocks'
 				)}
 				value={ariaLabel}
 				onChange={(value) => onChange({ ariaLabel: value })}
@@ -147,7 +154,7 @@ export default function GlobalControls({
 
 			<Disabled isDisabled={isDisabled}>
 				<ToggleGroupControl
-					label={__('Type')}
+					label={__('Type', 'pulsar-blocks')}
 					help={typeHelpText(carouselOptions.type)}
 					onChange={(value) => handleTypeChange(value)}
 					value={type}
@@ -155,17 +162,20 @@ export default function GlobalControls({
 				>
 					<ToggleGroupControlOption
 						value={type === 'loop' ? 'loop' : 'slide'}
-						label={__('Slide')}
+						label={__('Slide', 'pulsar-blocks')}
 					/>
 					<ToggleGroupControlOption
 						value={'fade'}
-						label={__('Fade')}
+						label={__('Fade', 'pulsar-blocks')}
 					/>
 				</ToggleGroupControl>
 
 				<UnitControl
-					label={__('Height')}
-					help={__('Leave blank to use the slide content height.')}
+					label={__('Height', 'pulsar-blocks')}
+					help={__(
+						'Leave blank to use the slide content height.',
+						'pulsar-blocks'
+					)}
 					onChange={(value) => {
 						onChange({
 							carouselOptions: {
@@ -179,13 +189,13 @@ export default function GlobalControls({
 				/>
 
 				<ToggleControl
-					label={__('Loop on last slide')}
+					label={__('Loop on last slide', 'pulsar-blocks')}
 					checked={loop}
 					onChange={(value) => handleLoopChange(value)}
 				/>
 
 				<ToggleControl
-					label={__('Autoplay')}
+					label={__('Autoplay', 'pulsar-blocks')}
 					checked={carouselOptions.autoplay}
 					onChange={(value) => {
 						onChange({
@@ -199,7 +209,7 @@ export default function GlobalControls({
 
 				{carouselOptions.autoplay && (
 					<NumberControl
-						label={__('Autoplay interval')}
+						label={__('Autoplay interval', 'pulsar-blocks')}
 						min={0}
 						step={250}
 						isShiftStepEnabled={true}

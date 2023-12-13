@@ -29,7 +29,7 @@ export default function BreakpointControls({
 	 * @type {string}   Object[].value The value
 	 */
 	const gapOptions = [
-		{ label: __('Default'), value: '' },
+		{ label: __('Default', 'pulsar-blocks'), value: '' },
 		{ label: '0', value: '0' },
 		...themeSpacing.map((item) => ({
 			label: item.name,
@@ -89,7 +89,7 @@ export default function BreakpointControls({
 			{carouselOptions.type !== 'fade' && (
 				<>
 					<NumberControl
-						label={__('Per page')}
+						label={__('Per page', 'pulsar-blocks')}
 						isShiftStepEnabled={true}
 						onChange={(value) =>
 							handleChange('perPage', parseInt(value))
@@ -100,7 +100,7 @@ export default function BreakpointControls({
 					/>
 
 					<NumberControl
-						label={__('Per move')}
+						label={__('Per move', 'pulsar-blocks')}
 						isShiftStepEnabled={true}
 						onChange={(value) =>
 							handleChange('perMove', parseInt(value))
@@ -111,7 +111,7 @@ export default function BreakpointControls({
 					/>
 
 					<SelectControl
-						label={__('Gap')}
+						label={__('Gap', 'pulsar-blocks')}
 						onChange={(value) => handleChange('gap', value)}
 						value={getValue('gap')}
 						options={gapOptions}
@@ -120,14 +120,14 @@ export default function BreakpointControls({
 			)}
 
 			<ToggleControl
-				label={__('Arrows')}
+				label={__('Arrows', 'pulsar-blocks')}
 				help={__('Always visible in the editor.')}
 				checked={getValue('arrows')}
 				onChange={(value) => handleChange('arrows', value)}
 			/>
 
 			<ToggleControl
-				label={__('Pagination')}
+				label={__('Pagination', 'pulsar-blocks')}
 				checked={getValue('pagination')}
 				onChange={(value) => handleChange('pagination', value)}
 			/>

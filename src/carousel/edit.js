@@ -177,7 +177,7 @@ export default function Edit({
 						ref.current.splide.go(innerBlocks.length);
 					}}
 					variant="secondary"
-					text={__('Add slide')}
+					text={__('Add slide', 'pulsar-blocks')}
 					allowedBlock="pulsar/carousel-slide"
 					style={{ width: '100%', justifyContent: 'center' }}
 					clientId={clientId}

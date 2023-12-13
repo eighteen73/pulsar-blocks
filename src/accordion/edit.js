@@ -48,7 +48,7 @@ export default function Edit({
 				[
 					'core/paragraph',
 					{
-						placeholder: __('Add content…'),
+						placeholder: __('Add content…', 'pulsar-blocks'),
 					},
 				],
 			],
@@ -70,9 +70,12 @@ export default function Edit({
 	return (
 		<div {...innerBlocksProps}>
 			<InspectorControls group="settings">
-				<PanelBody title={__('Settings')}>
+				<PanelBody title={__('Settings', 'pulsar-blocks')}>
 					<ToggleControl
-						label={__('Multiple items can be opened')}
+						label={__(
+							'Multiple items can be opened',
+							'pulsar-blocks'
+						)}
 						checked={openMultiple}
 						onChange={(value) =>
 							setAttributes({ openMultiple: value })
@@ -80,7 +83,10 @@ export default function Edit({
 					/>
 
 					<ToggleControl
-						label={__('First item open by default')}
+						label={__(
+							'First item open by default',
+							'pulsar-blocks'
+						)}
 						checked={startOpen}
 						onChange={(value) =>
 							setAttributes({ startOpen: value })
@@ -88,26 +94,39 @@ export default function Edit({
 					/>
 
 					<ToggleGroupControl
-						label={__('Heading level')}
+						label={__('Heading level', 'pulsar-blocks')}
 						onChange={(value) => {
 							setAttributes({ level: value });
 						}}
 						value={level}
 						isBlock
 						help={__(
-							'Set the appropriate heading level for your content.'
+							'Set the appropriate heading level for your content.',
+							'pulsar-blocks'
 						)}
 					>
-						<ToggleGroupControlOption value={2} label={__('H2')} />
-						<ToggleGroupControlOption value={3} label={__('H3')} />
-						<ToggleGroupControlOption value={4} label={__('H4')} />
+						<ToggleGroupControlOption
+							value={2}
+							label={__('H2', 'pulsar-blocks')}
+						/>
+						<ToggleGroupControlOption
+							value={3}
+							label={__('H3', 'pulsar-blocks')}
+						/>
+						<ToggleGroupControlOption
+							value={4}
+							label={__('H4', 'pulsar-blocks')}
+						/>
 					</ToggleGroupControl>
 				</PanelBody>
 
-				<PanelBody title={__('Schema settings')}>
+				<PanelBody title={__('Schema settings', 'pulsar-blocks')}>
 					<ToggleControl
-						label={__('Output schema for FAQs')}
-						help={__('If using for FAQs, enable this for SEO.')}
+						label={__('Output schema for FAQs', 'pulsar-blocks')}
+						help={__(
+							'If using for FAQs, enable this for SEO.',
+							'pulsar-blocks'
+						)}
 						checked={hasSchema}
 						onChange={(value) =>
 							setAttributes({ hasSchema: value })
@@ -123,7 +142,7 @@ export default function Edit({
 				variant="secondary"
 				icon={plus}
 				iconPosition="left"
-				text={__('Add item')}
+				text={__('Add item', 'pulsar-blocks')}
 				allowedBlock="pulsar/accordion-item"
 				style={{ width: '100%', justifyContent: 'center' }}
 				clientId={clientId}

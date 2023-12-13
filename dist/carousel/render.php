@@ -12,7 +12,7 @@
 $merge_options = $attributes['mergeOptions'] ?? false;
 $options       = $attributes['carouselOptions'];
 $has_track     = $attributes['hasTrack'] ?? false;
-$aria_label    = $attributes['ariaLabel'] ?? __( 'Carousel', 'pulsar' );
+$aria_label    = $attributes['ariaLabel'] ?? __( 'Carousel', 'pulsar-blocks' );
 
 if ( $merge_options && $attributes['advancedCarouselOptions'] ) {
 	$options = array_merge( $options, $attributes['carouselOptions'] );

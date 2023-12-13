@@ -71,17 +71,22 @@ export default function AdvancedControls({
 		return null;
 	};
 
-	const jsonText = jsonValid ? __('JSON is valid') : __('JSON is invalid');
+	const jsonText = jsonValid
+		? __('JSON is valid', 'pulsar-blocks')
+		: __('JSON is invalid', 'pulsar-blocks');
 
 	const helpText = tempInputValue
 		? jsonText
-		: __('Override the user selected options with a custom JSON object.');
+		: __(
+				'Override the user selected options with a custom JSON object.',
+				'pulsar-blocks'
+			);
 
 	return (
 		<>
 			<TextareaControl
 				help={helpText}
-				label={__('Advanced Carousel Options')}
+				label={__('Advanced Carousel Options', 'pulsar-blocks')}
 				rows={12}
 				onChange={(value) => handleInputChange(value)}
 				value={tempInputValue}
@@ -89,9 +94,10 @@ export default function AdvancedControls({
 			/>
 
 			<ToggleControl
-				label={__('Merge Options')}
+				label={__('Merge Options', 'pulsar-blocks')}
 				help={__(
-					'Should the custom options be merged with the user selected options, or override them?'
+					'Should the custom options be merged with the user selected options, or override them?',
+					'pulsar-blocks'
 				)}
 				checked={mergeOptions}
 				onChange={(value) => onChange({ mergeOptions: value })}

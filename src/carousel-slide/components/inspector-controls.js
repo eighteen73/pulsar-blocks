@@ -43,7 +43,7 @@ const CarouselSlideInspectorControls = (props) => {
 	} = props;
 	return (
 		<InspectorControls>
-			<PanelBody title={__('Slide settings')}>
+			<PanelBody title={__('Slide settings', 'pulsar-blocks')}>
 				<ToggleGroupControl
 					label={__('Background type')}
 					onChange={onBackgroundTypeChange}
@@ -52,17 +52,17 @@ const CarouselSlideInspectorControls = (props) => {
 				>
 					<ToggleGroupControlOption
 						value={'none'}
-						label={__('None')}
+						label={__('None', 'pulsar-blocks')}
 					/>
 
 					<ToggleGroupControlOption
 						value={'image'}
-						label={__('Image')}
+						label={__('Image', 'pulsar-blocks')}
 					/>
 
 					<ToggleGroupControlOption
 						value={'color'}
-						label={__('Color')}
+						label={__('Color', 'pulsar-blocks')}
 					/>
 				</ToggleGroupControl>
 
@@ -72,14 +72,18 @@ const CarouselSlideInspectorControls = (props) => {
 							<MediaUploadCheck>
 								<MediaUpload
 									allowedTypes={'image'}
-									title={__('Select background image')}
+									title={__(
+										'Select background image',
+										'pulsar-blocks'
+									)}
 									render={({ open }) => (
 										<>
 											{backgroundImageId ? (
 												<>
 													<FocalPointPicker
 														label={__(
-															'Focal point picker'
+															'Focal point picker',
+															'pulsar-blocks'
 														)}
 														url={imageUrl}
 														value={focalPoint}
@@ -93,7 +97,8 @@ const CarouselSlideInspectorControls = (props) => {
 															onClick={open}
 														>
 															{__(
-																'Replace image'
+																'Replace image',
+																'pulsar-blocks'
 															)}
 														</Button>
 
@@ -103,7 +108,10 @@ const CarouselSlideInspectorControls = (props) => {
 																onBackgroundImageRemove
 															}
 														>
-															{__('Remove image')}
+															{__(
+																'Remove image',
+																'pulsar-blocks'
+															)}
 														</Button>
 													</ButtonGroup>
 												</>
@@ -112,7 +120,10 @@ const CarouselSlideInspectorControls = (props) => {
 													variant="primary"
 													onClick={open}
 												>
-													{__('Select image')}
+													{__(
+														'Select image',
+														'pulsar-blocks'
+													)}
 												</Button>
 											)}
 										</>
@@ -124,7 +135,7 @@ const CarouselSlideInspectorControls = (props) => {
 
 						<BaseControl
 							id={`overlay-color-control-${clientId}`}
-							label={__('Overlay color')}
+							label={__('Overlay color', 'pulsar-blocks')}
 						>
 							<ColorPalette
 								colors={palette}
@@ -136,7 +147,7 @@ const CarouselSlideInspectorControls = (props) => {
 
 						<RangeControl
 							__nextHasNoMarginBottom
-							label={__('Overlay opacity')}
+							label={__('Overlay opacity', 'pulsar-blocks')}
 							value={overlayOpacity}
 							currentInput={overlayOpacity}
 							onChange={onOverlayOpacityChange}
@@ -151,7 +162,7 @@ const CarouselSlideInspectorControls = (props) => {
 				{backgroundType === 'color' && (
 					<BaseControl
 						id={`background-color-control-${clientId}`}
-						label={__('Background color')}
+						label={__('Background color', 'pulsar-blocks')}
 					>
 						<ColorPalette
 							colors={palette}

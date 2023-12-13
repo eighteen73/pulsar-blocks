@@ -15,7 +15,7 @@ export default function CarouselInspectorControls({ onChange, attributes }) {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Settings')}>
+				<PanelBody title={__('Settings', 'pulsar-blocks')}>
 					<GlobalControls
 						onChange={onChange}
 						attributes={attributes}
@@ -23,7 +23,10 @@ export default function CarouselInspectorControls({ onChange, attributes }) {
 					></GlobalControls>
 				</PanelBody>
 
-				<PanelBody title={__('Desktop settings')} initialOpen={true}>
+				<PanelBody
+					title={__('Desktop settings', 'pulsar-blocks')}
+					initialOpen={true}
+				>
 					<BreakpointControls
 						onChange={onChange}
 						carouselOptions={carouselOptions}
@@ -32,7 +35,10 @@ export default function CarouselInspectorControls({ onChange, attributes }) {
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Tablet settings')} initialOpen={false}>
+				<PanelBody
+					title={__('Tablet settings', 'pulsar-blocks')}
+					initialOpen={false}
+				>
 					<BreakpointControls
 						onChange={onChange}
 						carouselOptions={carouselOptions}
@@ -41,7 +47,10 @@ export default function CarouselInspectorControls({ onChange, attributes }) {
 					/>
 				</PanelBody>
 
-				<PanelBody title={__('Mobile settings')} initialOpen={false}>
+				<PanelBody
+					title={__('Mobile settings', 'pulsar-blocks')}
+					initialOpen={false}
+				>
 					<BreakpointControls
 						onChange={onChange}
 						carouselOptions={carouselOptions}

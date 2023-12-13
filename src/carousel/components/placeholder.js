@@ -7,8 +7,8 @@ export default function CarouselPlaceholder({ clientId, children }) {
 	return (
 		<Placeholder
 			icon={Icon}
-			label={__('Carousel')}
-			instructions={__('Add your first slide to begin.')}
+			label={__('Carousel', 'pulsar-blocks')}
+			instructions={__('Add your first slide to begin.', 'pulsar-blocks')}
 			isColumnLayout={true}
 			style={{
 				aspectRatio: '21/9',
@@ -19,7 +19,7 @@ export default function CarouselPlaceholder({ clientId, children }) {
 			<SingleBlockTypeAppender
 				onClickAfter={() => {}}
 				variant="primary"
-				text={__('Add slide')}
+				text={__('Add slide', 'pulsar-blocks')}
 				allowedBlock="pulsar/carousel-slide"
 				clientId={clientId}
 				isEnabled={true}

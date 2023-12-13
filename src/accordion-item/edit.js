@@ -56,7 +56,7 @@ export default function Edit({ attributes, setAttributes, context }) {
 						allowedFormats={['core/bold', 'core/italic']}
 						onChange={(value) => setAttributes({ title: value })}
 						value={title}
-						placeholder={__('Add a title…')}
+						placeholder={__('Add a title…', 'pulsar-blocks')}
 					/>
 
 					<span

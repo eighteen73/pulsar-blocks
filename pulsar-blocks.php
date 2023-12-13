@@ -8,9 +8,9 @@
  * Author:            eighteen73
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       pulsar
+ * Text Domain:       pulsar-blocks
  *
- * @package           pulsar
+ * @package           Pulsar Blocks
  */
 
 namespace Eighteen73\PulsarBlocks;

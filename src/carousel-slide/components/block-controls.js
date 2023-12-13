@@ -14,7 +14,7 @@ const CarouselSlideBlockControls = (props) => {
 	return (
 		<BlockControls group="block">
 			<BlockAlignmentMatrixControl
-				label={__('Change content position')}
+				label={__('Change content position', 'pulsar-blocks')}
 				value={contentPosition}
 				onChange={onContentPositionChange}
 				isDisabled={isDisabled}
