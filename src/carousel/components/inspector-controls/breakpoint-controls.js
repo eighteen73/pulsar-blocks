@@ -1,11 +1,14 @@
 import {
 	Disabled,
 	ToggleControl,
+	SelectControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalNumberControl as NumberControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
+
+import { useSetting } from '@wordpress/block-editor';
 
 import { __ } from '@wordpress/i18n';
 
@@ -15,6 +18,25 @@ export default function BreakpointControls({
 	size,
 	isDisabled = false,
 }) {
+	// Get the theme spacing sizes
+	const themeSpacing = useSetting('spacing.spacingSizes.theme');
+
+	/**
+	 * The options for the gap select control.
+	 *
+	 * @type {Object[]} The options
+	 * @type {string}   Object[].label The label
+	 * @type {string}   Object[].value The value
+	 */
+	const gapOptions = [
+		{ label: __('Default'), value: '' },
+		{ label: '0', value: '0' },
+		...themeSpacing.map((item) => ({
+			label: item.name,
+			value: `var(--wp--preset--spacing--${item.slug})`,
+		})),
+	];
+
 	/**
 	 * Handle the change of a carousel option.
 	 *
@@ -88,11 +110,11 @@ export default function BreakpointControls({
 						value={getValue('perMove')}
 					/>
 
-					<UnitControl
+					<SelectControl
 						label={__('Gap')}
 						onChange={(value) => handleChange('gap', value)}
 						value={getValue('gap')}
-						min={0}
+						options={gapOptions}
 					/>
 				</>
 			)}
