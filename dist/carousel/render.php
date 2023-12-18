@@ -16,16 +16,15 @@ $aria_label    = $attributes['ariaLabel'] ?? __( 'Carousel', 'pulsar-blocks' );
 $autoplay      = $options['autoplay'] ?? false;
 $progress_bar  = $options['progressBar'] ?? false;
 
-if ( $merge_options && $attributes['advancedCarouselOptions'] ) {
-	$options = array_merge( $options, $attributes['carouselOptions'] );
+if ( isset( $attributes['advancedCarouselOptions'] ) ) {
+	$options = $merge_options ? array_merge( $options, $attributes['advancedCarouselOptions'] ) : $attributes['advancedCarouselOptions'];
 }
 
-
 // Check the number of slides and disable the carousel if there are not enough.
-$carousel_enabled      = count( $block->inner_blocks ) > $options['perPage'];
+$carousel_enabled      = isset( $options['perPage'] ) && count( $block->inner_blocks ) > $options['perPage'];
 $options['drag']       = $carousel_enabled;
-$options['arrows']     = $carousel_enabled ? $options['arrows'] : false;
-$options['pagination'] = $carousel_enabled ? $options['pagination'] : false;
+$options['arrows']     = $carousel_enabled && isset( $options['arrows'] ) ? $options['arrows'] : false;
+$options['pagination'] = $carousel_enabled && isset( $options['pagination'] ) ? $options['pagination'] : false;
 ?>
 
 <div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
