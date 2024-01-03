@@ -56,7 +56,7 @@
       "blockGap": ".wp-block-pulsar-carousel-slide__content"
     }
   },
-  "textdomain": "pulsar",
+  "textdomain": "pulsar-blocks",
   "editorStyle": "file:./index.css",
   "editorScript": "file:./index.js",
   "style": "file:./style-index.css",

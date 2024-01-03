@@ -60,7 +60,7 @@ class Blocks {
 		$has_schema = isset( $attributes['hasSchema'] ) && $attributes['hasSchema'] ? true : false;
 
 		if ( ! $has_schema ) {
-			return;
+			return $block_content;
 		}
 
 		// Construct the FAQPage JSON-LD schema.

@@ -41,13 +41,18 @@ function ButtonBlockAppender(
 					if (hasSingleBlockType) {
 						label = sprintf(
 							// translators: %s: the name of the block when there is only one
-							_x('Add %s', 'directly add the only allowed block'),
+							_x(
+								'Add %s',
+								'directly add the only allowed block',
+								'pulsar-blocks'
+							),
 							blockTitle
 						);
 					} else {
 						label = _x(
 							'Add block',
-							'Generic label for block inserter button'
+							'Generic label for block inserter button',
+							'pulsar-blocks'
 						);
 					}
 					const isToggleButton = !hasSingleBlockType;

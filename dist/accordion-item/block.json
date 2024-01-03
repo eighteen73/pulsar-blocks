@@ -13,7 +13,6 @@
     "reusable": false,
     "html": false
   },
-  "textdomain": "pulsar",
   "attributes": {
     "title": {
       "type": "string",
@@ -26,6 +25,7 @@
   "usesContext": [
     "level"
   ],
+  "textdomain": "pulsar-blocks",
   "editorScript": "file:./index.js",
   "render": "file:./render.php"
 }

@@ -5,23 +5,23 @@
 	"version": "0.1.0",
 	"title": "Accordion Item",
 	"category": "design",
-	"parent": [ "pulsar/accordion" ],
-  "supports": {
-    "inserter": false,
-    "reusable": false,
-    "html": false
-  },
-	"textdomain": "pulsar",
-  "attributes": {
+	"parent": ["pulsar/accordion"],
+	"supports": {
+		"inserter": false,
+		"reusable": false,
+		"html": false
+	},
+	"attributes": {
     "title": {
       "type": "string",
-      "selector": ".wp-block-pulsar-accordion__heading"
-    },
-    "id": {
+			"selector": ".wp-block-pulsar-accordion__heading"
+		},
+		"id": {
       "type": "string"
-    }
-  },
-  "usesContext": ["level"],
+		}
+	},
+	"usesContext": ["level"],
+  "textdomain": "pulsar-blocks",
 	"editorScript": "file:./index.js",
-  "render": "file:./render.php"
+	"render": "file:./render.php"
 }
