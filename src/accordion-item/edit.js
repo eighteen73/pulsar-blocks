@@ -8,6 +8,7 @@ import {
 } from '@wordpress/block-editor';
 import { cleanForSlug } from '@wordpress/url';
 import { useEffect } from '@wordpress/element';
+import { useInstanceId } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -17,23 +18,26 @@ import { __ } from '@wordpress/i18n';
  * @param {Object}   param0               The props passed to the save function.
  * @param {Object}   param0.attributes    The block's attributes as saved.
  * @param {Function} param0.setAttributes Function to set the block's attributes.
+ * @param {string}   param0.clientId      The block's unique ID.
  * @param {Object}   param0.context       The block's context.
  * @return {WPElement} Element to render.
  */
-export default function Edit({ attributes, setAttributes, context }) {
+export default function Edit({ attributes, setAttributes, clientId, context }) {
 	const { title, id } = attributes;
-
 	const { level } = context;
+
 	const TagName = 'h' + level;
 
 	const blockProps = useBlockProps({
 		className: 'wp-block-pulsar-accordion__item',
 	});
 
-	// Set the ID.
 	useEffect(() => {
-		setAttributes({ id: cleanForSlug(title) });
-	}, [title, id, setAttributes]);
+		const uniqueId =
+			'pulsar-accordion-' + clientId.slice(2, 9).replace('-', '');
+
+		setAttributes({ id: uniqueId });
+	}, [clientId, id, setAttributes]);
 
 	const innerBlocksProps = useInnerBlocksProps(
 		{

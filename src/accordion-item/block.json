@@ -17,7 +17,8 @@
 			"selector": ".wp-block-pulsar-accordion__heading"
 		},
 		"id": {
-      "type": "string"
+      "type": "string",
+      "default": ""
 		}
 	},
 	"usesContext": ["level"],

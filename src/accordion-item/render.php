@@ -11,26 +11,33 @@
 
 $h = "h{$block->context['level']}";
 ?>
-<?php if ( isset( $attributes['title'] ) && $h ) : ?>
-	<div class="wp-block-pulsar-accordion__item">
 
+<?php if ( isset( $attributes['title'] ) && $h ) : ?>
+	<div
+		<?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => 'wp-block-pulsar-accordion__item' ] ) ); ?>
+	>
 		<<?php echo esc_attr( $h ); ?> class="wp-block-pulsar-accordion__heading">
 			<button
 				type="button"
 				aria-expanded="false"
 				class="wp-block-pulsar-accordion__trigger"
-				aria-controls="panel-<?php echo esc_attr( $attributes['id'] ); ?>"
-				id="accordion-<?php echo esc_attr( $attributes['id'] ); ?>"
+				aria-controls="<?php echo esc_attr( $attributes['id'] ); ?>-panel"
+				id="<?php echo esc_attr( $attributes['id'] ); ?>-trigger"
 			>
-				<span class="wp-block-pulsar-accordion__title"><?php echo esc_html( $attributes['title'] ); ?></span>
+				<span
+					id="<?php echo esc_attr( $attributes['id'] ); ?>-title"
+					class="wp-block-pulsar-accordion__title"
+				>
+					<?php echo esc_html( $attributes['title'] ); ?>
+				</span>
 				<span class="wp-block-pulsar-accordion__icon"></span>
 			</button>
 		</<?php echo esc_attr( $h ); ?>>
 
 		<div
-			id="panel-<?php echo esc_attr( $attributes['id'] ); ?>"
+			id="<?php echo esc_attr( $attributes['id'] ); ?>-panel"
 			role="region"
-			aria-labelledby="accordion-<?php echo esc_attr( $attributes['id'] ); ?>"
+			aria-labelledby="<?php echo esc_attr( $attributes['id'] ); ?>-title"
 			class="wp-block-pulsar-accordion__panel"
 		>
 			<?php echo $content; // phpcs:disable ?>
