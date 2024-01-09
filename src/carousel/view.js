@@ -35,10 +35,12 @@ const setProgressBar = (carousel, carouselContainer) => {
 		carouselOptions.progressBar &&
 		!carouselOptions.autoplay
 	) {
-		const end = carousel.Components.Controller.getEnd() + 1;
-		const rate = Math.min((carousel.index + 1) / end, 1);
-		pageProgressBar.style.width = String(100 * rate) + '%';
-		pageProgressBar.style.transitionDuration =
-			carousel.options.speed + 'ms';
+		carousel.on('mounted move', function () {
+			const end = carousel.Components.Controller.getEnd() + 1;
+			const rate = Math.min((carousel.index + 1) / end, 1);
+			pageProgressBar.style.width = String(100 * rate) + '%';
+			pageProgressBar.style.transitionDuration =
+				carousel.options.speed + 'ms';
+		});
 	}
 };
