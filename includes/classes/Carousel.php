@@ -7,6 +7,9 @@
 
 namespace Eighteen73\PulsarBlocks;
 
+/**
+ * Carousel class.
+ */
 class Carousel {
 
 	/**

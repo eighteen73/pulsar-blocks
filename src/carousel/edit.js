@@ -28,6 +28,8 @@ import './editor.scss';
  * @param {Function} param0.setAttributes
  * @param {string}   param0.clientId
  * @param {boolean}  param0.isSelected
+ * @param            param0.context
+ * @param            param0.context.linked
  * @return {WPElement} Element to render.
  */
 export default function Edit({
@@ -35,6 +37,7 @@ export default function Edit({
 	setAttributes,
 	clientId,
 	isSelected,
+	context,
 }) {
 	const {
 		carouselOptions,
@@ -169,6 +172,7 @@ export default function Edit({
 			<CarouselInspectorControls
 				onChange={setAttributes}
 				attributes={attributes}
+				context={context}
 			/>
 
 			<div {...innerBlocksProps}>
