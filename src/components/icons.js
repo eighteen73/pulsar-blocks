@@ -1,5 +1,32 @@
 import { SVG, Path, Polygon, G, Rect } from '@wordpress/components';
 
+export const LinkedCarousels = (
+	<SVG
+		xmlns="http://www.w3.org/2000/svg"
+		xmlSpace="preserve"
+		fillRule="evenodd"
+		strokeLinejoin="round"
+		strokeMiterlimit="2"
+		clipRule="evenodd"
+		viewBox="0 0 24 24"
+	>
+		<Path d="M18.003 19.399H5.931a.11.11 0 0 0-.11.11v1.537c0 .06.049.11.11.11h12.072a.11.11 0 0 0 .11-.11v-1.537a.11.11 0 0 0-.11-.11ZM5.931 18.082c-.788 0-1.427.639-1.427 1.427v1.537c0 .788.639 1.427 1.427 1.427h12.072c.789 0 1.427-.639 1.427-1.427v-1.537c0-.788-.638-1.427-1.427-1.427H5.931Z" />
+		<Path
+			fillRule="nonzero"
+			d="M17.837 3.191v11.647H6.19V3.191h11.647Zm0-1.664H6.19c-.915 0-1.663.749-1.663 1.664v11.647c0 .915.748 1.663 1.663 1.663h11.647c.915 0 1.664-.748 1.664-1.663V3.191a1.67 1.67 0 0 0-1.664-1.664Z"
+		/>
+		<Path
+			fillRule="nonzero"
+			d="m13.794 9.014-2.496 3.132-1.78-2.096-2.496 3.124h9.983l-3.211-4.16Z"
+		/>
+		<Path d="M7.022 6.519h9.983v.832H7.022zM7.022 4.855h9.983v.832H7.022z" />
+		<Path
+			fillRule="nonzero"
+			d="M22.476 9.014 19.98 11.51V6.519l2.496 2.495ZM1.524 9.014 4.02 6.519v4.991L1.524 9.014Z"
+		/>
+	</SVG>
+);
+
 export const Carousel = (
 	<SVG
 		className="icon-carousel"
@@ -95,4 +122,10 @@ export const AccordionItem = (
 	</SVG>
 );
 
-export default { Carousel, CarouselSlide, Accordion, AccordionItem };
+export default {
+	LinkedCarousels,
+	Carousel,
+	CarouselSlide,
+	Accordion,
+	AccordionItem,
+};

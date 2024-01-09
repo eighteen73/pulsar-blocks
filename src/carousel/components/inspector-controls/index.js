@@ -6,7 +6,11 @@ import GlobalControls from './global-controls';
 import BreakpointControls from './breakpoint-controls';
 import AdvancedControls from './advanced-controls';
 
-export default function CarouselInspectorControls({ onChange, attributes }) {
+export default function CarouselInspectorControls({
+	onChange,
+	attributes,
+	context,
+}) {
 	const { carouselOptions, advancedCarouselOptions, mergeOptions } =
 		attributes;
 
@@ -19,6 +23,7 @@ export default function CarouselInspectorControls({ onChange, attributes }) {
 					<GlobalControls
 						onChange={onChange}
 						attributes={attributes}
+						context={context}
 						isDisabled={isDisabled}
 					></GlobalControls>
 				</PanelBody>

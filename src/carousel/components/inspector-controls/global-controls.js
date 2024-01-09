@@ -18,9 +18,11 @@ import { __ } from '@wordpress/i18n';
 export default function GlobalControls({
 	onChange,
 	attributes,
+	context,
 	isDisabled = false,
 }) {
 	const { ariaLabel, carouselOptions } = attributes;
+	const { isLinked } = context;
 	const [type, setType] = useState(carouselOptions.type);
 	const [loop, setLoop] = useState(
 		(carouselOptions.rewind && type === 'fade') ||
@@ -236,6 +238,25 @@ export default function GlobalControls({
 						}}
 						shiftStep={1000}
 						value={carouselOptions.interval}
+					/>
+				)}
+
+				{isLinked && (
+					<ToggleControl
+						label={__('Use as navigation', 'pulsar-blocks')}
+						help={__(
+							'Use this carousel as navigation for the other carousel within the linked carousel block.',
+							'pulsar-blocks'
+						)}
+						checked={carouselOptions.isNavigation}
+						onChange={(value) => {
+							onChange({
+								carouselOptions: {
+									...carouselOptions,
+									isNavigation: value,
+								},
+							});
+						}}
 					/>
 				)}
 			</Disabled>
