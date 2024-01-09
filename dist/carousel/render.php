@@ -21,7 +21,8 @@ if ( isset( $attributes['advancedCarouselOptions'] ) ) {
 }
 
 // Check the number of slides and disable the carousel if there are not enough.
-$carousel_enabled      = isset( $options['perPage'] ) && count( $block->inner_blocks ) > $options['perPage'];
+// If the block has no track and a single innerBlock, assume its a variation and enable it.
+$carousel_enabled      = ! $has_track && count( $block->inner_blocks ) === 1 || isset( $options['perPage'] ) && count( $block->inner_blocks ) > $options['perPage'];
 $options['drag']       = $carousel_enabled;
 $options['arrows']     = $carousel_enabled && isset( $options['arrows'] ) ? $options['arrows'] : false;
 $options['pagination'] = $carousel_enabled && isset( $options['pagination'] ) ? $options['pagination'] : false;
