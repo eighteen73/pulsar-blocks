@@ -154,18 +154,27 @@ export default function Edit({
 			const pageProgressBar = carousel.root.querySelector(
 				'.splide__progress__bar'
 			);
+			const progressBarFromBeginning = options.progressBarFromBeginning;
 
 			if (pageProgressBar && options.progressBar && !options.autoplay) {
 				carousel.on('mounted move', function () {
-					const end = carousel.Components.Controller.getEnd() + 1;
-					const rate = Math.min((carousel.index + 1) / end, 1);
+					const end = progressBarFromBeginning
+						? carousel.Components.Controller.getEnd()
+						: carousel.Components.Controller.getEnd() + 1;
+					const rate = progressBarFromBeginning
+						? carousel.index / end
+						: Math.min((carousel.index + 1) / end, 1);
 					pageProgressBar.style.width = String(100 * rate) + '%';
 					pageProgressBar.style.transitionDuration =
 						carousel.options.speed + 'ms';
 				});
 			}
 		}
-	}, [options.progressBar, options.autoplay]);
+	}, [
+		options.progressBar,
+		options.progressBarFromBeginning,
+		options.autoplay,
+	]);
 
 	return (
 		<>

@@ -209,6 +209,24 @@ export default function GlobalControls({
 					}}
 				/>
 
+				{carouselOptions.progressBar && (
+					<ToggleControl
+						label={__(
+							'Start progress from beginning',
+							'pulsar-blocks'
+						)}
+						checked={carouselOptions.progressBarFromBeginning}
+						onChange={(value) => {
+							onChange({
+								carouselOptions: {
+									...carouselOptions,
+									progressBarFromBeginning: value,
+								},
+							});
+						}}
+					/>
+				)}
+
 				<ToggleControl
 					label={__('Autoplay', 'pulsar-blocks')}
 					checked={carouselOptions.autoplay}
