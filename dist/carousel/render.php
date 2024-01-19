@@ -24,7 +24,7 @@ if ( isset( $attributes['advancedCarouselOptions'] ) ) {
 /**
  * Check the number of slides and disable the carousel if there are not enough.
  */
-$carousel_enabled      = ! $has_track && count( $block->inner_blocks ) === 1 || isset( $options['perPage'] ) && count( $block->inner_blocks ) > $options['perPage'];
+$carousel_enabled      = ! $has_track && count( $block->inner_blocks ) === 1 || apply_filters( 'pulsar_blocks\carousel\force_carousel', isset( $options['perPage'] ) && count( $block->inner_blocks ) > $options['perPage'] );
 $options['drag']       = $carousel_enabled;
 $options['arrows']     = $carousel_enabled && isset( $options['arrows'] ) ? $options['arrows'] : false;
 $options['pagination'] = $carousel_enabled && isset( $options['pagination'] ) ? $options['pagination'] : false;

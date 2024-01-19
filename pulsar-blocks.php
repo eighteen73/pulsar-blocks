@@ -4,7 +4,7 @@
  * Description:       A collection of blocks we use at eighteen73.
  * Requires at least: 6.3
  * Requires PHP:      7.4
- * Version:           0.4.0
+ * Version:           0.4.1
  * Author:            eighteen73
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html

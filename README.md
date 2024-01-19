@@ -87,3 +87,20 @@ export default function Edit() {
 	);
 }
 ```
+
+## Filters
+
+### Carousel
+
+```php
+pulsar_blocks\carousel\force_carousel
+```
+
+The carousel contains logic to disable carousel functionality if the total number of slides is equal or less than the number of slides per page.
+Use this filter if you would like to enable/disable this behaviour.
+
+Example:
+
+```php
+add_filter( 'pulsar_blocks\carousel\force_carousel', '__return_true' );
+```
