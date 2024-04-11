@@ -71,7 +71,7 @@ if ( $is_navigation ) {
 
 		<!-- Autoplay controls -->
 		<?php if ( $autoplay ) : ?>
-			<button class="splide__toggle" type="button" aria-label="<?php esc_html_e( 'Toggle autoplay', 'pulsar-blocks' ); ?>">
+			<button class="splide__toggle" type="button">
 				<span class="splide__toggle__play"></span>
 				<span class="splide__toggle__pause"></span>
 			</button>
