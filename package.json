@@ -14,7 +14,7 @@
 		"i18n": "npm run i18n:textdomain && npm run i18n:pot",
 		"i18n:textdomain": "npx node-wp-i18n addtextdomain --exclude=vendor,node_modules",
 		"i18n:pot": "npx node-wp-i18n makepot . languages/pulsar-blocks.pot",
-    "plugin-zip": "wp-scripts plugin-zip"
+		"plugin-zip": "wp-scripts plugin-zip"
 	},
 	"devDependencies": {
 		"@eighteen73/eslint-config-wordpress": "^1.0.3",
@@ -22,7 +22,8 @@
 		"@wordpress/browserslist-config": "^5.25.0",
 		"@wordpress/prettier-config": "^2.25.0",
 		"@wordpress/scripts": "^26.18.0",
-		"postcss-preset-env": "^9.0.0"
+		"postcss-preset-env": "^9.0.0",
+		"webpack-merge": "^5.10.0"
 	},
 	"dependencies": {
 		"@splidejs/react-splide": "^0.7.12",
@@ -30,10 +31,10 @@
 		"@wordpress/icons": "^9.33.0",
 		"classnames": "^2.3.2"
 	},
-  "files": [
-    "assets",
-    "dist",
-    "autoload.php",
-    "pulsar-blocks.php"
-  ]
+	"files": [
+		"assets",
+		"dist",
+		"autoload.php",
+		"pulsar-blocks.php"
+	]
 }
