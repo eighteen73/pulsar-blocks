@@ -14,10 +14,24 @@
 
 $label   = esc_html( $attributes['label'] ?? '' );
 $menu_id = esc_attr( $attributes['menuId'] ?? '');
+$width   = esc_attr( $attributes['width'] ?? 'content');
 
 // Don't display the mega menu link if there is no label or no menu ID.
 if ( ! $label || ! $menu_id ) {
 	return null;
+}
+
+$navigation_link_has_id = isset( $attributes['id'] ) && is_numeric( $attributes['id'] );
+$is_post_type           = isset( $attributes['kind'] ) && 'post-type' === $attributes['kind'];
+$is_post_type           = $is_post_type || isset( $attributes['type'] ) && ( 'post' === $attributes['type'] || 'page' === $attributes['type'] );
+$kind                   = empty( $attributes['kind'] ) ? 'post_type' : str_replace( '-', '_', $attributes['kind'] );
+$is_active              = ! empty( $attributes['id'] ) && get_queried_object_id() === (int) $attributes['id'] && ! empty( get_queried_object()->$kind );
+
+if ( is_post_type_archive() ) {
+	$queried_archive_link = get_post_type_archive_link( get_queried_object()->name );
+	if ( $attributes['url'] === $queried_archive_link ) {
+		$is_active = true;
+	}
 }
 
 $css_classes = [
@@ -30,13 +44,11 @@ $show_submenu_indicators = isset( $block->context['showSubmenuIcon'] ) && $block
 $open_on_click           = isset( $block->context['openSubmenusOnClick'] ) && $block->context['openSubmenusOnClick'];
 $open_on_hover_and_click = isset( $block->context['openSubmenusOnClick'] ) && ! $block->context['openSubmenusOnClick'] && $show_submenu_indicators;
 
-$is_active = false;
-
 $wrapper_attributes = get_block_wrapper_attributes(
 	[
 		'class' => $css_classes . ( $menu_id ? ' has-child' : '' ) .
 		( $open_on_click ? ' open-on-click' : '' ) . ( $open_on_hover_and_click ? ' open-on-hover-click' : '' ) .
-		( $is_active ? ' current-menu-item' : '' ),
+		( $is_active ? ' current-menu-item' : '' ) . ( $width ? ' is-' . $width . '-width' : '' ),
 	],
 );
 
@@ -145,10 +157,13 @@ if ( $menu_id ) {
 		],
 	);
 
+	$content_classes = 'wp-block-pulsar-navigation-megamenu__content';
+
 	$html .= sprintf(
-		'<div %s %s>%s</div>',
+		'<div %1$s %2$s><div class="%3$s">%4$s</div></div>',
 		'data-wp-on--focus="actions.openMenuOnFocus"',
 		$wrapper_attributes,
+		$content_classes,
 		$template_part,
 	);
 }

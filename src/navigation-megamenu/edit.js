@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import {
 	InspectorControls,
 	BlockControls,
@@ -21,9 +21,15 @@ import {
 	TextareaControl,
 	ToolbarButton,
 	ToolbarGroup,
+	DropdownMenu,
 } from '@wordpress/components';
 import { addFilter } from '@wordpress/hooks';
-import { link as linkIcon } from '@wordpress/icons';
+import {
+	link as linkIcon,
+	alignNone,
+	stretchWide,
+	stretchFullWidth,
+} from '@wordpress/icons';
 import { useMergeRefs } from '@wordpress/compose';
 
 /**
@@ -91,8 +97,18 @@ export default function Edit({
 	isSelected,
 	onReplace,
 }) {
-	const { id, label, type, url, kind, rel, menuId, title, description } =
-		attributes;
+	const {
+		width,
+		id,
+		label,
+		type,
+		url,
+		kind,
+		rel,
+		menuId,
+		title,
+		description,
+	} = attributes;
 
 	const { showSubmenuIcon, openSubmenusOnClick } = context;
 	const { selectPreviousBlock } = useDispatch(blockEditorStore);
@@ -190,6 +206,53 @@ export default function Edit({
 		};
 	}
 
+	// Get the layout settings.
+	const layout = useSelect(
+		(select) =>
+			select('core/editor').getEditorSettings()?.__experimentalFeatures
+				?.layout
+	);
+
+	// Convert the saved width value to a corresponding icon
+	const widthIcon = {
+		'': alignNone,
+		content: alignNone,
+		wide: stretchWide,
+		full: stretchFullWidth,
+	}[width];
+
+	const widthOptions = [
+		{
+			value: 'content',
+			icon: alignNone,
+			title: __('Content width'),
+			label: sprintf(
+				// translators: %s: container size (i.e. 600px etc)
+				__('Content width (%s wide)', 'pulsar-blocks'),
+				layout.contentSize
+			),
+			onClick: () => setAttributes({ width: 'content' }),
+		},
+		{
+			value: 'wide',
+			icon: stretchWide,
+			title: __('Wide width'),
+			label: sprintf(
+				// translators: %s: container size (i.e. 600px etc)
+				__('Wide width (%s wide)', 'pulsar-blocks'),
+				layout.wideSize
+			),
+			onClick: () => setAttributes({ width: 'wide' }),
+		},
+		{
+			value: 'full',
+			icon: stretchFullWidth,
+			title: __('Full width'),
+			label: __('Full width', 'pulsar-blocks'),
+			onClick: () => setAttributes({ width: 'full' }),
+		},
+	];
+
 	return (
 		<>
 			<BlockControls>
@@ -203,6 +266,11 @@ export default function Edit({
 							setIsLinkOpen(true);
 							setOpenedBy(event.currentTarget);
 						}}
+					/>
+					<DropdownMenu
+						icon={widthIcon}
+						label={__('Select a direction', 'pulsar-blocks')}
+						controls={widthOptions}
 					/>
 				</ToolbarGroup>
 				{isLinkOpen && (

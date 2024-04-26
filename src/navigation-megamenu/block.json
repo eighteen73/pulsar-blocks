@@ -13,7 +13,8 @@
 			"type": "string"
 		},
     "width": {
-			"type": "string"
+			"type": "string",
+      "default": "content"
 		},
     "label": {
 			"type": "string"
@@ -61,7 +62,6 @@
 		"style"
 	],
 	"supports": {
-    "align": [ "wide", "full" ],
 		"reusable": false,
 		"html": false,
 		"interactivity": {
