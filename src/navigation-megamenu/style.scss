@@ -30,7 +30,7 @@
 		width: 100vw;
 	}
 
-	#{$block}__content {
+	#{$block}__wrap {
 		margin-inline: auto;
 		max-width: var(--wp--style--global--content-size);
 		width: var(--wp--style--global--content-size);

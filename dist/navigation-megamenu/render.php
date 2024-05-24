@@ -157,7 +157,7 @@ if ( $menu_id ) {
 		],
 	);
 
-	$content_classes = 'wp-block-pulsar-navigation-megamenu__content';
+	$content_classes = 'wp-block-pulsar-navigation-megamenu__wrap';
 
 	$html .= sprintf(
 		'<div %1$s %2$s><div class="%3$s">%4$s</div></div>',
