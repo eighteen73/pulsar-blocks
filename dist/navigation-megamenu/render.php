@@ -170,4 +170,8 @@ if ( $menu_id ) {
 
 $html .= '</li>';
 
+$tags = new WP_HTML_Tag_Processor( $html );
+$html = block_core_navigation_add_directives_to_submenu( $tags, $attributes );
+$html = $tags->get_updated_html();
+
 echo $html;
