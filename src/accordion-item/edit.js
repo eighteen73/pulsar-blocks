@@ -63,10 +63,7 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 						placeholder={__('Add a title…', 'pulsar-blocks')}
 					/>
 
-					<span
-						className="wp-block-pulsar-accordion__icon"
-						dangerouslySetInnerHTML={{ __html: '&plus;' }}
-					></span>
+					<span className="wp-block-pulsar-accordion__icon"></span>
 				</button>
 			</TagName>
 

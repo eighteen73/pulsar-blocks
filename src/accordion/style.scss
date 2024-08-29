@@ -10,16 +10,16 @@
 	gap: var(--gap);
 	padding: 0;
 
-	&__heading {
+	.wp-block-pulsar-accordion__heading {
 		margin: 0;
 		padding: 0;
 
-		+ #{$block}__panel {
+		+ .wp-block-pulsar-accordion__panel {
 			margin-top: 0;
 		}
 	}
 
-	&__trigger {
+	.wp-block-pulsar-accordion__trigger {
 		align-items: center;
 		background: none;
 		border: var(--border);
@@ -37,11 +37,11 @@
 		width: 100%;
 	}
 
-	&__title {
+	.wp-block-pulsar-accordion__title {
 		width: 100%;
 	}
 
-	&__panel {
+	.wp-block-pulsar-accordion__panel {
 		border: var(--border);
 		border-top: 0;
 		display: none;
@@ -54,7 +54,7 @@
 		}
 	}
 
-	&__icon {
+	.wp-block-pulsar-accordion__icon {
 		background-color: currentcolor;
 		height: 12px;
 		mask-image: url("../../assets/arrow-down.svg");
