@@ -67,7 +67,11 @@
 		},
     "allowedBlocks": {
 			"type": "array"
-		}
+		},
+    "disabledControls": {
+      "type": "boolean",
+      "default": false
+    }
   },
   "usesContext": [
     "isLinked"

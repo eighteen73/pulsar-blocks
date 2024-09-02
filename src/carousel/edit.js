@@ -48,6 +48,7 @@ export default function Edit({
 		allowedBlocks,
 		template,
 		templateLock,
+		disableControls,
 	} = attributes;
 
 	const ref = useRef(null);
