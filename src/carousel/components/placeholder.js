@@ -3,7 +3,11 @@ import { Placeholder } from '@wordpress/components';
 import SingleBlockTypeAppender from '../../components/single-block-type-appender';
 import { Carousel as Icon } from '../../components/icons';
 
-export default function CarouselPlaceholder({ clientId, children }) {
+export default function CarouselPlaceholder({
+	allowedBlock,
+	clientId,
+	children,
+}) {
 	return (
 		<Placeholder
 			icon={Icon}
@@ -18,9 +22,8 @@ export default function CarouselPlaceholder({ clientId, children }) {
 		>
 			<SingleBlockTypeAppender
 				onClickAfter={() => {}}
-				variant="primary"
-				text={__('Add slide', 'pulsar-blocks')}
-				allowedBlock="pulsar/carousel-slide"
+				variant="secondary"
+				allowedBlock={allowedBlock}
 				clientId={clientId}
 				isEnabled={true}
 				style={{ alignSelf: 'center' }}
