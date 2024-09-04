@@ -17,8 +17,6 @@ import { useSelect } from '@wordpress/data';
 
 import { __ } from '@wordpress/i18n';
 
-import { plus } from '@wordpress/icons';
-
 import SingleBlockTypeAppender from '../components/single-block-type-appender';
 
 const ALLOWED_BLOCKS = ['pulsar/accordion-item'];
@@ -140,8 +138,6 @@ export default function Edit({
 			<SingleBlockTypeAppender
 				onClickAfter={() => {}}
 				variant="secondary"
-				icon={plus}
-				iconPosition="left"
 				text={__('Add item', 'pulsar-blocks')}
 				allowedBlock="pulsar/accordion-item"
 				style={{ width: '100%', justifyContent: 'center' }}

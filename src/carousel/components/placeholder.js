@@ -22,7 +22,8 @@ export default function CarouselPlaceholder({
 		>
 			<SingleBlockTypeAppender
 				onClickAfter={() => {}}
-				variant="secondary"
+				variant="primary"
+				text={__('Add slide', 'pulsar-blocks')}
 				allowedBlock={allowedBlock}
 				clientId={clientId}
 				isEnabled={true}
