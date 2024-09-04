@@ -11,67 +11,73 @@ export default function CarouselInspectorControls({
 	attributes,
 	context,
 }) {
-	const { carouselOptions, advancedCarouselOptions, mergeOptions } =
-		attributes;
+	const {
+		carouselOptions,
+		advancedCarouselOptions,
+		mergeOptions,
+		disabledControls,
+	} = attributes;
 
 	const isDisabled = advancedCarouselOptions && !mergeOptions;
 
 	return (
-		<>
-			<InspectorControls>
-				<PanelBody title={__('Settings', 'pulsar-blocks')}>
-					<GlobalControls
-						onChange={onChange}
-						attributes={attributes}
-						context={context}
-						isDisabled={isDisabled}
-					></GlobalControls>
-				</PanelBody>
+		!disabledControls && (
+			<>
+				<InspectorControls>
+					<PanelBody title={__('Settings', 'pulsar-blocks')}>
+						<GlobalControls
+							onChange={onChange}
+							attributes={attributes}
+							context={context}
+							isDisabled={isDisabled}
+						></GlobalControls>
+					</PanelBody>
 
-				<PanelBody
-					title={__('Desktop settings', 'pulsar-blocks')}
-					initialOpen={true}
-				>
-					<BreakpointControls
+					<PanelBody
+						title={__('Desktop settings', 'pulsar-blocks')}
+						initialOpen={true}
+					>
+						<BreakpointControls
+							onChange={onChange}
+							carouselOptions={carouselOptions}
+							size={false}
+							isDisabled={isDisabled}
+						/>
+					</PanelBody>
+
+					<PanelBody
+						title={__('Tablet settings', 'pulsar-blocks')}
+						initialOpen={false}
+					>
+						<BreakpointControls
+							onChange={onChange}
+							carouselOptions={carouselOptions}
+							size={1024}
+							isDisabled={isDisabled}
+						/>
+					</PanelBody>
+
+					<PanelBody
+						title={__('Mobile settings', 'pulsar-blocks')}
+						initialOpen={false}
+					>
+						<BreakpointControls
+							onChange={onChange}
+							carouselOptions={carouselOptions}
+							size={640}
+							isDisabled={isDisabled}
+						/>
+					</PanelBody>
+				</InspectorControls>
+
+				<InspectorControls group="advanced">
+					<AdvancedControls
 						onChange={onChange}
-						carouselOptions={carouselOptions}
-						size={false}
-						isDisabled={isDisabled}
+						advancedCarouselOptions={advancedCarouselOptions}
+						mergeOptions={mergeOptions}
 					/>
-				</PanelBody>
-
-				<PanelBody
-					title={__('Tablet settings', 'pulsar-blocks')}
-					initialOpen={false}
-				>
-					<BreakpointControls
-						onChange={onChange}
-						carouselOptions={carouselOptions}
-						size={1024}
-						isDisabled={isDisabled}
-					/>
-				</PanelBody>
-
-				<PanelBody
-					title={__('Mobile settings', 'pulsar-blocks')}
-					initialOpen={false}
-				>
-					<BreakpointControls
-						onChange={onChange}
-						carouselOptions={carouselOptions}
-						size={640}
-						isDisabled={isDisabled}
-					/>
-				</PanelBody>
-			</InspectorControls>
-
-			<InspectorControls group="advanced">
-				<AdvancedControls
-					onChange={onChange}
-					advancedCarouselOptions={advancedCarouselOptions}
-					mergeOptions={mergeOptions}
-				/>
-			</InspectorControls>
-		</>
+				</InspectorControls>
+			</>
+		)
 	);
 }

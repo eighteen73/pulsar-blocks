@@ -65,9 +65,14 @@
 			"type": [ "string", "boolean" ],
 			"enum": [ "all", "insert", "contentOnly", false ]
 		},
-    "allowedBlocks": {
-			"type": "array"
-		}
+    "allowedBlock": {
+			"type": "string",
+      "default": "pulsar/carousel-slide"
+		},
+    "disabledControls": {
+      "type": "boolean",
+      "default": false
+    }
   },
   "usesContext": [
     "isLinked"

@@ -45,7 +45,7 @@ export default function Edit({
 		mergeOptions,
 		ariaLabel,
 		hasTrack,
-		allowedBlocks,
+		allowedBlock,
 		template,
 		templateLock,
 	} = attributes;
@@ -54,7 +54,6 @@ export default function Edit({
 	const blockProps = useBlockProps();
 	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
 		orientation: 'horizontal',
-		allowedBlocks,
 		template,
 		templateLock,
 		renderAppender: false,
@@ -186,7 +185,10 @@ export default function Edit({
 
 			<div {...innerBlocksProps}>
 				{!isReady || innerBlocks.length === 0 ? (
-					<CarouselPlaceholder clientId={clientId}>
+					<CarouselPlaceholder
+						allowedBlock={allowedBlock}
+						clientId={clientId}
+					>
 						{children}
 					</CarouselPlaceholder>
 				) : (
@@ -229,7 +231,7 @@ export default function Edit({
 					}}
 					variant="secondary"
 					text={__('Add slide', 'pulsar-blocks')}
-					allowedBlock="pulsar/carousel-slide"
+					allowedBlock={allowedBlock}
 					style={{ width: '100%', justifyContent: 'center' }}
 					clientId={clientId}
 					isEnabled={
