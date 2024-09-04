@@ -98,8 +98,10 @@
           "type": "fade",
           "drag": true,
           "arrows": true,
-          "pagination": true
+          "pagination": true,
+          "perPage": 1
         },
+        "mergeOptions": false,
         "allowedBlock": "pulsar/carousel-image",
         "disabledControls": true
       }
