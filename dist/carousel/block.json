@@ -84,5 +84,25 @@
   },
   "usesContext": [
     "isLinked"
+  ],
+  "variations": [
+    {
+      "name": "carousel-gallery",
+      "title": "Carousel gallery",
+      "isActive": [
+        "carouselOptions",
+        "allowedBlock"
+      ],
+      "attributes": {
+        "carouselOptions": {
+          "type": "fade",
+          "drag": true,
+          "arrows": true,
+          "pagination": true
+        },
+        "allowedBlock": "pulsar/carousel-image",
+        "disabledControls": true
+      }
+    }
   ]
 }

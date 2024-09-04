@@ -17,6 +17,7 @@
 		"plugin-zip": "wp-scripts plugin-zip"
 	},
 	"devDependencies": {
+		"@10up/block-components": "^1.19.2",
 		"@eighteen73/eslint-config-wordpress": "^1.0.3",
 		"@eighteen73/stylelint-config-wordpress": "^1.1.2",
 		"@wordpress/browserslist-config": "^5.25.0",
