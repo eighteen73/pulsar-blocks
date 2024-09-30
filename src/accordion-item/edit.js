@@ -41,7 +41,7 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 
 	const innerBlocksProps = useInnerBlocksProps(
 		{
-			className: 'wp-block-pulsar-accordion__panel',
+			className: 'wp-block-pulsar-accordion__panel-inner',
 		},
 		{
 			orientation: 'vertical',
@@ -67,7 +67,9 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 				</button>
 			</TagName>
 
-			<div {...innerBlocksProps}></div>
+			<div className="wp-block-pulsar-accordion__panel">
+				<div {...innerBlocksProps}></div>
+			</div>
 		</div>
 	);
 }
