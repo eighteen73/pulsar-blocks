@@ -9,9 +9,13 @@
  * @package Pulsar
  */
 
-$aria_label = $attributes['ariaLabel'] ?? __( 'Carousel', 'pulsar' );
-$styles = [];
-$settings = [];
+$styles            = [];
+$options           = $attributes['options'] ?? [];
+$fade              = $attributes['fade'] ? 'true' : 'false';
+$autoplay          = $attributes['autoplay'] ? 'true' : 'false';
+$autoplayOptions   = $attributes['autoplayOptions'] ?? [];
+$autoscroll        = $attributes['autoscroll'] ? 'true' : 'false';
+$autoscrollOptions = $attributes['autoscrollOptions'] ?? [];
 ?>
 
 <div
@@ -27,7 +31,12 @@ $settings = [];
 >
 	<div
 		class="embla"
-		data-embla="<?php echo esc_html( wp_json_encode( $settings, JSON_PRETTY_PRINT ) ); ?>"
+		data-embla-options="<?php echo esc_html( wp_json_encode( $options, JSON_PRETTY_PRINT ) ); ?>"
+		data-embla-fade="<?php echo esc_attr( $fade ); ?>"
+		data-embla-autoplay="<?php echo esc_attr( $autoplay ); ?>"
+		data-embla-autoplay-options="<?php echo esc_html( wp_json_encode( $autoplayOptions, JSON_PRETTY_PRINT ) ); ?>"
+		data-embla-autoscroll="<?php echo esc_attr( $autoscroll ); ?>"
+		data-embla-autoscroll-options="<?php echo esc_html( wp_json_encode( $autoscrollOptions, JSON_PRETTY_PRINT ) ); ?>"
 	>
 		<?php echo $content; // phpcs:disable ?>
 	</div>

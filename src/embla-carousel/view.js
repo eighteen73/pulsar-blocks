@@ -1,11 +1,26 @@
 import EmblaCarousel from 'embla-carousel';
-
-const carousels = document.getElementsByClassName('embla');
+import ClassNames from 'embla-carousel-class-names';
+import Fade from 'embla-carousel-fade';
+import Autoplay from 'embla-carousel-autoplay';
+import Autoscroll from 'embla-carousel-auto-scroll';
 
 document.addEventListener('DOMContentLoaded', () => {
-	for (let i = 0; i < carousels.length; i++) {
-		const options = {};
-		const emblaNode = carousels[i];
+	const carouselBlocks = document.querySelectorAll(
+		'.wp-block-pulsar-embla-carousel'
+	);
+
+	carouselBlocks.forEach((carouselBlock) => {
+		const emblaNode = carouselBlock.querySelector('.embla');
+		const options = JSON.parse(emblaNode.dataset.emblaOptions);
+		const fade = emblaNode.dataset.emblaFade === 'true';
+		const autoplay = emblaNode.dataset.emblaAutoplay === 'true';
+		const autoplayOptions = JSON.parse(
+			emblaNode.dataset.emblaAutoplayOptions
+		);
+		const autoscroll = emblaNode.dataset.emblaAutoscroll === 'true';
+		const autoscrollOptions = JSON.parse(
+			emblaNode.dataset.emblaAutoscrollOptions
+		);
 		const viewportNode = emblaNode.querySelector('.embla__viewport');
 		const prevBtnNode = emblaNode.querySelector('.embla__button--prev');
 		const nextBtnNode = emblaNode.querySelector('.embla__button--next');
@@ -15,13 +30,25 @@ document.addEventListener('DOMContentLoaded', () => {
 			'.wp-block-post-template'
 		);
 
+		const plugins = [ClassNames()];
+		if (fade) {
+			plugins.push(Fade());
+		}
+		if (autoplay) {
+			plugins.push(Autoplay(autoplayOptions));
+			options.loop = true;
+		}
+		if (autoscroll) {
+			plugins.push(Autoscroll(autoscrollOptions));
+		}
+
 		if (queryLoop !== null) {
 			options.container = queryLoop;
 		} else {
 			options.container = containerNode;
 		}
 
-		const emblaApi = EmblaCarousel(viewportNode, options);
+		const emblaApi = EmblaCarousel(viewportNode, options, plugins);
 
 		const removePrevNextBtnsClickHandlers = addPrevNextBtnsClickHandlers(
 			emblaApi,
@@ -35,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		emblaApi.on('destroy', removePrevNextBtnsClickHandlers);
 		emblaApi.on('destroy', removeDotBtnsAndClickHandlers);
-	}
+	});
 });
 
 const addTogglePrevNextBtnsActive = (emblaApi, prevBtn, nextBtn) => {

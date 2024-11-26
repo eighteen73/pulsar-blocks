@@ -12,6 +12,35 @@
     "pulsar/carousel-pagination",
     "pulsar/carousel-buttons"
   ],
+  "attributes": {
+    "options": {
+      "type": "object",
+      "default": {
+        "align": "start",
+        "axis": "x"
+      }
+    },
+    "fade": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoplayOptions": {
+      "type": "object",
+      "default": {}
+    },
+    "autoscroll": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoscrollOptions": {
+      "type": "object",
+      "default": {}
+    }
+  },
 	"textdomain": "pulsar",
 	"editorScript": "file:./index.js",
 	"style": "file:./style-index.css",

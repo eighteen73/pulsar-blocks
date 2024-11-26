@@ -84,7 +84,7 @@ const addDotBtnsAndClickHandlers = (emblaApi, dotsNode) => {
 	};
 };
 
-export default function Edit({ clientId }) {
+export default function Edit({ clientId, attributes: { options } }) {
 	const blockProps = useBlockProps({ className: 'embla' });
 	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
 		orientation: 'vertical',
@@ -103,7 +103,7 @@ export default function Edit({ clientId }) {
 	);
 
 	const viewportBlock = innerBlocks.find(
-		(block) => block.name === 'pulsar/carousel-viewport'
+		(block) => block.name === 'pulsar/embla-carousel-viewport'
 	);
 
 	const viewportInnerBlocks = useSelect((select) =>
@@ -118,10 +118,8 @@ export default function Edit({ clientId }) {
 		(block) => block.name === 'core/query'
 	);
 
-	// We need to set a different container depending on the inner blocks.
-	// If the inner blocks contain a post template, we use that as the container.
-	// Otherwise, we use the .embla__container selector instead.
 	const [emblaRef, emblaApi] = useEmblaCarousel({
+		...options,
 		container: hasQueryLoop
 			? '.wp-block-post-template'
 			: '.embla__container',
