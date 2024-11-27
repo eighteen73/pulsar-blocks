@@ -1,0 +1,13 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "pulsar/modal-trigger",
+  "version": "0.1.0",
+  "title": "Modal Trigger",
+  "category": "design",
+  "icon": "button",
+  "textdomain": "pulsar-blocks",
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}
