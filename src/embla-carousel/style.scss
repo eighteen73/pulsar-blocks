@@ -9,22 +9,22 @@
 	.embla {
 		overflow: hidden;
 		position: relative;
-	}
 
-	.embla__viewport {
-		overflow: hidden;
-	}
+		.embla__viewport {
+			overflow: hidden;
+		}
 
-	.embla__container,
-	.wp-block-post-template {
-		display: flex;
-		touch-action: pan-y pinch-zoom;
+		.embla__container,
+		.wp-block-post-template {
+			display: flex;
+			touch-action: pan-y pinch-zoom;
 
-		> * {
-			flex: 0 0 var(--carousel-slide-width, 100%);
-			margin: 0 var(--carousel-slide-gap, 0) 0 0;
-			min-width: 0;
-			transform: translate3d(0, 0, 0);
+			> * {
+				flex: 0 0 var(--carousel-slide-width, 100%);
+				margin: 0 var(--carousel-slide-gap, 0) 0 0;
+				min-width: 0;
+				transform: translate3d(0, 0, 0);
+			}
 		}
 	}
 }

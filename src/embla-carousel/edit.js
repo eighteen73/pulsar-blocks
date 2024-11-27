@@ -3,88 +3,16 @@ import { useSelect } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import useEmblaCarousel from 'embla-carousel-react';
 
-const addTogglePrevNextBtnsActive = (emblaApi, prevBtn, nextBtn) => {
-	const togglePrevNextBtnsState = () => {
-		if (emblaApi.canScrollPrev()) prevBtn.removeAttribute('disabled');
-		else prevBtn.setAttribute('disabled', 'disabled');
+import {
+	addDotBtnsAndClickHandlers,
+	addPrevNextBtnsClickHandlers,
+} from '../utils/embla';
 
-		if (emblaApi.canScrollNext()) nextBtn.removeAttribute('disabled');
-		else nextBtn.setAttribute('disabled', 'disabled');
-	};
-
-	emblaApi
-		.on('select', togglePrevNextBtnsState)
-		.on('init', togglePrevNextBtnsState)
-		.on('reInit', togglePrevNextBtnsState);
-
-	return () => {
-		prevBtn.removeAttribute('disabled');
-		nextBtn.removeAttribute('disabled');
-	};
-};
-
-const addPrevNextBtnsClickHandlers = (emblaApi, prevBtn, nextBtn) => {
-	const scrollPrev = () => {
-		emblaApi.scrollPrev();
-	};
-	const scrollNext = () => {
-		emblaApi.scrollNext();
-	};
-	prevBtn.addEventListener('click', scrollPrev, false);
-	nextBtn.addEventListener('click', scrollNext, false);
-
-	const removeTogglePrevNextBtnsActive = addTogglePrevNextBtnsActive(
-		emblaApi,
-		prevBtn,
-		nextBtn
-	);
-
-	return () => {
-		removeTogglePrevNextBtnsActive();
-		prevBtn.removeEventListener('click', scrollPrev, false);
-		nextBtn.removeEventListener('click', scrollNext, false);
-	};
-};
-
-const addDotBtnsAndClickHandlers = (emblaApi, dotsNode) => {
-	let dotNodes = [];
-
-	const addDotBtnsWithClickHandlers = () => {
-		dotsNode.innerHTML = emblaApi
-			.scrollSnapList()
-			.map(() => '<button class="embla__dot" type="button"></button>')
-			.join('');
-
-		const scrollTo = (index) => {
-			emblaApi.scrollTo(index);
-		};
-
-		dotNodes = Array.from(dotsNode.querySelectorAll('.embla__dot'));
-		dotNodes.forEach((dotNode, index) => {
-			dotNode.addEventListener('click', () => scrollTo(index), false);
-		});
-	};
-
-	const toggleDotBtnsActive = () => {
-		const previous = emblaApi.previousScrollSnap();
-		const selected = emblaApi.selectedScrollSnap();
-		dotNodes[previous].classList.remove('embla__dot--selected');
-		dotNodes[selected].classList.add('embla__dot--selected');
-	};
-
-	emblaApi
-		.on('init', addDotBtnsWithClickHandlers)
-		.on('reInit', addDotBtnsWithClickHandlers)
-		.on('init', toggleDotBtnsActive)
-		.on('reInit', toggleDotBtnsActive)
-		.on('select', toggleDotBtnsActive);
-
-	return () => {
-		dotsNode.innerHTML = '';
-	};
-};
-
-export default function Edit({ clientId, attributes: { options } }) {
+export default function Edit({
+	clientId,
+	attributes: { options },
+	setAttributes,
+}) {
 	const blockProps = useBlockProps({ className: 'embla' });
 	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
 		orientation: 'vertical',
@@ -128,6 +56,14 @@ export default function Edit({ clientId, attributes: { options } }) {
 	useEffect(() => {
 		if (!emblaApi) return;
 
+		setAttributes({ emblaApi });
+	}, [emblaApi, setAttributes]);
+
+	useEffect(() => {
+		if (!emblaApi) return;
+
+		setAttributes({ emblaApi });
+
 		const block = document.querySelector(`[data-block="${clientId}"]`);
 		const buttons = block.querySelectorAll('.embla__button');
 		const dotsNode = block.querySelector('.embla__dots');
@@ -148,7 +84,13 @@ export default function Edit({ clientId, attributes: { options } }) {
 			removePrevNextBtnsClickHandlers();
 			removeDotBtnsAndClickHandlers();
 		};
-	}, [clientId, emblaApi, innerBlocks]);
+	}, [clientId, emblaApi, innerBlocks, setAttributes]);
+
+	useEffect(() => {
+		if (!emblaApi) return;
+
+		setAttributes({ emblaApi });
+	}, [emblaApi, setAttributes]);
 
 	return (
 		<div {...innerBlocksProps}>

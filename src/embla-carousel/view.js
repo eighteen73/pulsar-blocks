@@ -50,18 +50,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		const emblaApi = EmblaCarousel(viewportNode, options, plugins);
 
-		const removePrevNextBtnsClickHandlers = addPrevNextBtnsClickHandlers(
-			emblaApi,
-			prevBtnNode,
-			nextBtnNode
-		);
-		const removeDotBtnsAndClickHandlers = addDotBtnsAndClickHandlers(
-			emblaApi,
-			dotsNode
-		);
+		if (prevBtnNode && nextBtnNode) {
+			const removePrevNextBtnsClickHandlers =
+				addPrevNextBtnsClickHandlers(
+					emblaApi,
+					prevBtnNode,
+					nextBtnNode
+				);
 
-		emblaApi.on('destroy', removePrevNextBtnsClickHandlers);
-		emblaApi.on('destroy', removeDotBtnsAndClickHandlers);
+			emblaApi.on('destroy', removePrevNextBtnsClickHandlers);
+		}
+
+		if (dotsNode) {
+			const removeDotBtnsAndClickHandlers = addDotBtnsAndClickHandlers(
+				emblaApi,
+				dotsNode
+			);
+
+			emblaApi.on('destroy', removeDotBtnsAndClickHandlers);
+		}
 	});
 });
 

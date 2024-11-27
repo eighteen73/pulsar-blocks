@@ -11,6 +11,9 @@
   "parent": [
     "pulsar/embla-carousel"
   ],
+  "usesContext": [
+    "emblaApi"
+  ],
 	"editorScript": "file:./index.js",
 	"style": "file:./style-index.css",
 	"render": "file:./render.php"
