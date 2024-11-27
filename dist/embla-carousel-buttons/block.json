@@ -10,6 +10,9 @@
   "parent": [
     "pulsar/embla-carousel"
   ],
+  "usesContext": [
+    "emblaApi"
+  ],
   "textdomain": "pulsar",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",

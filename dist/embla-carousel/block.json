@@ -8,11 +8,14 @@
   "icon": "smiley",
   "description": "Carousel",
   "allowedBlocks": [
-    "pulsar/carousel-content",
-    "pulsar/carousel-pagination",
+    "pulsar/carousel-viewport",
+    "pulsar/carousel-dots",
     "pulsar/carousel-buttons"
   ],
   "attributes": {
+    "emblaApi": {
+      "type": "object"
+    },
     "options": {
       "type": "object",
       "default": {
@@ -40,6 +43,12 @@
       "type": "object",
       "default": {}
     }
+  },
+  "supports": {
+    "inserter": true
+  },
+  "providesContext": {
+    "emblaApi": "emblaApi"
   },
   "textdomain": "pulsar",
   "editorScript": "file:./index.js",
