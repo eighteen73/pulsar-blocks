@@ -45,7 +45,7 @@
     }
   },
   "supports": {
-    "inserter": false
+    "inserter": true
   },
   "providesContext": {
     "emblaApi": "emblaApi"
