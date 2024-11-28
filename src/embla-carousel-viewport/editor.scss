@@ -1,0 +1,6 @@
+.wp-block-pulsar-embla-carousel-viewport {
+	.embla__container:has(> .block-list-appender),
+	.embla__container:empty {
+		aspect-ratio: 16 / 9;
+	}
+}

@@ -1,0 +1,58 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "pulsar/embla-carousel",
+	"version": "0.1.0",
+	"title": "Carousel",
+	"category": "design",
+	"icon": "smiley",
+	"description": "Carousel",
+  "allowedBlocks": [
+    "pulsar/carousel-viewport",
+    "pulsar/carousel-dots",
+    "pulsar/carousel-buttons"
+  ],
+  "attributes": {
+    "emblaApi": {
+      "type": "object"
+    },
+    "options": {
+      "type": "object",
+      "default": {
+        "align": "start",
+        "axis": "x"
+      }
+    },
+    "fade": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoplayOptions": {
+      "type": "object",
+      "default": {}
+    },
+    "autoscroll": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoscrollOptions": {
+      "type": "object",
+      "default": {}
+    }
+  },
+  "supports": {
+    "inserter": true
+  },
+  "providesContext": {
+    "emblaApi": "emblaApi"
+  },
+	"textdomain": "pulsar",
+	"editorScript": "file:./index.js",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php",
+	"viewScript": "file:./view.js"
+}

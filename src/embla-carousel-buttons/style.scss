@@ -1,0 +1,72 @@
+.wp-block-pulsar-embla-carousel-buttons {
+	--carousel-button-size: 32px;
+	--carousel-button-icon-size: 12px;
+	--carousel-button-gap: var(--wp--preset--spacing--md, 12px);
+	--carousel-button-background-color: var(--wp--custom--color--surface--default, #fff);
+	--carousel-button-icon-color: var(--wp--custom--color--surface--invert, currentcolor);
+	--carousel-button-border-radius: 50%;
+	align-items: center;
+	display: grid;
+	gap: var(--carousel-button-gap);
+	grid-template-columns: repeat(2, 1fr);
+	z-index: 10;
+
+	.embla__button {
+		align-items: center;
+		appearance: none;
+		background-color: var(--carousel-button-background-color);
+		border: 0;
+		border-radius: 50%;
+		cursor: pointer;
+		display: inline-flex;
+		display: flex;
+		height: var(--carousel-button-size);
+		justify-content: center;
+		margin: 0;
+		padding: 0;
+		position: relative;
+		position: absolute;
+		text-decoration: none;
+		top: 50%;
+		touch-action: manipulation;
+		transform: translateY(-50%);
+		width: var(--carousel-button-size);
+		z-index: 1;
+
+		&:disabled {
+			opacity: 0.3;
+		}
+
+		.embla__button-label {
+			text-indent: -9999px;
+
+			&::after {
+				background-color: var(--carousel-button-icon-color);
+				border-radius: inherit;
+				content: "";
+				inset: 0;
+				mask-position: center;
+				mask-repeat: no-repeat;
+				mask-size: var(--carousel-button-icon-size);
+				position: absolute;
+			}
+		}
+
+		&:where(.embla__button--prev) {
+			left: var(--carousel-button-gap);
+
+			.embla__button-label::after {
+				mask-image: url("../../assets/arrow-left.svg");
+			}
+		}
+
+		&:where(.embla__button--next) {
+			justify-self: flex-end;
+			right: var(--carousel-button-gap);
+
+			.embla__button-label::after {
+				mask-image: url("../../assets/arrow-right.svg");
+			}
+		}
+	}
+}
