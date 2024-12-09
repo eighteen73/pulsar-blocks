@@ -1,0 +1,36 @@
+.wp-block-pulsar-modal {
+	&.is-open {
+		z-index: 10;
+	}
+
+	&__container {
+		max-height: calc(100% - 200px);
+	}
+
+	.components-resizable-box__container.has-show-handle .components-resizable-box__handle {
+		display: none !important;
+	}
+
+	&__editor-id {
+		align-items: center;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		margin-bottom: 2em;
+	}
+}
+
+.pulsar-modal-block {
+	&__card {
+		.components-card-body {
+			align-items: center;
+			display: flex;
+			gap: 12px;
+			justify-content: space-between;
+		}
+
+		.components-heading {
+			margin: 0;
+		}
+	}
+}
