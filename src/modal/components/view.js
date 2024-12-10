@@ -38,6 +38,7 @@ export default class Modal {
 	 */
 	registerTriggers(...triggers) {
 		triggers.filter(Boolean).forEach((trigger) => {
+			// Handle click events
 			trigger.addEventListener('click', (event) => {
 				const isAnchor =
 					event.target.tagName === 'A' || event.target.closest('a');
@@ -49,6 +50,14 @@ export default class Modal {
 					event.stopPropagation();
 				}
 				this.showModal(true);
+			});
+
+			// Handle keydown events for "Enter" and "Space"
+			trigger.addEventListener('keydown', (event) => {
+				if (event.key === 'Enter' || event.key === ' ') {
+					event.preventDefault(); // Prevent default scrolling for space
+					this.showModal(true);
+				}
 			});
 		});
 	}
