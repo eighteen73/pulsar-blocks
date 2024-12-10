@@ -1,6 +1,18 @@
 .wp-block-pulsar-modal {
+	&.is-selected {
+		display: block;
+
+		.wp-block-pulsar-modal__overlay {
+			display: none;
+		}
+	}
+
 	&.is-open {
 		z-index: 10;
+
+		.wp-block-pulsar-modal__overlay {
+			display: flex;
+		}
 	}
 
 	&__container {
@@ -17,6 +29,10 @@
 		flex-wrap: wrap;
 		justify-content: space-between;
 		margin-bottom: 2em;
+	}
+
+	.components-placeholder {
+		text-align: center;
 	}
 }
 

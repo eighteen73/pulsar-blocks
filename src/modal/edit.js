@@ -11,6 +11,8 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	InspectorControls,
+	BlockControls,
+
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -28,11 +30,16 @@ import {
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUnitControl as UnitControl,
 	withNotices,
+	Placeholder,
+	Toolbar,
+	ToolbarButton,
+	ToolbarGroup,
 } from '@wordpress/components';
 import { useSelect, dispatch } from '@wordpress/data';
 import { store as editorStore } from '@wordpress/editor';
 
 import { generateModalId, useModals } from '../utils/modal';
+import { Modal as icon } from '../components/icons';
 
 import './editor.scss';
 
@@ -115,8 +122,12 @@ export function Edit(props) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isSelected, isInnerBlockSelected, postType]);
 
-	const close = () => {
+	const handleClose = () => {
 		setOpen(false);
+	};
+
+	const toggleOpen = () => {
+		setOpen(!open);
 	};
 
 	const [availableUnits] = useSettings('spacing.units');
@@ -305,19 +316,36 @@ export function Edit(props) {
 					{...colorGradientSettings}
 				/>
 			</InspectorControls>
-			<div {...blockProps}>
-				<div className="wp-block-pulsar-modal__overlay">
-					<div {...innerBlocksProps}>
-						{children}
 
-						{enableCloseButton && (
-							<button
-								className="wp-block-pulsar-modal__close"
-								onClick={close}
-							/>
-						)}
+			<BlockControls group="other">
+				<ToolbarGroup>
+					<ToolbarButton onClick={toggleOpen}>
+						{open
+							? __('Close Modal', 'pulsar')
+							: __('Open Modal', 'pulsar')}
+					</ToolbarButton>
+				</ToolbarGroup>
+			</BlockControls>
+
+			<div {...blockProps}>
+				{open && (
+					<div className="wp-block-pulsar-modal__overlay">
+						<div {...innerBlocksProps}>
+							{children}
+
+							{enableCloseButton && (
+								<button
+									className="wp-block-pulsar-modal__close"
+									onClick={handleClose}
+								/>
+							)}
+						</div>
 					</div>
-				</div>
+				)}
+
+				{isSelected && !open && (
+					<Placeholder icon={icon} label={__('Modal ID: ') + id} />
+				)}
 			</div>
 		</>
 	);
