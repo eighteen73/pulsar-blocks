@@ -38,7 +38,18 @@ export default class Modal {
 	 */
 	registerTriggers(...triggers) {
 		triggers.filter(Boolean).forEach((trigger) => {
-			trigger.addEventListener('click', (event) => this.showModal(true));
+			trigger.addEventListener('click', (event) => {
+				const isAnchor =
+					event.target.tagName === 'A' || event.target.closest('a');
+				if (
+					isAnchor &&
+					!this.modal.classList.contains(this.openClass)
+				) {
+					event.preventDefault();
+					event.stopPropagation();
+				}
+				this.showModal(true);
+			});
 		});
 	}
 
@@ -60,7 +71,7 @@ export default class Modal {
 			return;
 		}
 
-		this.activeElement = document.activeElement;
+		this.activeElement = this.modal.ownerDocument.activeElement;
 		this.modal.classList.add(this.openClass);
 		this.addEventListeners();
 		this.setFocusToFirstNode();
@@ -152,7 +163,9 @@ export default class Modal {
 			return node.offsetParent !== null;
 		});
 
-		const focusedItemIndex = focusableNodes.indexOf(document.activeElement);
+		const focusedItemIndex = focusableNodes.indexOf(
+			this.modal.ownerDocument.activeElement
+		);
 
 		if (event.shiftKey && focusedItemIndex === 0) {
 			focusableNodes[focusableNodes.length - 1].focus();
