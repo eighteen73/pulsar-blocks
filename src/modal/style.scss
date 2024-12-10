@@ -3,9 +3,10 @@
 	--modal-container-padding: var(--wp--preset--spacing--xl, 32px);
 	--modal-container-background-color: var(--wp--custom--color--surface--default, #fff);
 	--modal-container-box-shadow: var(--wp--custom--box-shadow--sm, 1px 1px 12px rgba(0, 0, 0, 0.1));
+	--modal-close-button-size: 48px;
 	--modal-close-icon-size: 14px;
 	--modal-close-icon-color: var(--wp--custom--color--text--default, #000);
-	--modal-container-default-width: 600px;
+	--modal-container-max-width: var(--wp--style--global--content-size, 600px);
 	display: none;
 	margin: 0;
 
@@ -37,7 +38,7 @@
 		display: flex;
 		flex-direction: column;
 		max-height: calc(100dvh - var(--wp--custom--spacing--edge));
-		max-width: var(--modal-container-width, var(--modal-container-default-width));
+		max-width: var(--modal-container-width, var(--modal-container-max-width));
 		overflow-y: auto;
 		padding: var(--modal-container-padding);
 		position: relative;
@@ -52,22 +53,27 @@
 
 	&__close {
 		appearance: none;
-		background-color: var(--modal-close-icon-color);
+		background-color: transparent;
 		border: none;
 		box-shadow: none;
 		cursor: pointer;
-		height: var(--modal-container-padding);
-		line-height: 0;
+		height: var(--modal-close-button-size);
 		margin: 0;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: var(--modal-close-button-size);
+		z-index: 10001;
+	}
+
+	&__close-icon {
+		background-color: var(--modal-close-icon-color);
+		inset: 0;
 		mask-image: url("../../assets/close.svg");
 		mask-position: center;
 		mask-repeat: no-repeat;
 		mask-size: var(--modal-close-icon-size);
 		position: absolute;
-		right: 0;
-		top: 0;
-		width: var(--modal-container-padding);
-		z-index: 10001;
 	}
 }
 

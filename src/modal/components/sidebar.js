@@ -5,7 +5,7 @@ import { useDispatch } from '@wordpress/data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 import { store as editPostStore } from '@wordpress/edit-post';
 import {
-	PanelBody,
+	__experimentalHStack as HStack,
 	Button,
 	Card,
 	CardBody,
@@ -54,14 +54,21 @@ function PluginSidebarModal() {
 				{modals.length > 0 &&
 					modals.map((modal, key) => (
 						<div key={key}>
-							<Card className="pulsar-modal-block__card">
+							<Card
+								className="pulsar-modal-block__card"
+								isRounded={false}
+								size="small"
+							>
 								<CardBody>
-									<Heading size={4}>
-										{modal.attributes.label ||
-											__('New Modal', 'pulsar')}
-									</Heading>
-									<div>
+									<HStack expanded={true}>
+										<Heading size={4}>
+											{modal.attributes.label ||
+												__('New Modal', 'pulsar')}
+										</Heading>
+									</HStack>
+									<HStack expanded={false}>
 										<Button
+											size="small"
 											icon={edit}
 											label={__('Edit Modal', 'pulsar')}
 											onClick={() =>
@@ -71,6 +78,7 @@ function PluginSidebarModal() {
 											}
 										/>
 										<Button
+											size="small"
 											icon={trash}
 											label={__('Remove Modal', 'pulsar')}
 											onClick={() =>
@@ -79,7 +87,7 @@ function PluginSidebarModal() {
 												)
 											}
 										/>
-									</div>
+									</HStack>
 								</CardBody>
 							</Card>
 						</div>

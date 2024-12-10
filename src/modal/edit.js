@@ -34,6 +34,7 @@ import {
 	Toolbar,
 	ToolbarButton,
 	ToolbarGroup,
+	Popover,
 } from '@wordpress/components';
 import { useSelect, dispatch } from '@wordpress/data';
 import { store as editorStore } from '@wordpress/editor';
@@ -122,12 +123,12 @@ export function Edit(props) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isSelected, isInnerBlockSelected, postType]);
 
-	const handleClose = () => {
-		setOpen(false);
+	const handleOpen = () => {
+		setOpen(true);
 	};
 
-	const toggleOpen = () => {
-		setOpen(!open);
+	const handleClose = () => {
+		setOpen(false);
 	};
 
 	const [availableUnits] = useSettings('spacing.units');
@@ -319,10 +320,8 @@ export function Edit(props) {
 
 			<BlockControls group="other">
 				<ToolbarGroup>
-					<ToolbarButton onClick={toggleOpen}>
-						{open
-							? __('Close Modal', 'pulsar')
-							: __('Open Modal', 'pulsar')}
+					<ToolbarButton onClick={handleOpen}>
+						{__('Open Modal', 'pulsar')}
 					</ToolbarButton>
 				</ToolbarGroup>
 			</BlockControls>
@@ -331,13 +330,33 @@ export function Edit(props) {
 				{open ? (
 					<div className="wp-block-pulsar-modal__overlay">
 						<div {...innerBlocksProps}>
+							<Popover
+								variant="toolbar"
+								placement="top-start"
+								offset={10}
+								className="block-editor-block-popover"
+							>
+								<Toolbar label="Options">
+									<ToolbarGroup>
+										<ToolbarButton onClick={handleClose}>
+											{__('Close Modal', 'pulsar')}
+										</ToolbarButton>
+									</ToolbarGroup>
+								</Toolbar>
+							</Popover>
+
 							{children}
 
 							{enableCloseButton && (
 								<button
 									className="wp-block-pulsar-modal__close"
 									onClick={handleClose}
-								/>
+								>
+									<span className="wp-block-pulsar-modal__close-icon"></span>
+									<span className="screen-reader-text">
+										{__('Close Modal', 'pulsar')}
+									</span>
+								</button>
 							)}
 						</div>
 					</div>
