@@ -30,4 +30,5 @@ require_once 'autoload.php';
 // Initialise classes.
 Blocks::instance()->setup();
 Accordion::instance()->setup();
+Modal::instance()->setup();
 Megamenu::instance()->setup();
