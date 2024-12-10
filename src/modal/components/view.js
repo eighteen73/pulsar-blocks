@@ -82,6 +82,8 @@ export default class Modal {
 
 		this.activeElement = this.modal.ownerDocument.activeElement;
 		this.modal.classList.add(this.openClass);
+
+		this.updateAriaExpanded('true');
 		this.addEventListeners();
 		this.setFocusToFirstNode();
 	}
@@ -95,6 +97,8 @@ export default class Modal {
 		}
 
 		modal.classList.remove(this.openClass);
+
+		this.updateAriaExpanded('false');
 
 		if (this.dismissedDuration) {
 			this.setStorage();
@@ -124,6 +128,15 @@ export default class Modal {
 			event.stopPropagation();
 			this.closeModal(event);
 		}
+	}
+
+	updateAriaExpanded(state) {
+		const triggers = document.querySelectorAll(
+			`[data-trigger-modal="${this.modalId}"]`
+		);
+		triggers.forEach((trigger) => {
+			trigger.setAttribute('aria-expanded', state);
+		});
 	}
 
 	onKeydown(event) {

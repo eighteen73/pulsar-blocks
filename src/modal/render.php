@@ -28,6 +28,7 @@ $width                = $attributes['width'] ?? '';
 	echo wp_kses_data(
 		get_block_wrapper_attributes(
 			[
+				'id'                            => "pulsar-modal-{$modal_id}",
 				'style'                         => ( $overlay_color ? '--modal-overlay-background-color: ' . $overlay_color . ';' : '' ) . ( $width ? '--modal-container-width: ' . $width . ';' : '' ),
 				'data-modal-id'                 => $modal_id,
 				'data-modal-trigger-delay'      => $enable_trigger_delay ? $trigger_delay : '',

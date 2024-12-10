@@ -42,6 +42,8 @@ class Modal {
 				$post_id = $instance->context['postId'] ?? false;
 				$tags->next_tag( [ 'class_name' => 'wp-block-button__link' ] );
 				$tags->set_attribute( 'data-trigger-modal', $modal_id );
+				$tags->set_attribute( 'aria-expanded', 'false' );
+				$tags->set_attribute( 'aria-controls', "pulsar-modal-{$modal_id}" );
 				$tags->remove_attribute( 'href' );
 				$block_content = $tags->get_updated_html();
 
@@ -57,10 +59,11 @@ class Modal {
 				$tags->set_attribute( 'data-trigger-modal', $modal_id );
 				$tags->set_attribute( 'role', 'button' );
 				$tags->set_attribute( 'tabindex', '0' );
+				$tags->set_attribute( 'aria-expanded', 'false' );
+				$tags->set_attribute( 'aria-controls', "pulsar-modal-{$modal_id}" );
 
 				$block_content = $tags->get_updated_html();
 			}
-
 		}
 
 		return $block_content;
