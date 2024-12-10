@@ -44,11 +44,11 @@ export default class Modal {
 
 	setStorage() {
 		const exp = new Date().getTime() + this.dismissedDuration * 60 * 1000;
-		localStorage.setItem('pulsar_modal_' + this.modalId, exp);
+		window.localStorage.setItem('pulsar_modal_' + this.modalId, exp);
 	}
 
 	getStorage() {
-		const exp = localStorage.getItem('pulsar_modal_' + this.modalId);
+		const exp = window.localStorage.getItem('pulsar_modal_' + this.modalId);
 		if (exp && new Date().getTime() < exp) {
 			return true;
 		}
@@ -97,7 +97,8 @@ export default class Modal {
 		if (
 			event.target.classList.contains(this.closeTrigger) ||
 			event.target.parentNode.classList.contains(this.closeTrigger) ||
-			event.target.classList.contains('wp-block-pulsar-modal')
+			event.target.classList.contains('wp-block-pulsar-modal') ||
+			event.target.classList.contains('wp-block-pulsar-modal__overlay')
 		) {
 			event.preventDefault();
 			event.stopPropagation();
