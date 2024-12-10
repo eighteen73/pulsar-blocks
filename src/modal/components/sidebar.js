@@ -3,7 +3,9 @@ import { __ } from '@wordpress/i18n';
 import { PluginSidebar } from '@wordpress/editor';
 import { useDispatch } from '@wordpress/data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
+import { store as editPostStore } from '@wordpress/edit-post';
 import {
+	PanelBody,
 	Button,
 	Card,
 	CardBody,
@@ -18,7 +20,29 @@ import { useModals } from '../../utils/modal';
 function PluginSidebarModal() {
 	const modals = useModals();
 
-	const { selectBlock, removeBlock } = useDispatch(blockEditorStore);
+	const { selectBlock, insertBlock, removeBlock } =
+		useDispatch(blockEditorStore);
+
+	const { openGeneralSidebar } = useDispatch(editPostStore);
+
+	const handleAddModal = () => {
+		const newBlock = wp.blocks.createBlock('pulsar/modal', {
+			label: __('New Modal', 'pulsar'),
+		});
+
+		insertBlock(newBlock);
+		selectBlock(newBlock.clientId);
+		openGeneralSidebar('edit-post/block');
+	};
+
+	const handleSelectBlock = (clientId) => {
+		selectBlock(clientId);
+		openGeneralSidebar('edit-post/block');
+	};
+
+	const handleRemoveBlock = (clientId) => {
+		removeBlock(clientId);
+	};
 
 	return (
 		<PluginSidebar
@@ -41,14 +65,18 @@ function PluginSidebarModal() {
 											icon={edit}
 											label={__('Edit Modal', 'pulsar')}
 											onClick={() =>
-												selectBlock(modal.clientId)
+												handleSelectBlock(
+													modal.clientId
+												)
 											}
 										/>
 										<Button
 											icon={trash}
 											label={__('Remove Modal', 'pulsar')}
 											onClick={() =>
-												removeBlock(modal.clientId)
+												handleRemoveBlock(
+													modal.clientId
+												)
 											}
 										/>
 									</div>
@@ -68,6 +96,14 @@ function PluginSidebarModal() {
 						</CardBody>
 					</Card>
 				)}
+
+				<Button
+					variant="primary"
+					onClick={handleAddModal}
+					className="pulsar-modal-block__add-button"
+				>
+					{__('Add Modal', 'pulsar')}
+				</Button>
 			</div>
 		</PluginSidebar>
 	);
