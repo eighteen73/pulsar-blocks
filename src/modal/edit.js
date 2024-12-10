@@ -328,7 +328,7 @@ export function Edit(props) {
 			</BlockControls>
 
 			<div {...blockProps}>
-				{open && (
+				{open ? (
 					<div className="wp-block-pulsar-modal__overlay">
 						<div {...innerBlocksProps}>
 							{children}
@@ -341,10 +341,14 @@ export function Edit(props) {
 							)}
 						</div>
 					</div>
-				)}
-
-				{isSelected && !open && (
-					<Placeholder icon={icon} label={__('Modal ID: ') + id} />
+				) : (
+					<Placeholder
+						className="wp-block-pulsar-modal__placeholder"
+						icon={icon}
+						isColumnLayout
+					>
+						{__('Modal ID: ', 'pulsar') + id}
+					</Placeholder>
 				)}
 			</div>
 		</>
