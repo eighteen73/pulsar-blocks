@@ -14,7 +14,7 @@
 			overflow: hidden;
 		}
 
-		.embla__container,
+		.embla__container:has(> *:not(.wp-block-query)),
 		.wp-block-post-template {
 			display: flex;
 			touch-action: pan-y pinch-zoom;

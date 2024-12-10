@@ -42,10 +42,15 @@
     "autoscrollOptions": {
       "type": "object",
       "default": {}
+    },
+    "align": {
+      "type": "string",
+      "default": "wide"
     }
   },
   "supports": {
-    "inserter": true
+    "inserter": true,
+    "align": ["wide", "full"]
   },
   "providesContext": {
     "emblaApi": "emblaApi"

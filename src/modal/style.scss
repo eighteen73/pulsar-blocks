@@ -5,7 +5,7 @@
 	--modal-container-box-shadow: var(--wp--custom--box-shadow--sm, 1px 1px 12px rgba(0, 0, 0, 0.1));
 	--modal-close-button-size: 48px;
 	--modal-close-icon-size: 14px;
-	--modal-close-icon-color: var(--wp--custom--color--text--default, #000);
+	--modal-close-icon-color: currentcolor;
 	--modal-container-max-width: var(--wp--style--global--content-size, 600px);
 	display: none;
 	margin: 0;

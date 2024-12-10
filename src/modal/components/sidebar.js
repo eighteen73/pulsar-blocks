@@ -92,18 +92,6 @@ function PluginSidebarModal() {
 							</Card>
 						</div>
 					))}
-				{modals.length < 1 && (
-					<Card isBorderless={true}>
-						<CardBody>
-							<p>
-								{__(
-									'There are no modals on this page',
-									'pulsar'
-								)}
-							</p>
-						</CardBody>
-					</Card>
-				)}
 
 				<Button
 					variant="primary"
