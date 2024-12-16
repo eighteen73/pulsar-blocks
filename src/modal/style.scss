@@ -80,3 +80,11 @@
 [data-trigger-modal] {
 	cursor: pointer;
 }
+
+.pulsar-modal-portal {
+	position: relative;
+}
+
+.modal-is-open {
+	overflow: hidden;
+}

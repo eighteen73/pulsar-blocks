@@ -6,6 +6,13 @@ import Modal from './components/view';
 window.addEventListener('DOMContentLoaded', () => {
 	'use strict';
 
+	if (!document.getElementById('modal-portal')) {
+		const portalContainer = document.createElement('div');
+		portalContainer.id = 'pulsar-modal-portal';
+		portalContainer.classList.add('pulsar-modal-portal');
+		document.body.appendChild(portalContainer);
+	}
+
 	window.modalBlocks = new Map();
 
 	const modals = document.querySelectorAll('.wp-block-pulsar-modal');

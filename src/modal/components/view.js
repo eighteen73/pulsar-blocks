@@ -3,19 +3,23 @@ export default class Modal {
 		this.modalId = targetModal;
 		this.dismissedDuration = dismissedDuration;
 
-		// Save a reference of the modal
+		// Save a reference to the modal and its original parent
 		this.modal = document.querySelector(
 			`[data-modal-id="${this.modalId}"]`
 		);
+		this.originalParent = this.modal.parentNode;
 
-		// Register click events only if pre binding eventListeners
+		// Create a reference to the portal container
+		this.portalContainer = document.getElementById('pulsar-modal-portal');
+
+		// Register triggers
 		if (triggers.length > 0) this.registerTriggers(...triggers);
 
 		this.modal.removeAttribute('data-modal-trigger-delay');
 		this.modal.removeAttribute('data-modal-trigger-selector');
 		this.modal.removeAttribute('data-modal-dismissed-duration');
 
-		// pre bind functions for event listeners
+		// Pre-bind functions for event listeners
 		this.onClick = this.onClick.bind(this);
 		this.onKeydown = this.onKeydown.bind(this);
 	}
@@ -25,6 +29,7 @@ export default class Modal {
 	openTrigger = 'data-trigger-modal';
 	closeTrigger = 'wp-block-pulsar-modal__close';
 	openClass = 'is-open';
+	bodyOpenClass = 'modal-is-open';
 	dismissedDuration = 0;
 	activeElement;
 	focusableElements =
@@ -81,7 +86,12 @@ export default class Modal {
 		}
 
 		this.activeElement = this.modal.ownerDocument.activeElement;
+
+		// Move modal to the portal container
+		this.moveToPortal();
+
 		this.modal.classList.add(this.openClass);
+		document.body.classList.add(this.bodyOpenClass);
 
 		this.updateAriaExpanded('true');
 		this.addEventListeners();
@@ -89,19 +99,39 @@ export default class Modal {
 	}
 
 	closeModal() {
-		const modal = this.modal;
 		this.removeEventListeners();
 
 		if (this.activeElement && this.activeElement.focus) {
 			this.activeElement.focus();
 		}
 
-		modal.classList.remove(this.openClass);
-
+		this.modal.classList.remove(this.openClass);
+		document.body.classList.remove(this.bodyOpenClass);
 		this.updateAriaExpanded('false');
+
+		// Restore modal to its original parent
+		this.restoreToOriginalParent();
 
 		if (this.dismissedDuration) {
 			this.setStorage();
+		}
+	}
+
+	moveToPortal() {
+		if (
+			this.portalContainer &&
+			this.modal.parentNode !== this.portalContainer
+		) {
+			this.portalContainer.appendChild(this.modal);
+		}
+	}
+
+	restoreToOriginalParent() {
+		if (
+			this.originalParent &&
+			this.modal.parentNode === this.portalContainer
+		) {
+			this.originalParent.appendChild(this.modal);
 		}
 	}
 
