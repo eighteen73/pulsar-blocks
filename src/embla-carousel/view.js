@@ -4,8 +4,8 @@ import Fade from 'embla-carousel-fade';
 import Autoplay from 'embla-carousel-autoplay';
 import Autoscroll from 'embla-carousel-auto-scroll';
 
-// Global map to store Embla instances
-window.pulsarEmblaCarousels = new Map();
+window.pulsarBlocks = window.pulsarBlocks || {};
+window.pulsarBlocks.emblaCarousels = new Map();
 
 document.addEventListener('DOMContentLoaded', () => {
 	const carouselBlocks = document.querySelectorAll(
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 		const emblaApi = EmblaCarousel(viewportNode, options, plugins);
 
-		window.pulsarEmblaCarousels.set(emblaId, emblaApi);
+		window.pulsarBlocks.emblaCarousels.set(emblaId, emblaApi);
 
 		if (prevBtnNode && nextBtnNode) {
 			const removePrevNextBtnsClickHandlers =

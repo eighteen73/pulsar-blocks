@@ -24,7 +24,6 @@ $id                 = wp_unique_id( 'pulsar-embla-carousel-' );
 	echo wp_kses_data(
 		get_block_wrapper_attributes(
 			[
-				'id'    => $id,
 				'style' => implode( '', $styles ),
 			]
 		)

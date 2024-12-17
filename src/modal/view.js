@@ -3,6 +3,9 @@
  */
 import Modal from './components/view';
 
+window.pulsarBlocks = window.pulsarBlocks || {};
+window.pulsarBlocks.modals = new Map();
+
 window.addEventListener('DOMContentLoaded', () => {
 	'use strict';
 
@@ -73,11 +76,11 @@ window.addEventListener('DOMContentLoaded', () => {
 		options.triggers = triggers;
 		options.dismissedDuration = dismissedDurationInMinutes;
 
-		window.modalBlocks.set(modalId, new Modal(options));
+		window.pulsarBlocks.modals.set(modalId, new Modal(options));
 
 		if (null !== modalDelay && !isNaN(modalDelay)) {
 			setTimeout(
-				() => window.modalBlocks.get(modalId).showModal(),
+				() => window.pulsarBlocks.modals.get(modalId).showModal(),
 				modalDelay
 			);
 		}
