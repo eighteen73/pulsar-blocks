@@ -9,13 +9,14 @@
  * @package Pulsar
  */
 
-$styles            = [];
-$options           = $attributes['options'] ?? [];
-$fade              = $attributes['fade'] ? 'true' : 'false';
-$autoplay          = $attributes['autoplay'] ? 'true' : 'false';
-$autoplayOptions   = $attributes['autoplayOptions'] ?? [];
-$autoscroll        = $attributes['autoscroll'] ? 'true' : 'false';
-$autoscrollOptions = $attributes['autoscrollOptions'] ?? [];
+$styles             = [];
+$options            = $attributes['options'] ?? [];
+$fade               = $attributes['fade'] ? 'true' : 'false';
+$autoplay           = $attributes['autoplay'] ? 'true' : 'false';
+$autoplay_options   = $attributes['autoplayOptions'] ?? [];
+$autoscroll         = $attributes['autoscroll'] ? 'true' : 'false';
+$autoscroll_options = $attributes['autoscrollOptions'] ?? [];
+$id                 = wp_unique_id( 'pulsar-embla-carousel-' );
 ?>
 
 <div
@@ -23,6 +24,7 @@ $autoscrollOptions = $attributes['autoscrollOptions'] ?? [];
 	echo wp_kses_data(
 		get_block_wrapper_attributes(
 			[
+				'id'    => $id,
 				'style' => implode( '', $styles ),
 			]
 		)
@@ -31,12 +33,13 @@ $autoscrollOptions = $attributes['autoscrollOptions'] ?? [];
 >
 	<div
 		class="embla"
+		data-embla-id="<?php echo esc_attr( $id ); ?>"
 		data-embla-options="<?php echo esc_html( wp_json_encode( $options, JSON_PRETTY_PRINT ) ); ?>"
 		data-embla-fade="<?php echo esc_attr( $fade ); ?>"
 		data-embla-autoplay="<?php echo esc_attr( $autoplay ); ?>"
-		data-embla-autoplay-options="<?php echo esc_html( wp_json_encode( $autoplayOptions, JSON_PRETTY_PRINT ) ); ?>"
+		data-embla-autoplay-options="<?php echo esc_html( wp_json_encode( $autoplay_options, JSON_PRETTY_PRINT ) ); ?>"
 		data-embla-autoscroll="<?php echo esc_attr( $autoscroll ); ?>"
-		data-embla-autoscroll-options="<?php echo esc_html( wp_json_encode( $autoscrollOptions, JSON_PRETTY_PRINT ) ); ?>"
+		data-embla-autoscroll-options="<?php echo esc_html( wp_json_encode( $autoscroll_options, JSON_PRETTY_PRINT ) ); ?>"
 	>
 		<?php echo $content; // phpcs:disable ?>
 	</div>

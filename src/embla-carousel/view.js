@@ -4,6 +4,9 @@ import Fade from 'embla-carousel-fade';
 import Autoplay from 'embla-carousel-autoplay';
 import Autoscroll from 'embla-carousel-auto-scroll';
 
+// Global map to store Embla instances
+window.pulsarEmblaCarousels = new Map();
+
 document.addEventListener('DOMContentLoaded', () => {
 	const carouselBlocks = document.querySelectorAll(
 		'.wp-block-pulsar-embla-carousel'
@@ -11,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	carouselBlocks.forEach((carouselBlock) => {
 		const emblaNode = carouselBlock.querySelector('.embla');
+		const emblaId = emblaNode.dataset.emblaId;
 		const options = JSON.parse(emblaNode.dataset.emblaOptions);
 		const fade = emblaNode.dataset.emblaFade === 'true';
 		const autoplay = emblaNode.dataset.emblaAutoplay === 'true';
@@ -49,6 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		const emblaApi = EmblaCarousel(viewportNode, options, plugins);
+
+		window.pulsarEmblaCarousels.set(emblaId, emblaApi);
 
 		if (prevBtnNode && nextBtnNode) {
 			const removePrevNextBtnsClickHandlers =

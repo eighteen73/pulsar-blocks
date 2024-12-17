@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
+import { store as blockEditorStore } from '@wordpress/block-editor';
 
 export const usePrevNextButtons = (emblaApi) => {
 	const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
@@ -113,4 +115,33 @@ export const addDotBtnsAndClickHandlers = (emblaApi, dotsNode) => {
 	return () => {
 		dotsNode.innerHTML = '';
 	};
+};
+
+export const useEmblaCarousels = () => {
+	return useSelect((select) => {
+		const data = [];
+		const blocks = select(blockEditorStore).getBlocks();
+
+		const searchNestedBlocks = (block) => {
+			if (block?.innerBlocks) {
+				block.innerBlocks.forEach((innerBlock) => {
+					if (innerBlock.name === 'pulsar/embla-carousel') {
+						data.push(innerBlock);
+					}
+
+					searchNestedBlocks(innerBlock);
+				});
+			}
+		};
+
+		blocks.forEach((block) => {
+			if (block.name === 'pulsar/embla-carousel') {
+				data.push(block);
+			}
+
+			searchNestedBlocks(block);
+		});
+
+		return data;
+	});
 };

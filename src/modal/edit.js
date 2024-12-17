@@ -39,7 +39,8 @@ import {
 import { useSelect, dispatch } from '@wordpress/data';
 import { store as editorStore } from '@wordpress/editor';
 
-import { generateModalId, useModals } from '../utils/modal';
+import { useModals } from '../utils/modal';
+import { generateId } from '../utils/helpers';
 import { Modal as icon } from '../components/icons';
 
 import './editor.scss';
@@ -78,7 +79,7 @@ export function Edit(props) {
 		for (let i = 1; i < duplicates.length; i++) {
 			dispatch('core/block-editor').updateBlockAttributes(
 				duplicates[i].clientId,
-				{ id: generateModalId() }
+				{ id: generateId() }
 			);
 		}
 	}, [clientId, modals]);
