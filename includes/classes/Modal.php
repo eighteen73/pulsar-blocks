@@ -39,7 +39,9 @@ class Modal {
 			$tags = new WP_HTML_Tag_Processor( $block_content );
 
 			if ( $block['blockName'] === 'core/button' ) {
-				$post_id = $instance->context['postId'] ?? false;
+				$post_id  = $instance->context['postId'] ?? false;
+				$modal_id = $post_id ? "{$modal_id}-{$post_id}" : $modal_id;
+
 				$tags->next_tag( [ 'class_name' => 'wp-block-button__link' ] );
 				$tags->set_attribute( 'data-trigger-modal', $modal_id );
 				$tags->set_attribute( 'aria-expanded', 'false' );
