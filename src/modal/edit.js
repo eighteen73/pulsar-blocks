@@ -108,7 +108,7 @@ export function Edit(props) {
 
 	useEffect(() => {
 		if (!id) {
-			setAttributes({ id: generateModalId() });
+			setAttributes({ id: generateId() });
 		}
 	}, [id, setAttributes]);
 
