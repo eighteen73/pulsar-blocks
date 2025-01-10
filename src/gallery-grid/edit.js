@@ -71,7 +71,6 @@ function Placeholder({ clientId, name, setAttributes }) {
 						);
 					}
 				}}
-				allowSkip
 			/>
 		</div>
 	);
@@ -118,7 +117,7 @@ export default function Edit({
 			{!hasInnerBlocks && (
 				<Placeholder
 					clientId={clientId}
-					name="pulsar/gallery-item"
+					name="pulsar/gallery-grid"
 					setAttributes={setAttributes}
 				/>
 			)}

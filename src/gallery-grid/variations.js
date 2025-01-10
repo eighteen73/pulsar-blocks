@@ -1,4 +1,4 @@
-import { Path, SVG } from '@wordpress/components';
+import { Path, Rect, SVG } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 const variations = [
@@ -13,11 +13,14 @@ const variations = [
 				height="48"
 				viewBox="0 0 48 48"
 			>
-				<Path d="M0 10a2 2 0 0 1 2-2h44a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V10Z" />
+				<Rect y="8" width="48" height="32" rx="2" />
 			</SVG>
 		),
 		innerBlocks: [['core/image']],
 		scope: ['block'],
+		attributes: {
+			gridItems: 1,
+		},
 	},
 	{
 		name: 'two',
@@ -35,6 +38,9 @@ const variations = [
 		),
 		innerBlocks: [['core/image'], ['core/image']],
 		scope: ['block'],
+		attributes: {
+			gridItems: 2,
+		},
 	},
 	{
 		name: 'three',
@@ -47,11 +53,16 @@ const variations = [
 				height="48"
 				viewBox="0 0 48 48"
 			>
-				<Path d="M0 10a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V10Zm17 0a2 2 0 0 1 2-2h27a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2H19a2 2 0 0 1-2-2V10Z" />
+				<Rect y="8" width="23" height="32" rx="2" />
+				<Rect x="25" y="8" width="23" height="15" rx="2" />
+				<Rect x="25" y="25" width="23" height="15" rx="2" />
 			</SVG>
 		),
 		innerBlocks: [['core/image'], ['core/image'], ['core/image']],
 		scope: ['block'],
+		attributes: {
+			gridItems: 3,
+		},
 	},
 	{
 		name: 'four',
@@ -64,7 +75,10 @@ const variations = [
 				height="48"
 				viewBox="0 0 48 48"
 			>
-				<Path d="M0 10a2 2 0 0 1 2-2h27a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V10Zm33 0a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2H35a2 2 0 0 1-2-2V10Z" />
+				<Rect y="8" width="23" height="18" rx="2" />
+				<Rect y="28" width="23" height="12" rx="2" />
+				<Rect x="25" y="8" width="23" height="12" rx="2" />
+				<Rect x="25" y="22" width="23" height="18" rx="2" />
 			</SVG>
 		),
 		innerBlocks: [
@@ -74,6 +88,9 @@ const variations = [
 			['core/image'],
 		],
 		scope: ['block'],
+		attributes: {
+			gridItems: 4,
+		},
 	},
 	{
 		name: 'five',
@@ -86,7 +103,11 @@ const variations = [
 				height="48"
 				viewBox="0 0 48 48"
 			>
-				<Path d="M0 10a2 2 0 0 1 2-2h10.531c1.105 0 1.969.895 1.969 2v28c0 1.105-.864 2-1.969 2H2a2 2 0 0 1-2-2V10Zm16.5 0c0-1.105.864-2 1.969-2H29.53c1.105 0 1.969.895 1.969 2v28c0 1.105-.864 2-1.969 2H18.47c-1.105 0-1.969-.895-1.969-2V10Zm17 0c0-1.105.864-2 1.969-2H46a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2H35.469c-1.105 0-1.969-.895-1.969-2V10Z" />
+				<Rect y="8" width="14.6667" height="18" rx="2" />
+				<Rect y="28" width="14.6667" height="12" rx="2" />
+				<Rect x="16.6667" y="8" width="14.6667" height="32" rx="2" />
+				<Rect x="33.3333" y="8" width="14.6667" height="12" rx="2" />
+				<Rect x="33.3333" y="22" width="14.6667" height="18" rx="2" />
 			</SVG>
 		),
 		innerBlocks: [
@@ -97,6 +118,9 @@ const variations = [
 			['core/image'],
 		],
 		scope: ['block'],
+		attributes: {
+			gridItems: 5,
+		},
 	},
 	{
 		name: 'six',
@@ -109,7 +133,40 @@ const variations = [
 				height="48"
 				viewBox="0 0 48 48"
 			>
-				<Path d="M0 10a2 2 0 0 1 2-2h7.531c1.105 0 1.969.895 1.969 2v28c0 1.105-.864 2-1.969 2H2a2 2 0 0 1-2-2V10Zm13.5 0c0-1.105.864-2 1.969-2H32.53c1.105 0 1.969.895 1.969 2v28c0 1.105-.864 2-1.969 2H15.47c-1.105 0-1.969-.895-1.969-2V10Zm23 0c0-1.105.864-2 1.969-2H46a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2h-7.531c-1.105 0-1.969-.895-1.969-2V10Z" />
+				<Rect y="8" width="14.6667" height="18" rx="2" />
+				<Rect y="28" width="14.6667" height="12" rx="2" />
+				<Rect
+					x="31.3333"
+					y="40"
+					width="14.6667"
+					height="18"
+					rx="2"
+					transform="rotate(180 31.3333 40)"
+				/>
+				<Rect
+					x="31.3333"
+					y="20"
+					width="14.6667"
+					height="12"
+					rx="2"
+					transform="rotate(180 31.3333 20)"
+				/>
+				<Rect
+					x="48"
+					y="40"
+					width="14.6667"
+					height="12"
+					rx="2"
+					transform="rotate(180 48 40)"
+				/>
+				<Rect
+					x="48"
+					y="26"
+					width="14.6667"
+					height="18"
+					rx="2"
+					transform="rotate(180 48 26)"
+				/>
 			</SVG>
 		),
 		innerBlocks: [
@@ -121,6 +178,9 @@ const variations = [
 			['core/image'],
 		],
 		scope: ['block'],
+		attributes: {
+			gridItems: 6,
+		},
 	},
 	{
 		name: 'seven',
@@ -133,7 +193,62 @@ const variations = [
 				height="48"
 				viewBox="0 0 48 48"
 			>
-				<Path d="M0 10a2 2 0 0 1 2-2h7.531c1.105 0 1.969.895 1.969 2v28c0 1.105-.864 2-1.969 2H2a2 2 0 0 1-2-2V10Zm13.5 0c0-1.105.864-2 1.969-2H32.53c1.105 0 1.969.895 1.969 2v28c0 1.105-.864 2-1.969 2H15.47c-1.105 0-1.969-.895-1.969-2V10Zm23 0c0-1.105.864-2 1.969-2H46a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2h-7.531c-1.105 0-1.969-.895-1.969-2V10Z" />
+				<Rect
+					x="10.5"
+					y="23"
+					width="10.5"
+					height="15"
+					rx="2"
+					transform="rotate(180 10.5 23)"
+				/>
+				<Rect
+					x="23"
+					y="23"
+					width="10.5"
+					height="15"
+					rx="2"
+					transform="rotate(180 23 23)"
+				/>
+				<Rect
+					x="35.5"
+					y="23"
+					width="10.5"
+					height="15"
+					rx="2"
+					transform="rotate(180 35.5 23)"
+				/>
+				<Rect
+					x="48"
+					y="23"
+					width="10.5"
+					height="15"
+					rx="2"
+					transform="rotate(180 48 23)"
+				/>
+				<Rect
+					x="14.6667"
+					y="40"
+					width="14.6667"
+					height="15"
+					rx="2"
+					transform="rotate(180 14.6667 40)"
+				/>
+				<Rect
+					x="31.3333"
+					y="40"
+					width="14.6667"
+					height="15"
+					rx="2"
+					transform="rotate(180 31.3333 40)"
+				/>
+				<Rect
+					x="48"
+					y="40"
+					width="14.6667"
+					height="15"
+					rx="2"
+					transform="rotate(180 48 40)"
+				/>
 			</SVG>
 		),
 		innerBlocks: [
@@ -146,6 +261,9 @@ const variations = [
 			['core/image'],
 		],
 		scope: ['block'],
+		attributes: {
+			gridItems: 7,
+		},
 	},
 	{
 		name: 'eight',
@@ -158,7 +276,70 @@ const variations = [
 				height="48"
 				viewBox="0 0 48 48"
 			>
-				<Path d="M0 10a2 2 0 0 1 2-2h7.531c1.105 0 1.969.895 1.969 2v28c0 1.105-.864 2-1.969 2H2a2 2 0 0 1-2-2V10Zm13.5 0c0-1.105.864-2 1.969-2H32.53c1.105 0 1.969.895 1.969 2v28c0 1.105-.864 2-1.969 2H15.47c-1.105 0-1.969-.895-1.969-2V10Zm23 0c0-1.105.864-2 1.969-2H46a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2h-7.531c-1.105 0-1.969-.895-1.969-2V10Z" />
+				<Rect
+					x="10.5"
+					y="23.3333"
+					width="10.5"
+					height="15.3333"
+					rx="2"
+					transform="rotate(180 10.5 23.3333)"
+				/>
+				<Rect
+					x="23"
+					y="23.3333"
+					width="10.5"
+					height="15.3333"
+					rx="2"
+					transform="rotate(180 23 23.3333)"
+				/>
+				<Rect
+					x="35.5"
+					y="23.3333"
+					width="10.5"
+					height="15.3333"
+					rx="2"
+					transform="rotate(180 35.5 23.3333)"
+				/>
+				<Rect
+					x="48"
+					y="23.3333"
+					width="10.5"
+					height="15.3333"
+					rx="2"
+					transform="rotate(180 48 23.3333)"
+				/>
+				<Rect
+					x="10.5"
+					y="40"
+					width="10.5"
+					height="15.3333"
+					rx="2"
+					transform="rotate(180 10.5 40)"
+				/>
+				<Rect
+					x="23"
+					y="40"
+					width="10.5"
+					height="15.3333"
+					rx="2"
+					transform="rotate(180 23 40)"
+				/>
+				<Rect
+					x="35.5"
+					y="40"
+					width="10.5"
+					height="15.3333"
+					rx="2"
+					transform="rotate(180 35.5 40)"
+				/>
+				<Rect
+					x="48"
+					y="40"
+					width="10.5"
+					height="15.3333"
+					rx="2"
+					transform="rotate(180 48 40)"
+				/>
 			</SVG>
 		),
 		innerBlocks: [
@@ -172,6 +353,9 @@ const variations = [
 			['core/image'],
 		],
 		scope: ['block'],
+		attributes: {
+			gridItems: 8,
+		},
 	},
 ];
 
