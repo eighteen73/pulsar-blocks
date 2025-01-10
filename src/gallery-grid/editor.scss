@@ -1,0 +1,25 @@
+.wp-block-pulsar-gallery-grid {
+	&.is-editing {
+		.wp-block-pulsar-gallery-grid__items {
+			aspect-ratio: unset;
+			grid-template-areas: unset;
+			grid-template-columns: repeat(3, 1fr);
+			grid-template-rows: auto;
+
+			.components-placeholder {
+				height: unset;
+				width: unset;
+			}
+
+			> * {
+				aspect-ratio: 1 / 1;
+				display: block;
+				grid-area: unset;
+			}
+
+			.block-list-appender {
+				display: block !important; // stylelint-disable-line declaration-no-important
+			}
+		}
+	}
+}
