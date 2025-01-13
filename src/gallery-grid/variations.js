@@ -33,7 +33,8 @@ const variations = [
 				height="48"
 				viewBox="0 0 48 48"
 			>
-				<Path d="M0 10a2 2 0 0 1 2-2h19a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V10Zm25 0a2 2 0 0 1 2-2h19a2 2 0 0 1 2 2v28a2 2 0 0 1-2 2H27a2 2 0 0 1-2-2V10Z" />
+				<Rect y="8" width="23" height="32" rx="2" />
+				<Rect x="25" y="8" width="23" height="32" rx="2" />
 			</SVG>
 		),
 		innerBlocks: [['core/image'], ['core/image']],
