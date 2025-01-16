@@ -1,0 +1,65 @@
+.wp-block-pulsar-tabs {
+	[role="tablist"] {
+		min-width: 100%;
+	}
+
+	[role="tab"],
+	[role="tab"]:focus,
+	[role="tab"]:hover {
+		background: hsl(220deg 20% 94%);
+		border: 1px solid hsl(219deg 1% 72%);
+		border-bottom: 2px solid hsl(219deg 1% 72%);
+		border-radius: 5px 5px 0 0;
+		cursor: pointer;
+		display: inline-block;
+		font-weight: 700;
+		margin: 0;
+		margin-top: 4px;
+		max-width: 22%;
+		outline: none;
+		overflow: hidden;
+		padding: 3px 3px 4px;
+		position: relative;
+		text-align: left;
+		top: 2px;
+		z-index: 2;
+	}
+
+	[role="tab"][aria-selected="true"] {
+		background: hsl(220deg 43% 99%);
+		border-bottom-color: hsl(220deg 43% 99%);
+		border-top-color: rgb(36 116 214);
+		border-width: 2px;
+		border-top-width: 6px;
+		margin-top: 0;
+		padding: 2px 2px 4px;
+	}
+
+	[role="tab"][aria-selected="false"] {
+		border-bottom: 1px solid hsl(219deg 1% 72%);
+	}
+
+	[role="tab"] span {
+		display: inline-block;
+		margin: 2px;
+		padding: 4px 6px;
+	}
+
+	[role="tab"]:hover span,
+	[role="tab"]:focus span,
+	[role="tab"]:active span {
+		border: 2px solid rgb(36 116 214);
+		border-radius: 3px;
+		padding: 2px 4px;
+	}
+
+	[role="tabpanel"] {
+		background: hsl(220deg 43% 99%);
+		border: 2px solid hsl(219deg 1% 72%);
+		border-radius: 0 5px 5px;
+		min-height: 10em;
+		overflow: auto;
+		padding: 5px;
+		width: 100%;
+	}
+}
