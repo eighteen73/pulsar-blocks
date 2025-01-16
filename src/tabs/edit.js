@@ -8,6 +8,7 @@ import {
 	store as blockEditorStore,
 	useBlockDisplayInformation,
 	useBlockProps,
+	RichText,
 } from '@wordpress/block-editor';
 import {
 	createBlock,
@@ -24,6 +25,8 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { create } from '@wordpress/icons';
+
+import { generateId } from '../utils/helpers';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -107,6 +110,8 @@ function TabButton({ clientId, isActiveTab, tabNumber, setActiveTab }) {
 		[clientId]
 	);
 
+	const { updateBlockAttributes } = useDispatch(blockEditorStore);
+
 	return (
 		<button
 			id={`tab-${tabNumber}`}
@@ -117,13 +122,21 @@ function TabButton({ clientId, isActiveTab, tabNumber, setActiveTab }) {
 			tabIndex={isTabBlockSelected || isActiveTab ? undefined : '-1'}
 			onClick={setActiveTab}
 		>
-			<span>{title || `Tab ${tabNumber}`}</span>
+			<RichText
+				tagName="span"
+				value={title}
+				allowedFormats={[]}
+				onChange={(newTitle) =>
+					updateBlockAttributes(clientId, { title: newTitle })
+				}
+				placeholder={`Tab ${tabNumber}`}
+			/>
 		</button>
 	);
 }
 
 function TabsEdit({
-	attributes: { activeTab, tabsCount, templateLock },
+	attributes: { id, activeTab, tabsCount, templateLock },
 	clientId,
 	setAttributes,
 }) {
@@ -159,14 +172,16 @@ function TabsEdit({
 		__unstableMarkNextChangeAsNotPersistent,
 	]);
 
+	useEffect(() => {
+		if (!id) {
+			setAttributes({ id: generateId() });
+		}
+	}, [id, setAttributes]);
+
 	return (
 		<>
-			<TabsInspectorControls
-				clientId={clientId}
-				setAttributes={setAttributes}
-			/>
 			<div {...blockProps}>
-				<div role="tablist">
+				<div className="wp-block-pulsar-tabs__tablist" role="tablist">
 					{tabBlocks.map((tabBlock, index) => {
 						const tabNumber = index + 1;
 						return (
@@ -219,13 +234,16 @@ function TabsPlaceholder({ clientId }) {
 			<Placeholder
 				label={title}
 				icon={<BlockIcon icon={icon} showColors />}
-				instructions={__('Insert tabs to organize content.', 'tabs')}
+				instructions={__(
+					'Insert tabs to organise content.',
+					'pulsar-blocks'
+				)}
 			>
 				<form onSubmit={onCreateTabs}>
 					<TextControl
 						__next40pxDefaultSize
 						type="number"
-						label={__('Tabs count', 'tabs')}
+						label={__('Tabs count', 'pulsar-blocks')}
 						min="1"
 						value={initialTabsCount}
 						onChange={setInitialColumnCount}
@@ -235,7 +253,7 @@ function TabsPlaceholder({ clientId }) {
 						variant="primary"
 						type="submit"
 					>
-						{__('Create Tabs', 'tabs')}
+						{__('Create Tabs', 'pulsar-blocks')}
 					</Button>
 				</form>
 			</Placeholder>

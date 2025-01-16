@@ -10,6 +10,9 @@
 	"example": {},
 	"allowedBlocks": [ "pulsar/tab" ],
 	"attributes": {
+    "id": {
+      "type": "string"
+    },
 		"tabsCount": {
 			"type": "number"
 		},
@@ -23,6 +26,7 @@
 		}
 	},
 	"providesContext": {
+    "tabs/id": "id",
 		"tabs/activeTab": "activeTab"
 	},
 	"supports": {
@@ -44,5 +48,6 @@
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
-	"viewScript": "file:./view.js"
+	"viewScript": "file:./view.js",
+  "render": "file:./render.php"
 }

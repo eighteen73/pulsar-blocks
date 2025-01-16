@@ -9,6 +9,8 @@
  * @package Pulsar Blocks
  */
 
+$id         = $block->context['tabs/id'];
+$namespace  = "pulsar-tabs-{$id}";
 $tab_number = $attributes['tabNumber'];
 ?>
 
@@ -17,10 +19,10 @@ $tab_number = $attributes['tabNumber'];
 	echo wp_kses_data(
 		get_block_wrapper_attributes(
 			[
-				'id' => "tabpanel-{$tab_number}",
-				'class' => 'wp-block-pulsar-tabs__item',
-				'role' => 'tabpanel',
-				'aria-labelledby' => "tab-{$tab_number}",
+				'id'              => "{$namespace}-tabpanel-{$tab_number}",
+				'class'           => 'wp-block-pulsar-tabs__panel',
+				'role'            => 'tabpanel',
+				'aria-labelledby' => "{$namespace}-tab-{$tab_number}",
 			]
 		)
 	);

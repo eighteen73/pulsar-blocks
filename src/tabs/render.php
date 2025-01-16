@@ -9,59 +9,44 @@
  * @package Pulsar Blocks
  */
 
+$id           = $attributes['id'];
+$namespace    = "pulsar-tabs-{$id}";
+
+$inner_blocks = $block->inner_blocks;
+$tabs         = [];
+foreach ( $inner_blocks as $block ) {
+	if ( 'pulsar/tab' === $block->name ) {
+		$tabs[] = [
+			'tab_number' => $block->attributes['tabNumber'],
+			'title'      => $block->attributes['title'],
+		];
+	}
+}
 ?>
 
 <div
 	<?php
 	echo wp_kses_data(
-		get_block_wrapper_attributes()
+		get_block_wrapper_attributes(
+			[
+				'id' => "pulsar-tabs-{$id}",
+			]
+		)
 	);
 	?>
 >
-	<div role="tabslist">
-
+	<div class="wp-block-pulsar-tabs__tablist" role="tablist">
+		<?php foreach ( $tabs as $tab ) : ?>
+			<button
+				id="<?php echo esc_attr( $namespace ); ?>-tab-<?php echo esc_attr( $tab['tab_number'] ); ?>"
+				class="wp-block-pulsar-tabs__button"
+				role="tab"
+				aria-controls="<?php echo esc_attr( $namespace ); ?>-tabpanel-<?php echo esc_attr( $tab['tab_number'] ); ?>"
+			>
+				<?php echo esc_html( $tab['title'] ); ?>
+			</button>
+		<?php endforeach; ?>
 	</div>
 
 	<?php echo $content; // phpcs:disable ?>
 </div>
-
-
-
-
-function TabButton({ isSelected, tabNumber }) {
-	return (
-		<button
-			id={`tab-${tabNumber}`}
-			type="button"
-			role="tab"
-			aria-selected={isSelected}
-			aria-controls={`tabpanel-${tabNumber}`}
-			tabIndex={isSelected ? undefined : '-1'}
-		>
-			<span>{`Tab ${tabNumber}`}</span>
-		</button>
-	);
-}
-
-export default function save({ attributes: { activeTab, tabsCount } }) {
-	const blockProps = useBlockProps.save();
-
-	const tabs = [];
-	for (let index = 0; index < tabsCount; index++) {
-		const tabNumber = index + 1;
-		tabs.push(
-			<TabButton
-				key={index}
-				tabNumber={tabNumber}
-				isSelected={tabNumber === activeTab}
-			/>
-		);
-	}
-
-	return (
-		<div {...blockProps}>
-			<div role="tablist">{tabs}</div>
-			<InnerBlocks.Content />
-		</div>
-	);
-}
