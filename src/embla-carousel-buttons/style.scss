@@ -48,7 +48,7 @@
 
 		&:where(.embla__button--prev) {
 			.embla__button-label::after {
-				mask-image: url("../../assets/arrow-left.svg");
+				mask-image: url("../../assets/svg/arrow-left.svg");
 			}
 		}
 
@@ -56,7 +56,7 @@
 			justify-self: flex-end;
 
 			.embla__button-label::after {
-				mask-image: url("../../assets/arrow-right.svg");
+				mask-image: url("../../assets/svg/arrow-right.svg");
 			}
 		}
 	}
