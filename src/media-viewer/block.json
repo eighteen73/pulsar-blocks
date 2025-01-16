@@ -1,17 +1,15 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
-  "name": "pulsar/gallery-grid",
+  "name": "pulsar/media-viewer",
   "version": "0.1.0",
-  "title": "Gallery Grid",
+  "title": "Media Viewer",
   "category": "media",
-  "description": "A grid of media, with additional media available in a lightbox.",
+  "description": "Display media with a limited layout, with additional media available in a lightbox.",
   "supports": {
+    "interactivity": true,
     "html": false,
-    "align": [
-      "wide",
-      "full"
-    ],
+    "align": ["wide", "full"],
     "spacing": {
       "blockGap": "true"
     },
@@ -21,21 +19,29 @@
     }
   },
   "attributes": {
-    "media": {
-      "type": "array"
-    },
-    "gridItems": {
+    "id": {
+			"type": "string"
+		},
+    "initialItems": {
       "type": "number",
       "default": 5
+    },
+    "showThumbnails": {
+      "type": "boolean",
+      "default": false
     },
     "align": {
       "type": "string",
       "default": "wide"
-    }
+    },
+    "overlayColor": {
+			"type": "string"
+		}
   },
   "textdomain": "pulsar-blocks",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css",
-  "render": "file:./render.php"
+  "render": "file:./render.php",
+  "viewScript": "file:./view.js"
 }

@@ -1,4 +1,4 @@
-import { Path, Rect, SVG } from '@wordpress/components';
+import { Rect, SVG } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 const variations = [
@@ -19,7 +19,7 @@ const variations = [
 		innerBlocks: [['core/image']],
 		scope: ['block'],
 		attributes: {
-			gridItems: 1,
+			initialItems: 1,
 		},
 	},
 	{
@@ -40,7 +40,7 @@ const variations = [
 		innerBlocks: [['core/image'], ['core/image']],
 		scope: ['block'],
 		attributes: {
-			gridItems: 2,
+			initialItems: 2,
 		},
 	},
 	{
@@ -61,8 +61,9 @@ const variations = [
 		),
 		innerBlocks: [['core/image'], ['core/image'], ['core/image']],
 		scope: ['block'],
+		isDefault: true,
 		attributes: {
-			gridItems: 3,
+			initialItems: 3,
 		},
 	},
 	{
@@ -90,7 +91,7 @@ const variations = [
 		],
 		scope: ['block'],
 		attributes: {
-			gridItems: 4,
+			initialItems: 4,
 		},
 	},
 	{
@@ -120,7 +121,7 @@ const variations = [
 		],
 		scope: ['block'],
 		attributes: {
-			gridItems: 5,
+			initialItems: 5,
 		},
 	},
 	{
@@ -180,7 +181,7 @@ const variations = [
 		],
 		scope: ['block'],
 		attributes: {
-			gridItems: 6,
+			initialItems: 6,
 		},
 	},
 	{
@@ -263,7 +264,7 @@ const variations = [
 		],
 		scope: ['block'],
 		attributes: {
-			gridItems: 7,
+			initialItems: 7,
 		},
 	},
 	{
@@ -355,7 +356,7 @@ const variations = [
 		],
 		scope: ['block'],
 		attributes: {
-			gridItems: 8,
+			initialItems: 8,
 		},
 	},
 ];

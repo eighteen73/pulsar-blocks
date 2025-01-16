@@ -1,6 +1,6 @@
-.wp-block-pulsar-gallery-grid {
+.wp-block-pulsar-media-viewer {
 	&.is-editing {
-		.wp-block-pulsar-gallery-grid__items {
+		.wp-block-pulsar-media-viewer__items {
 			aspect-ratio: unset;
 			grid-template-areas: unset;
 			grid-template-columns: repeat(3, 1fr);

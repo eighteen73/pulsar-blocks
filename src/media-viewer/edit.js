@@ -3,28 +3,31 @@ import {
 	useInnerBlocksProps,
 	InspectorControls,
 	BlockControls,
-	InnerBlocks,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalBlockVariationPicker as BlockVariationPicker,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	RangeControl,
-	Toolbar,
 	ToolbarGroup,
 	ToolbarButton,
-	Popover,
+	ToggleControl,
 } from '@wordpress/components';
-import { useDispatch, useSelect, useRegistry } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
-	createBlock,
 	createBlocksFromInnerBlocksTemplate,
 	store as blocksStore,
 } from '@wordpress/blocks';
 
 import SingleBlockTypeAppender from '../components/single-block-type-appender';
+import { generateId } from '../utils/helpers';
 
 import clsx from 'clsx';
 
@@ -77,7 +80,7 @@ function Placeholder({ clientId, name, setAttributes }) {
 }
 
 export default function Edit({
-	attributes: { gridItems },
+	attributes: { initialItems, id, showThumbnails, overlayColor },
 	setAttributes,
 	clientId,
 	isSelected,
@@ -89,7 +92,7 @@ export default function Edit({
 	);
 
 	const blockProps = useBlockProps({
-		className: clsx(`has-items-${gridItems}`, {
+		className: clsx(`has-items-${initialItems}`, {
 			'is-editing': isEditing && (isSelected || isInnerBlockSelected),
 		}),
 	});
@@ -108,6 +111,14 @@ export default function Edit({
 
 	const hasInnerBlocks = innerBlocks.length > 0;
 
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
+
+	useEffect(() => {
+		if (!id) {
+			setAttributes({ id: generateId() });
+		}
+	}, [id, setAttributes]);
+
 	const toggleEditing = () => {
 		setIsEditing(!isEditing);
 	};
@@ -117,7 +128,7 @@ export default function Edit({
 			{!hasInnerBlocks && (
 				<Placeholder
 					clientId={clientId}
-					name="pulsar/gallery-grid"
+					name="pulsar/media-viewer"
 					setAttributes={setAttributes}
 				/>
 			)}
@@ -127,19 +138,52 @@ export default function Edit({
 					<InspectorControls>
 						<PanelBody title={__('Settings', 'pulsar-blocks')}>
 							<RangeControl
-								label={__('Grid items', 'pulsar-blocks')}
-								value={gridItems}
+								label={__('Initial items', 'pulsar-blocks')}
+								value={initialItems}
 								help={__(
-									'Number of items to display in the grid. Additional items will be displayed in a lightbox.',
+									'Number of items to display initially. Additional items will be displayed in a lightbox.',
 									'pulsar-blocks'
 								)}
 								onChange={(value) =>
-									setAttributes({ gridItems: value })
+									setAttributes({ initialItems: value })
 								}
 								min={1}
 								max={8}
 							/>
+
+							<ToggleControl
+								label={__('Thumbnails', 'pulsar-blocks')}
+								checked={showThumbnails}
+								help={__(
+									'Show thumbnails in the lightbox.',
+									'pulsar-blocks'
+								)}
+								onChange={(value) =>
+									setAttributes({ showThumbnails: value })
+								}
+							/>
 						</PanelBody>
+					</InspectorControls>
+
+					<InspectorControls group="color">
+						<ColorGradientSettingsDropdown
+							__experimentalIsRenderedInSidebar
+							settings={[
+								{
+									colorValue: overlayColor,
+									label: __('Overlay', 'pulsar'),
+									onColorChange: (val) =>
+										setAttributes({ overlayColor: val }),
+									isShownByDefault: true,
+									enableAlpha: true,
+									resetAllFilter: () => ({
+										overlayColor: undefined,
+									}),
+								},
+							]}
+							panelId={clientId}
+							{...colorGradientSettings}
+						/>
 					</InspectorControls>
 
 					<BlockControls group="other">
@@ -147,12 +191,12 @@ export default function Edit({
 							<ToolbarButton onClick={toggleEditing}>
 								{isEditing
 									? __('Finish Editing', 'pulsar-blocks')
-									: __('Edit Gallery', 'pulsar-blocks')}
+									: __('Edit Media', 'pulsar-blocks')}
 							</ToolbarButton>
 						</ToolbarGroup>
 					</BlockControls>
 
-					<div className="wp-block-pulsar-gallery-grid__items">
+					<div className="wp-block-pulsar-media-viewer__items">
 						{children}
 					</div>
 
@@ -168,13 +212,11 @@ export default function Edit({
 						}
 					/>
 
-					{innerBlocks &&
-						gridItems < innerBlocks.length &&
-						!isEditing && (
-							<button className="wp-block-pulsar-gallery-grid__view-all">
-								{__('View Gallery', 'pulsar-blocks')}
-							</button>
-						)}
+					{innerBlocks && !isEditing && (
+						<button className="wp-block-pulsar-media-viewer__view-all">
+							{__('View Gallery', 'pulsar-blocks')}
+						</button>
+					)}
 				</>
 			)}
 		</div>

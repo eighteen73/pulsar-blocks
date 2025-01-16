@@ -4,7 +4,7 @@
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 import { registerBlockType } from '@wordpress/blocks';
-import { gallery as icon } from '@wordpress/icons';
+import { MediaViewer as icon } from '../components/icons';
 
 import Edit from './edit';
 import Save from './save';

@@ -9,7 +9,7 @@ window.pulsarBlocks.modals = new Map();
 window.addEventListener('DOMContentLoaded', () => {
 	'use strict';
 
-	if (!document.getElementById('modal-portal')) {
+	if (!document.getElementById('pulsar-modal-portal')) {
 		const portalContainer = document.createElement('div');
 		portalContainer.id = 'pulsar-modal-portal';
 		portalContainer.classList.add('pulsar-modal-portal');
