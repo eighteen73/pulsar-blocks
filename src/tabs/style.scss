@@ -1,65 +1,66 @@
 .wp-block-pulsar-tabs {
-	[role="tablist"] {
-		min-width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: var(--wp--preset--spacing--xl);
+
+	&:where(.is-vertical) {
+		flex-direction: row;
 	}
 
-	[role="tab"],
-	[role="tab"]:focus,
-	[role="tab"]:hover {
-		background: hsl(220deg 20% 94%);
-		border: 1px solid hsl(219deg 1% 72%);
-		border-bottom: 2px solid hsl(219deg 1% 72%);
-		border-radius: 5px 5px 0 0;
+	&__list {
+		display: flex;
+		gap: var(--wp--preset--spacing--xl);
+
+		:where(.is-vertical) & {
+			flex-direction: column;
+		}
+	}
+
+	&__tab {
+		background-color: transparent;
+		border: 0;
+		border-bottom: 2px solid transparent;
+		box-shadow: none;
+		color: var(--wp--custom--color--text--inactive);
 		cursor: pointer;
 		display: inline-block;
-		font-weight: 700;
+		line-height: 1;
 		margin: 0;
-		margin-top: 4px;
-		max-width: 22%;
 		outline: none;
 		overflow: hidden;
-		padding: 3px 3px 4px;
+		padding: 0 0 var(--wp--preset--spacing--xs) 0;
 		position: relative;
 		text-align: left;
-		top: 2px;
+		transition: all var(--wp--custom--transition-duration--normal);
+		white-space: nowrap;
 		z-index: 2;
+
+		&:hover {
+			border-color: var(--wp--custom--color--border--primary-hover);
+			color: var(--wp--custom--color--text--primary);
+		}
+
+		&:focus {
+			border-color: var(--wp--custom--color--border--active);
+			color: var(--wp--custom--color--text--primary);
+			outline: none;
+		}
+
+		&:where([aria-selected="true"]) {
+			border-color: var(--wp--custom--color--border--active);
+			color: var(--wp--custom--color--text--primary);
+		}
 	}
 
-	[role="tab"][aria-selected="true"] {
-		background: hsl(220deg 43% 99%);
-		border-bottom-color: hsl(220deg 43% 99%);
-		border-top-color: rgb(36 116 214);
-		border-width: 2px;
-		border-top-width: 6px;
-		margin-top: 0;
-		padding: 2px 2px 4px;
-	}
-
-	[role="tab"][aria-selected="false"] {
-		border-bottom: 1px solid hsl(219deg 1% 72%);
-	}
-
-	[role="tab"] span {
-		display: inline-block;
-		margin: 2px;
-		padding: 4px 6px;
-	}
-
-	[role="tab"]:hover span,
-	[role="tab"]:focus span,
-	[role="tab"]:active span {
-		border: 2px solid rgb(36 116 214);
-		border-radius: 3px;
-		padding: 2px 4px;
-	}
-
-	[role="tabpanel"] {
-		background: hsl(220deg 43% 99%);
-		border: 2px solid hsl(219deg 1% 72%);
-		border-radius: 0 5px 5px;
-		min-height: 10em;
-		overflow: auto;
-		padding: 5px;
+	&__panel {
 		width: 100%;
+
+		> :first-child {
+			margin-top: 0;
+		}
+
+		> :last-child {
+			margin-bottom: 0;
+		}
 	}
 }

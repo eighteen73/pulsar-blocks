@@ -7,8 +7,6 @@ import {
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 
-import './editor.scss';
-
 export default function Edit({
 	attributes: { allowedBlocks, templateLock },
 	clientId,
@@ -43,7 +41,9 @@ export default function Edit({
 	const { __unstableMarkNextChangeAsNotPersistent } =
 		useDispatch(blockEditorStore);
 
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps({
+		className: 'wp-block-pulsar-tabs__panel',
+	});
 	const innerBlocksProps = useInnerBlocksProps(blockProps, {
 		templateLock,
 		allowedBlocks,

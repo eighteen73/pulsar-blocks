@@ -3,11 +3,11 @@
  */
 import {
 	BlockIcon,
-	InnerBlocks,
 	InspectorControls,
 	store as blockEditorStore,
 	useBlockDisplayInformation,
 	useBlockProps,
+	useInnerBlocksProps,
 	RichText,
 } from '@wordpress/block-editor';
 import {
@@ -20,12 +20,14 @@ import {
 	PanelRow,
 	Placeholder,
 	TextControl,
+	ToggleControl,
 } from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { create } from '@wordpress/icons';
 
+import SingleBlockTypeAppender from '../components/single-block-type-appender';
 import { generateId } from '../utils/helpers';
 
 /**
@@ -50,43 +52,15 @@ function createInnerTabsTemplate(count) {
 	return template;
 }
 
-function TabsInspectorControls({ clientId, setAttributes }) {
-	const tabs = useSelect(
-		(select) => {
-			return select(blockEditorStore).getBlocks(clientId);
-		},
-		[clientId]
-	);
-	const { icon } = useBlockDisplayInformation(tabs[0].clientId);
-	const { insertBlock } = useDispatch(blockEditorStore);
-
-	function addNewTab() {
-		insertBlock(createBlock(TAB_BLOCK_NAME), tabs.length, clientId, false);
-	}
-
+function TabsInspectorControls({ setAttributes, attributes }) {
 	return (
 		<InspectorControls>
-			<PanelBody title={__('Tabs', 'pulsar-blocks')}>
-				{tabs.map((tab, index) => {
-					const tabNumber = index + 1;
-					return (
-						<PanelRow key={tab.clientId}>
-							<Button
-								icon={<BlockIcon icon={icon} showColors />}
-								onClick={setAttributes.bind(null, {
-									activeTab: tabNumber,
-								})}
-							>
-								{`Tab ${tabNumber}`}
-							</Button>
-						</PanelRow>
-					);
-				})}
+			<PanelBody title={__('Settings', 'pulsar-blocks')}>
 				<PanelRow>
-					<Button
-						icon={create}
-						label={__('Add a new tab', 'pulsar-blocks')}
-						onClick={addNewTab}
+					<ToggleControl
+						label={__('Vertical', 'pulsar-blocks')}
+						checked={attributes.vertical}
+						onChange={(vertical) => setAttributes({ vertical })}
 					/>
 				</PanelRow>
 			</PanelBody>
@@ -114,6 +88,7 @@ function TabButton({ clientId, isActiveTab, tabNumber, setActiveTab }) {
 
 	return (
 		<button
+			className="wp-block-pulsar-tabs__tab"
 			id={`tab-${tabNumber}`}
 			type="button"
 			role="tab"
@@ -136,11 +111,20 @@ function TabButton({ clientId, isActiveTab, tabNumber, setActiveTab }) {
 }
 
 function TabsEdit({
-	attributes: { id, activeTab, tabsCount, templateLock },
+	attributes: { id, activeTab, tabsCount, isVertical },
 	clientId,
 	setAttributes,
+	isSelected,
 }) {
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps({
+		className: isVertical ? 'is-vertical' : 'is-horizontal',
+	});
+
+	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
+		orientation: 'horizontal',
+		renderAppender: false,
+	});
+
 	const { hasTabSelected, tabBlocks } = useSelect(
 		(select) => {
 			const { getBlocks, hasSelectedInnerBlock } =
@@ -152,8 +136,11 @@ function TabsEdit({
 		},
 		[clientId]
 	);
+
 	const { __unstableMarkNextChangeAsNotPersistent } =
 		useDispatch(blockEditorStore);
+
+	const allowedBlock = [TAB_BLOCK_NAME];
 
 	useEffect(() => {
 		if (tabBlocks.length < activeTab) {
@@ -180,8 +167,26 @@ function TabsEdit({
 
 	return (
 		<>
-			<div {...blockProps}>
-				<div className="wp-block-pulsar-tabs__tablist" role="tablist">
+			<InspectorControls>
+				<PanelBody title={__('Settings', 'pulsar-blocks')}>
+					<PanelRow>
+						<ToggleControl
+							label={__('Vertical', 'pulsar-blocks')}
+							help={__(
+								'Display tabs vertically.',
+								'pulsar-blocks'
+							)}
+							checked={isVertical}
+							onChange={(value) =>
+								setAttributes({ isVertical: value })
+							}
+						/>
+					</PanelRow>
+				</PanelBody>
+			</InspectorControls>
+
+			<div {...innerBlocksProps}>
+				<div className="wp-block-pulsar-tabs__list" role="tablist">
 					{tabBlocks.map((tabBlock, index) => {
 						const tabNumber = index + 1;
 						return (
@@ -199,12 +204,17 @@ function TabsEdit({
 						);
 					})}
 				</div>
-				<InnerBlocks
-					__experimentalCaptureToolbars
-					defaultBlock={TAB_BLOCK}
-					directInsert
-					orientation="horizontal"
-					templateLock={templateLock}
+
+				{children}
+
+				<SingleBlockTypeAppender
+					onClickAfter={() => {}}
+					variant="secondary"
+					text={__('Add tab', 'pulsar-blocks')}
+					allowedBlock={allowedBlock}
+					style={{ width: '100%', justifyContent: 'center' }}
+					clientId={clientId}
+					isEnabled={isSelected || hasTabSelected}
 				/>
 			</div>
 		</>
