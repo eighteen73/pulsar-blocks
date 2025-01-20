@@ -43,7 +43,7 @@
 			content: "";
 			display: block;
 			height: 100%;
-			mask-image: url("../../assets/arrow-right.svg");
+			mask-image: url("../../assets/svg/arrow-right.svg");
 			mask-position: center;
 			mask-repeat: no-repeat;
 			mask-size: contain;
@@ -60,7 +60,7 @@
 		}
 
 		&--prev::before {
-			mask-image: url("../../assets/arrow-left.svg");
+			mask-image: url("../../assets/svg/arrow-left.svg");
 		}
 	}
 
@@ -126,13 +126,13 @@
 
 	.splide__toggle__pause {
 		&::before {
-			mask-image: url("../../assets/pause.svg");
+			mask-image: url("../../assets/svg/pause.svg");
 		}
 	}
 
 	.splide__toggle__play {
 		&::before {
-			mask-image: url("../../assets/play.svg");
+			mask-image: url("../../assets/svg/play.svg");
 		}
 	}
 
