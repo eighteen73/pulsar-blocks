@@ -6,7 +6,7 @@
 	"title": "Tab",
 	"category": "widgets",
 	"icon": "text-page",
-	"description": "Customize content inside a tab.",
+	"description": "Customise content inside a tab.",
 	"example": {},
 	"parent": [ "pulsar/tabs" ],
 	"attributes": {
