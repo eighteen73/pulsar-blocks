@@ -14,11 +14,9 @@
       "full"
     ],
     "spacing": {
-      "blockGap": "true"
-    },
-    "layout": {
-      "type": "grid",
-      "allowEditing": false
+      "margin": true,
+      "padding": false,
+      "blockGap": true
     }
   },
   "attributes": {

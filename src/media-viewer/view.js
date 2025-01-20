@@ -12,6 +12,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	blocks.forEach((block) => {
 		const id = block.dataset.id;
 		const showThumbnails = block.dataset.showThumbnails === 'true';
+		const overlayColor = block.dataset.overlayColor;
 
 		const lightbox = lightGallery(block, {
 			download: false,
@@ -20,6 +21,14 @@ window.addEventListener('DOMContentLoaded', () => {
 			selector: '.wp-block-pulsar-media-viewer__items > *',
 			plugins: showThumbnails ? [lgThumbnail] : [],
 		});
+
+		if (overlayColor) {
+			const container = lightbox.$container.selector;
+			container.style.setProperty(
+				'--lightbox-overlay-color',
+				overlayColor
+			);
+		}
 
 		const viewAll = block.querySelector(
 			'.wp-block-pulsar-media-viewer__view-all'

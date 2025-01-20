@@ -23,6 +23,9 @@ class MediaViewer {
 	public function setup() {
 		add_filter( 'block_type_metadata', [ $this, 'add_context' ] );
 		add_action( 'render_block', [ $this, 'set_image_markup' ], 5, 3 );
+
+		// Add the overlayColor attribute as an inline style to :root.
+		// add_action( 'wp_head', [ $this, 'add_overlay_color' ] );
 	}
 
 	/**

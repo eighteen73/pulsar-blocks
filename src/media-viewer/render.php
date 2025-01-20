@@ -21,6 +21,7 @@ echo wp_kses_data(
 		[
 			'class'                => 'has-items-' . esc_attr( $initial_items ),
 			'data-id'              => $id,
+			'data-overlay-color'   => $attributes['overlayColor'],
 			'data-show-thumbnails' => $show_thumbnails,
 		]
 	)
