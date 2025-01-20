@@ -12,21 +12,21 @@ $id              = $attributes['id'] ?? '';
 $initial_items   = $attributes['initialItems'];
 $item_count      = count( $block->inner_blocks );
 $show_thumbnails = $attributes['showThumbnails'] === true ? 'true' : 'false';
+$wrapper_attributes = [
+	'class'                => 'has-items-' . esc_attr( $initial_items ),
+	'data-id'              => $id,
+	'data-show-thumbnails' => $show_thumbnails,
+];
+
+if ( $attributes['overlayColor'] ) {
+	$wrapper_attributes['data-overlay-color'] = $attributes['overlayColor'];
+}
 ?>
 
 <div
-<?php
-echo wp_kses_data(
-	get_block_wrapper_attributes(
-		[
-			'class'                => 'has-items-' . esc_attr( $initial_items ),
-			'data-id'              => $id,
-			'data-overlay-color'   => $attributes['overlayColor'],
-			'data-show-thumbnails' => $show_thumbnails,
-		]
-	)
-);
-?>
+	<?php
+	echo wp_kses_data( get_block_wrapper_attributes( $wrapper_attributes ) );
+	?>
 >
 	<div class="wp-block-pulsar-media-viewer__items">
 		<?php echo $content; //phpcs:disable ?>

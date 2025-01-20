@@ -11,7 +11,6 @@ import {
 	RichText,
 } from '@wordpress/block-editor';
 import {
-	createBlock,
 	createBlocksFromInnerBlocksTemplate,
 } from '@wordpress/blocks';
 import {
@@ -25,7 +24,6 @@ import {
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { create } from '@wordpress/icons';
 
 import SingleBlockTypeAppender from '../components/single-block-type-appender';
 import { generateId } from '../utils/helpers';
@@ -39,9 +37,6 @@ import { generateId } from '../utils/helpers';
 import './editor.scss';
 
 const TAB_BLOCK_NAME = 'pulsar/tab';
-const TAB_BLOCK = {
-	name: TAB_BLOCK_NAME,
-};
 
 function createInnerTabsTemplate(count) {
 	const template = [];
@@ -140,8 +135,6 @@ function TabsEdit({
 	const { __unstableMarkNextChangeAsNotPersistent } =
 		useDispatch(blockEditorStore);
 
-	const allowedBlock = [TAB_BLOCK_NAME];
-
 	useEffect(() => {
 		if (tabBlocks.length < activeTab) {
 			__unstableMarkNextChangeAsNotPersistent();
@@ -211,7 +204,7 @@ function TabsEdit({
 					onClickAfter={() => {}}
 					variant="secondary"
 					text={__('Add tab', 'pulsar-blocks')}
-					allowedBlock={allowedBlock}
+					allowedBlock={'pulsar/tab'}
 					style={{ width: '100%', justifyContent: 'center' }}
 					clientId={clientId}
 					isEnabled={isSelected || hasTabSelected}
