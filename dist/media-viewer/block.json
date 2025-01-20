@@ -39,6 +39,10 @@
     },
     "overlayColor": {
       "type": "string"
+    },
+    "lightboxImageSize": {
+      "type": "string",
+      "default": "large"
     }
   },
   "textdomain": "pulsar-blocks",

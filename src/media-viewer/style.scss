@@ -250,6 +250,8 @@ $lg-path-images: "../../assets/img";
 	// Captions
 	--lightbox-caption-color: var(--wp--custom--color--text--invert, #fff);
 	--lightbox-caption-padding: var(--wp--preset--spacing--md, 24px);
+	--lightbox-caption-font-size: var(--wp--preset--font-size--md, 14px);
+	--lightbox-caption-width: var(--wp--style--global--content-size);
 
 	// Thumbnails
 	--lightbox-thumb-background-color: transparent;
@@ -383,11 +385,19 @@ $lg-path-images: "../../assets/img";
 
 	// Caption
 	.lg-sub-html {
+		-webkit-box-orient: vertical;
 		color: var(--lightbox-caption-color);
-		font-size: var(--lightbox-caption-color);
+		display: -webkit-box;
+		font-size: var(--lightbox-caption-font-size);
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		margin-block: var(--lightbox-caption-padding);
+		margin-inline: auto;
+		max-width: var(--lightbox-caption-width, 800px);
 		opacity: 0;
-		padding: var(--lightbox-caption-padding);
+		overflow: hidden;
 		text-align: center;
+		text-overflow: ellipsis;
 		z-index: 1080;
 	}
 

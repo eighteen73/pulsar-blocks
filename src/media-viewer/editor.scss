@@ -1,4 +1,8 @@
 .wp-block-pulsar-media-viewer {
+	&__view-all {
+		display: none;
+	}
+
 	&.is-editing {
 		.wp-block-pulsar-media-viewer__items {
 			aspect-ratio: unset;
@@ -12,7 +16,6 @@
 			}
 
 			> * {
-				aspect-ratio: 1 / 1;
 				display: block;
 				grid-area: unset;
 			}
@@ -20,6 +23,20 @@
 			.block-list-appender {
 				display: block !important; // stylelint-disable-line declaration-no-important
 			}
+		}
+	}
+
+	.wp-block-image {
+		.wp-element-caption {
+			background-color: rgba(0, 0, 0, 0.7);
+			bottom: 0;
+			color: var(--wp--custom--color--text--invert, #fff);
+			font-size: var(--wp--preset--font-size--md, 14px);
+			left: 0;
+			margin: 0;
+			padding: var(--wp--preset--spacing--md, 16px);
+			position: absolute;
+			right: 0;
 		}
 	}
 }
