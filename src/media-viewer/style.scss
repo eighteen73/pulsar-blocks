@@ -21,8 +21,9 @@ $lg-path-images: "../../assets/img";
 	}
 
 	&__items {
+		aspect-ratio: 2 / 1;
 		display: grid;
-		gap: 16px;
+		gap: var(--wp--custom--spacing--block-gap, 16px);
 
 		> * {
 			&:nth-child(1) {
@@ -59,7 +60,6 @@ $lg-path-images: "../../assets/img";
 		}
 
 		:where(.has-items-1) & {
-			aspect-ratio: 16 / 9;
 			grid-template-areas: "one";
 
 			> * {
@@ -70,7 +70,6 @@ $lg-path-images: "../../assets/img";
 		}
 
 		:where(.has-items-2) & {
-			aspect-ratio: 2 / 1;
 			grid-template-areas: "one two";
 			grid-template-columns: repeat(2, 1fr);
 
@@ -82,7 +81,6 @@ $lg-path-images: "../../assets/img";
 		}
 
 		:where(.has-items-3) & {
-			aspect-ratio: 3 / 2;
 			grid-template-areas:
 				"one two"
 				"one three";
@@ -97,7 +95,6 @@ $lg-path-images: "../../assets/img";
 		}
 
 		:where(.has-items-4) & {
-			aspect-ratio: 4 / 3;
 			grid-template-areas:
 				"one two"
 				"one two"
@@ -115,7 +112,6 @@ $lg-path-images: "../../assets/img";
 		}
 
 		:where(.has-items-5) & {
-			aspect-ratio: 16 / 9;
 			grid-template-areas:
 				"one two three"
 				"one two five"
@@ -138,7 +134,6 @@ $lg-path-images: "../../assets/img";
 		}
 
 		:where(.has-items-6) & {
-			aspect-ratio: 100 / 70;
 			grid-template-areas:
 				"one one two two three three"
 				"one one two two three three"
@@ -156,8 +151,21 @@ $lg-path-images: "../../assets/img";
 			}
 		}
 
+		:where(.has-items-7) & {
+			grid-template-areas:
+				"one one one one one one two two two two two two three three three three three three four four four four four four"
+				"five five five five five five five five six six six six six six six six seven seven seven seven seven seven seven seven";
+			grid-template-columns: repeat(24, 1fr);
+			grid-template-rows: repeat(2, 1fr);
+
+			> * {
+				&:where(:not(:first-child, :nth-child(2), :nth-child(3), :nth-child(4), :nth-child(5), :nth-child(6), :nth-child(7))) {
+					display: none;
+				}
+			}
+		}
+
 		:where(.has-items-8) & {
-			aspect-ratio: 6 / 1;
 			grid-template-areas:
 				"one two three four"
 				"five six seven eight";
