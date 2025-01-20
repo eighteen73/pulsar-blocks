@@ -2,6 +2,17 @@
 $lg-path-fonts: "../../assets/fonts";
 $lg-path-images: "../../assets/img";
 
+$grid-areas: (
+	1: "one",
+	2: "two",
+	3: "three",
+	4: "four",
+	5: "five",
+	6: "six",
+	7: "seven",
+	8: "eight"
+);
+
 @import "~lightgallery/scss/lightgallery-core";
 
 .wp-block-pulsar-media-viewer {
@@ -23,39 +34,13 @@ $lg-path-images: "../../assets/img";
 	&__items {
 		aspect-ratio: 2 / 1;
 		display: grid;
-		gap: var(--wp--custom--spacing--block-gap, 16px);
+		gap: inherit;
 
 		> * {
-			&:nth-child(1) {
-				grid-area: one;
-			}
-
-			&:nth-child(2) {
-				grid-area: two;
-			}
-
-			&:nth-child(3) {
-				grid-area: three;
-			}
-
-			&:nth-child(4) {
-				grid-area: four;
-			}
-
-			&:nth-child(5) {
-				grid-area: five;
-			}
-
-			&:nth-child(6) {
-				grid-area: six;
-			}
-
-			&:nth-child(7) {
-				grid-area: seven;
-			}
-
-			&:nth-child(8) {
-				grid-area: eight;
+			@each $area-number, $area-name in $grid-areas {
+				&:where(:nth-child(#{$area-number} of .wp-block-image)) {
+					grid-area: #{$area-name};
+				}
 			}
 		}
 
@@ -74,7 +59,7 @@ $lg-path-images: "../../assets/img";
 			grid-template-columns: repeat(2, 1fr);
 
 			> * {
-				&:where(:not(:first-child, :nth-child(2))) {
+				&:where(:not(:nth-child(-n+2 of .wp-block-image))) {
 					display: none;
 				}
 			}
@@ -88,7 +73,7 @@ $lg-path-images: "../../assets/img";
 			grid-template-rows: 1fr 1fr;
 
 			> * {
-				&:where(:not(:first-child, :nth-child(2), :nth-child(3))) {
+				&:where(:not(:nth-child(-n+3 of .wp-block-image))) {
 					display: none;
 				}
 			}
@@ -105,7 +90,7 @@ $lg-path-images: "../../assets/img";
 			grid-template-rows: repeat(5, 1fr);
 
 			> * {
-				&:where(:not(:first-child, :nth-child(2), :nth-child(3), :nth-child(4))) {
+				&:where(:not(:nth-child(-n+4 of .wp-block-image))) {
 					display: none;
 				}
 			}
@@ -120,7 +105,7 @@ $lg-path-images: "../../assets/img";
 			grid-template-rows: repeat(3, 1fr);
 
 			> * {
-				&:where(:not(:first-child, :nth-child(2), :nth-child(3), :nth-child(4), :nth-child(5))) {
+				&:where(:not(:nth-child(-n+5 of .wp-block-image))) {
 					display: none;
 				}
 			}
@@ -145,7 +130,7 @@ $lg-path-images: "../../assets/img";
 			grid-template-rows: repeat(6, 1fr);
 
 			> * {
-				&:where(:not(:first-child, :nth-child(2), :nth-child(3), :nth-child(4), :nth-child(5), :nth-child(6))) {
+				&:where(:not(:nth-child(-n+6 of .wp-block-image))) {
 					display: none;
 				}
 			}
@@ -159,7 +144,7 @@ $lg-path-images: "../../assets/img";
 			grid-template-rows: repeat(2, 1fr);
 
 			> * {
-				&:where(:not(:first-child, :nth-child(2), :nth-child(3), :nth-child(4), :nth-child(5), :nth-child(6), :nth-child(7))) {
+				&:where(:not(:nth-child(-n+7 of .wp-block-image))) {
 					display: none;
 				}
 			}
@@ -173,7 +158,7 @@ $lg-path-images: "../../assets/img";
 			grid-template-rows: repeat(2, 1fr);
 
 			> * {
-				&:where(:not(:first-child, :nth-child(2), :nth-child(3), :nth-child(4), :nth-child(5), :nth-child(6), :nth-child(7), :nth-child(8))) {
+				&:where(:not(:nth-child(-n+8 of .wp-block-image))) {
 					display: none;
 				}
 			}

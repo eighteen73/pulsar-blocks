@@ -3,6 +3,12 @@
 		display: none;
 	}
 
+	&__items {
+		> div {
+			display: none;
+		}
+	}
+
 	&.is-editing {
 		.wp-block-pulsar-media-viewer__items {
 			aspect-ratio: unset;
