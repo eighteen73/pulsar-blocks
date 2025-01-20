@@ -1,15 +1,14 @@
 .wp-block-pulsar-tabs {
-	display: flex;
-	flex-direction: column;
+	display: grid;
 	gap: var(--wp--preset--spacing--xl);
 
 	&:where(.is-vertical) {
-		flex-direction: row;
+		grid-template-columns: 1fr 4fr;
 	}
 
 	&__list {
 		display: flex;
-		gap: var(--wp--preset--spacing--xl);
+		gap: inherit;
 
 		:where(.is-vertical) & {
 			flex-direction: column;
