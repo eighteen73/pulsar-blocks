@@ -17,6 +17,7 @@ import {
 	ToolbarGroup,
 	ToolbarButton,
 	ToggleControl,
+	SelectControl,
 } from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
@@ -80,7 +81,13 @@ function Placeholder({ clientId, name, setAttributes }) {
 }
 
 export default function Edit({
-	attributes: { initialItems, id, showThumbnails, overlayColor },
+	attributes: {
+		initialItems,
+		id,
+		showThumbnails,
+		lightboxImageSize,
+		overlayColor,
+	},
 	setAttributes,
 	clientId,
 	isSelected,
@@ -113,6 +120,10 @@ export default function Edit({
 
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
+	const imageSizes = useSelect(
+		(select) => select('core/block-editor').getSettings().imageSizes
+	);
+
 	useEffect(() => {
 		if (!id) {
 			setAttributes({ id: generateId() });
@@ -136,7 +147,7 @@ export default function Edit({
 			{hasInnerBlocks && (
 				<>
 					<InspectorControls>
-						<PanelBody title={__('Settings', 'pulsar-blocks')}>
+						<PanelBody>
 							<RangeControl
 								label={__('Initial items', 'pulsar-blocks')}
 								value={initialItems}
@@ -149,8 +160,13 @@ export default function Edit({
 								}
 								min={1}
 								max={8}
+								__nextHasNoMarginBottom
 							/>
+						</PanelBody>
 
+						<PanelBody
+							title={__('Lightbox settings', 'pulsar-blocks')}
+						>
 							<ToggleControl
 								label={__('Thumbnails', 'pulsar-blocks')}
 								checked={showThumbnails}
@@ -161,6 +177,25 @@ export default function Edit({
 								onChange={(value) =>
 									setAttributes({ showThumbnails: value })
 								}
+								__nextHasNoMarginBottom
+							/>
+
+							<SelectControl
+								label={__('Image size', 'pulsar-blocks')}
+								help={__(
+									'Image size to use in the lightbox.',
+									'pulsar-blocks'
+								)}
+								value={lightboxImageSize}
+								options={imageSizes.map((size) => ({
+									label: size.name,
+									value: size.slug,
+								}))}
+								onChange={(value) => {
+									console.log(value);
+									setAttributes({ lightboxImageSize: value });
+								}}
+								__nextHasNoMarginBottom
 							/>
 						</PanelBody>
 					</InspectorControls>

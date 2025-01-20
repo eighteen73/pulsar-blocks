@@ -42,6 +42,10 @@
       "default": "large"
     }
   },
+  "providesContext": {
+    "mediaViewer/id": "id",
+    "mediaViewer/lightboxImageSize": "lightboxImageSize"
+  },
   "textdomain": "pulsar-blocks",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",

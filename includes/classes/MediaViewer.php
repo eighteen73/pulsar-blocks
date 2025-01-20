@@ -21,7 +21,25 @@ class MediaViewer {
 	 * @return void
 	 */
 	public function setup() {
+		add_filter( 'block_type_metadata', [ $this, 'add_context' ] );
 		add_action( 'render_block', [ $this, 'set_image_markup' ], 5, 3 );
+	}
+
+	/**
+	 * Add additional context to the image block for lightboxes.
+	 *
+	 * @param array $metadata The block metadata.
+	 *
+	 * @return array
+	 */
+	public function add_context( $metadata ) {
+		if ( isset( $metadata['name'] ) && $metadata['name'] === 'core/image' ) {
+			$metadata['usesContext'] ??= [];
+			$metadata['usesContext'][] = 'mediaViewer/id';
+			$metadata['usesContext'][] = 'mediaViewer/lightboxImageSize';
+		}
+
+		return $metadata;
 	}
 
 	/**
@@ -34,10 +52,12 @@ class MediaViewer {
 	 * @return mixed Returns the new block content.
 	 */
 	public function set_image_markup( $block_content, $block, $instance ) {
-		if ( $block['blockName'] === 'core/image' ) {
+		if ( $block['blockName'] === 'core/image' && isset( $instance->context['mediaViewer/id'] ) ) {
 			$tags = new WP_HTML_Tag_Processor( $block_content );
 			$tags->next_tag( [ 'tag_name' => 'img' ] );
-			$img_src = $tags->get_attribute( 'src' );
+			$image_id   = $block['attrs']['id'];
+			$image_size = $instance->context['mediaViewer/lightboxImageSize'] ?? 'large';
+			$image_src  = wp_get_attachment_image_url( $image_id, $image_size );
 
 			$block_content = $tags->get_updated_html();
 
@@ -46,7 +66,7 @@ class MediaViewer {
 
 			$tags = new WP_HTML_Tag_Processor( $block_content );
 			$tags->next_tag( [ 'class_name' => 'wp-block-image' ] );
-			$tags->set_attribute( 'data-src', $img_src );
+			$tags->set_attribute( 'data-src', $image_src );
 			$tags->set_attribute( 'data-sub-html', $caption );
 
 			$block_content = $tags->get_updated_html();
