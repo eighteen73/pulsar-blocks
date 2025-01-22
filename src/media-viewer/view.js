@@ -20,6 +20,11 @@ window.addEventListener('DOMContentLoaded', () => {
 			addClass: 'wp-block-pulsar-media-viewer__lightbox',
 			selector: '.wp-block-pulsar-media-viewer__items > *',
 			plugins: showThumbnails ? [lgThumbnail] : [],
+
+			mobileSettings: {
+				controls: false,
+				showCloseIcon: true,
+			}
 		});
 
 		if (overlayColor) {
