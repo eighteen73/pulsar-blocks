@@ -3,6 +3,7 @@ import ClassNames from 'embla-carousel-class-names';
 import Fade from 'embla-carousel-fade';
 import Autoplay from 'embla-carousel-autoplay';
 import Autoscroll from 'embla-carousel-auto-scroll';
+import { setupProgressBar } from '../embla-carousel-progress/EmblaCarouselProgressBar'
 
 window.pulsarBlocks = window.pulsarBlocks || {};
 window.pulsarBlocks.emblaCarousels = new Map();
@@ -33,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const queryLoop = containerNode.querySelector(
 			'.wp-block-post-template'
 		);
+		const progressNode = emblaNode.querySelector('.embla__progress__bar');
 
 		const plugins = [ClassNames()];
 		if (fade) {
@@ -74,6 +76,18 @@ document.addEventListener('DOMContentLoaded', () => {
 			);
 
 			emblaApi.on('destroy', removeDotBtnsAndClickHandlers);
+		}
+		if (progressNode) {
+			const { applyProgress, removeProgress } = setupProgressBar(
+				emblaApi,
+				progressNode
+			)
+			emblaApi
+				.on('init', applyProgress)
+				.on('reInit', applyProgress)
+				.on('scroll', applyProgress)
+				.on('slideFocus', applyProgress)
+				.on('destroy', removeProgress)
 		}
 	});
 });
@@ -136,6 +150,7 @@ const addDotBtnsAndClickHandlers = (emblaApi, dotsNode) => {
 
 		dotNodes = Array.from(dotsNode.querySelectorAll('.embla__dot'));
 		dotNodes.forEach((dotNode, index) => {
+			dotNode.setAttribute('aria-label', `Go to slide ${index + 1}`);
 			dotNode.addEventListener('click', () => scrollTo(index), false);
 		});
 	};
