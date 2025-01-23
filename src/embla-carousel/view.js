@@ -150,7 +150,7 @@ const addDotBtnsAndClickHandlers = (emblaApi, dotsNode) => {
 
 		dotNodes = Array.from(dotsNode.querySelectorAll('.embla__dot'));
 		dotNodes.forEach((dotNode, index) => {
-			dotNode.setAttribute('aria-label', 'slide-' + index);
+			dotNode.setAttribute('aria-label', `Go to slide ${index + 1}`);
 			dotNode.addEventListener('click', () => scrollTo(index), false);
 		});
 	};

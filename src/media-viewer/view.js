@@ -17,14 +17,12 @@ window.addEventListener('DOMContentLoaded', () => {
 		const lightbox = lightGallery(block, {
 			download: false,
 			allowMediaOverlap: false,
+			mobileSettings: {
+				showCloseIcon: true,
+			},
 			addClass: 'wp-block-pulsar-media-viewer__lightbox',
 			selector: '.wp-block-pulsar-media-viewer__items > *',
 			plugins: showThumbnails ? [lgThumbnail] : [],
-
-			mobileSettings: {
-				controls: false,
-				showCloseIcon: true,
-			}
 		});
 
 		if (overlayColor) {
