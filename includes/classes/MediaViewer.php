@@ -23,9 +23,6 @@ class MediaViewer {
 	public function setup() {
 		add_filter( 'block_type_metadata', [ $this, 'add_context' ] );
 		add_action( 'render_block', [ $this, 'set_image_markup' ], 5, 3 );
-
-		// Add the overlayColor attribute as an inline style to :root.
-		// add_action( 'wp_head', [ $this, 'add_overlay_color' ] );
 	}
 
 	/**
@@ -61,6 +58,7 @@ class MediaViewer {
 			$image_id   = $block['attrs']['id'];
 			$image_size = $instance->context['mediaViewer/lightboxImageSize'] ?? 'large';
 			$image_src  = wp_get_attachment_image_url( $image_id, $image_size );
+			$image_src  = $image_src ? $image_src : wp_get_attachment_image_url( $image_id, 'full' );
 
 			$block_content = $tags->get_updated_html();
 
