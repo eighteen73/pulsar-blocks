@@ -10,9 +10,7 @@ import {
 	useInnerBlocksProps,
 	RichText,
 } from '@wordpress/block-editor';
-import {
-	createBlocksFromInnerBlocksTemplate,
-} from '@wordpress/blocks';
+import { createBlocksFromInnerBlocksTemplate } from '@wordpress/blocks';
 import {
 	Button,
 	PanelBody,
@@ -106,11 +104,34 @@ function TabButton({ clientId, isActiveTab, tabNumber, setActiveTab }) {
 }
 
 function TabsEdit({
-	attributes: { id, activeTab, tabsCount, isVertical },
+	attributes: { id, activeTab, tabsCount, isVertical, inQueryLoop },
 	clientId,
 	setAttributes,
 	isSelected,
 }) {
+	const { getBlockParentsByBlockName } = useSelect((select) => {
+		return {
+			getBlockParentsByBlockName:
+				select(blockEditorStore).getBlockParentsByBlockName,
+		};
+	}, []);
+
+	useEffect(() => {
+		if (!id) {
+			setAttributes({ id: generateId() });
+		}
+	}, [id, setAttributes]);
+
+	useEffect(() => {
+		const queryLoopParents = getBlockParentsByBlockName(
+			clientId,
+			'core/query'
+		);
+		const isWithinQueryLoop = queryLoopParents.length > 0;
+
+		setAttributes({ inQueryLoop: isWithinQueryLoop });
+	}, [clientId, inQueryLoop, getBlockParentsByBlockName, setAttributes]);
+
 	const blockProps = useBlockProps({
 		className: isVertical ? 'is-vertical' : 'is-horizontal',
 	});
@@ -151,12 +172,6 @@ function TabsEdit({
 		tabsCount,
 		__unstableMarkNextChangeAsNotPersistent,
 	]);
-
-	useEffect(() => {
-		if (!id) {
-			setAttributes({ id: generateId() });
-		}
-	}, [id, setAttributes]);
 
 	return (
 		<>

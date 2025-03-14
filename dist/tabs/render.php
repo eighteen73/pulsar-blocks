@@ -9,9 +9,12 @@
  * @package Pulsar Blocks
  */
 
-$is_vertical  = $attributes['isVertical'];
-$id           = $attributes['id'];
-$namespace    = "pulsar-tabs-{$id}";
+$is_vertical     = $attributes['isVertical'];
+$id              = $attributes['id'];
+$post_id         = $block->context['postId'] ?? false;
+$in_query_loop   = $attributes['inQueryLoop'] ?? false;
+$tabs_id         = $in_query_loop && $post_id ? "{$id}-{$post_id}" : $id;
+$namespace       = "pulsar-tabs-{$tabs_id}";
 
 $inner_blocks = $block->inner_blocks;
 $tabs         = [];
@@ -30,9 +33,9 @@ foreach ( $inner_blocks as $block ) {
 	echo wp_kses_data(
 		get_block_wrapper_attributes(
 			[
-				'id'           => "pulsar-tabs-{$id}",
+				'id'           => $namespace,
 				'class'        => $is_vertical ? 'is-vertical' : 'is-horizontal',
-				'data-tabs-id' => $id,
+				'data-tabs-id' => $tabs_id,
 			]
 		)
 	);

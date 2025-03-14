@@ -21,6 +21,7 @@ import metadata from './block.json';
 import { Tabs as icon } from '../components/icons';
 
 registerBlockType(metadata.name, {
+	...metadata,
 	edit: Edit,
 	save,
 	icon,

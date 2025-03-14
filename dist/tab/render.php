@@ -10,7 +10,8 @@
  */
 
 $id         = $block->context['tabs/id'];
-$namespace  = "pulsar-tabs-{$id}";
+$post_id    = $block->context['postId'] ?? false;
+$namespace  = "pulsar-tabs-{$id}" . ( $post_id ? "-{$post_id}" : '' );
 $tab_number = $attributes['tabNumber'];
 
 $wrapper_attributes = [

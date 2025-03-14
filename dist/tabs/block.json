@@ -37,8 +37,17 @@
     "isVertical": {
       "type": "boolean",
       "default": false
+    },
+    "inQueryLoop": {
+      "type": "boolean",
+      "default": false
     }
   },
+  "usesContext": [
+    "postId",
+    "postType",
+    "queryId"
+  ],
   "providesContext": {
     "tabs/id": "id",
     "tabs/activeTab": "activeTab"
