@@ -461,7 +461,7 @@ class Menu {
 					<?php self::render_menu_items_list( $items, $item['id'] ); ?>
 				<?php endif; ?>
 
-				<?php if ( ! empty( $template_part_slug ) && $is_responsive && ! $has_submenu_content ) : ?>
+				<?php if ( ! empty( $template_part_slug ) && $is_responsive && ! $has_children ) : ?>
 					<div class="wp-block-pulsar-menu__submenu-template-part">
 						<?php echo self::render_template_part( $template_part_slug ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</div>
