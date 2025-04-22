@@ -33,3 +33,4 @@ Accordion::instance()->setup();
 MediaViewer::instance()->setup();
 Modal::instance()->setup();
 Megamenu::instance()->setup();
+Menu::instance()->setup();

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "pulsar/menu",
+  "title": "Menu",
+  "category": "theme",
+  "description": "Display a menu",
+  "icon": "menu",
+  "attributes": {
+    "menuLocation": {
+      "type": "string",
+      "default": ""
+    },
+    "isResponsive": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "supports": {
+    "html": false,
+    "interactivity": true
+  },
+  "variations": [
+    {
+      "name": "responsive-menu",
+      "title": "Responsive Menu",
+      "attributes": {
+        "isResponsive": true
+      }
+    }
+  ],
+  "textdomain": "pulsar",
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php",
+  "viewScriptModule": "file:./view.js"
+}
