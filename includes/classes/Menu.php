@@ -391,6 +391,9 @@ class Menu {
 			if ( $has_submenu_content ) {
 				$li_classes[] = 'has-submenu';
 			}
+			if ( ! empty( $template_part_slug ) ) {
+				$li_classes[] = 'has-template-part';
+			}
 
 			$li_classes = implode( ' ', array_map( 'esc_attr', array_unique( array_filter( $li_classes ) ) ) );
 			?>
@@ -440,7 +443,7 @@ class Menu {
 					></button>
 
 					<div
-						class="wp-block-pulsar-menu__submenu"
+						class="wp-block-pulsar-menu__submenu <?php echo $template_part_slug ? 'has-template-part' : ''; ?>"
 						data-wp-on--keydown="actions.handleSubmenuKeydown"
 						data-wp-on--focusout="actions.handleSubmenuFocusout"
 					>

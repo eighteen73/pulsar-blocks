@@ -1,6 +1,7 @@
 .wp-block-pulsar-menu {
 	--menu-items-gap: var(--wp--preset--spacing--md, 16px);
 	--menu-item-gap: var(--wp--preset--spacing--2-xs, 4px);
+	--menu-container-background-color: var(--wp--custom--color--surface--default, #fff);
 	--menu-submenu-icon-size: 16px;
 	--menu-submenu-icon-color: var(--wp--custom--color--text--default, #000);
 	--menu-submenu-container-background-color: var(--wp--custom--color--surface--default, #fff);
@@ -107,13 +108,13 @@
 		}
 
 		.wp-block-pulsar-menu__container {
-			background-color: #fff;
+			background-color: var(--menu-container-background-color);
 			height: 100dvh;
 			inset: 0;
 			opacity: 0;
 			overflow-y: auto;
 			position: fixed;
-			transition: opacity var(--wp--custom--transition-duration--quick);
+			transition: all var(--wp--custom--transition-duration--quick);
 			visibility: hidden;
 
 			&:where(.is-menu-open) {
@@ -169,6 +170,8 @@
 	}
 
 	&.is-desktop-view {
+		position: relative;
+
 		.wp-block-pulsar-menu__open,
 		.wp-block-pulsar-menu__close,
 		.wp-block-pulsar-menu__back,
@@ -189,6 +192,7 @@
 		.wp-block-pulsar-menu__items {
 			display: flex;
 			gap: var(--menu-items-gap);
+			position: relative;
 		}
 
 		.wp-block-pulsar-menu__submenu-items {
@@ -204,16 +208,27 @@
 			position: relative;
 		}
 
+		.has-template-part {
+			position: static;
+		}
+
 		.wp-block-pulsar-menu__submenu {
 			background-color: var(--menu-submenu-container-background-color);
 			display: none;
-			left: calc(var(--menu-submenu-container-padding) * -1);
+			left: 0;
 			min-width: var(--menu-submenu-container-min-width, 200px);
-			padding: var(--menu-submenu-container-padding);
 			position: absolute;
 			top: 100%;
 			width: 100%;
 			z-index: 10;
+
+			&:where(.has-template-part) {
+				left: 0;
+				overflow: auto;
+				right: 0;
+				top: 100%;
+				width: 100%;
+			}
 		}
 
 		.has-open-submenu > .wp-block-pulsar-menu__submenu {
