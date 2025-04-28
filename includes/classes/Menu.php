@@ -424,7 +424,7 @@ class Menu {
 					<button
 						type="button"
 						class="wp-block-pulsar-menu__submenu-toggle"
-						data-wp-on--click="actions.toggleSubmenu"
+						data-wp-on-async--click="actions.toggleSubmenu"
 						data-wp-bind--aria-expanded="context.isSubmenuOpen"
 						aria-haspopup="true"
 						aria-label="<?php printf( esc_attr__( 'Toggle submenu for %s', 'pulsar' ), esc_attr( $item['title'] ) ); ?>"
@@ -437,7 +437,7 @@ class Menu {
 						type="button"
 						class="wp-block-pulsar-menu__submenu-icon"
 						aria-label="<?php printf( esc_attr__( '%s submenu', 'pulsar' ), esc_attr( $item['title'] ) ); ?>"
-						data-wp-on--click="actions.toggleSubmenu"
+						data-wp-on-async--click="actions.toggleSubmenu"
 						data-wp-bind--aria-expanded="context.isSubmenuOpen"
 						aria-haspopup="true"
 					></button>
