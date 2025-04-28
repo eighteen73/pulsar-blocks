@@ -23,6 +23,10 @@
 	.wp-block-pulsar-menu__submenu-toggle {
 		display: none;
 	}
+
+	.wp-block-pulsar-menu__open {
+		display: none;
+	}
 }
 
 .wp-block-pulsar-menu:where(.is-responsive) {

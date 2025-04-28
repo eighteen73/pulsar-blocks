@@ -25,18 +25,24 @@ if ( ! is_array( $all_items ) || empty( $all_items ) ) {
 	return;
 }
 
-$responsive_attributes = $is_responsive ? [
-	'class'                          => 'is-responsive',
+$attributes = $is_responsive ? [
+	'class'                          => 'is-responsive is-menu-location-' . esc_attr( $location ),
 	'data-wp-interactive'            => 'pulsar/menu',
 	'data-wp-context'                => '{ "isMobileMenuOpen": false }',
 	'data-wp-init'                   => 'callbacks.initNav',
 	'data-wp-class--is-mobile-view'  => 'state.isMobileView',
 	'data-wp-class--is-desktop-view' => '!state.isMobileView',
-] : [];
+] : [
+	'class' => 'is-menu-location-' . esc_attr( $location ),
+];
+
+$attributes = array_merge(
+	$attributes,
+);
 
 $wrapper_attributes = get_block_wrapper_attributes(
 	[
-		...$responsive_attributes,
+		...$attributes,
 	]
 );
 ?>
