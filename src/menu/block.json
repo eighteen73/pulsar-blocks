@@ -7,14 +7,18 @@
 	"description": "Display a menu from a menu location.",
 	"icon": "menu",
 	"attributes": {
-		"menuLocation": {
+		"location": {
 			"type": "string",
 			"default": ""
 		},
-		"isResponsive": {
-			"type": "boolean",
-			"default": false
+		"collapse": {
+			"type": "string",
+			"default": "never"
 		},
+    "orientation": {
+      "type": "string",
+      "default": "horizontal"
+    },
 		"hasSubmenuBack": {
 			"type": "boolean",
 			"default": false
@@ -23,7 +27,7 @@
       "type": "boolean",
       "default": false
     },
-		"opensOnClick": {
+		"submenuOpensOnClick": {
 			"type": "boolean",
 			"default": false
 		}

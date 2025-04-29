@@ -290,9 +290,11 @@ class Menu {
 			if ( ! $item instanceof WP_Post ) {
 				continue;
 			}
+
 			$formatted_items[] = [
 				'id'            => (int) $item->ID,
 				'title'         => $item->title,
+				'description'   => $item->description,
 				'url'           => $item->url,
 				'target'        => $item->target,
 				'classes'       => (array) $item->classes,
@@ -360,12 +362,14 @@ class Menu {
 	 * Adds hover listeners to the LI for submenu toggling.
 	 * Structure: <li data-wp-on...><a...></a><button ...></button><div>...</div></li>
 	 *
-	 * @param array $items     Flat array of formatted menu items.
-	 * @param int   $parent_id The ID of the parent item to render children for.
-	 * @param bool  $is_responsive Whether the menu is responsive.
+	 * @param string $location  The menu location slug.
+	 * @param array  $items     Flat array of formatted menu items.
+	 * @param int    $parent_id The ID of the parent item to render children for.
+	 * @param bool   $collapses Whether the menu collapses.
+	 * @param bool   $submenu_opens_on_click Whether to open the submenus on click.
 	 * @return void
 	 */
-	public static function render_menu_items_list( array $items, int $parent_id = 0, bool $is_responsive = false ): void {
+	public static function render_menu_items_list( string $location, array $items, int $parent_id = 0, bool $collapses = false, bool $submenu_opens_on_click = false ): void {
 		// Filter and sort $children
 		$children = array_filter( $items, fn( $item ) => $item['parent_id'] === $parent_id );
 		usort( $children, fn( $a, $b ) => $a['order'] <=> $b['order'] );
@@ -381,6 +385,8 @@ class Menu {
 		$ul_class = $parent_id === 0 ? 'wp-block-pulsar-menu__items' : 'wp-block-pulsar-menu__submenu-items';
 		echo '<ul class="' . esc_attr( $ul_class ) . '">';
 
+		do_action( 'pulsar/menu/before-items', $location );
+
 		foreach ( $children as $item ) {
 			$has_children        = ! empty( array_filter( $items, fn( $child ) => $child['parent_id'] === $item['id'] ) );
 			$template_part_slug  = $item['template_part'] ?? '';
@@ -395,15 +401,22 @@ class Menu {
 				$li_classes[] = 'has-template-part';
 			}
 
+			if ( $collapses && $has_submenu_content ) {
+				$li_classes[] = 'submenu-opens-on-' . ( $submenu_opens_on_click ? 'click' : 'hover' );
+			}
+
 			$li_classes = implode( ' ', array_map( 'esc_attr', array_unique( array_filter( $li_classes ) ) ) );
 			?>
 			<li
 				class="<?php echo esc_attr( $li_classes ); ?>"
-				<?php if ( $is_responsive && $has_submenu_content ) : ?>
+				<?php if ( $collapses && $has_submenu_content ) : ?>
 					data-wp-context='{ "isSubmenuOpen": false }'
+					data-wp-class--has-open-submenu="context.isSubmenuOpen"
+				<?php endif; ?>
+
+				<?php if ( ! $submenu_opens_on_click ) : ?>
 					data-wp-on--mouseenter="actions.openSubmenuOnHover"
 					data-wp-on--mouseleave="actions.closeSubmenuOnHover"
-					data-wp-class--has-open-submenu="context.isSubmenuOpen"
 				<?php endif; ?>
 			>
 				<a
@@ -420,7 +433,7 @@ class Menu {
 					<?php endif; ?>
 				</a>
 
-				<?php if ( $has_submenu_content && $is_responsive ) : ?>
+				<?php if ( $has_submenu_content && $collapses ) : ?>
 					<button
 						type="button"
 						class="wp-block-pulsar-menu__submenu-toggle"
@@ -430,17 +443,13 @@ class Menu {
 						aria-label="<?php printf( esc_attr__( 'Toggle submenu for %s', 'pulsar' ), esc_attr( $item['title'] ) ); ?>"
 					>
 						<span class="wp-block-pulsar-menu__submenu-toggle-title"><?php echo esc_html( $item['title'] ); ?></span>
+
+						<?php if ( ! empty( $item['description'] ) ) : ?>
+							<span class="wp-block-pulsar-menu__submenu-toggle-description"><?php echo esc_html( $item['description'] ); ?></span>
+						<?php endif; ?>
+
 						<span class="wp-block-pulsar-menu__submenu-toggle-icon"></span>
 					</button>
-
-					<button
-						type="button"
-						class="wp-block-pulsar-menu__submenu-icon"
-						aria-label="<?php printf( esc_attr__( '%s submenu', 'pulsar' ), esc_attr( $item['title'] ) ); ?>"
-						data-wp-on-async--click="actions.toggleSubmenu"
-						data-wp-bind--aria-expanded="context.isSubmenuOpen"
-						aria-haspopup="true"
-					></button>
 
 					<div
 						class="wp-block-pulsar-menu__submenu <?php echo $template_part_slug ? 'has-template-part' : ''; ?>"
@@ -461,21 +470,23 @@ class Menu {
 				<?php endif; ?>
 
 				<?php if ( $has_children ) : ?>
-					<?php self::render_menu_items_list( $items, $item['id'] ); ?>
+					<?php self::render_menu_items_list( $location, $items, $item['id'], $collapses, $submenu_opens_on_click ); ?>
 				<?php endif; ?>
 
-				<?php if ( ! empty( $template_part_slug ) && $is_responsive && ! $has_children ) : ?>
+				<?php if ( ! empty( $template_part_slug ) && $collapses && ! $has_children ) : ?>
 					<div class="wp-block-pulsar-menu__submenu-template-part">
 						<?php echo self::render_template_part( $template_part_slug ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</div>
 				<?php endif; ?>
 
-				<?php if ( $has_submenu_content && $is_responsive ) : ?>
+				<?php if ( $has_submenu_content && $collapses ) : ?>
 					</div>
 				<?php endif; ?>
 			</li>
 			<?php
 		}
+
+		do_action( 'pulsar/menu/after-items', $location );
 
 		echo '</ul>';
 	}

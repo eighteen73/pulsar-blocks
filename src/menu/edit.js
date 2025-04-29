@@ -5,33 +5,33 @@ import {
 	Spinner,
 	ToggleControl,
 	Disabled,
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 import ServerSideRender from '@wordpress/server-side-render';
 
-import clsx from 'clsx';
-
 /**
  * @param {Object}   props               Properties passed to the function.
  * @param {Object}   props.attributes    Available block attributes.
  * @param {Function} props.setAttributes Function that updates individual attributes.
- *
+ * @param {boolean}  props.isResponsive   Indicates if the menu is responsive.
  * @return {Element} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
 	const {
-		menuLocation,
-		isResponsive,
+		location,
+		collapse,
+		orientation,
 		hasSubmenuBack,
 		hasSubmenuLabel,
-		menuType,
-		opensOnClick,
+		submenuOpensOnClick,
 	} = attributes;
 	const blockProps = useBlockProps();
 
-	const [menuLocations, setMenuLocations] = useState([]);
+	const [locations, setlocations] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(null);
 
@@ -41,7 +41,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 		apiFetch({ path: '/pulsar/v1/menu-locations' })
 			.then((locations) => {
-				setMenuLocations(locations);
+				setlocations(locations);
 				setIsLoading(false);
 			})
 			.catch((fetchError) => {
@@ -56,11 +56,13 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const locationOptions = [
 		{ label: __('— Select a Menu Location —', 'pulsar'), value: '' },
-		...menuLocations.map((location) => ({
+		...locations.map((location) => ({
 			label: location.name,
 			value: location.slug,
 		})),
 	];
+
+	const collapses = collapse === 'small-only' || collapse === 'always';
 
 	return (
 		<>
@@ -73,10 +75,10 @@ export default function Edit({ attributes, setAttributes }) {
 					{!isLoading && !error && (
 						<SelectControl
 							label={__('Location', 'pulsar')}
-							value={menuLocation}
+							value={location}
 							options={locationOptions}
 							onChange={(newLocation) =>
-								setAttributes({ menuLocation: newLocation })
+								setAttributes({ location: newLocation })
 							}
 							help={__(
 								'Select the menu location to display.',
@@ -84,45 +86,70 @@ export default function Edit({ attributes, setAttributes }) {
 							)}
 						/>
 					)}
-					<ToggleControl
-						label={__('Responsive', 'pulsar')}
-						help={
-							isResponsive
-								? __(
-										'Menu will collapse on smaller screens.',
-										'pulsar'
-									)
-								: __('Menu will not collapse.', 'pulsar')
-						}
-						checked={isResponsive}
-						onChange={(newIsResponsive) =>
-							setAttributes({ isResponsive: newIsResponsive })
+					<SelectControl
+						label={__('Collapse', 'pulsar')}
+						help={__(
+							'Select when the menu should collapse into a toggle button.',
+							'pulsar'
+						)}
+						options={[
+							{
+								label: __('Never', 'pulsar'),
+								value: 'never',
+							},
+							{
+								label: __('Small Screens Only', 'pulsar'),
+								value: 'small-only',
+							},
+							{
+								label: __('Always', 'pulsar'),
+								value: 'always',
+							},
+						]}
+						value={collapse}
+						onChange={(newCollapse) =>
+							setAttributes({ collapse: newCollapse })
 						}
 					/>
+
+					{!collapses && (
+						<ToggleGroupControl
+							label={__('Orientation', 'pulsar')}
+							value={orientation}
+							onChange={(newOrientation) =>
+								setAttributes({ orientation: newOrientation })
+							}
+							isBlock
+						>
+							<ToggleGroupControlOption
+								value="vertical"
+								label={__('Vertical', 'pulsar')}
+							/>
+							<ToggleGroupControlOption
+								value="horizontal"
+								label={__('Horizontal', 'pulsar')}
+							/>
+						</ToggleGroupControl>
+					)}
 				</PanelBody>
 
-				{isResponsive && (
+				{collapses && (
 					<PanelBody
-						title={__('Responsive Options', 'pulsar')}
+						title={__('Submenu Options', 'pulsar')}
 						initialOpen={true}
 					>
-						<SelectControl
-							label={__('Menu Type', 'pulsar')}
-							value={menuType}
-							options={[
-								{
-									label: __('Full Screen', 'pulsar'),
-									value: 'full-screen',
-								},
-								{
-									label: __('Below header', 'pulsar'),
-									value: 'below-header',
-								},
-							]}
+						<ToggleControl
+							label={__('Open on click', 'pulsar')}
+							help={__(
+								'Opens a submenu via a click rather than hover.',
+								'pulsar'
+							)}
+							checked={submenuOpensOnClick}
 							onChange={(val) => {
-								setAttributes({ menuType: val });
+								setAttributes({ submenuOpensOnClick: val });
 							}}
 						/>
+
 						<ToggleControl
 							label={__('Show back button', 'pulsar')}
 							checked={hasSubmenuBack}
@@ -133,6 +160,10 @@ export default function Edit({ attributes, setAttributes }) {
 						{hasSubmenuBack && (
 							<ToggleControl
 								label={__('Show parent label', 'pulsar')}
+								help={__(
+									'Show the parent menu item label as the back button.',
+									'pulsar'
+								)}
 								checked={hasSubmenuLabel}
 								onChange={(val) => {
 									setAttributes({ hasSubmenuLabel: val });
@@ -143,17 +174,16 @@ export default function Edit({ attributes, setAttributes }) {
 				)}
 			</InspectorControls>
 			<div {...blockProps}>
-				{menuLocation ? (
+				{location ? (
 					<Disabled>
 						<ServerSideRender
 							block="pulsar/menu"
 							attributes={{
-								menuLocation,
-								isResponsive,
+								location,
+								collapse,
 								hasSubmenuBack,
 								hasSubmenuLabel,
-								menuType,
-								opensOnClick,
+								submenuOpensOnClick,
 							}}
 						/>
 					</Disabled>
