@@ -279,16 +279,39 @@ class Menu {
 			return null;
 		}
 		$menu_id    = $locations[ $location_slug ];
+
+		// Use wp_get_nav_menu_items to get menu items with all WordPress core data
 		$menu_items = wp_get_nav_menu_items( $menu_id );
 
 		if ( false === $menu_items || empty( $menu_items ) ) {
 			return [];
 		}
 
+		// Get current page/post ID to determine current menu items
+		$current_object_id = get_queried_object_id();
+
 		$formatted_items = [];
 		foreach ( $menu_items as $item ) {
 			if ( ! $item instanceof WP_Post ) {
 				continue;
+			}
+
+			// Get core WordPress classes directly from the menu item
+			$classes = (array) $item->classes;
+
+			// Add core WordPress classes if they're not already present
+			// These classes are normally added by _wp_menu_item_classes_by_context()
+			// in wp_nav_menu(), but since we're not using that function, we need to add them manually
+
+			// Check if this item is the current page
+			$is_current_item = $item->object_id == $current_object_id && in_array( $item->object, [ 'page', 'post' ] );
+			if ( $is_current_item && ! in_array( 'current-menu-item', $classes ) ) {
+				$classes[] = 'current-menu-item';
+			}
+
+			// Check for ancestor status
+			if ( in_array( 'current-menu-ancestor', $classes ) && ! in_array( 'current-ancestor', $classes ) ) {
+				$classes[] = 'current-ancestor';
 			}
 
 			$formatted_items[] = [
@@ -297,15 +320,112 @@ class Menu {
 				'description'   => $item->description,
 				'url'           => $item->url,
 				'target'        => $item->target,
-				'classes'       => (array) $item->classes,
+				'classes'       => $classes,
 				'parent_id'     => (int) $item->menu_item_parent,
 				'order'         => (int) $item->menu_order,
 				'object_id'     => (int) $item->object_id,
 				'object_type'   => $item->object,
 				'template_part' => get_post_meta( $item->ID, self::TEMPLATE_PART_META_KEY, true ) ?: '',
+				'current'       => $is_current_item,
 			];
 		}
+
+		// Process ancestor/parent relationships after all items are formatted
+		self::add_ancestor_classes( $formatted_items );
+
 		return $formatted_items;
+	}
+
+	/**
+	 * Helper function to add ancestor classes to menu items.
+	 * This is needed because WordPress core adds these classes in a separate function.
+	 *
+	 * @param array $items Array of formatted menu items.
+	 * @return void
+	 */
+	private static function add_ancestor_classes( array &$items ): void {
+		// First, build a map of parent-child relationships
+		$children_map = [];
+		foreach ( $items as $item ) {
+			$parent_id = $item['parent_id'];
+			if ( $parent_id > 0 ) {
+				if ( ! isset( $children_map[ $parent_id ] ) ) {
+					$children_map[ $parent_id ] = [];
+				}
+				$children_map[ $parent_id ][] = $item['id'];
+			}
+		}
+
+		// Find current items
+		$current_ids = [];
+		foreach ( $items as $item ) {
+			if ( in_array( 'current-menu-item', $item['classes'] ) ) {
+				$current_ids[] = $item['id'];
+			}
+		}
+
+		// For each current item, mark all ancestors
+		$ancestor_ids = [];
+		foreach ( $current_ids as $current_id ) {
+			$ancestor_ids = array_merge( $ancestor_ids, self::get_menu_item_ancestors( $current_id, $items ) );
+		}
+
+		// Add ancestor classes to the identified ancestors
+		foreach ( $items as &$item ) {
+			if ( in_array( $item['id'], $ancestor_ids ) ) {
+				if ( ! in_array( 'current-menu-ancestor', $item['classes'] ) ) {
+					$item['classes'][] = 'current-menu-ancestor';
+				}
+				if ( ! in_array( 'current-menu-parent', $item['classes'] ) && self::is_direct_parent( $item['id'], $current_ids, $items ) ) {
+					$item['classes'][] = 'current-menu-parent';
+				}
+			}
+		}
+	}
+
+	/**
+	 * Get all ancestor IDs for a menu item.
+	 *
+	 * @param int   $item_id The menu item ID.
+	 * @param array $items   All menu items.
+	 * @return array Array of ancestor IDs.
+	 */
+	private static function get_menu_item_ancestors( int $item_id, array $items ): array {
+		$ancestors = [];
+		$parent_id = 0;
+
+		// Find the parent of the current item
+		foreach ( $items as $item ) {
+			if ( $item['id'] === $item_id ) {
+				$parent_id = $item['parent_id'];
+				break;
+			}
+		}
+
+		// If we have a parent, add it and continue up the tree
+		if ( $parent_id > 0 ) {
+			$ancestors[] = $parent_id;
+			$ancestors = array_merge( $ancestors, self::get_menu_item_ancestors( $parent_id, $items ) );
+		}
+
+		return $ancestors;
+	}
+
+	/**
+	 * Check if an item is a direct parent of any current items.
+	 *
+	 * @param int   $item_id     The potential parent item ID.
+	 * @param array $current_ids Array of current item IDs.
+	 * @param array $items       All menu items.
+	 * @return bool Whether the item is a direct parent.
+	 */
+	private static function is_direct_parent( int $item_id, array $current_ids, array $items ): bool {
+		foreach ( $items as $item ) {
+			if ( in_array( $item['id'], $current_ids ) && $item['parent_id'] === $item_id ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -392,6 +512,7 @@ class Menu {
 			$template_part_slug  = $item['template_part'] ?? '';
 			$has_submenu_content = $has_children || ! empty( $template_part_slug );
 
+			// Use the classes array from our enhanced get_formatted_items_for_location method
 			$li_classes   = $item['classes'] ?? [];
 			$li_classes[] = 'wp-block-pulsar-menu__item';
 			if ( $has_submenu_content ) {
@@ -405,10 +526,16 @@ class Menu {
 				$li_classes[] = 'submenu-opens-on-' . ( $submenu_opens_on_click ? 'click' : 'hover' );
 			}
 
+			// Add aria-current for current page items (accessibility improvement)
+			$aria_current = in_array( 'current-menu-item', $li_classes, true ) ? 'page' : '';
+
 			$li_classes = implode( ' ', array_map( 'esc_attr', array_unique( array_filter( $li_classes ) ) ) );
 			?>
 			<li
 				class="<?php echo esc_attr( $li_classes ); ?>"
+				<?php if ( ! empty( $aria_current ) ) : ?>
+					aria-current="<?php echo esc_attr( $aria_current ); ?>"
+				<?php endif; ?>
 				<?php if ( $collapses && $has_submenu_content ) : ?>
 					data-wp-context='{ "isSubmenuOpen": false }'
 					data-wp-class--has-open-submenu="context.isSubmenuOpen"
@@ -425,6 +552,9 @@ class Menu {
 						target="<?php echo esc_attr( $item['target'] ); ?>"
 					<?php endif; ?>
 					class="wp-block-pulsar-menu__link"
+					<?php if ( ! empty( $aria_current ) ) : ?>
+						aria-current="<?php echo esc_attr( $aria_current ); ?>"
+					<?php endif; ?>
 				>
 					<span class="wp-block-pulsar-menu__link-title"><?php echo esc_html( $item['title'] ); ?></span>
 
