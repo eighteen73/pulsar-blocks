@@ -50,6 +50,7 @@ $collapse_attributes = [
 	'data-wp-context'             => '{ "isMenuOpen": false }',
 	'data-wp-init'                => 'callbacks.initMenu',
 	'data-wp-class--is-menu-open' => 'state.isMenuOpen',
+	'data-wp-on--keydown'         => 'actions.handleKeydown',
 ];
 
 $attributes = array_merge(

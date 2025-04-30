@@ -548,8 +548,8 @@ class Menu {
 					aria-current="<?php echo esc_attr( $aria_current ); ?>"
 				<?php endif; ?>
 				<?php if ( $collapses && $has_submenu_content ) : ?>
-					data-wp-context='{ "isSubmenuOpen": false }'
-					data-wp-class--has-open-submenu="context.isSubmenuOpen"
+					data-wp-context='{ "submenuId": <?php echo esc_attr( $item['id'] ); ?> }'
+					data-wp-class--has-open-submenu="callbacks.isSubmenuOpen"
 				<?php endif; ?>
 
 				<?php if ( ! $submenu_opens_on_click ) : ?>
@@ -579,7 +579,7 @@ class Menu {
 						type="button"
 						class="wp-block-pulsar-menu__submenu-toggle"
 						data-wp-on-async--click="actions.toggleSubmenuOnClick"
-						data-wp-bind--aria-expanded="context.isSubmenuOpen"
+						data-wp-bind--aria-expanded="state.openSubmenus.includes(context.submenuId)"
 						aria-haspopup="true"
 						aria-label="<?php printf( esc_attr__( 'Toggle submenu for %s', 'pulsar' ), esc_attr( $item['title'] ) ); ?>"
 					>
