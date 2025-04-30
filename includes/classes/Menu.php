@@ -508,7 +508,7 @@ class Menu {
 				<button
 					type="button"
 					class="wp-block-pulsar-menu__back"
-					data-wp-on--click="actions.closeSubmenu"
+					data-wp-on-async--click="actions.closeSubmenuOnClick"
 				>
 					<span class="wp-block-pulsar-menu__back-icon"></span>
 
@@ -578,7 +578,7 @@ class Menu {
 					<button
 						type="button"
 						class="wp-block-pulsar-menu__submenu-toggle"
-						data-wp-on-async--click="actions.toggleSubmenu"
+						data-wp-on-async--click="actions.toggleSubmenuOnClick"
 						data-wp-bind--aria-expanded="context.isSubmenuOpen"
 						aria-haspopup="true"
 						aria-label="<?php printf( esc_attr__( 'Toggle submenu for %s', 'pulsar' ), esc_attr( $item['title'] ) ); ?>"
@@ -594,8 +594,6 @@ class Menu {
 
 					<div
 						class="wp-block-pulsar-menu__submenu <?php echo $template_part_slug ? 'has-template-part' : ''; ?>"
-						data-wp-on--keydown="actions.handleSubmenuKeydown"
-						data-wp-on--focusout="actions.handleSubmenuFocusout"
 					>
 				<?php endif; ?>
 

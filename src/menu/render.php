@@ -46,9 +46,9 @@ $default_attributes = [
 ];
 
 $collapse_attributes = [
-	'data-wp-interactive' => 'pulsar/menu',
-	'data-wp-context'     => '{ "isMenuOpen": false }',
-	'data-wp-init'        => 'callbacks.initMenu',
+	'data-wp-interactive'         => 'pulsar/menu',
+	'data-wp-context'             => '{ "isMenuOpen": false }',
+	'data-wp-init'                => 'callbacks.initMenu',
 	'data-wp-class--is-menu-open' => 'state.isMenuOpen',
 ];
 
@@ -64,7 +64,7 @@ $attributes = array_merge(
 		<button
 			type="button"
 			class="wp-block-pulsar-menu__open"
-			data-wp-on-async--click="actions.toggleMenu"
+			data-wp-on-async--click="actions.toggleMenuOnClick"
 			data-wp-bind--aria-expanded="state.isMenuOpen"
 			aria-label="<?php esc_attr_e( 'Open menu', 'pulsar' ); ?>"
 			aria-controls="pulsar-menu-container-<?php echo esc_attr( $location ); ?>"
@@ -79,15 +79,13 @@ $attributes = array_merge(
 			class="wp-block-pulsar-menu__container"
 			data-wp-class--is-menu-open="state.isMenuOpen"
 			data-wp-init="callbacks.initMenu"
-			data-wp-on--keydown="actions.handleMenuKeydown"
-			data-wp-on--focusout="actions.handleMenuFocusout"
 			data-wp-bind--role='state.isMenuOpen ? "dialog" : null'
 			data-wp-bind--aria-modal='state.isMenuOpen ? "true" : null'
 		>
 			<button
 				type="button"
 				class="wp-block-pulsar-menu__close"
-				data-wp-on-async--click="actions.closeMenu"
+				data-wp-on-async--click="actions.closeMenuOnClick"
 				aria-label="<?php esc_attr_e( 'Close menu', 'pulsar' ); ?>"
 			>
 				<span class="wp-block-pulsar-menu__close-icon"></span>
