@@ -490,31 +490,44 @@ class Menu {
 	 * @return void
 	 */
 	public static function render_menu_items_list( string $location, array $items, int $parent_id = 0, bool $collapses = false, bool $submenu_opens_on_click = false ): void {
-		// Filter and sort $children
-		$children = array_filter( $items, fn( $item ) => $item['parent_id'] === $parent_id );
+		$is_submenu = $parent_id !== 0;
+		$children   = array_filter( $items, fn( $item ) => $item['parent_id'] === $parent_id );
 		usort( $children, fn( $a, $b ) => $a['order'] <=> $b['order'] );
 
-		if ( empty( $children ) && $parent_id === 0 ) {
-			 echo '<ul class="wp-block-pulsar-menu__items"></ul>';
-			 return;
-		}
 		if ( empty( $children ) && $parent_id !== 0 ) {
 			 return;
 		}
+		?>
 
-		$ul_class = $parent_id === 0 ? 'wp-block-pulsar-menu__items' : 'wp-block-pulsar-menu__submenu-items';
-		echo '<ul class="' . esc_attr( $ul_class ) . '">';
+		<ul class="<?php echo esc_attr( $is_submenu ? 'wp-block-pulsar-menu__submenu-items' : 'wp-block-pulsar-menu__items' ); ?>">
 
+		<?php
+		if ( $is_submenu && $collapses ) :
+			?>
+			<li class="wp-block-pulsar-menu__submenu-header">
+				<button
+					type="button"
+					class="wp-block-pulsar-menu__back"
+					data-wp-on--click="actions.closeSubmenu"
+				>
+					<span class="wp-block-pulsar-menu__back-icon"></span>
+
+					<?php esc_html_e( 'Back', 'pulsar' ); ?>
+				</button>
+			</li>
+		<?php endif; ?>
+
+		<?php
+		// Allow for custom actions before rendering items
 		do_action( 'pulsar/menu/before-items', $location );
 
 		foreach ( $children as $item ) {
 			$has_children        = ! empty( array_filter( $items, fn( $child ) => $child['parent_id'] === $item['id'] ) );
 			$template_part_slug  = $item['template_part'] ?? '';
 			$has_submenu_content = $has_children || ! empty( $template_part_slug );
+			$li_classes          = $item['classes'] ?? [];
+			$li_classes[]        = 'wp-block-pulsar-menu__item';
 
-			// Use the classes array from our enhanced get_formatted_items_for_location method
-			$li_classes   = $item['classes'] ?? [];
-			$li_classes[] = 'wp-block-pulsar-menu__item';
 			if ( $has_submenu_content ) {
 				$li_classes[] = 'has-submenu';
 			}
@@ -526,10 +539,8 @@ class Menu {
 				$li_classes[] = 'submenu-opens-on-' . ( $submenu_opens_on_click ? 'click' : 'hover' );
 			}
 
-			// Add aria-current for current page items (accessibility improvement)
 			$aria_current = in_array( 'current-menu-item', $li_classes, true ) ? 'page' : '';
-
-			$li_classes = implode( ' ', array_map( 'esc_attr', array_unique( array_filter( $li_classes ) ) ) );
+			$li_classes   = implode( ' ', array_map( 'esc_attr', array_unique( array_filter( $li_classes ) ) ) );
 			?>
 			<li
 				class="<?php echo esc_attr( $li_classes ); ?>"
@@ -586,17 +597,6 @@ class Menu {
 						data-wp-on--keydown="actions.handleSubmenuKeydown"
 						data-wp-on--focusout="actions.handleSubmenuFocusout"
 					>
-						<div class="wp-block-pulsar-menu__submenu-header">
-							<button
-								type="button"
-								class="wp-block-pulsar-menu__back"
-								data-wp-on--click="actions.closeSubmenu"
-							>
-								<span class="wp-block-pulsar-menu__back-icon"></span>
-
-								<?php esc_html_e( 'Back', 'pulsar' ); ?>
-							</button>
-						</div>
 				<?php endif; ?>
 
 				<?php if ( $has_children ) : ?>
@@ -616,6 +616,7 @@ class Menu {
 			<?php
 		}
 
+		// Allow for custom actions after rendering items
 		do_action( 'pulsar/menu/after-items', $location );
 
 		echo '</ul>';
