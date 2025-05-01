@@ -189,6 +189,37 @@ store('pulsar/menu', {
 				state.openSubmenus = newOpenSubmenus;
 			}
 		},
+		handleKeydown: (event) => {
+			const { state } = store('pulsar/menu');
+			const { ref } = getElement();
+
+			// Only handle Escape in non-collapsed mode
+			if (!state.isCollapsed && event.key === 'Escape') {
+				const menuItem = ref.closest('.wp-block-pulsar-menu__item');
+				if (menuItem) {
+					const submenuId = parseInt(
+						menuItem.dataset.wpContext.match(/\d+/)[0],
+						10
+					);
+					if (state.openSubmenus.includes(submenuId)) {
+						const newOpenSubmenus = [...state.openSubmenus];
+						const index = newOpenSubmenus.indexOf(submenuId);
+						if (index !== -1) {
+							newOpenSubmenus.splice(index, 1);
+							state.openSubmenus = newOpenSubmenus;
+
+							// Focus the parent menu item's link
+							const menuToggle = menuItem.querySelector(
+								'.wp-block-pulsar-menu__submenu-toggle'
+							);
+							if (menuToggle) {
+								menuToggle.focus();
+							}
+						}
+					}
+				}
+			}
+		},
 	},
 	callbacks: {
 		isCollapsed: () => {

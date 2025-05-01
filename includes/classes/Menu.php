@@ -555,6 +555,7 @@ class Menu {
 				<?php if ( $collapses && $has_submenu_content ) : ?>
 					data-wp-context='{ "submenuId": <?php echo esc_attr( $item['id'] ); ?> }'
 					data-wp-class--has-open-submenu="callbacks.isSubmenuOpen"
+					data-wp-on--keydown="actions.handleKeydown"
 				<?php endif; ?>
 				<?php if ( ! $submenu_opens_on_click ) : ?>
 					data-wp-on--mouseenter="actions.openSubmenuOnHover"
