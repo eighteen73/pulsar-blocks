@@ -22,7 +22,7 @@
 	--menu-close-icon-size: var(--menu-close-size, 32px);
 }
 
-.wp-block-pulsar-menu:where(.mobile) {
+.wp-block-pulsar-menu:where(.is-collapsed, .collapses-always) {
 	max-width: unset;
 
 	// Menu open button
@@ -215,7 +215,7 @@
 
 }
 
-.wp-block-pulsar-menu:where(.desktop) {
+.wp-block-pulsar-menu:where(.is-not-collapsed) {
 	// Menu open button
 	.wp-block-pulsar-menu__open {
 		display: none;

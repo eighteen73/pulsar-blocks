@@ -31,7 +31,6 @@ if ( ! is_array( $all_items ) || empty( $all_items ) ) {
 
 $classes = [
 	$attributes['className'],
-	'mobile',
 	"collapses-{$collapse}",
 	"is-menu-location-{$location}",
 ];
@@ -46,11 +45,14 @@ $default_attributes = [
 ];
 
 $collapse_attributes = [
-	'data-wp-interactive'         => 'pulsar/menu',
-	'data-wp-context'             => '{ "isMenuOpen": false }',
-	'data-wp-init'                => 'callbacks.initMenu',
-	'data-wp-class--is-menu-open' => 'state.isMenuOpen',
-	'data-wp-on--keydown'         => 'actions.handleKeydown',
+	'data-wp-interactive'             => 'pulsar/menu',
+	'data-wp-context'                 => '{ "isMenuOpen": false }',
+	'data-wp-init'                    => 'callbacks.isCollapsed',
+	'data-wp-on-window--resize'       => 'callbacks.isCollapsed',
+	'data-wp-class--is-menu-open'     => 'state.isMenuOpen',
+	'data-wp-class--is-collapsed'     => 'state.isCollapsed',
+	'data-wp-class--is-not-collapsed' => '!state.isCollapsed',
+	'data-breakpoint'                 => apply_filters( 'pulsar_menu_breakpoint', 1024, $location ),
 ];
 
 $attributes = array_merge(

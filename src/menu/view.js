@@ -1,13 +1,10 @@
 import { store, getContext, getElement } from '@wordpress/interactivity';
-
-// Define the breakpoint
-// Probably get this from a data attribute in the future.
-const MOBILE_BREAKPOINT = '(max-width: 1024px)';
+import { createFocusTrap } from 'focus-trap';
 
 store('pulsar/menu', {
 	state: {
 		isMenuOpen: false,
-		isCollapsed: window.matchMedia(MOBILE_BREAKPOINT).matches,
+		isCollapsed: false,
 		openSubmenus: [],
 	},
 	actions: {
@@ -105,13 +102,36 @@ store('pulsar/menu', {
 		},
 	},
 	callbacks: {
-		initMenu: () => {
+		isCollapsed: () => {
 			const { state } = store('pulsar/menu');
+			const { ref } = getElement();
+			const isAlwaysCollapsed =
+				ref.classList.contains('collapses-always');
+			const breakpoint = ref.dataset.breakpoint;
+			const mq = window.matchMedia(`(min-width: ${breakpoint}px)`);
+
+			state.isCollapsed =
+				isAlwaysCollapsed || (!isAlwaysCollapsed && !mq.matches);
+		},
+		initFocusTrap: () => {
+			const { ref } = getElement();
+			let trap;
+
+			trap = createFocusTrap(ref);
+
+			trap.activate();
 		},
 		isSubmenuOpen: () => {
 			const { state } = store('pulsar/menu');
 			const context = getContext();
 			return state.openSubmenus.includes(context.submenuId);
+		},
+		isTouchEnabled: () => {
+			return (
+				'ontouchstart' in window ||
+				window.navigator.maxTouchPoints > 0 ||
+				window.navigator.msMaxTouchPoints > 0
+			);
 		},
 	},
 });
