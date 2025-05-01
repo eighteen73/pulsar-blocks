@@ -212,7 +212,6 @@
 		mask-size: 100%;
 		width: var(--menu-submenu-icon-size);
 	}
-
 }
 
 .wp-block-pulsar-menu:where(.is-not-collapsed) {
@@ -263,12 +262,13 @@
 	}
 
 	// If submenu items are set to open on click, hide the link.
-	.submenu-opens-on-click > .wp-block-pulsar-menu__link {
+	.submenu-opens-on-click > .wp-block-pulsar-menu__link,
+	&:where(.is-touch-enabled) .has-submenu > .wp-block-pulsar-menu__link {
 		display: none;
 	}
 
 	// If hovering is enabled, hide the toggle button title.
-	.submenu-opens-on-hover .wp-block-pulsar-menu__submenu-toggle-title {
+	&:where(:not(.is-touch-enabled)) .submenu-opens-on-hover .wp-block-pulsar-menu__submenu-toggle-title {
 		display: none;
 	}
 

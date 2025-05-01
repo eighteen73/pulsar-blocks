@@ -497,9 +497,14 @@ class Menu {
 		if ( empty( $children ) && $parent_id !== 0 ) {
 			 return;
 		}
+
+		$list_id = 'pulsar-menu-list-' . $location . '-' . $parent_id;
 		?>
 
-		<ul class="<?php echo esc_attr( $is_submenu ? 'wp-block-pulsar-menu__submenu-items' : 'wp-block-pulsar-menu__items' ); ?>">
+		<ul
+			id="<?php echo esc_attr( $list_id ); ?>"
+			class="<?php echo esc_attr( $is_submenu ? 'wp-block-pulsar-menu__submenu-items' : 'wp-block-pulsar-menu__items' ); ?>"
+		>
 
 		<?php
 		if ( $is_submenu && $collapses ) :
@@ -509,16 +514,15 @@ class Menu {
 					type="button"
 					class="wp-block-pulsar-menu__back"
 					data-wp-on-async--click="actions.closeSubmenuOnClick"
+					aria-label="<?php esc_html_e( 'Back to main menu', 'pulsar' ); ?>"
 				>
-					<span class="wp-block-pulsar-menu__back-icon"></span>
-
-					<?php esc_html_e( 'Back', 'pulsar' ); ?>
+					<span class="wp-block-pulsar-menu__back-icon" aria-hidden="true"></span>
+					<span><?php esc_html_e( 'Back', 'pulsar' ); ?></span>
 				</button>
 			</li>
 		<?php endif; ?>
 
 		<?php
-		// Allow for custom actions before rendering items
 		do_action( 'pulsar/menu/before-items', $location );
 
 		foreach ( $children as $item ) {
@@ -527,6 +531,7 @@ class Menu {
 			$has_submenu_content = $has_children || ! empty( $template_part_slug );
 			$li_classes          = $item['classes'] ?? [];
 			$li_classes[]        = 'wp-block-pulsar-menu__item';
+			$submenu_id          = 'pulsar-submenu-' . $item['id'];
 
 			if ( $has_submenu_content ) {
 				$li_classes[] = 'has-submenu';
@@ -551,11 +556,11 @@ class Menu {
 					data-wp-context='{ "submenuId": <?php echo esc_attr( $item['id'] ); ?> }'
 					data-wp-class--has-open-submenu="callbacks.isSubmenuOpen"
 				<?php endif; ?>
-
 				<?php if ( ! $submenu_opens_on_click ) : ?>
 					data-wp-on--mouseenter="actions.openSubmenuOnHover"
 					data-wp-on--mouseleave="actions.closeSubmenuOnHover"
 				<?php endif; ?>
+				role="<?php echo $is_submenu ? 'menuitem' : 'none'; ?>"
 			>
 				<a
 					href="<?php echo esc_url( $item['url'] ); ?>"
@@ -565,6 +570,12 @@ class Menu {
 					class="wp-block-pulsar-menu__link"
 					<?php if ( ! empty( $aria_current ) ) : ?>
 						aria-current="<?php echo esc_attr( $aria_current ); ?>"
+					<?php endif; ?>
+					role="<?php echo $is_submenu ? 'menuitem' : 'link'; ?>"
+					<?php if ( $has_submenu_content ) : ?>
+						aria-haspopup="true"
+						aria-expanded="false"
+						data-wp-bind--aria-expanded="state.openSubmenus.includes(<?php echo esc_attr( $item['id'] ); ?>)"
 					<?php endif; ?>
 				>
 					<span class="wp-block-pulsar-menu__link-title"><?php echo esc_html( $item['title'] ); ?></span>
@@ -581,6 +592,7 @@ class Menu {
 						data-wp-on-async--click="actions.toggleSubmenuOnClick"
 						data-wp-bind--aria-expanded="state.openSubmenus.includes(context.submenuId)"
 						aria-haspopup="true"
+						aria-controls="<?php echo esc_attr( $submenu_id ); ?>"
 						aria-label="<?php printf( esc_attr__( 'Toggle submenu for %s', 'pulsar' ), esc_attr( $item['title'] ) ); ?>"
 					>
 						<span class="wp-block-pulsar-menu__submenu-toggle-title"><?php echo esc_html( $item['title'] ); ?></span>
@@ -593,7 +605,12 @@ class Menu {
 					</button>
 
 					<div
+						id="<?php echo esc_attr( $submenu_id ); ?>"
 						class="wp-block-pulsar-menu__submenu <?php echo $template_part_slug ? 'has-template-part' : ''; ?>"
+						data-wp-bind--role='state.openSubmenus.includes(<?php echo esc_attr( $item['id'] ); ?>) ? "dialog" : null'
+						data-wp-bind--aria-modal='state.openSubmenus.includes(<?php echo esc_attr( $item['id'] ); ?>) ? "true" : null'
+						data-wp-bind--aria-hidden='!state.openSubmenus.includes(<?php echo esc_attr( $item['id'] ); ?>)'
+						aria-label="<?php printf( esc_attr__( 'Submenu for %s', 'pulsar' ), esc_attr( $item['title'] ) ); ?>"
 					>
 				<?php endif; ?>
 
@@ -614,7 +631,6 @@ class Menu {
 			<?php
 		}
 
-		// Allow for custom actions after rendering items
 		do_action( 'pulsar/menu/after-items', $location );
 
 		echo '</ul>';

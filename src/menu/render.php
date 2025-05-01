@@ -18,6 +18,7 @@ $collapses              = $collapse === 'always' || $collapse === 'small-only';
 $submenu_opens_on_click = $attributes['submenuOpensOnClick'] ?? false;
 $submenu_opens_on       = $submenu_opens_on_click ? 'click' : 'hover';
 $orientation            = $attributes['orientation'] ?? 'horizontal';
+$menu_name              = wp_get_nav_menu_name( $location );
 
 if ( empty( $location ) ) {
 	return;
@@ -42,16 +43,20 @@ if ( ! $collapses ) {
 
 $default_attributes = [
 	'class' => join( ' ', array_filter( $classes ) ),
+	'role'  => 'navigation',
+	'aria-label' => $menu_name,
 ];
 
 $collapse_attributes = [
 	'data-wp-interactive'             => 'pulsar/menu',
 	'data-wp-context'                 => '{ "isMenuOpen": false }',
-	'data-wp-init'                    => 'callbacks.isCollapsed',
+	'data-wp-init'                    => 'callbacks.isCollapsed callbacks.checkTouchEnabled',
 	'data-wp-on-window--resize'       => 'callbacks.isCollapsed',
+	'data-wp-watch'                   => 'callbacks.isCollapsed',
 	'data-wp-class--is-menu-open'     => 'state.isMenuOpen',
 	'data-wp-class--is-collapsed'     => 'state.isCollapsed',
 	'data-wp-class--is-not-collapsed' => '!state.isCollapsed',
+	'data-wp-class--is-touch-enabled' => 'callbacks.isTouchEnabled',
 	'data-breakpoint'                 => apply_filters( 'pulsar_menu_breakpoint', 1024, $location ),
 ];
 
@@ -69,10 +74,10 @@ $attributes = array_merge(
 			class="wp-block-pulsar-menu__open"
 			data-wp-on-async--click="actions.toggleMenuOnClick"
 			data-wp-bind--aria-expanded="state.isMenuOpen"
-			aria-label="<?php esc_attr_e( 'Open menu', 'pulsar' ); ?>"
 			aria-controls="pulsar-menu-container-<?php echo esc_attr( $location ); ?>"
+			aria-label="<?php printf( esc_attr__( 'Open %s menu', 'pulsar' ), esc_attr( $menu_name ) ); ?>"
 		>
-			<span class="wp-block-pulsar-menu__open-icon"></span>
+			<span class="wp-block-pulsar-menu__open-icon" aria-hidden="true"></span>
 		</button>
 	<?php endif; ?>
 
@@ -81,17 +86,18 @@ $attributes = array_merge(
 			id="pulsar-menu-container-<?php echo esc_attr( $location ); ?>"
 			class="wp-block-pulsar-menu__container"
 			data-wp-class--is-menu-open="state.isMenuOpen"
-			data-wp-init="callbacks.initMenu"
 			data-wp-bind--role='state.isMenuOpen ? "dialog" : null'
 			data-wp-bind--aria-modal='state.isMenuOpen ? "true" : null'
+			data-wp-bind--aria-hidden='!state.isMenuOpen'
+			tabindex="-1"
 		>
 			<button
 				type="button"
 				class="wp-block-pulsar-menu__close"
 				data-wp-on-async--click="actions.closeMenuOnClick"
-				aria-label="<?php esc_attr_e( 'Close menu', 'pulsar' ); ?>"
+				aria-label="<?php printf( esc_attr__( 'Close %s menu', 'pulsar' ), esc_attr( $menu_name ) ); ?>"
 			>
-				<span class="wp-block-pulsar-menu__close-icon"></span>
+				<span class="wp-block-pulsar-menu__close-icon" aria-hidden="true"></span>
 			</button>
 	<?php endif; ?>
 
