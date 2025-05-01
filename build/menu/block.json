@@ -4,14 +4,30 @@
   "name": "pulsar/menu",
   "title": "Menu",
   "category": "theme",
-  "description": "Display a menu",
+  "description": "Display a menu from a menu location.",
   "icon": "menu",
   "attributes": {
-    "menuLocation": {
+    "location": {
       "type": "string",
       "default": ""
     },
-    "isResponsive": {
+    "collapse": {
+      "type": "string",
+      "default": "never"
+    },
+    "orientation": {
+      "type": "string",
+      "default": "horizontal"
+    },
+    "hasSubmenuBack": {
+      "type": "boolean",
+      "default": false
+    },
+    "hasSubmenuLabel": {
+      "type": "boolean",
+      "default": false
+    },
+    "submenuOpensOnClick": {
       "type": "boolean",
       "default": false
     }
@@ -25,7 +41,9 @@
       "name": "responsive-menu",
       "title": "Responsive Menu",
       "attributes": {
-        "isResponsive": true
+        "collapse": "small-only",
+        "hasSubmenuBack": true,
+        "opensOnClick": false
       }
     }
   ],

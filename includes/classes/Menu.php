@@ -487,9 +487,10 @@ class Menu {
 	 * @param int    $parent_id The ID of the parent item to render children for.
 	 * @param bool   $collapses Whether the menu collapses.
 	 * @param bool   $submenu_opens_on_click Whether to open the submenus on click.
+	 * @param bool   $has_submenu_label Whether to show the submenu label.
 	 * @return void
 	 */
-	public static function render_menu_items_list( string $location, array $items, int $parent_id = 0, bool $collapses = false, bool $submenu_opens_on_click = false ): void {
+	public static function render_menu_items_list( string $location, array $items, int $parent_id = 0, bool $collapses = false, bool $submenu_opens_on_click = false, bool $has_submenu_label = false ): void {
 		$is_submenu = $parent_id !== 0;
 		$children   = array_filter( $items, fn( $item ) => $item['parent_id'] === $parent_id );
 		usort( $children, fn( $a, $b ) => $a['order'] <=> $b['order'] );
@@ -519,6 +520,18 @@ class Menu {
 					<span class="wp-block-pulsar-menu__back-icon" aria-hidden="true"></span>
 					<span><?php esc_html_e( 'Back', 'pulsar' ); ?></span>
 				</button>
+
+				<?php if ( $has_submenu_label ) : ?>
+					<?php
+					$parent_item = array_filter( $items, fn( $item ) => $item['id'] === $parent_id );
+					$parent_item = reset( $parent_item );
+					if ( $parent_item ) {
+						?>
+						<span class="wp-block-pulsar-menu__parent-label"><?php echo esc_html( $parent_item['title'] ); ?></span>
+						<?php
+					}
+					?>
+				<?php endif; ?>
 			</li>
 		<?php endif; ?>
 
@@ -616,7 +629,7 @@ class Menu {
 				<?php endif; ?>
 
 				<?php if ( $has_children ) : ?>
-					<?php self::render_menu_items_list( $location, $items, $item['id'], $collapses, $submenu_opens_on_click ); ?>
+					<?php self::render_menu_items_list( $location, $items, $item['id'], $collapses, $submenu_opens_on_click, $has_submenu_label ); ?>
 				<?php endif; ?>
 
 				<?php if ( ! empty( $template_part_slug ) && $collapses && ! $has_children ) : ?>

@@ -1,25 +1,37 @@
 .wp-block-pulsar-menu {
 	--menu-z-index: 1000;
 	--menu-offset: 0px; // stylelint-disable-line -- unit needed for calc
-	--menu-items-gap: var(--wp--preset--spacing--md, 16px);
-	--menu-item-gap: var(--wp--preset--spacing--2-xs, 4px);
+	--menu-items-gap: var(--wp--preset--spacing--lg, 24px);
+	--menu-item-gap: var(--wp--preset--spacing--xs, 8px);
 	--menu-container-background-color: var(--wp--custom--color--surface--default, #fff);
-	--menu-submenu-icon-size: 16px;
+	--menu-submenu-toggle-size: 18px;
+	--menu-submenu-toggle-background-color: transparent;
+	--menu-submenu-icon-size: 8px;
+	--menu-submenu-padding: var(--wp--preset--spacing--md);
 	--menu-submenu-icon-color: var(--wp--custom--color--text--default, #000);
 	--menu-submenu-container-background-color: var(--wp--custom--color--surface--default, #fff);
 	--menu-submenu-container-transition-duration: var(--wp--custom--transition-duration--quick, 200ms);
 	--menu-submenu-container-min-width: 200px;
 	--menu-submenu-container-padding: var(--wp--preset--spacing--md, 16px);
 	--menu-item-color: var(--wp--custom--color--text--default, #000);
+	--menu-item-padding: var(--wp--preset--spacing--sm) var(--wp--custom--spacing--edge);
+	--menu-item-divider-color: var(--wp--custom--color--border--default);
 	--menu-item-hover-color: var(--wp--custom--color--text--default, #000);
+	--menu-item-link-padding: var(--wp--preset--spacing--sm) 0;
 	--menu-open-background-color: transparent;
 	--menu-open-icon-color: var(--wp--custom--color--text--default, #000);
 	--menu-open-size: 32px;
-	--menu-open-icon-size: var(--menu-open-size, 32px);
+	--menu-open-icon-size: 24px;
 	--menu-close-background-color: transparent;
 	--menu-close-icon-color: var(--wp--custom--color--text--default, #000);
 	--menu-close-size: 32px;
 	--menu-close-icon-size: var(--menu-close-size, 32px);
+	--menu-submenu-header-background-color: var(--wp--custom--color--surface--invert, #000);
+	--menu-submenu-header-color: var(--wp--custom--color--text--invert, #fff);
+	--menu-submenu-header-padding: var(--wp--preset--spacing--md) var(--wp--custom--spacing--edge);
+	--menu-submenu-back-gap: var(--wp--preset--spacing--xs, 8px);
+	--menu-submenu-back-icon-color: var(--wp--custom--color--text--invert, #fff);
+	--menu-submenu-back-icon-size: 10px;
 }
 
 .wp-block-pulsar-menu:where(.is-collapsed, .collapses-always) {
@@ -97,8 +109,12 @@
 	.wp-block-pulsar-menu__items {
 		display: flex;
 		flex-direction: column;
-		gap: var(--menu-items-gap);
 		position: relative;
+
+		> * + * {
+			border-top: 1px solid var(--menu-item-divider-color);
+			margin-top: var(--menu-item-gap);
+		}
 	}
 
 	// Menu item
@@ -124,6 +140,8 @@
 		color: inherit;
 		display: flex;
 		flex-direction: column;
+		padding: var(--menu-item-padding);
+		text-decoration: none;
 	}
 
 	// Hide links where there is a submenu. We want to show the toggle button instead.
@@ -142,7 +160,7 @@
 		display: inline-flex;
 		gap: var(--menu-item-gap);
 		justify-content: space-between;
-		padding: 0;
+		padding: var(--menu-item-padding);
 		text-decoration: none;
 		width: 100%;
 	}
@@ -184,7 +202,25 @@
 	.wp-block-pulsar-menu__submenu-items {
 		display: flex;
 		flex-direction: column;
-		gap: var(--menu-items-gap);
+
+		> * + * {
+			border-top: 1px solid var(--menu-item-divider-color);
+			margin-top: var(--menu-item-gap);
+		}
+	}
+
+	.wp-block-pulsar-menu__submenu-header {
+		align-items: center;
+		background-color: var(--menu-submenu-header-background-color);
+		color: var(--menu-submenu-header-color);
+		display: flex;
+		justify-content: center;
+		line-height: 1;
+		padding: var(--menu-submenu-header-padding);
+
+		+ * {
+			margin-top: 0;
+		}
 	}
 
 	// Submenu back button
@@ -193,24 +229,28 @@
 		background-color: transparent;
 		border: none;
 		box-shadow: none;
-		color: var(--menu-link-color);
+		color: inherit;
 		cursor: pointer;
 		display: inline-flex;
-		gap: var(--menu-item-gap);
-		padding: 0;
+		gap: var(--menu-submenu-back-gap);
+		margin-right: auto;
 		text-decoration: none;
-		width: 100%;
 	}
 
 	// Submenu back button icon
 	.wp-block-pulsar-menu__back-icon {
-		background-color: var(--menu-submenu-icon-color);
-		height: var(--menu-submenu-icon-size);
+		background-color: var(--menu-submenu-back-icon-color);
+		height: var(--menu-submenu-back-icon-size);
 		mask-image: url("../../assets/svg/menu-back.svg");
 		mask-position: center;
 		mask-repeat: no-repeat;
 		mask-size: 100%;
 		width: var(--menu-submenu-icon-size);
+	}
+
+	.wp-block-pulsar-menu__parent-label {
+		font-weight: 600;
+		margin-right: auto;
 	}
 }
 
@@ -257,8 +297,10 @@
 
 	// Menu item link
 	.wp-block-pulsar-menu__link {
+		color: inherit;
 		display: flex;
 		flex-direction: column;
+		text-decoration: none;
 	}
 
 	// If submenu items are set to open on click, hide the link.
@@ -289,21 +331,30 @@
 
 	// Submenu toggle button icon
 	.wp-block-pulsar-menu__submenu-toggle-icon {
-		background-color: var(--menu-submenu-icon-color);
-		height: var(--menu-submenu-icon-size);
-		mask-image: url("../../assets/svg/menu-submenu-desktop.svg");
-		mask-position: center;
-		mask-repeat: no-repeat;
-		mask-size: 100%;
-		width: var(--menu-submenu-icon-size);
+		background-color: var(--menu-submenu-toggle-background-color);
+		height: var(--menu-submenu-toggle-size);
+		position: relative;
+		width: var(--menu-submenu-toggle-size);
+
+		&::after {
+			background-color: var(--menu-submenu-icon-color);
+			content: "";
+			inset: 0;
+			mask-image: url("../../assets/svg/menu-submenu-desktop.svg");
+			mask-position: center;
+			mask-repeat: no-repeat;
+			mask-size: var(--menu-submenu-icon-size);
+			position: absolute;
+		}
 	}
 
 	// Submenu
 	.wp-block-pulsar-menu__submenu {
 		background-color: var(--menu-submenu-container-background-color);
-		left: 0;
+		left: calc(var(--menu-submenu-padding) * -1);
 		min-width: var(--menu-submenu-container-min-width, 200px);
 		opacity: 0;
+		padding: var(--menu-submenu-padding);
 		position: absolute;
 		top: 100%;
 		transition: all var(--menu-submenu-transition-duration, var(--wp--custom--transition-duration--quick, 200ms));
@@ -349,6 +400,7 @@
 .wp-block-pulsar-menu:where(.collapses-never) {
 	.wp-block-pulsar-menu__items {
 		display: flex;
+		gap: var(--menu-items-gap);
 	}
 
 	// Dont show submenus for now in nested menus

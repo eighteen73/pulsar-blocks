@@ -19,6 +19,7 @@ $submenu_opens_on_click = $attributes['submenuOpensOnClick'] ?? false;
 $submenu_opens_on       = $submenu_opens_on_click ? 'click' : 'hover';
 $orientation            = $attributes['orientation'] ?? 'horizontal';
 $menu_name              = wp_get_nav_menu_name( $location );
+$has_submenu_label      = $attributes['hasSubmenuLabel'] ?? false;
 
 if ( empty( $location ) ) {
 	return;
@@ -101,7 +102,7 @@ $attributes = array_merge(
 			</button>
 	<?php endif; ?>
 
-		<?php Menu::render_menu_items_list( $location, $all_items, 0, $collapses, $submenu_opens_on_click ); ?>
+		<?php Menu::render_menu_items_list( $location, $all_items, 0, $collapses, $submenu_opens_on_click, $has_submenu_label ); ?>
 
 	<?php if ( $collapses ) : ?>
 		</div>

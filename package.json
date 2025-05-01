@@ -37,6 +37,7 @@
 		"embla-carousel-class-names": "^8.5.1",
 		"embla-carousel-fade": "^8.5.1",
 		"embla-carousel-react": "^8.5.1",
+		"focus-trap": "^7.6.4",
 		"lightgallery": "^2.8.2"
 	},
 	"files": [

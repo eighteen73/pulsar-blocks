@@ -41,7 +41,7 @@
 			"name": "responsive-menu",
 			"title": "Responsive Menu",
 			"attributes": {
-				"isResponsive": true,
+				"collapse": "small-only",
 				"hasSubmenuBack": true,
 				"opensOnClick": false
 			}

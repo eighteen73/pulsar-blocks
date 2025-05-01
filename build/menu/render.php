@@ -12,8 +12,14 @@
 
 use Eighteen73\PulsarBlocks\Menu;
 
-$is_responsive = $attributes['isResponsive'] ?? false;
-$location      = $attributes['menuLocation'] ?? '';
+$location               = $attributes['location'] ?? '';
+$collapse               = $attributes['collapse'] ?? 'never';
+$collapses              = $collapse === 'always' || $collapse === 'small-only';
+$submenu_opens_on_click = $attributes['submenuOpensOnClick'] ?? false;
+$submenu_opens_on       = $submenu_opens_on_click ? 'click' : 'hover';
+$orientation            = $attributes['orientation'] ?? 'horizontal';
+$menu_name              = wp_get_nav_menu_name( $location );
+$has_submenu_label      = $attributes['hasSubmenuLabel'] ?? false;
 
 if ( empty( $location ) ) {
 	return;
@@ -25,63 +31,80 @@ if ( ! is_array( $all_items ) || empty( $all_items ) ) {
 	return;
 }
 
-$responsive_attributes = $is_responsive ? [
-	'class'                          => 'is-responsive',
-	'data-wp-interactive'            => 'pulsar/menu',
-	'data-wp-context'                => '{ "isMobileMenuOpen": false }',
-	'data-wp-init'                   => 'callbacks.initNav',
-	'data-wp-class--is-mobile-view'  => 'state.isMobileView',
-	'data-wp-class--is-desktop-view' => '!state.isMobileView',
-] : [];
+$classes = [
+	$attributes['className'],
+	"collapses-{$collapse}",
+	"is-menu-location-{$location}",
+];
 
-$wrapper_attributes = get_block_wrapper_attributes(
-	[
-		...$responsive_attributes,
-	]
+if ( ! $collapses ) {
+	$classes[] = "submenu-opens-on-{$submenu_opens_on}";
+	$classes[] = "is-{$orientation}";
+}
+
+$default_attributes = [
+	'class' => join( ' ', array_filter( $classes ) ),
+	'role'  => 'navigation',
+	'aria-label' => $menu_name,
+];
+
+$collapse_attributes = [
+	'data-wp-interactive'             => 'pulsar/menu',
+	'data-wp-context'                 => '{ "isMenuOpen": false }',
+	'data-wp-init'                    => 'callbacks.isCollapsed callbacks.checkTouchEnabled',
+	'data-wp-on-window--resize'       => 'callbacks.isCollapsed',
+	'data-wp-watch'                   => 'callbacks.isCollapsed',
+	'data-wp-class--is-menu-open'     => 'state.isMenuOpen',
+	'data-wp-class--is-collapsed'     => 'state.isCollapsed',
+	'data-wp-class--is-not-collapsed' => '!state.isCollapsed',
+	'data-wp-class--is-touch-enabled' => 'callbacks.isTouchEnabled',
+	'data-breakpoint'                 => apply_filters( 'pulsar_menu_breakpoint', 1024, $location ),
+];
+
+$attributes = array_merge(
+	$default_attributes,
+	$collapses ? $collapse_attributes : [],
 );
 ?>
 <nav
-	<?php echo wp_kses_data( $wrapper_attributes ); ?>
+	<?php echo wp_kses_data( get_block_wrapper_attributes( $attributes ) ); ?>
 >
-	<?php if ( $is_responsive ) : ?>
+	<?php if ( $collapses ) : ?>
 		<button
 			type="button"
 			class="wp-block-pulsar-menu__open"
-			data-wp-on--click="actions.toggleMobileMenu"
-			data-wp-bind--aria-expanded="state.isMobileMenuOpen"
-			aria-label="<?php esc_attr_e( 'Open menu', 'pulsar' ); ?>"
+			data-wp-on-async--click="actions.toggleMenuOnClick"
+			data-wp-bind--aria-expanded="state.isMenuOpen"
 			aria-controls="pulsar-menu-container-<?php echo esc_attr( $location ); ?>"
-			data-wp-bind--hidden="!state.isMobileView"
+			aria-label="<?php printf( esc_attr__( 'Open %s menu', 'pulsar' ), esc_attr( $menu_name ) ); ?>"
 		>
-			<span class="wp-block-pulsar-menu__open-icon"></span>
+			<span class="wp-block-pulsar-menu__open-icon" aria-hidden="true"></span>
 		</button>
 	<?php endif; ?>
 
-	<?php if ( $is_responsive ) : ?>
+	<?php if ( $collapses ) : ?>
 		<div
 			id="pulsar-menu-container-<?php echo esc_attr( $location ); ?>"
 			class="wp-block-pulsar-menu__container"
-			data-wp-class--is-menu-open="state.isMobileMenuOpen"
-			data-wp-init="callbacks.initMobileMenu"
-			data-wp-on--keydown="actions.handleMobileMenuKeydown"
-			data-wp-on--focusout="actions.handleMobileMenuFocusout"
-			data-wp-bind--role='state.isMobileMenuOpen ? "dialog" : null'
-			data-wp-bind--aria-modal='state.isMobileMenuOpen ? "true" : null'
+			data-wp-class--is-menu-open="state.isMenuOpen"
+			data-wp-bind--role='state.isMenuOpen ? "dialog" : null'
+			data-wp-bind--aria-modal='state.isMenuOpen ? "true" : null'
+			data-wp-bind--aria-hidden='!state.isMenuOpen'
+			tabindex="-1"
 		>
 			<button
 				type="button"
 				class="wp-block-pulsar-menu__close"
-				data-wp-on--click="actions.closeMobileMenu"
-				aria-label="<?php esc_attr_e( 'Close menu', 'pulsar' ); ?>"
-				data-wp-bind--hidden="!state.isMobileView"
+				data-wp-on-async--click="actions.closeMenuOnClick"
+				aria-label="<?php printf( esc_attr__( 'Close %s menu', 'pulsar' ), esc_attr( $menu_name ) ); ?>"
 			>
-				<span class="wp-block-pulsar-menu__close-icon"></span>
+				<span class="wp-block-pulsar-menu__close-icon" aria-hidden="true"></span>
 			</button>
 	<?php endif; ?>
 
-		<?php Menu::render_menu_items_list( $all_items, 0, $is_responsive ); ?>
+		<?php Menu::render_menu_items_list( $location, $all_items, 0, $collapses, $submenu_opens_on_click, $has_submenu_label ); ?>
 
-	<?php if ( $is_responsive ) : ?>
+	<?php if ( $collapses ) : ?>
 		</div>
 	<?php endif; ?>
 </nav>

@@ -184,6 +184,7 @@ export default function Edit({ attributes, setAttributes }) {
 								hasSubmenuBack,
 								hasSubmenuLabel,
 								submenuOpensOnClick,
+								orientation,
 							}}
 						/>
 					</Disabled>
