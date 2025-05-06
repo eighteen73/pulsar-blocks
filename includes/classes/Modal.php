@@ -29,7 +29,7 @@ class Modal {
 	 *
 	 * @param mixed $block_content The block content.
 	 * @param array $block The block data.
-	 *
+	 * @param mixed $instance The block instance.
 	 * @return mixed Returns the new block content.
 	 */
 	public function set_modal_trigger_attributes( $block_content, $block, $instance ) {

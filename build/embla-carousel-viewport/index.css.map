@@ -1,0 +1,1 @@
+{"version":3,"file":"embla-carousel-viewport/index.css","mappings":";;;AACC;;EAEC;AAAF,C","sources":["webpack://pulsar-blocks/./src/embla-carousel-viewport/editor.scss"],"sourcesContent":[".wp-block-pulsar-embla-carousel-viewport {\n\t.embla__container:has(> .block-list-appender),\n\t.embla__container:empty {\n\t\taspect-ratio: 16 / 9;\n\t}\n}\n"],"names":[],"sourceRoot":""}
