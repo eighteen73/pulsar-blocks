@@ -35,6 +35,10 @@ store('pulsar/menu', {
 			const { ref } = getElement();
 
 			state.isMenuOpen = !state.isMenuOpen;
+			document.documentElement.classList.toggle(
+				'has-open-menu',
+				state.isMenuOpen
+			);
 
 			if (state.isMenuOpen) {
 				if (!state.menuTrap) {
@@ -85,6 +89,7 @@ store('pulsar/menu', {
 		openMenuOnClick: () => {
 			const { state } = store('pulsar/menu');
 			state.isMenuOpen = true;
+			document.documentElement.classList.add('has-open-menu');
 		},
 		closeMenuOnClick: () => {
 			const { state } = store('pulsar/menu');
@@ -93,6 +98,7 @@ store('pulsar/menu', {
 			}
 			state.isMenuOpen = false;
 			state.openSubmenus = [];
+			document.documentElement.classList.remove('has-open-menu');
 		},
 		toggleSubmenuOnClick: () => {
 			const { state } = store('pulsar/menu');

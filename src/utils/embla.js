@@ -145,3 +145,38 @@ export const useEmblaCarousels = () => {
 		return data;
 	});
 };
+
+export const setupProgressBar = (emblaApi, progressNode) => {
+	const applyProgress = () => {
+		const indicateCurrentPosition =
+			progressNode.parentElement.dataset.indicateCurrentPosition ===
+			'true';
+		let finalProgress;
+
+		if (indicateCurrentPosition) {
+			const totalScrollSnaps = emblaApi.scrollSnapList().length;
+			const currentSnapIndex = emblaApi.selectedScrollSnap();
+
+			if (totalScrollSnaps > 0) {
+				finalProgress = (currentSnapIndex + 1) / totalScrollSnaps;
+			} else {
+				finalProgress = 0;
+			}
+		} else {
+			finalProgress = emblaApi.scrollProgress();
+			progressNode.style.transition = 'none';
+		}
+
+		finalProgress = Math.max(0, Math.min(1, finalProgress));
+		progressNode.style.transform = `translate3d(${finalProgress * 100}%,0px,0px)`;
+	};
+
+	const removeProgress = () => {
+		progressNode.removeAttribute('style');
+	};
+
+	return {
+		applyProgress,
+		removeProgress,
+	};
+};

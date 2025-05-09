@@ -9,8 +9,9 @@
  * @package Pulsar
  */
 
+$indicate_current_position = $attributes['indicateCurrentPosition'] ? 'true' : 'false';
 ?>
 
-<div <?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => 'embla__progress' ] ) ); ?>>
+<div <?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => 'embla__progress', 'data-indicate-current-position' => $indicate_current_position ] ) ); ?>>
 	<div class="embla__progress__bar" ></div>
 </div>

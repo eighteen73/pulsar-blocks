@@ -11,6 +11,12 @@
   "parent": [
     "pulsar/embla-carousel"
   ],
+  "attributes": {
+    "indicateCurrentPosition": {
+      "type": "boolean",
+      "default": false
+    }
+  },
   "usesContext": [
     "emblaApi"
   ],

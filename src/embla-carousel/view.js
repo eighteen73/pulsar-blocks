@@ -3,7 +3,7 @@ import ClassNames from 'embla-carousel-class-names';
 import Fade from 'embla-carousel-fade';
 import Autoplay from 'embla-carousel-autoplay';
 import Autoscroll from 'embla-carousel-auto-scroll';
-import { setupProgressBar } from '../embla-carousel-progress/EmblaCarouselProgressBar'
+import { setupProgressBar } from '../utils/embla';
 
 window.pulsarBlocks = window.pulsarBlocks || {};
 window.pulsarBlocks.emblaCarousels = new Map();
@@ -81,13 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
 			const { applyProgress, removeProgress } = setupProgressBar(
 				emblaApi,
 				progressNode
-			)
+			);
 			emblaApi
 				.on('init', applyProgress)
 				.on('reInit', applyProgress)
 				.on('scroll', applyProgress)
 				.on('slideFocus', applyProgress)
-				.on('destroy', removeProgress)
+				.on('destroy', removeProgress);
 		}
 	});
 });

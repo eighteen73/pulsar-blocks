@@ -508,34 +508,6 @@ class Menu {
 		>
 
 		<?php
-		if ( $is_submenu && $collapses ) :
-			?>
-			<li class="wp-block-pulsar-menu__submenu-header">
-				<button
-					type="button"
-					class="wp-block-pulsar-menu__back"
-					data-wp-on-async--click="actions.closeSubmenuOnClick"
-					aria-label="<?php esc_html_e( 'Back to main menu', 'pulsar' ); ?>"
-				>
-					<span class="wp-block-pulsar-menu__back-icon" aria-hidden="true"></span>
-					<span><?php esc_html_e( 'Back', 'pulsar' ); ?></span>
-				</button>
-
-				<?php if ( $has_submenu_label ) : ?>
-					<?php
-					$parent_item = array_filter( $items, fn( $item ) => $item['id'] === $parent_id );
-					$parent_item = reset( $parent_item );
-					if ( $parent_item ) {
-						?>
-						<span class="wp-block-pulsar-menu__parent-label"><?php echo esc_html( $parent_item['title'] ); ?></span>
-						<?php
-					}
-					?>
-				<?php endif; ?>
-			</li>
-		<?php endif; ?>
-
-		<?php
 		do_action( 'pulsar/menu/before-items', $location );
 
 		foreach ( $children as $item ) {
@@ -629,10 +601,14 @@ class Menu {
 				<?php endif; ?>
 
 				<?php if ( $has_children ) : ?>
+					<?php self::render_submenu_header( $items, $item['id'], $has_submenu_label ); ?>
+
 					<?php self::render_menu_items_list( $location, $items, $item['id'], $collapses, $submenu_opens_on_click, $has_submenu_label ); ?>
 				<?php endif; ?>
 
 				<?php if ( ! empty( $template_part_slug ) && $collapses && ! $has_children ) : ?>
+					<?php self::render_submenu_header( $items, $item['id'], $has_submenu_label ); ?>
+
 					<div class="wp-block-pulsar-menu__submenu-template-part">
 						<?php echo self::render_template_part( $template_part_slug ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</div>
@@ -648,5 +624,41 @@ class Menu {
 		do_action( 'pulsar/menu/after-items', $location );
 
 		echo '</ul>';
+	}
+
+	/**
+	 * Renders the submenu header.
+	 *
+	 * @param array  $items    Flat array of formatted menu items.
+	 * @param int    $parent_id The ID of the parent item to render children for.
+	 * @param bool   $has_submenu_label Whether to show the submenu label.
+	 * @return void
+	 */
+	public static function render_submenu_header( array $items, int $parent_id, bool $has_submenu_label = false ): void {
+		?>
+		<div class="wp-block-pulsar-menu__submenu-header">
+			<button
+				type="button"
+				class="wp-block-pulsar-menu__back"
+				data-wp-on-async--click="actions.closeSubmenuOnClick"
+				aria-label="<?php esc_html_e( 'Back to main menu', 'pulsar' ); ?>"
+			>
+				<span class="wp-block-pulsar-menu__back-icon" aria-hidden="true"></span>
+				<span><?php esc_html_e( 'Back', 'pulsar' ); ?></span>
+			</button>
+
+			<?php if ( $has_submenu_label ) : ?>
+				<?php
+				$parent_item = array_filter( $items, fn( $item ) => $item['id'] === $parent_id );
+				$parent_item = reset( $parent_item );
+				if ( $parent_item ) {
+					?>
+					<span class="wp-block-pulsar-menu__parent-label"><?php echo esc_html( $parent_item['title'] ); ?></span>
+					<?php
+				}
+				?>
+			<?php endif; ?>
+		</div>
+		<?php
 	}
 }
