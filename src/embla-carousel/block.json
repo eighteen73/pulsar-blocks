@@ -53,8 +53,7 @@
     "align": ["wide", "full"]
   },
   "providesContext": {
-    "emblaApi": "emblaApi",
-    "allowedViewportBlocks": "allowedViewportBlocks"
+    "emblaApi": "emblaApi"
   },
 	"textdomain": "pulsar",
 	"editorScript": "file:./index.js",
