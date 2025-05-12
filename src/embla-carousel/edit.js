@@ -1,7 +1,9 @@
 import { useBlockProps, useInnerBlocksProps } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 import useEmblaCarousel from 'embla-carousel-react';
+import SingleBlockTypeAppender from '../components/single-block-type-appender';
 
 import {
 	addDotBtnsAndClickHandlers,
@@ -12,6 +14,7 @@ export default function Edit({
 	clientId,
 	attributes: { options },
 	setAttributes,
+	isSelected,
 }) {
 	const blockProps = useBlockProps({ className: 'embla' });
 	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
@@ -30,9 +33,10 @@ export default function Edit({
 			: []
 	);
 
-	const viewportBlock = innerBlocks.find(
-		(block) => block.name === 'pulsar/embla-carousel-viewport'
-	);
+	const viewportBlock =
+		innerBlocks.find(
+			(block) => block.name === 'pulsar/embla-carousel-viewport'
+		) || false;
 
 	const viewportInnerBlocks = useSelect((select) =>
 		viewportBlock &&
@@ -92,11 +96,36 @@ export default function Edit({
 		setAttributes({ emblaApi });
 	}, [emblaApi, setAttributes]);
 
+	const isInnerBlockSelected = useSelect((select) =>
+		select('core/block-editor').getBlock(clientId)
+			? select('core/block-editor').getBlock(clientId).isSelected
+			: false
+	);
+
 	return (
 		<div {...innerBlocksProps}>
 			<div className="embla" ref={emblaRef}>
 				{children}
 			</div>
+
+			{viewportBlock && (
+				<SingleBlockTypeAppender
+					onClickAfter={() => {}}
+					variant="secondary"
+					text={__('Add item', 'pulsar-blocks')}
+					allowedBlock={viewportBlock?.attributes?.allowedBlocks?.[0]}
+					style={{
+						width: '100%',
+						justifyContent: 'center',
+						marginTop: '1rem',
+					}}
+					clientId={viewportBlock.clientId}
+					isEnabled={
+						(isSelected || isInnerBlockSelected) &&
+						viewportBlock?.attributes?.allowedBlocks?.length === 1
+					}
+				/>
+			)}
 		</div>
 	);
 }
