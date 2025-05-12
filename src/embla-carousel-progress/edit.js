@@ -4,9 +4,7 @@ import { __ } from '@wordpress/i18n';
 
 export default function Edit({ attributes, setAttributes }) {
 	const { indicateCurrentPosition } = attributes;
-	const blockProps = useBlockProps({
-		className: 'embla__progress',
-	});
+	const blockProps = useBlockProps();
 
 	return (
 		<>
@@ -25,7 +23,9 @@ export default function Edit({ attributes, setAttributes }) {
 				</PanelBody>
 			</InspectorControls>
 
-			<div {...blockProps}></div>
+			<div {...blockProps}>
+				<div className="embla__progress"></div>
+			</div>
 		</>
 	);
 }
