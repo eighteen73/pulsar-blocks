@@ -4,12 +4,14 @@
 	--carousel-progress-border-radius: var(--wp--custom--border-radius--xl);
 	--carousel-progress-height: 10px;
 
-	background-color: var(--carousel-progress-background);
-	border-radius: var(--carousel-progress-border-radius);
-	height: var(--carousel-progress-height);
-	overflow: hidden;
-	position: relative;
-	width: 100%;
+	.embla__progress {
+		background-color: var(--carousel-progress-background);
+		border-radius: var(--carousel-progress-border-radius);
+		height: var(--carousel-progress-height);
+		overflow: hidden;
+		position: relative;
+		width: 100%;
+	}
 
 	.embla__progress__bar {
 		background-color: var(--carousel-progress-bar);

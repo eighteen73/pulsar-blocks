@@ -149,8 +149,7 @@ export const useEmblaCarousels = () => {
 export const setupProgressBar = (emblaApi, progressNode) => {
 	const applyProgress = () => {
 		const indicateCurrentPosition =
-			progressNode.parentElement.dataset.indicateCurrentPosition ===
-			'true';
+			progressNode.dataset.indicateCurrentPosition === 'true';
 		let finalProgress;
 
 		if (indicateCurrentPosition) {
