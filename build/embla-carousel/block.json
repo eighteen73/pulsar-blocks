@@ -56,7 +56,8 @@
     ]
   },
   "providesContext": {
-    "emblaApi": "emblaApi"
+    "emblaApi": "emblaApi",
+    "allowedViewportBlocks": "allowedViewportBlocks"
   },
   "textdomain": "pulsar",
   "editorScript": "file:./index.js",
