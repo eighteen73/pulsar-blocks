@@ -8,7 +8,7 @@
   "icon": "ellipsis",
   "description": "Dot pagination for the carousel",
   "textdomain": "pulsar",
-  "parent": [
+  "ancestor": [
     "pulsar/embla-carousel"
   ],
   "usesContext": [
