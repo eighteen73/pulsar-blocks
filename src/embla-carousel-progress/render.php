@@ -12,8 +12,6 @@
 $indicate_current_position = $attributes['indicateCurrentPosition'] ? 'true' : 'false';
 ?>
 
-<div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
-	<div class="embla__progress">
-		<div class="embla__progress__bar" data-indicate-current-position="<?php echo esc_attr( $indicate_current_position ); ?>"></div>
-	</div>
+<div <?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => 'embla__progress', 'data-indicate-current-position' => $indicate_current_position ] ) ); ?>>
+	<div class="embla__progress__bar"></div>
 </div>
