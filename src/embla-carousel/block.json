@@ -10,7 +10,8 @@
   "allowedBlocks": [
     "pulsar/carousel-viewport",
     "pulsar/carousel-dots",
-    "pulsar/carousel-buttons"
+    "pulsar/carousel-buttons",
+    "core/group"
   ],
   "attributes": {
     "emblaApi": {

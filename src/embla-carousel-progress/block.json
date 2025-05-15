@@ -8,7 +8,7 @@
 	"icon": "minus",
 	"description": "Progress bar for the carousel",
 	"textdomain": "pulsar",
-  "parent": [
+  "ancestor": [
     "pulsar/embla-carousel"
   ],
   "attributes": {
