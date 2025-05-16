@@ -22,12 +22,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	modals.forEach((modal) => {
 		const modalId = modal.getAttribute('data-modal-id');
+		const modalTriggerType = modal.getAttribute('data-modal-trigger-type');
 		const modalSelector = modal.getAttribute('data-modal-trigger-selector');
 		const modalDelay = parseInt(
 			modal.getAttribute('data-modal-trigger-delay')
 		);
 		const modalDismissedDuration =
 			modal.getAttribute('data-modal-dismissed-duration') || 0;
+		const disableClosing =
+			modal.getAttribute('data-modal-disable-closing') === 'true';
 
 		// get unite data-dismissed-duration minus the number
 		const modalDismissedUnit = modalDismissedDuration
@@ -67,7 +70,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			...document.querySelectorAll(
 				`[${options.openTrigger}="${modalId}"]`
 			),
-			...(modalSelector
+			...(modalTriggerType === 'click' && modalSelector
 				? document.querySelectorAll(`${modalSelector}`)
 				: []),
 		];
@@ -75,14 +78,48 @@ window.addEventListener('DOMContentLoaded', () => {
 		options.targetModal = modalId;
 		options.triggers = triggers;
 		options.dismissedDuration = dismissedDurationInMinutes;
+		options.disableClosing = disableClosing;
 
 		window.pulsarBlocks.modals.set(modalId, new Modal(options));
 
-		if (null !== modalDelay && !isNaN(modalDelay)) {
-			setTimeout(
-				() => window.pulsarBlocks.modals.get(modalId).showModal(),
-				modalDelay
-			);
+		const currentModalInstance = window.pulsarBlocks.modals.get(modalId);
+
+		if (
+			modalTriggerType === 'load' &&
+			null !== modalDelay &&
+			!isNaN(modalDelay)
+		) {
+			setTimeout(() => currentModalInstance.showModal(), modalDelay);
+		} else if (modalTriggerType === 'scroll' && modalSelector) {
+			const targetElement = document.querySelector(modalSelector);
+			const scrollThreshold =
+				parseInt(modal.getAttribute('data-modal-scroll-threshold')) ||
+				10;
+			if (targetElement) {
+				const observer = new IntersectionObserver(
+					(entries, obs) => {
+						entries.forEach((entry) => {
+							if (entry.isIntersecting) {
+								if (null !== modalDelay && !isNaN(modalDelay)) {
+									setTimeout(
+										() => currentModalInstance.showModal(),
+										modalDelay
+									);
+								} else {
+									currentModalInstance.showModal();
+								}
+								obs.unobserve(targetElement);
+							}
+						});
+					},
+					{ threshold: scrollThreshold / 100 }
+				);
+				observer.observe(targetElement);
+			} else {
+				console.warn(
+					`Pulsar Modal: Target element "${modalSelector}" not found for scroll trigger.`
+				);
+			}
 		}
 	});
 });

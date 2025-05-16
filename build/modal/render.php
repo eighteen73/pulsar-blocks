@@ -14,11 +14,15 @@ $post_id              = $block->context['postId'] ?? false;
 $in_query_loop        = $attributes['inQueryLoop'] ?? false;
 $modal_id             = $in_query_loop && $post_id ? "{$id}-{$post_id}" : $id;
 $overlay_color        = $attributes['overlayColor'] ?? '';
-$enable_trigger_delay = $attributes['enableTriggerDelay'] ?? false;
 $trigger_delay        = $attributes['triggerDelay'] ?? '';
-$trigger_selector     = $attributes['triggerSelector'] ?? '';
+$trigger_type         = $attributes['triggerType'] ?? 'click';
+$click_selector       = $attributes['clickSelector'] ?? '';
+$scroll_selector      = $attributes['scrollSelector'] ?? '';
+$scroll_threshold     = $attributes['scrollThreshold'] ?? false;
+$trigger_selector     = $trigger_type === 'click' ? $click_selector : $scroll_selector;
 $dismissed_duration   = $attributes['dismissedDuration'] ?? '';
 $enable_close_button  = $attributes['enableCloseButton'] ?? false;
+$disable_closing      = $attributes['disableClosing'] ?? false;
 $aria_label           = $attributes['label'] ?? __( 'Modal', 'pulsar' );
 $width                = $attributes['width'] ?? '';
 ?>
@@ -31,9 +35,12 @@ $width                = $attributes['width'] ?? '';
 				'id'                            => "pulsar-modal-{$modal_id}",
 				'style'                         => ( $overlay_color ? '--modal-overlay-background-color: ' . $overlay_color . ';' : '' ) . ( $width ? '--modal-container-width: ' . $width . ';' : '' ),
 				'data-modal-id'                 => $modal_id,
-				'data-modal-trigger-delay'      => $enable_trigger_delay ? $trigger_delay : '',
-				'data-modal-trigger-selector'   => $trigger_selector ?: '',
-				'data-modal-dismissed-duration' => $dismissed_duration ?: '',
+				'data-modal-trigger-delay'      => $trigger_delay ?: '0',
+				'data-modal-trigger-type'       => $trigger_type,
+				'data-modal-trigger-selector'   => $trigger_selector ?: null,
+				'data-modal-dismissed-duration' => $dismissed_duration ?: null,
+				'data-modal-scroll-threshold'   => $scroll_threshold ?: null,
+				'data-modal-disable-closing'    => $disable_closing ? 'true' : null
 			]
 		)
 	);
