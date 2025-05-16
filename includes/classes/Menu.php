@@ -607,7 +607,7 @@ class Menu {
 				<?php endif; ?>
 
 				<?php if ( ! empty( $template_part_slug ) && $collapses && ! $has_children ) : ?>
-					<?php self::render_submenu_header( $items, $item['id'], $has_submenu_label ); ?>
+					<?php self::render_submenu_header( $items, $item['id'], $has_submenu_label, $location ); ?>
 
 					<div class="wp-block-pulsar-menu__submenu-template-part">
 						<?php echo self::render_template_part( $template_part_slug ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
