@@ -601,7 +601,7 @@ class Menu {
 				<?php endif; ?>
 
 				<?php if ( $has_children ) : ?>
-					<?php self::render_submenu_header( $items, $item['id'], $has_submenu_label ); ?>
+					<?php self::render_submenu_header( $items, $item['id'], $has_submenu_label, $location ); ?>
 
 					<?php self::render_menu_items_list( $location, $items, $item['id'], $collapses, $submenu_opens_on_click, $has_submenu_label ); ?>
 				<?php endif; ?>
@@ -632,9 +632,10 @@ class Menu {
 	 * @param array  $items    Flat array of formatted menu items.
 	 * @param int    $parent_id The ID of the parent item to render children for.
 	 * @param bool   $has_submenu_label Whether to show the submenu label.
+	 * @param string $location The menu location slug.
 	 * @return void
 	 */
-	public static function render_submenu_header( array $items, int $parent_id, bool $has_submenu_label = false ): void {
+	public static function render_submenu_header( array $items, int $parent_id, bool $has_submenu_label = false, string $location ): void {
 		?>
 		<div class="wp-block-pulsar-menu__submenu-header">
 			<button
@@ -644,7 +645,7 @@ class Menu {
 				aria-label="<?php esc_html_e( 'Back to main menu', 'pulsar' ); ?>"
 			>
 				<span class="wp-block-pulsar-menu__back-icon" aria-hidden="true"></span>
-				<span><?php esc_html_e( 'Back', 'pulsar' ); ?></span>
+				<span><?php echo apply_filters( 'pulsar/menu/back-label', esc_html__( 'Back', 'pulsar' ), $items, $parent_id, $has_submenu_label, $location ); ?></span>
 			</button>
 
 			<?php if ( $has_submenu_label ) : ?>
