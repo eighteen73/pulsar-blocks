@@ -27,25 +27,31 @@
 			"type": "boolean",
 			"default": true
 		},
+    "disableClosing": {
+      "type": "boolean",
+      "default": false
+    },
 		"triggerType": {
 			"type": "string",
 			"default": "click"
 		},
-		"enableTriggerDelay": {
-			"type": "boolean",
-			"default": false
-		},
 		"triggerDelay": {
 			"type": "string"
 		},
-		"triggerSelector": {
+		"clickSelector": {
 			"type": "string"
 		},
+    "scrollSelector": {
+      "type": "string"
+    },
+    "scrollThreshold": {
+      "type": "string"
+    },
 		"dismissedDuration": {
 			"type": "string"
 		}
 	},
-	"supports": {
+  "supports": {
 		"anchor": true,
 		"html": false,
 		"color": {

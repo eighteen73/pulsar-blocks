@@ -12,7 +12,6 @@ import {
 	useInnerBlocksProps,
 	InspectorControls,
 	BlockControls,
-
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -23,8 +22,13 @@ import {
 import { useEffect, useRef, useState } from '@wordpress/element';
 import {
 	PanelBody,
+	SelectControl,
 	TextControl,
 	ToggleControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseCustomUnits as useCustomUnits,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -54,10 +58,13 @@ export function Edit(props) {
 		width,
 		overlayColor,
 		enableCloseButton,
+		triggerType,
 		triggerDelay,
-		enableTriggerDelay,
-		triggerSelector,
+		clickSelector,
+		scrollSelector,
+		scrollThreshold,
 		dismissedDuration,
+		disableClosing,
 	} = attributes;
 
 	const modals = useModals();
@@ -160,8 +167,16 @@ export function Edit(props) {
 			'--modal-container-width': widthWithUnit || undefined,
 			'--modal-overlay-background-color': overlayColor,
 		},
-		'data-trigger-delay': enableTriggerDelay ? triggerDelay : undefined,
-		'data-trigger-selector': triggerSelector || undefined,
+		'data-trigger-delay':
+			triggerType === 'load' || triggerType === 'scroll'
+				? triggerDelay
+				: undefined,
+		'data-trigger-selector':
+			triggerType === 'click'
+				? clickSelector
+				: triggerType === 'scroll'
+					? scrollSelector
+					: undefined,
 		'data-cookie-duration': dismissedDuration || undefined,
 		'data-modal-id': id,
 	});
@@ -191,6 +206,32 @@ export function Edit(props) {
 							'pulsar'
 						)}
 					/>
+
+					<ToggleControl
+						label={__('Prevent closing', 'pulsar')}
+						checked={disableClosing || false}
+						help={__(
+							'If enabled, the modal will not be closable by clicking the close button or by clicking outside the modal. Use with caution.',
+							'pulsar'
+						)}
+						onChange={() => {
+							setAttributes({
+								disableClosing: !disableClosing,
+								enableCloseButton: false,
+							});
+						}}
+					/>
+
+					<ToggleControl
+						label={__('Show close button', 'pulsar')}
+						checked={enableCloseButton || false}
+						onChange={() => {
+							setAttributes({
+								enableCloseButton: !enableCloseButton,
+							});
+						}}
+					/>
+
 					<UnitControl
 						label={__('Width')}
 						labelPosition="edge"
@@ -203,27 +244,101 @@ export function Edit(props) {
 						}}
 						units={units}
 					/>
-					<ToggleControl
-						label={__('Show close button', 'pulsar')}
-						checked={enableCloseButton || false}
-						onChange={() => {
-							setAttributes({
-								enableCloseButton: !enableCloseButton,
-							});
-						}}
+
+					<UnitControl
+						label={__('Dismissed duration', 'pulsar')}
+						labelPosition="edge"
+						__unstableInputWidth="80px"
+						value={dismissedDuration}
+						help={__(
+							'Duration before this modal will appear again after being closed. Leave blank to always show this modal.',
+							'pulsar'
+						)}
+						placeholder="0"
+						onChange={(val) =>
+							setAttributes({ dismissedDuration: val })
+						}
+						units={[
+							{
+								value: 'days',
+								label: 'd',
+								default: '',
+								a11yLabel: __('Days'),
+								step: 1,
+							},
+							{
+								value: 'hrs',
+								label: 'h',
+								default: '',
+								a11yLabel: __('Hours'),
+								step: 1,
+							},
+							{
+								value: 'mins',
+								label: 'min',
+								default: '',
+								a11yLabel: __('Minutes'),
+								step: 1,
+							},
+						]}
 					/>
 				</PanelBody>
 				<PanelBody title={__('Triggers', 'pulsar')} initialOpen={false}>
-					<ToggleControl
-						label={__('Show modal on page load', 'pulsar')}
-						checked={enableTriggerDelay || false}
-						onChange={() => {
-							setAttributes({
-								enableTriggerDelay: !enableTriggerDelay,
-							});
-						}}
-					/>
-					{enableTriggerDelay && (
+					<ToggleGroupControl
+						label={__('Trigger type', 'pulsar')}
+						value={triggerType}
+						onChange={(val) => setAttributes({ triggerType: val })}
+						isBlock
+						__nextHasNoMarginBottom
+						__next40pxDefaultSize
+					>
+						<ToggleGroupControlOption value="click" label="Click" />
+						<ToggleGroupControlOption value="load" label="Load" />
+						<ToggleGroupControlOption
+							value="scroll"
+							label="Scroll"
+						/>
+					</ToggleGroupControl>
+
+					{triggerType === 'scroll' && (
+						<>
+							<TextControl
+								label={__('Selector', 'pulsar')}
+								help={__(
+									'CSS element selector that triggers the modal when that element is scrolled into view.',
+									'pulsar'
+								)}
+								value={scrollSelector}
+								onChange={(val) =>
+									setAttributes({ scrollSelector: val })
+								}
+								style={{ fontFamily: 'monospace' }}
+								__nextHasNoMarginBottom
+							/>
+							<UnitControl
+								label={__('Scroll threshold', 'pulsar')}
+								units={[
+									{
+										value: '%',
+										label: '%',
+										default: 10,
+										a11yLabel: __('Percentage'),
+										step: 10,
+									},
+								]}
+								min={0}
+								max={100}
+								labelPosition="edge"
+								__unstableInputWidth="80px"
+								value={scrollThreshold}
+								onChange={(val) =>
+									setAttributes({ scrollThreshold: val })
+								}
+							/>
+						</>
+					)}
+
+					{(triggerType === 'load' || triggerType === 'scroll') && (
 						<>
 							<UnitControl
 								label={__('Delay', 'pulsar')}
@@ -244,58 +359,24 @@ export function Edit(props) {
 									},
 								]}
 							/>
-							<UnitControl
-								label={__('Dismissed duration', 'pulsar')}
-								labelPosition="edge"
-								__unstableInputWidth="80px"
-								value={dismissedDuration}
-								help={__(
-									'Duration before this modal will appear again after being closed. Leave blank to always show this modal.',
-									'pulsar'
-								)}
-								placeholder="0"
-								onChange={(val) =>
-									setAttributes({ dismissedDuration: val })
-								}
-								units={[
-									{
-										value: 'days',
-										label: 'd',
-										default: '',
-										a11yLabel: __('Days'),
-										step: 1,
-									},
-									{
-										value: 'hrs',
-										label: 'h',
-										default: '',
-										a11yLabel: __('Hours'),
-										step: 1,
-									},
-									{
-										value: 'mins',
-										label: 'min',
-										default: '',
-										a11yLabel: __('Minutes'),
-										step: 1,
-									},
-								]}
-							/>
 						</>
 					)}
-					<TextControl
-						label={__('Selector', 'pulsar')}
-						help={__(
-							'Optional CSS selector to trigger the modal. Buttons and groups also have an option to trigger modals.',
-							'pulsar'
-						)}
-						value={triggerSelector}
-						onChange={(val) =>
-							setAttributes({ triggerSelector: val })
-						}
-						style={{ fontFamily: 'monospace' }}
-						__nextHasNoMarginBottom
-					/>
+
+					{triggerType === 'click' && (
+						<TextControl
+							label={__('Selector', 'pulsar')}
+							help={__(
+								'Optional CSS selector to trigger the modal. Buttons and groups also have an option to trigger modals.',
+								'pulsar'
+							)}
+							value={clickSelector}
+							onChange={(val) =>
+								setAttributes({ clickSelector: val })
+							}
+							style={{ fontFamily: 'monospace' }}
+							__nextHasNoMarginBottom
+						/>
+					)}
 				</PanelBody>
 			</InspectorControls>
 			<InspectorControls group="color">

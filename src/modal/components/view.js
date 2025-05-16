@@ -1,7 +1,13 @@
 export default class Modal {
-	constructor({ targetModal, triggers = [], dismissedDuration }) {
+	constructor({
+		targetModal,
+		triggers = [],
+		dismissedDuration,
+		disableClosing = false,
+	}) {
 		this.modalId = targetModal;
 		this.dismissedDuration = dismissedDuration;
+		this.disableClosing = disableClosing;
 
 		// Save a reference to the modal and its original parent
 		this.modal = document.querySelector(
@@ -15,10 +21,6 @@ export default class Modal {
 		// Register triggers
 		if (triggers.length > 0) this.registerTriggers(...triggers);
 
-		this.modal.removeAttribute('data-modal-trigger-delay');
-		this.modal.removeAttribute('data-modal-trigger-selector');
-		this.modal.removeAttribute('data-modal-dismissed-duration');
-
 		// Pre-bind functions for event listeners
 		this.onClick = this.onClick.bind(this);
 		this.onKeydown = this.onKeydown.bind(this);
@@ -31,6 +33,7 @@ export default class Modal {
 	openClass = 'is-open';
 	bodyOpenClass = 'modal-is-open';
 	dismissedDuration = 0;
+	disableClosing = false;
 	activeElement;
 	focusableElements =
 		'a[href],area[href],input:not([disabled]):not([type="hidden"]):not([aria-hidden]),select:not([disabled]):not([aria-hidden]),textarea:not([disabled]):not([aria-hidden]),button:not([disabled]):not([aria-hidden]),iframe,object,embed,[contenteditable],[tabindex]:not([tabindex^="-"])';
@@ -99,6 +102,9 @@ export default class Modal {
 	}
 
 	closeModal() {
+		if (this.disableClosing) {
+			return;
+		}
 		this.removeEventListeners();
 
 		if (this.activeElement && this.activeElement.focus) {
@@ -148,6 +154,25 @@ export default class Modal {
 	}
 
 	onClick(event) {
+		if (this.disableClosing) {
+			// If closing is disabled, only allow interactions within the modal content,
+			// not on the close button or overlay.
+			const isCloseButton =
+				event.target.classList.contains(this.closeTrigger) ||
+				event.target.parentNode.classList.contains(this.closeTrigger);
+			const isOverlay =
+				event.target.classList.contains('wp-block-pulsar-modal') ||
+				event.target.classList.contains(
+					'wp-block-pulsar-modal__overlay'
+				);
+
+			if (isCloseButton || isOverlay) {
+				event.preventDefault();
+				event.stopPropagation();
+				return;
+			}
+		}
+
 		if (
 			event.target.classList.contains(this.closeTrigger) ||
 			event.target.parentNode.classList.contains(this.closeTrigger) ||
@@ -170,6 +195,11 @@ export default class Modal {
 	}
 
 	onKeydown(event) {
+		if (this.disableClosing && event.keyCode === 27) {
+			// esc
+			event.preventDefault();
+			return;
+		}
 		if (event.keyCode === 27) this.closeModal(event); // esc
 		if (event.keyCode === 9) this.retainFocus(event); // tab
 	}
