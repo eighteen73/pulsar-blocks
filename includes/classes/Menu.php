@@ -245,8 +245,6 @@ class Menu {
 			'label'       => __( 'Submenu', 'pulsar' ),
 		];
 
-		dump( $areas );
-
 		return $areas;
 	}
 
