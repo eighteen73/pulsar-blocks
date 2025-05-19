@@ -14,6 +14,10 @@
 			overflow: hidden;
 		}
 
+		.embla__container {
+			margin-left: calc(var(--carousel-slide-gap) * -1);
+		}
+
 		.embla__container:has(> *:not(.wp-block-query)),
 		.wp-block-post-template {
 			display: flex;
@@ -21,8 +25,9 @@
 
 			> * {
 				flex: 0 0 var(--carousel-slide-width, 100%);
-				margin: 0 var(--carousel-slide-gap, 0) 0 0;
+				margin: 0;
 				min-width: 0;
+				padding-left: var(--carousel-slide-gap);
 				transform: translate3d(0, 0, 0);
 			}
 		}

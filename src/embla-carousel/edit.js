@@ -10,6 +10,8 @@ import {
 	addPrevNextBtnsClickHandlers,
 } from '../utils/embla';
 
+import './editor.scss';
+
 export default function Edit({
 	clientId,
 	attributes: { options },
@@ -69,10 +71,10 @@ export default function Edit({
 		setAttributes({ emblaApi });
 
 		const block = document.querySelector(`[data-block="${clientId}"]`);
-		const buttons = block.querySelectorAll('.embla__button');
-		const dotsNode = block.querySelector('.embla__dots');
+		const buttons = block?.querySelectorAll('.embla__button');
+		const dotsNode = block?.querySelector('.embla__dots');
 
-		if (buttons.length < 2 || !dotsNode) return;
+		if (!buttons || buttons.length < 2 || !dotsNode) return;
 
 		const removePrevNextBtnsClickHandlers = addPrevNextBtnsClickHandlers(
 			emblaApi,
@@ -108,24 +110,28 @@ export default function Edit({
 				{children}
 			</div>
 
-			{viewportBlock && (
-				<SingleBlockTypeAppender
-					onClickAfter={() => {}}
-					variant="secondary"
-					text={__('Add item', 'pulsar-blocks')}
-					allowedBlock={viewportBlock?.attributes?.allowedBlocks?.[0]}
-					style={{
-						width: '100%',
-						justifyContent: 'center',
-						marginTop: '1rem',
-					}}
-					clientId={viewportBlock.clientId}
-					isEnabled={
-						(isSelected || isInnerBlockSelected) &&
-						viewportBlock?.attributes?.allowedBlocks?.length === 1
-					}
-				/>
-			)}
+			{viewportBlock &&
+				viewportBlock?.attributes?.allowedBlocks?.length === 1 && (
+					<SingleBlockTypeAppender
+						onClickAfter={() => {}}
+						variant="secondary"
+						text={__('Add item', 'pulsar-blocks')}
+						allowedBlock={
+							viewportBlock?.attributes?.allowedBlocks?.[0]
+						}
+						style={{
+							width: '100%',
+							justifyContent: 'center',
+							marginTop: '1rem',
+						}}
+						clientId={viewportBlock.clientId}
+						isEnabled={
+							(isSelected || isInnerBlockSelected) &&
+							viewportBlock?.attributes?.allowedBlocks?.length ===
+								1
+						}
+					/>
+				)}
 		</div>
 	);
 }
