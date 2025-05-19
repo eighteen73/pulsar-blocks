@@ -164,27 +164,11 @@ class Menu {
 	public function add_menu_item_custom_fields( $item_id, $item, $depth, $args, $id ): void {
 		// @todo Add a way to disable the template part selection for users without a specific permission.
 
-		$template_parts = get_posts(
+		$template_parts = get_block_templates(
 			[
-				'post_type'   => 'wp_template_part',
-				'post_status' => 'publish',
-				'numberposts' => -1,
-				'orderby'     => 'title',
-				'order'       => 'ASC',
-				// Uncomment and configure if using template part areas:
-				// 'tax_query'  => [
-				// [
-				// 'taxonomy' => 'wp_theme', // This is often used implicitly for areas
-				// 'field'    => 'slug',
-				// 'terms'    => get_stylesheet(), // Current theme
-				// ],
-				// [
-				// 'taxonomy' => 'wp_template_part_area',
-				// 'field'    => 'slug',
-				// 'terms'    => 'menu_item', // Your custom area slug
-				// ],
-				// ],
-			]
+				'area'      => 'submenu',
+			],
+			'wp_template_part'
 		);
 
 		$selected_template_part = get_post_meta( $item_id, self::TEMPLATE_PART_META_KEY, true );
@@ -196,11 +180,8 @@ class Menu {
 					<option value=""><?php esc_html_e( '-- Select Template Part --', 'pulsar' ); ?></option>
 					<?php foreach ( $template_parts as $part ) : ?>
 						<?php
-						// Template part slugs often include the theme name, like 'theme-slug//part-slug'
-						// We might want to store just 'part-slug' for portability or the full one for precision.
-						// Let's stick with post_name for now which is usually just 'part-slug'.
-						$value = $part->post_name;
-						$title = $part->post_title ?: $value; // Use slug if title is empty
+						$value = $part->id;
+						$title = $part->title;
 						?>
 						<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $selected_template_part, $value ); ?>>
 							<?php echo esc_html( $title ); ?>
@@ -257,12 +238,14 @@ class Menu {
 	 */
 	public function template_part_areas( $areas ): array {
 		$areas[] = [
-			'area'        => 'menu_item',
+			'area'        => 'submenu',
 			'area_tag'    => 'div',
-			'description' => __( 'Menu item templates are used to create sections within a menu item.', 'pulsar' ),
+			'description' => __( 'Submenu templates are used to create sections within a menu item.', 'pulsar' ),
 			'icon'        => 'layout',
-			'label'       => __( 'Menu Item', 'pulsar' ),
+			'label'       => __( 'Submenu', 'pulsar' ),
 		];
+
+		dump( $areas );
 
 		return $areas;
 	}
@@ -431,42 +414,25 @@ class Menu {
 	/**
 	 * Safely renders a block template part based on its slug.
 	 *
-	 * @param string $slug The post_name (slug) of the template part.
+	 * @param string $id The ID of the template part.
 	 * @return string Rendered HTML output.
 	 */
-	public static function render_template_part( string $slug ): string {
-		if ( empty( $slug ) ) {
+	public static function render_template_part( string $id ): string {
+		if ( empty( $id ) ) {
 			return '';
 		}
 
-		$args             = [
-			'post_type'      => 'wp_template_part',
-			'name'           => $slug,
-			'post_status'    => 'publish',
-			'posts_per_page' => 1,
-			'no_found_rows'  => true,
-			'fields'         => 'ids',
-		];
-		$query            = new WP_Query( $args );
-		$template_part_id = $query->have_posts() ? $query->posts[0] : null;
+		$template_part = get_block_template( $id, 'wp_template_part' );
 
-		// Fallback attempt: Maybe the slug includes the theme prefix?
-		if ( ! $template_part_id ) {
-			$args['post_name__in'] = [ $slug ];
-			unset( $args['name'] );
-			$query            = new WP_Query( $args );
-			$template_part_id = $query->have_posts() ? $query->posts[0] : null;
-		}
-
-		if ( ! $template_part_id ) {
-			return "<!-- Template part '{$slug}' not found -->";
+		if ( ! $template_part ) {
+			return "<!-- Template part '{$id}' not found -->";
 		}
 
 		// Prepare template part block array for rendering
 		$template_part_block = [
 			'blockName'    => 'core/template-part',
 			'attrs'        => [
-				'slug' => $slug,
+				'slug' => $template_part->slug,
 			],
 			'innerBlocks'  => [],
 			'innerHTML'    => '',
