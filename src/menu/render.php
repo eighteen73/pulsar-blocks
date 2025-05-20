@@ -89,7 +89,7 @@ $attributes = array_merge(
 			data-wp-class--is-menu-open="state.isMenuOpen"
 			data-wp-bind--role='state.isMenuOpen ? "dialog" : null'
 			data-wp-bind--aria-modal='state.isMenuOpen ? "true" : null'
-			data-wp-bind--aria-hidden='!state.isMenuOpen'
+			data-wp-bind--aria-hidden='callbacks.isAriaHidden'
 			tabindex="-1"
 		>
 			<button

@@ -55,6 +55,9 @@ store('pulsar/menu', {
 							onDeactivate: () => {
 								state.isMenuOpen = false;
 								state.openSubmenus = [];
+								document.documentElement.classList.remove(
+									'has-open-menu'
+								);
 							},
 							initialFocus: container.querySelector(
 								'.wp-block-pulsar-menu__close'
@@ -238,6 +241,10 @@ store('pulsar/menu', {
 
 			state.isCollapsed =
 				isAlwaysCollapsed || (!isAlwaysCollapsed && !mq.matches);
+		},
+		isAriaHidden: () => {
+			const { state } = store('pulsar/menu');
+			return !state.isMenuOpen && state.isCollapsed;
 		},
 		isSubmenuOpen: () => {
 			const { state } = store('pulsar/menu');
