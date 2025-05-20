@@ -510,7 +510,6 @@ class Menu {
 					data-wp-on--mouseenter="actions.openSubmenuOnHover"
 					data-wp-on--mouseleave="actions.closeSubmenuOnHover"
 				<?php endif; ?>
-				role="<?php echo $is_submenu ? 'menuitem' : 'none'; ?>"
 			>
 				<a
 					href="<?php echo esc_url( $item['url'] ); ?>"
@@ -521,7 +520,6 @@ class Menu {
 					<?php if ( ! empty( $aria_current ) ) : ?>
 						aria-current="<?php echo esc_attr( $aria_current ); ?>"
 					<?php endif; ?>
-					role="<?php echo $is_submenu ? 'menuitem' : 'link'; ?>"
 					<?php if ( $has_submenu_content ) : ?>
 						aria-haspopup="true"
 						aria-expanded="false"
