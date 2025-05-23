@@ -99,9 +99,7 @@ export default function Edit({
 	}, [emblaApi, setAttributes]);
 
 	const isInnerBlockSelected = useSelect((select) =>
-		select('core/block-editor').getBlock(clientId)
-			? select('core/block-editor').getBlock(clientId).isSelected
-			: false
+		select('core/block-editor').hasSelectedInnerBlock(clientId, true)
 	);
 
 	return (
@@ -111,7 +109,8 @@ export default function Edit({
 			</div>
 
 			{viewportBlock &&
-				viewportBlock?.attributes?.allowedBlocks?.length === 1 && (
+				viewportBlock?.attributes?.allowedBlocks?.length === 1 &&
+				(isSelected || isInnerBlockSelected) && (
 					<SingleBlockTypeAppender
 						onClickAfter={() => {}}
 						variant="secondary"
@@ -120,16 +119,14 @@ export default function Edit({
 							viewportBlock?.attributes?.allowedBlocks?.[0]
 						}
 						style={{
-							width: '100%',
+							width: '50%',
 							justifyContent: 'center',
 							marginTop: '1rem',
+							marginLeft: 'auto',
+							marginRight: 'auto',
+							display: 'flex',
 						}}
 						clientId={viewportBlock.clientId}
-						isEnabled={
-							(isSelected || isInnerBlockSelected) &&
-							viewportBlock?.attributes?.allowedBlocks?.length ===
-								1
-						}
 					/>
 				)}
 		</div>
