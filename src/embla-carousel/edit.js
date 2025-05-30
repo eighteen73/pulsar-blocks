@@ -42,18 +42,19 @@ export default function Edit({
 
 	const viewportInnerBlocks = useSelect((select) =>
 		viewportBlock &&
-			select('core/block-editor').getBlock(viewportBlock.clientId)
+		select('core/block-editor').getBlock(viewportBlock.clientId)
 			? select('core/block-editor').getBlock(viewportBlock.clientId)
-				.innerBlocks
+					.innerBlocks
 			: []
 	);
 
 	const hasQueryLoop = viewportInnerBlocks.find(
-		(block) => block.name === 'core/query' || block.name === 'woocommerce/product-collection'
+		(block) =>
+			block.name === 'core/query' ||
+			block.name === 'woocommerce/product-collection'
 	);
 
-	function getContainer() {
-
+	const getContainer = () => {
 		if (!hasQueryLoop) {
 			return '.embla__container';
 		}
@@ -66,7 +67,7 @@ export default function Edit({
 		}
 
 		return '.embla__container';
-	}
+	};
 
 	const [emblaRef, emblaApi] = useEmblaCarousel({
 		...options,
@@ -126,7 +127,7 @@ export default function Edit({
 				viewportBlock?.attributes?.allowedBlocks?.length === 1 &&
 				(isSelected || isInnerBlockSelected) && (
 					<SingleBlockTypeAppender
-						onClickAfter={() => { }}
+						onClickAfter={() => {}}
 						variant="secondary"
 						text={__('Add item', 'pulsar-blocks')}
 						allowedBlock={
