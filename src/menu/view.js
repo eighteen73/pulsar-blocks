@@ -23,6 +23,7 @@ const activateWhenReady = (element, trap) => {
 
 store('pulsar/menu', {
 	state: {
+		isLoading: true,
 		isMenuOpen: false,
 		isCollapsed: false,
 		openSubmenus: [],
@@ -231,6 +232,10 @@ store('pulsar/menu', {
 		},
 	},
 	callbacks: {
+		isLoading: () => {
+			const { state } = store('pulsar/menu');
+			state.isLoading = false;
+		},
 		isCollapsed: () => {
 			const { state } = store('pulsar/menu');
 			const { ref } = getElement();
