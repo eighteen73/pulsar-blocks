@@ -35,6 +35,7 @@ $classes = [
 	$attributes['className'],
 	"collapses-{$collapse}",
 	"is-menu-location-{$location}",
+	'is-loading',
 ];
 
 if ( ! $collapses ) {
@@ -51,9 +52,12 @@ $default_attributes = [
 $collapse_attributes = [
 	'data-wp-interactive'             => 'pulsar/menu',
 	'data-wp-context'                 => '{ "isMenuOpen": false }',
-	'data-wp-init'                    => 'callbacks.isCollapsed callbacks.isTouchEnabled',
+	'data-wp-init--collapsed'         => 'callbacks.isCollapsed',
+	'data-wp-init--touch'             => 'callbacks.isTouchEnabled',
 	'data-wp-on-window--resize'       => 'callbacks.isCollapsed',
-	'data-wp-watch'                   => 'callbacks.isCollapsed callbacks.isTouchEnabled',
+	'data-wp-watch--collapsed'        => 'callbacks.isCollapsed',
+	'data-wp-watch--touch'            => 'callbacks.isTouchEnabled',
+	'data-wp-class--is-loading'       => '!state.isLoading',
 	'data-wp-class--is-menu-open'     => 'state.isMenuOpen',
 	'data-wp-class--is-collapsed'     => 'state.isCollapsed',
 	'data-wp-class--is-not-collapsed' => '!state.isCollapsed',
