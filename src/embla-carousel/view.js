@@ -31,9 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		const nextBtnNode = emblaNode.querySelector('.embla__button--next');
 		const dotsNode = emblaNode.querySelector('.embla__dots');
 		const containerNode = emblaNode.querySelector('.embla__container');
-		const queryLoop = containerNode.querySelector(
-			'.wp-block-post-template'
-		);
+		const queryLoop =
+			containerNode.querySelector('.wp-block-post-template') ||
+			emblaNode.querySelector('.wp-block-woocommerce-product-template');
 		const progressNode = emblaNode.querySelector('.embla__progress__bar');
 
 		const plugins = [ClassNames()];

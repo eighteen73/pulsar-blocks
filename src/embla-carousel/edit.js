@@ -49,14 +49,29 @@ export default function Edit({
 	);
 
 	const hasQueryLoop = viewportInnerBlocks.find(
-		(block) => block.name === 'core/query'
+		(block) =>
+			block.name === 'core/query' ||
+			block.name === 'woocommerce/product-collection'
 	);
+
+	const getContainer = () => {
+		if (!hasQueryLoop) {
+			return '.embla__container';
+		}
+
+		if (hasQueryLoop.name === 'core/query') {
+			return '.wp-block-post-template';
+		}
+		if (hasQueryLoop.name === 'woocommerce/product-collection') {
+			return '.wp-block-woocommerce-product-template';
+		}
+
+		return '.embla__container';
+	};
 
 	const [emblaRef, emblaApi] = useEmblaCarousel({
 		...options,
-		container: hasQueryLoop
-			? '.wp-block-post-template'
-			: '.embla__container',
+		container: getContainer(),
 	});
 
 	useEffect(() => {
