@@ -26,6 +26,7 @@ store('pulsar/menu', {
 		isLoading: true,
 		isMenuOpen: false,
 		isCollapsed: false,
+		isTouchEnabled: false,
 		openSubmenus: [],
 		menuTrap: null,
 		submenuTraps: {},
@@ -108,21 +109,27 @@ store('pulsar/menu', {
 			const { state } = store('pulsar/menu');
 			const context = getContext();
 			const submenuId = context.submenuId;
-			const newOpenSubmenus = [...state.openSubmenus];
 
-			if (newOpenSubmenus.includes(submenuId)) {
-				const index = newOpenSubmenus.indexOf(submenuId);
-				if (index !== -1) {
-					if (state.submenuTraps[submenuId]) {
-						state.submenuTraps[submenuId].deactivate();
-						delete state.submenuTraps[submenuId];
+			const newOpenSubmenus = [...state.openSubmenus];
+			const isCurrentlyOpen = newOpenSubmenus.includes(submenuId);
+
+			const otherOpenSubmenus = newOpenSubmenus.filter(
+				(id) => id !== submenuId
+			);
+			if (otherOpenSubmenus.length > 0) {
+				otherOpenSubmenus.forEach((id) => {
+					if (state.submenuTraps[id]) {
+						state.submenuTraps[id].deactivate();
+						delete state.submenuTraps[id];
 					}
-					newOpenSubmenus.splice(index, 1);
-				}
-			} else {
+				});
+			}
+
+			newOpenSubmenus.length = 0;
+
+			if (!isCurrentlyOpen) {
 				newOpenSubmenus.push(submenuId);
 
-				// Only create focus traps when menu is collapsed
 				if (state.isCollapsed) {
 					const { ref } = getElement();
 					const submenuElement = ref
@@ -152,7 +159,13 @@ store('pulsar/menu', {
 						);
 					}
 				}
+			} else {
+				if (state.submenuTraps[submenuId]) {
+					state.submenuTraps[submenuId].deactivate();
+					delete state.submenuTraps[submenuId];
+				}
 			}
+
 			state.openSubmenus = newOpenSubmenus;
 		},
 		openSubmenuOnClick: () => {
@@ -181,7 +194,7 @@ store('pulsar/menu', {
 		openSubmenuOnHover: () => {
 			const { state } = store('pulsar/menu');
 			const context = getContext();
-			if (state.isCollapsed) return;
+			if (state.isCollapsed || state.isTouchEnabled) return;
 
 			const newOpenSubmenus = [...state.openSubmenus];
 			newOpenSubmenus.push(context.submenuId);
@@ -190,7 +203,7 @@ store('pulsar/menu', {
 		closeSubmenuOnHover: () => {
 			const { state } = store('pulsar/menu');
 			const context = getContext();
-			if (state.isCollapsed) return;
+			if (state.isCollapsed || state.isTouchEnabled) return;
 
 			const newOpenSubmenus = [...state.openSubmenus];
 			const index = newOpenSubmenus.indexOf(context.submenuId);
@@ -203,7 +216,6 @@ store('pulsar/menu', {
 			const { state } = store('pulsar/menu');
 			const { ref } = getElement();
 
-			// Only handle Escape in non-collapsed mode
 			if (!state.isCollapsed && event.key === 'Escape') {
 				const menuItem = ref.closest('.wp-block-pulsar-menu__item');
 				if (menuItem) {
@@ -218,7 +230,6 @@ store('pulsar/menu', {
 							newOpenSubmenus.splice(index, 1);
 							state.openSubmenus = newOpenSubmenus;
 
-							// Focus the parent menu item's link
 							const menuToggle = menuItem.querySelector(
 								'.wp-block-pulsar-menu__submenu-toggle'
 							);
@@ -247,6 +258,17 @@ store('pulsar/menu', {
 			state.isCollapsed =
 				isAlwaysCollapsed || (!isAlwaysCollapsed && !mq.matches);
 		},
+		isTouchEnabled: () => {
+			const { state } = store('pulsar/menu');
+			const hasTouchSupport =
+				'ontouchstart' in window ||
+				navigator.maxTouchPoints > 0 ||
+				navigator.msMaxTouchPoints > 0;
+
+			state.isTouchEnabled = hasTouchSupport;
+
+			return hasTouchSupport;
+		},
 		isAriaHidden: () => {
 			const { state } = store('pulsar/menu');
 			return !state.isMenuOpen && state.isCollapsed;
@@ -255,13 +277,6 @@ store('pulsar/menu', {
 			const { state } = store('pulsar/menu');
 			const context = getContext();
 			return state.openSubmenus.includes(context.submenuId);
-		},
-		isTouchEnabled: () => {
-			return (
-				'ontouchstart' in window ||
-				window.navigator.maxTouchPoints > 0 ||
-				window.navigator.msMaxTouchPoints > 0
-			);
 		},
 	},
 });
