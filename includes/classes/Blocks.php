@@ -2,7 +2,7 @@
 /**
  * Handles block registration.
  *
- * @package Pulsar Blocks
+ * @package PulsarBlocks
  */
 
 namespace Eighteen73\PulsarBlocks;

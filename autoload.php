@@ -9,7 +9,7 @@
  *
  * @return void
  *
- * @package Pulsar Blocks
+ * @package PulsarBlocks
  */
 
 spl_autoload_register(

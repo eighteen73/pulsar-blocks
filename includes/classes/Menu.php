@@ -260,16 +260,11 @@ class Menu {
 			return null;
 		}
 		$menu_id    = $locations[ $location_slug ];
-
-		// Use wp_get_nav_menu_items to get menu items with all WordPress core data
 		$menu_items = wp_get_nav_menu_items( $menu_id );
 
 		if ( false === $menu_items || empty( $menu_items ) ) {
 			return [];
 		}
-
-		// Get current page/post ID to determine current menu items
-		$current_object_id = get_queried_object_id();
 
 		$formatted_items = [];
 		foreach ( $menu_items as $item ) {
@@ -285,7 +280,7 @@ class Menu {
 			// in wp_nav_menu(), but since we're not using that function, we need to add them manually
 
 			// Check if this item is the current page
-			$is_current_item = $item->object_id == $current_object_id && in_array( $item->object, [ 'page', 'post' ] );
+			$is_current_item = self::is_current_menu_item( $item );
 			if ( $is_current_item && ! in_array( 'current-menu-item', $classes ) ) {
 				$classes[] = 'current-menu-item';
 			}
@@ -315,6 +310,43 @@ class Menu {
 		self::add_ancestor_classes( $formatted_items );
 
 		return $formatted_items;
+	}
+
+	/**
+	 * Determines if a menu item is the current item based on context
+	 *
+	 * @param \WP_Post $item The menu item
+	 * @return bool Whether this is the current menu item
+	 */
+	private static function is_current_menu_item( \WP_Post $item ): bool {
+		if ( is_tax() || is_category() || is_tag() ) {
+			$queried_object = get_queried_object();
+			if ( $queried_object instanceof \WP_Term
+				&& $item->object_id == $queried_object->term_id
+				&& $item->object == $queried_object->taxonomy ) {
+				return true;
+			}
+		} elseif ( is_singular() ) {
+			return $item->object_id == get_queried_object_id()
+				&& in_array( $item->object, [ 'post', 'page', get_post_type() ] );
+		} elseif ( is_post_type_archive() ) {
+			$post_type = get_query_var( 'post_type' );
+			if ( is_array( $post_type ) ) {
+				$post_type = reset( $post_type );
+			}
+			return $item->object == 'post_type_archive'
+				&& $item->object_id == get_post_type_object( $post_type )->name;
+		} elseif ( is_author() ) {
+			return $item->object == 'author'
+				&& $item->object_id == get_queried_object_id();
+		} elseif ( is_date() ) {
+			return $item->object == 'date_archive';
+		} elseif ( is_home() || is_front_page() ) {
+			return $item->object == 'custom'
+				&& untrailingslashit( $item->url ) == untrailingslashit( home_url() );
+		}
+
+		return false;
 	}
 
 	/**
