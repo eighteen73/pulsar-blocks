@@ -109,25 +109,18 @@ store('pulsar/menu', {
 			const { state } = store('pulsar/menu');
 			const context = getContext();
 			const submenuId = context.submenuId;
-
 			const newOpenSubmenus = [...state.openSubmenus];
-			const isCurrentlyOpen = newOpenSubmenus.includes(submenuId);
 
-			const otherOpenSubmenus = newOpenSubmenus.filter(
-				(id) => id !== submenuId
-			);
-			if (otherOpenSubmenus.length > 0) {
-				otherOpenSubmenus.forEach((id) => {
-					if (state.submenuTraps[id]) {
-						state.submenuTraps[id].deactivate();
-						delete state.submenuTraps[id];
+			if (newOpenSubmenus.includes(submenuId)) {
+				const index = newOpenSubmenus.indexOf(submenuId);
+				if (index !== -1) {
+					if (state.submenuTraps[submenuId]) {
+						state.submenuTraps[submenuId].deactivate();
+						delete state.submenuTraps[submenuId];
 					}
-				});
-			}
-
-			newOpenSubmenus.length = 0;
-
-			if (!isCurrentlyOpen) {
+					newOpenSubmenus.splice(index, 1);
+				}
+			} else {
 				newOpenSubmenus.push(submenuId);
 
 				if (state.isCollapsed) {
@@ -159,13 +152,7 @@ store('pulsar/menu', {
 						);
 					}
 				}
-			} else {
-				if (state.submenuTraps[submenuId]) {
-					state.submenuTraps[submenuId].deactivate();
-					delete state.submenuTraps[submenuId];
-				}
 			}
-
 			state.openSubmenus = newOpenSubmenus;
 		},
 		openSubmenuOnClick: () => {
@@ -216,6 +203,7 @@ store('pulsar/menu', {
 			const { state } = store('pulsar/menu');
 			const { ref } = getElement();
 
+			// Only handle Escape in non-collapsed mode
 			if (!state.isCollapsed && event.key === 'Escape') {
 				const menuItem = ref.closest('.wp-block-pulsar-menu__item');
 				if (menuItem) {
@@ -230,6 +218,7 @@ store('pulsar/menu', {
 							newOpenSubmenus.splice(index, 1);
 							state.openSubmenus = newOpenSubmenus;
 
+							// Focus the parent menu item's link
 							const menuToggle = menuItem.querySelector(
 								'.wp-block-pulsar-menu__submenu-toggle'
 							);
@@ -262,8 +251,8 @@ store('pulsar/menu', {
 			const { state } = store('pulsar/menu');
 			const hasTouchSupport =
 				'ontouchstart' in window ||
-				navigator.maxTouchPoints > 0 ||
-				navigator.msMaxTouchPoints > 0;
+				window.navigator.maxTouchPoints > 0 ||
+				window.navigator.msMaxTouchPoints > 0;
 
 			state.isTouchEnabled = hasTouchSupport;
 
