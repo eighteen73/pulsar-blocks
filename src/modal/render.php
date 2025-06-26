@@ -6,7 +6,7 @@
  * @param string   $content    Rendered block output. ie. <InnerBlocks.Content />.
  * @param WP_Block $block      The instance of the WP_Block class that represents the block being rendered.
  *
- * @package Pulsar
+ * @package PulsarBlocks
  */
 
 $id                   = $attributes['id'] ?? '';
@@ -40,7 +40,7 @@ $width                = $attributes['width'] ?? '';
 				'data-modal-trigger-selector'   => $trigger_selector ?: null,
 				'data-modal-dismissed-duration' => $dismissed_duration ?: null,
 				'data-modal-scroll-threshold'   => $scroll_threshold ?: null,
-				'data-modal-disable-closing'    => $disable_closing ? 'true' : null
+				'data-modal-disable-closing'    => $disable_closing ? 'true' : null,
 			]
 		)
 	);

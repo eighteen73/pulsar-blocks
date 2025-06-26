@@ -13,8 +13,8 @@
  */
 
 $label   = esc_html( $attributes['label'] ?? '' );
-$menu_id = esc_attr( $attributes['menuId'] ?? '');
-$width   = esc_attr( $attributes['width'] ?? 'content');
+$menu_id = esc_attr( $attributes['menuId'] ?? '' );
+$width   = esc_attr( $attributes['width'] ?? 'content' );
 
 // Don't display the mega menu link if there is no label or no menu ID.
 if ( ! $label || ! $menu_id ) {
@@ -174,4 +174,4 @@ $tags = new WP_HTML_Tag_Processor( $html );
 $html = block_core_navigation_add_directives_to_submenu( $tags, $attributes );
 $html = $tags->get_updated_html();
 
-echo $html;
+echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
