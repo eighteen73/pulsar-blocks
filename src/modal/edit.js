@@ -22,7 +22,6 @@ import {
 import { useEffect, useRef, useState } from '@wordpress/element';
 import {
 	PanelBody,
-	SelectControl,
 	TextControl,
 	ToggleControl,
 	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
@@ -43,7 +42,7 @@ import {
 import { useSelect, dispatch } from '@wordpress/data';
 import { store as editorStore } from '@wordpress/editor';
 
-import { useModals } from '../utils/modal';
+import { useBlocks } from '../utils/use-blocks';
 import { generateId } from '../utils/helpers';
 import { Modal as icon } from '../components/icons';
 
@@ -67,7 +66,7 @@ export function Edit(props) {
 		disableClosing,
 	} = attributes;
 
-	const modals = useModals();
+	const modals = useBlocks('pulsar/modal');
 
 	// Ensure that the modal ID is unique.
 	useEffect(() => {

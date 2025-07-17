@@ -12,7 +12,7 @@ import {
 	SelectControl,
 	Button,
 } from '@wordpress/components';
-import { useModals } from '../../utils/modal';
+import { useBlocks } from '../../utils/use-blocks';
 
 const ALLOWED_BLOCKS = [
 	'core/button',
@@ -42,7 +42,7 @@ const withAdvancedControls = createHigherOrderComponent((BlockEdit) => {
 	return (props) => {
 		const { name, attributes, setAttributes } = props;
 
-		const modals = useModals();
+		const modals = useBlocks('pulsar/modal');
 
 		const selectedModal = modals.filter(
 			(block) => attributes?.modalTriggerId === block?.attributes?.id

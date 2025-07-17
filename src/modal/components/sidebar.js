@@ -15,10 +15,10 @@ import {
 import { edit, trash } from '@wordpress/icons';
 
 import { Modal as icon } from '../../components/icons';
-import { useModals } from '../../utils/modal';
+import { useBlocks } from '../../utils/use-blocks';
 
 function PluginSidebarModal() {
-	const modals = useModals();
+	const modals = useBlocks('pulsar/modal');
 
 	const { selectBlock, insertBlock, removeBlock } =
 		useDispatch(blockEditorStore);

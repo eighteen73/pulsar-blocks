@@ -1,7 +1,7 @@
 import { useSelect } from '@wordpress/data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 
-export const useModals = () => {
+export const useBlocks = (blockName) => {
 	return useSelect((select) => {
 		const data = [];
 		const blocks = select(blockEditorStore).getBlocks();
@@ -9,7 +9,7 @@ export const useModals = () => {
 		const searchNestedBlocks = (block) => {
 			if (block?.innerBlocks) {
 				block.innerBlocks.forEach((innerBlock) => {
-					if (innerBlock.name === 'pulsar/modal') {
+					if (innerBlock.name === blockName) {
 						data.push(innerBlock);
 					}
 
@@ -19,7 +19,7 @@ export const useModals = () => {
 		};
 
 		blocks.forEach((block) => {
-			if (block.name === 'pulsar/modal') {
+			if (block.name === blockName) {
 				data.push(block);
 			}
 

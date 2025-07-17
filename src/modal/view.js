@@ -63,7 +63,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
 		const options = Object.assign(
 			{},
-			{ openTrigger: 'data-trigger-modal' }
+			{
+				openTrigger: 'data-trigger-modal',
+				portalContainerId: 'pulsar-modal-portal',
+				closeTrigger: 'data-modal-close',
+			}
 		);
 
 		const triggers = [

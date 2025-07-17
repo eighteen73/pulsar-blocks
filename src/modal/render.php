@@ -53,7 +53,7 @@ $width                = $attributes['width'] ?? '';
 			</div>
 
 			<?php if ( $enable_close_button ) : ?>
-				<button class="wp-block-pulsar-modal__close">
+				<button class="wp-block-pulsar-modal__close" data-modal-close>
 					<span class="wp-block-pulsar-modal__close-icon"></span>
 					<span class="screen-reader-text"><?php esc_html_e( 'Close modal', 'pulsar' ); ?></span>
 				</button>
