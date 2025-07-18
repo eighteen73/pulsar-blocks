@@ -4,8 +4,12 @@ import { useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import apiFetch from '@wordpress/api-fetch';
 
+import './editor.scss';
+
 export default function Edit({ attributes, setAttributes }) {
 	const blockProps = useBlockProps();
+
+	const { facetName } = attributes;
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [facets, setFacets] = useState([]);
@@ -36,26 +40,40 @@ export default function Edit({ attributes, setAttributes }) {
 				{ label: __('Select a facet', 'pulsar-blocks'), value: '' },
 				...facets.map((facet) => ({
 					label: facet.label,
-					value: facet.value,
+					value: facet.name,
 				})),
 			]
 		: [];
 
+	const Preview = () => {
+		return (
+			<div className="wp-block-pulsar-facetwp-facet__preview">
+				{isLoading && __('Loading facets…', 'pulsar-blocks')}
+				{!facetName && __('Select a facet', 'pulsar-blocks')}
+				{!facets ||
+					(facets.length === 0 &&
+						__('No facets found.', 'pulsar-blocks'))}
+				{facets.find((facet) => facet.name === facetName)?.label}
+			</div>
+		);
+	};
+
 	return (
 		<div {...blockProps}>
 			<InspectorControls>
-				<PanelBody title={__('FacetWP Facet', 'pulsar')}>
+				<PanelBody title={__('Settings', 'pulsar')}>
 					<SelectControl
-						label={__('Facet Name', 'pulsar')}
-						value={attributes.facetName}
+						label={__('Facet', 'pulsar')}
+						value={facetName}
 						options={facetOptions}
-						onChange={(value) => {
-							console.log(value); // eslint-disable-line no-console
-							setAttributes({ facetName: value });
-						}}
+						onChange={(value) =>
+							setAttributes({ facetName: value })
+						}
 					/>
 				</PanelBody>
 			</InspectorControls>
+
+			<Preview />
 		</div>
 	);
 }

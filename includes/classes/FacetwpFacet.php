@@ -43,7 +43,7 @@ class FacetwpFacet {
 			'/facetwp/available-facets',
 			[
 				'methods'  => WP_REST_Server::READABLE,
-				'callback' => [ $this, 'get_facet_names' ],
+				'callback' => [ $this, 'get_available_facets' ],
 			]
 		);
 	}
@@ -53,18 +53,8 @@ class FacetwpFacet {
 	 *
 	 * @return WP_REST_Response|WP_Error Response object on success, WP_Error on failure.
 	 */
-	public function get_facet_names(): WP_REST_Response|WP_Error {
-		$available_facets = FWP()->helper->settings['facets'];
-
-		$facets = [];
-
-		foreach ( $available_facets as $facet ) {
-			$facets[] = [
-				'label' => $facet['label'],
-				'value' => $facet['name'],
-			];
-		}
-
+	public function get_available_facets(): WP_REST_Response|WP_Error {
+		$facets = FWP()->helper->settings['facets'];
 		return new WP_REST_Response( $facets, 200 );
 	}
 
