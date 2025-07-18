@@ -1,1 +1,2735 @@
-(()=>{"use strict";var t,n={1450:()=>{const t=window.wp.blocks,n=window.wp.blockEditor,e=window.wp.data,r=window.wp.element,o=window.wp.i18n,i=window.React;function c(t){return function(t){return"[object Object]"===Object.prototype.toString.call(t)}(t)||Array.isArray(t)}function s(t,n){const e=Object.keys(t),r=Object.keys(n);return e.length===r.length&&(JSON.stringify(Object.keys(t.breakpoints||{}))===JSON.stringify(Object.keys(n.breakpoints||{}))&&e.every((e=>{const r=t[e],o=n[e];return"function"==typeof r?`${r}`==`${o}`:c(r)&&c(o)?s(r,o):r===o})))}function u(t){return t.concat().sort(((t,n)=>t.name>n.name?1:-1)).map((t=>t.options))}function a(t){return"number"==typeof t}function l(t){return"string"==typeof t}function d(t){return"boolean"==typeof t}function f(t){return"[object Object]"===Object.prototype.toString.call(t)}function p(t){return Math.abs(t)}function m(t){return Math.sign(t)}function g(t,n){return p(t-n)}function h(t){return y(t).map(Number)}function b(t){return t[w(t)]}function w(t){return Math.max(0,t.length-1)}function v(t,n){return n===w(t)}function x(t,n=0){return Array.from(Array(t),((t,e)=>n+e))}function y(t){return Object.keys(t)}function k(t,n){return[t,n].reduce(((t,n)=>(y(n).forEach((e=>{const r=t[e],o=n[e],i=f(r)&&f(o);t[e]=i?k(r,o):o})),t)),{})}function S(t,n){return void 0!==n.MouseEvent&&t instanceof n.MouseEvent}function L(){let t=[];const n={add:function(e,r,o,i={passive:!0}){let c;if("addEventListener"in e)e.addEventListener(r,o,i),c=()=>e.removeEventListener(r,o,i);else{const t=e;t.addListener(o),c=()=>t.removeListener(o)}return t.push(c),n},clear:function(){t=t.filter((t=>t()))}};return n}function E(t=0,n=0){const e=p(t-n);function r(n){return n<t}function o(t){return t>n}function i(t){return r(t)||o(t)}return{length:e,max:n,min:t,constrain:function(e){return i(e)?r(e)?t:n:e},reachedAny:i,reachedMax:o,reachedMin:r,removeOffset:function(t){return e?t-e*Math.ceil((t-n)/e):t}}}function P(t,n,e){const{constrain:r}=E(0,t),o=t+1;let i=c(n);function c(t){return e?p((o+t)%o):r(t)}function s(){return i}function u(){return P(t,s(),e)}const a={get:s,set:function(t){return i=c(t),a},add:function(t){return u().set(s()+t)},clone:u};return a}function O(t,n,e,r,o,i,c,s,u,a,l,f,h,b,w,v,x,y,k){const{cross:P,direction:O}=t,A=["INPUT","SELECT","TEXTAREA"],I={passive:!1},B=L(),j=L(),D=E(50,225).constrain(b.measure(20)),M={mouse:300,touch:400},T={mouse:500,touch:600},C=w?43:25;let V=!1,F=0,R=0,G=!1,_=!1,z=!1,H=!1;function N(t){if(!S(t,r)&&t.touches.length>=2)return q(t);const n=i.readPoint(t),e=i.readPoint(t,P),c=g(n,F),u=g(e,R);if(!_&&!H){if(!t.cancelable)return q(t);if(_=c>u,!_)return q(t)}const l=i.pointerMove(t);c>v&&(z=!0),a.useFriction(.3).useDuration(.75),s.start(),o.add(O(l)),t.preventDefault()}function q(t){const n=l.byDistance(0,!1).index!==f.get(),e=i.pointerUp(t)*(w?T:M)[H?"mouse":"touch"],r=function(t,n){const e=f.add(-1*m(t)),r=l.byDistance(t,!w).distance;return w||p(t)<D?r:x&&n?.5*r:l.byIndex(e.get(),0).distance}(O(e),n),o=function(t,n){if(0===t||0===n)return 0;if(p(t)<=p(n))return 0;const e=g(p(t),p(n));return p(e/t)}(e,r),c=C-10*o,s=y+o/50;_=!1,G=!1,j.clear(),a.useDuration(c).useFriction(s),u.distance(r,!w),H=!1,h.emit("pointerUp")}function U(t){z&&(t.stopPropagation(),t.preventDefault(),z=!1)}return{init:function(t){if(!k)return;function s(s){(d(k)||k(t,s))&&function(t){const s=S(t,r);H=s,z=w&&s&&!t.buttons&&V,V=g(o.get(),c.get())>=2,s&&0!==t.button||function(t){const n=t.nodeName||"";return A.includes(n)}(t.target)||(G=!0,i.pointerDown(t),a.useFriction(0).useDuration(0),o.set(c),function(){const t=H?e:n;j.add(t,"touchmove",N,I).add(t,"touchend",q).add(t,"mousemove",N,I).add(t,"mouseup",q)}(),F=i.readPoint(t),R=i.readPoint(t,P),h.emit("pointerDown"))}(s)}const u=n;B.add(u,"dragstart",(t=>t.preventDefault()),I).add(u,"touchmove",(()=>{}),I).add(u,"touchend",(()=>{})).add(u,"touchstart",s).add(u,"mousedown",s).add(u,"touchcancel",q).add(u,"contextmenu",q).add(u,"click",U,!0)},destroy:function(){B.clear(),j.clear()},pointerDown:function(){return G}}}function A(t,n){let e,r;function o(t){return t.timeStamp}function i(e,r){const o="client"+("x"===(r||t.scroll)?"X":"Y");return(S(e,n)?e:e.touches[0])[o]}return{pointerDown:function(t){return e=t,r=t,i(t)},pointerMove:function(t){const n=i(t)-i(r),c=o(t)-o(e)>170;return r=t,c&&(e=t),n},pointerUp:function(t){if(!e||!r)return 0;const n=i(r)-i(e),c=o(t)-o(e),s=o(t)-o(r)>170,u=n/c;return c&&!s&&p(u)>.1?u:0},readPoint:i}}function I(t,n,e,r,o,i,c){const s=[t].concat(r);let u,a,l=[],f=!1;function m(t){return o.measureSize(c.measure(t))}return{init:function(o){i&&(a=m(t),l=r.map(m),u=new ResizeObserver((e=>{(d(i)||i(o,e))&&function(e){for(const i of e){if(f)return;const e=i.target===t,c=r.indexOf(i.target),s=e?a:l[c];if(p(m(e?t:r[c])-s)>=.5){o.reInit(),n.emit("resize");break}}}(e)})),e.requestAnimationFrame((()=>{s.forEach((t=>u.observe(t)))})))},destroy:function(){f=!0,u&&u.disconnect()}}}function B(t,n,e,r,o){const i=o.measure(10),c=o.measure(50),s=E(.1,.99);let u=!1;function a(){return!u&&!!t.reachedAny(e.get())&&!!t.reachedAny(n.get())}return{shouldConstrain:a,constrain:function(o){if(!a())return;const u=t.reachedMin(n.get())?"min":"max",l=p(t[u]-n.get()),d=e.get()-n.get(),f=s.constrain(l/c);e.subtract(d*f),!o&&p(d)<i&&(e.set(t.constrain(e.get())),r.useDuration(25).useBaseFriction())},toggleActive:function(t){u=!t}}}function j(t,n,e,r){const o=n.min+.1,i=n.max+.1,{reachedMin:c,reachedMax:s}=E(o,i);return{loop:function(n){if(!function(t){return 1===t?s(e.get()):-1===t&&c(e.get())}(n))return;const o=t*(-1*n);r.forEach((t=>t.add(o)))}}}function D(t){let n=t;function e(t){return a(t)?t:t.get()}return{get:function(){return n},set:function(t){n=e(t)},add:function(t){n+=e(t)},subtract:function(t){n-=e(t)}}}function M(t,n){const e="x"===t.scroll?function(t){return`translate3d(${t}px,0px,0px)`}:function(t){return`translate3d(0px,${t}px,0px)`},r=n.style;let o=null,i=!1;return{clear:function(){i||(r.transform="",n.getAttribute("style")||n.removeAttribute("style"))},to:function(n){if(i)return;const c=(s=t.direction(n),Math.round(100*s)/100);var s;c!==o&&(r.transform=e(c),o=c)},toggleActive:function(t){i=!t}}}function T(t,n,e,r,o,i,c,s,u){const a=h(o),l=h(o).reverse(),d=function(){const t=c[0];return m(p(l,t),e,!1)}().concat(function(){const t=n-c[0]-1;return m(p(a,t),-e,!0)}());function f(t,n){return t.reduce(((t,n)=>t-o[n]),n)}function p(t,n){return t.reduce(((t,e)=>f(t,n)>0?t.concat([e]):t),[])}function m(o,c,a){const l=function(t){return i.map(((e,o)=>({start:e-r[o]+.5+t,end:e+n-.5+t})))}(c);return o.map((n=>{const r=a?0:-e,o=a?e:0,i=a?"end":"start",c=l[n][i];return{index:n,loopPoint:c,slideLocation:D(-1),translate:M(t,u[n]),target:()=>s.get()>c?r:o}}))}return{canLoop:function(){return d.every((({index:t})=>f(a.filter((n=>n!==t)),n)<=.1))},clear:function(){d.forEach((t=>t.translate.clear()))},loop:function(){d.forEach((t=>{const{target:n,translate:e,slideLocation:r}=t,o=n();o!==r.get()&&(e.to(o),r.set(o))}))},loopPoints:d}}function C(t,n,e){let r,o=!1;return{init:function(i){e&&(r=new MutationObserver((t=>{o||(d(e)||e(i,t))&&function(t){for(const e of t)if("childList"===e.type){i.reInit(),n.emit("slidesChanged");break}}(t)})),r.observe(t,{childList:!0}))},destroy:function(){r&&r.disconnect(),o=!0}}}function V(t,n,e,r,o,i,c){const{align:s,axis:u,direction:f,startIndex:k,loop:S,duration:V,dragFree:F,dragThreshold:R,inViewThreshold:G,slidesToScroll:_,skipSnaps:z,containScroll:H,watchResize:N,watchSlides:q,watchDrag:U,watchFocus:$}=i,W={measure:function(t){const{offsetTop:n,offsetLeft:e,offsetWidth:r,offsetHeight:o}=t;return{top:n,right:e+r,bottom:n+o,left:e,width:r,height:o}}},J=W.measure(n),X=e.map(W.measure),Q=function(t,n){const e="rtl"===n,r="y"===t,o=!r&&e?-1:1;return{scroll:r?"y":"x",cross:r?"x":"y",startEdge:r?"top":e?"right":"left",endEdge:r?"bottom":e?"left":"right",measureSize:function(t){const{height:n,width:e}=t;return r?n:e},direction:function(t){return t*o}}}(u,f),Z=Q.measureSize(J),Y=function(t){return{measure:function(n){return t*(n/100)}}}(Z),K=function(t,n){const e={start:function(){return 0},center:function(t){return r(t)/2},end:r};function r(t){return n-t}return{measure:function(r,o){return l(t)?e[t](r):t(n,r,o)}}}(s,Z),tt=!S&&!!H,nt=S||!!H,{slideSizes:et,slideSizesWithGaps:rt,startGap:ot,endGap:it}=function(t,n,e,r,o,i){const{measureSize:c,startEdge:s,endEdge:u}=t,a=e[0]&&o,l=function(){if(!a)return 0;const t=e[0];return p(n[s]-t[s])}(),d=function(){if(!a)return 0;const t=i.getComputedStyle(b(r));return parseFloat(t.getPropertyValue(`margin-${u}`))}(),f=e.map(c),m=e.map(((t,n,e)=>{const r=!n,o=v(e,n);return r?f[n]+l:o?f[n]+d:e[n+1][s]-t[s]})).map(p);return{slideSizes:f,slideSizesWithGaps:m,startGap:l,endGap:d}}(Q,J,X,e,nt,o),ct=function(t,n,e,r,o,i,c,s,u){const{startEdge:l,endEdge:d,direction:f}=t,m=a(e);return{groupSlides:function(t){return m?function(t,n){return h(t).filter((t=>t%n===0)).map((e=>t.slice(e,e+n)))}(t,e):function(t){return t.length?h(t).reduce(((e,a,m)=>{const g=b(e)||0,h=0===g,v=a===w(t),x=o[l]-i[g][l],y=o[l]-i[a][d],k=!r&&h?f(c):0,S=p(y-(!r&&v?f(s):0)-(x+k));return m&&S>n+u&&e.push(a),v&&e.push(t.length),e}),[]).map(((n,e,r)=>{const o=Math.max(r[e-1]||0);return t.slice(o,n)})):[]}(t)}}}(Q,Z,_,S,J,X,ot,it,2),{snaps:st,snapsAligned:ut}=function(t,n,e,r,o){const{startEdge:i,endEdge:c}=t,{groupSlides:s}=o,u=s(r).map((t=>b(t)[c]-t[0][i])).map(p).map(n.measure),a=r.map((t=>e[i]-t[i])).map((t=>-p(t))),l=s(a).map((t=>t[0])).map(((t,n)=>t+u[n]));return{snaps:a,snapsAligned:l}}(Q,K,J,X,ct),at=-b(st)+b(rt),{snapsContained:lt,scrollContainLimit:dt}=function(t,n,e,r){const o=E(-n+t,0),i=e.map(((t,n)=>{const{min:r,max:i}=o,c=o.constrain(t),u=!n,a=v(e,n);return u?i:a||s(r,c)?r:s(i,c)?i:c})).map((t=>parseFloat(t.toFixed(3)))),c=function(){const t=i[0],n=b(i);return E(i.lastIndexOf(t),i.indexOf(n)+1)}();function s(t,n){return g(t,n)<=1}return{snapsContained:function(){if(n<=t+2)return[o.max];if("keepSnaps"===r)return i;const{min:e,max:s}=c;return i.slice(e,s)}(),scrollContainLimit:c}}(Z,at,ut,H),ft=tt?lt:ut,{limit:pt}=function(t,n,e){const r=n[0];return{limit:E(e?r-t:b(n),r)}}(at,ft,S),mt=P(w(ft),k,S),gt=mt.clone(),ht=h(e),bt=function(t,n,e,r){const o=L(),i=1e3/60;let c=null,s=0,u=0;function a(t){if(!u)return;c||(c=t,e(),e());const o=t-c;for(c=t,s+=o;s>=i;)e(),s-=i;r(s/i),u&&(u=n.requestAnimationFrame(a))}function l(){n.cancelAnimationFrame(u),c=null,s=0,u=0}return{init:function(){o.add(t,"visibilitychange",(()=>{t.hidden&&(c=null,s=0)}))},destroy:function(){l(),o.clear()},start:function(){u||(u=n.requestAnimationFrame(a))},stop:l,update:e,render:r}}(r,o,(()=>(({dragHandler:t,scrollBody:n,scrollBounds:e,options:{loop:r}})=>{r||e.constrain(t.pointerDown()),n.seek()})(jt)),(t=>(({scrollBody:t,translate:n,location:e,offsetLocation:r,previousLocation:o,scrollLooper:i,slideLooper:c,dragHandler:s,animation:u,eventHandler:a,scrollBounds:l,options:{loop:d}},f)=>{const p=t.settled(),m=!l.shouldConstrain(),g=d?p:p&&m,h=g&&!s.pointerDown();h&&u.stop();const b=e.get()*f+o.get()*(1-f);r.set(b),d&&(i.loop(t.direction()),c.loop()),n.to(r.get()),h&&a.emit("settle"),g||a.emit("scroll")})(jt,t))),wt=ft[mt.get()],vt=D(wt),xt=D(wt),yt=D(wt),kt=D(wt),St=function(t,n,e,r,o){let i=0,c=0,s=o,u=.68,a=t.get(),l=0;function d(t){return s=t,g}function f(t){return u=t,g}const g={direction:function(){return c},duration:function(){return s},velocity:function(){return i},seek:function(){const n=r.get()-t.get();let o=0;return s?(e.set(t),i+=n/s,i*=u,a+=i,t.add(i),o=a-l):(i=0,e.set(r),t.set(r),o=n),c=m(o),l=a,g},settled:function(){return p(r.get()-n.get())<.001},useBaseFriction:function(){return f(.68)},useBaseDuration:function(){return d(o)},useFriction:f,useDuration:d};return g}(vt,yt,xt,kt,V),Lt=function(t,n,e,r,o){const{reachedAny:i,removeOffset:c,constrain:s}=r;function u(t){return t.concat().sort(((t,n)=>p(t)-p(n)))[0]}function a(n,r){const o=[n,n+e,n-e];if(!t)return n;if(!r)return u(o);const i=o.filter((t=>m(t)===r));return i.length?u(i):b(o)-e}return{byDistance:function(e,r){const u=o.get()+e,{index:l,distance:d}=function(e){const r=t?c(e):s(e),o=n.map(((t,n)=>({diff:a(t-r,0),index:n}))).sort(((t,n)=>p(t.diff)-p(n.diff))),{index:i}=o[0];return{index:i,distance:r}}(u),f=!t&&i(u);return!r||f?{index:l,distance:e}:{index:l,distance:e+a(n[l]-d,0)}},byIndex:function(t,e){return{index:t,distance:a(n[t]-o.get(),e)}},shortcut:a}}(S,ft,at,pt,kt),Et=function(t,n,e,r,o,i,c){function s(o){const s=o.distance,u=o.index!==n.get();i.add(s),s&&(r.duration()?t.start():(t.update(),t.render(1),t.update())),u&&(e.set(n.get()),n.set(o.index),c.emit("select"))}return{distance:function(t,n){s(o.byDistance(t,n))},index:function(t,e){const r=n.clone().set(t);s(o.byIndex(r.get(),e))}}}(bt,mt,gt,St,Lt,kt,c),Pt=function(t){const{max:n,length:e}=t;return{get:function(t){return e?(t-n)/-e:0}}}(pt),Ot=L(),At=function(t,n,e,r){const o={};let i,c=null,s=null,u=!1;return{init:function(){i=new IntersectionObserver((t=>{u||(t.forEach((t=>{const e=n.indexOf(t.target);o[e]=t})),c=null,s=null,e.emit("slidesInView"))}),{root:t.parentElement,threshold:r}),n.forEach((t=>i.observe(t)))},destroy:function(){i&&i.disconnect(),u=!0},get:function(t=!0){if(t&&c)return c;if(!t&&s)return s;const n=function(t){return y(o).reduce(((n,e)=>{const r=parseInt(e),{isIntersecting:i}=o[r];return(t&&i||!t&&!i)&&n.push(r),n}),[])}(t);return t&&(c=n),t||(s=n),n}}}(n,e,c,G),{slideRegistry:It}=function(t,n,e,r,o,i){const{groupSlides:c}=o,{min:s,max:u}=r;return{slideRegistry:function(){const r=c(i),o=!t||"keepSnaps"===n;return 1===e.length?[i]:o?r:r.slice(s,u).map(((t,n,e)=>{const r=!n,o=v(e,n);return r?x(b(e[0])+1):o?x(w(i)-b(e)[0]+1,b(e)[0]):t}))}()}}(tt,H,ft,dt,ct,ht),Bt=function(t,n,e,r,o,i,c,s){const u={passive:!0,capture:!0};let l=0;function f(t){"Tab"===t.code&&(l=(new Date).getTime())}return{init:function(p){s&&(i.add(document,"keydown",f,!1),n.forEach(((n,f)=>{i.add(n,"focus",(n=>{(d(s)||s(p,n))&&function(n){if((new Date).getTime()-l>10)return;c.emit("slideFocusStart"),t.scrollLeft=0;const i=e.findIndex((t=>t.includes(n)));a(i)&&(o.useDuration(0),r.index(i,0),c.emit("slideFocus"))}(f)}),u)})))}}}(t,e,It,Et,St,Ot,c,$),jt={ownerDocument:r,ownerWindow:o,eventHandler:c,containerRect:J,slideRects:X,animation:bt,axis:Q,dragHandler:O(Q,t,r,o,kt,A(Q,o),vt,bt,Et,St,Lt,mt,c,Y,F,R,z,.68,U),eventStore:Ot,percentOfView:Y,index:mt,indexPrevious:gt,limit:pt,location:vt,offsetLocation:yt,previousLocation:xt,options:i,resizeHandler:I(n,c,o,e,Q,N,W),scrollBody:St,scrollBounds:B(pt,yt,kt,St,Y),scrollLooper:j(at,pt,yt,[vt,yt,xt,kt]),scrollProgress:Pt,scrollSnapList:ft.map(Pt.get),scrollSnaps:ft,scrollTarget:Lt,scrollTo:Et,slideLooper:T(Q,Z,at,et,rt,st,ft,yt,e),slideFocus:Bt,slidesHandler:C(n,c,q),slidesInView:At,slideIndexes:ht,slideRegistry:It,slidesToScroll:ct,target:kt,translate:M(Q,n)};return jt}const F={align:"center",axis:"x",container:null,slides:null,containScroll:"trimSnaps",direction:"ltr",slidesToScroll:1,inViewThreshold:0,breakpoints:{},dragFree:!1,dragThreshold:10,loop:!1,skipSnaps:!1,duration:25,startIndex:0,active:!0,watchDrag:!0,watchResize:!0,watchSlides:!0,watchFocus:!0};function R(t){function n(t,n){return k(t,n||{})}return{mergeOptions:n,optionsAtMedia:function(e){const r=e.breakpoints||{},o=y(r).filter((n=>t.matchMedia(n).matches)).map((t=>r[t])).reduce(((t,e)=>n(t,e)),{});return n(e,o)},optionsMediaQueries:function(n){return n.map((t=>y(t.breakpoints||{}))).reduce(((t,n)=>t.concat(n)),[]).map(t.matchMedia)}}}function G(t,n,e){const r=t.ownerDocument,o=r.defaultView,i=R(o),c=function(t){let n=[];return{init:function(e,r){return n=r.filter((({options:n})=>!1!==t.optionsAtMedia(n).active)),n.forEach((n=>n.init(e,t))),r.reduce(((t,n)=>Object.assign(t,{[n.name]:n})),{})},destroy:function(){n=n.filter((t=>t.destroy()))}}}(i),s=L(),u=function(){let t,n={};function e(t){return n[t]||[]}const r={init:function(n){t=n},emit:function(n){return e(n).forEach((e=>e(t,n))),r},off:function(t,o){return n[t]=e(t).filter((t=>t!==o)),r},on:function(t,o){return n[t]=e(t).concat([o]),r},clear:function(){n={}}};return r}(),{mergeOptions:a,optionsAtMedia:d,optionsMediaQueries:f}=i,{on:p,off:m,emit:g}=u,h=A;let b,w,v,x,y=!1,k=a(F,G.globalOptions),S=a(k),E=[];function P(n){const e=V(t,v,x,r,o,n,u);return n.loop&&!e.slideLooper.canLoop()?P(Object.assign({},n,{loop:!1})):e}function O(n,e){y||(k=a(k,n),S=d(k),E=e||E,function(){const{container:n,slides:e}=S,r=l(n)?t.querySelector(n):n;v=r||t.children[0];const o=l(e)?v.querySelectorAll(e):e;x=[].slice.call(o||v.children)}(),b=P(S),f([k,...E.map((({options:t})=>t))]).forEach((t=>s.add(t,"change",A))),S.active&&(b.translate.to(b.location.get()),b.animation.init(),b.slidesInView.init(),b.slideFocus.init(D),b.eventHandler.init(D),b.resizeHandler.init(D),b.slidesHandler.init(D),b.options.loop&&b.slideLooper.loop(),v.offsetParent&&x.length&&b.dragHandler.init(D),w=c.init(D,E)))}function A(t,n){const e=j();I(),O(a({startIndex:e},t),n),u.emit("reInit")}function I(){b.dragHandler.destroy(),b.eventStore.clear(),b.translate.clear(),b.slideLooper.clear(),b.resizeHandler.destroy(),b.slidesHandler.destroy(),b.slidesInView.destroy(),b.animation.destroy(),c.destroy(),s.clear()}function B(t,n,e){S.active&&!y&&(b.scrollBody.useBaseFriction().useDuration(!0===n?0:S.duration),b.scrollTo.index(t,e||0))}function j(){return b.index.get()}const D={canScrollNext:function(){return b.index.add(1).get()!==j()},canScrollPrev:function(){return b.index.add(-1).get()!==j()},containerNode:function(){return v},internalEngine:function(){return b},destroy:function(){y||(y=!0,s.clear(),I(),u.emit("destroy"),u.clear())},off:m,on:p,emit:g,plugins:function(){return w},previousScrollSnap:function(){return b.indexPrevious.get()},reInit:h,rootNode:function(){return t},scrollNext:function(t){B(b.index.add(1).get(),t,-1)},scrollPrev:function(t){B(b.index.add(-1).get(),t,1)},scrollProgress:function(){return b.scrollProgress.get(b.offsetLocation.get())},scrollSnapList:function(){return b.scrollSnapList},scrollTo:B,selectedScrollSnap:j,slideNodes:function(){return x},slidesInView:function(){return b.slidesInView.get()},slidesNotInView:function(){return b.slidesInView.get(!1)}};return O(n,e),setTimeout((()=>u.emit("init")),0),D}function _(t={},n=[]){const e=(0,i.useRef)(t),r=(0,i.useRef)(n),[o,c]=(0,i.useState)(),[a,l]=(0,i.useState)(),d=(0,i.useCallback)((()=>{o&&o.reInit(e.current,r.current)}),[o]);return(0,i.useEffect)((()=>{s(e.current,t)||(e.current=t,d())}),[t,d]),(0,i.useEffect)((()=>{(function(t,n){if(t.length!==n.length)return!1;const e=u(t),r=u(n);return e.every(((t,n)=>s(t,r[n])))})(r.current,n)||(r.current=n,d())}),[n,d]),(0,i.useEffect)((()=>{if("undefined"!=typeof window&&window.document&&window.document.createElement&&a){G.globalOptions=_.globalOptions;const t=G(a,e.current,r.current);return c(t),()=>t.destroy()}c(void 0)}),[a,c]),[l,o]}G.globalOptions=void 0,_.globalOptions=void 0;const z=window.wp.components,H=window.wp.compose,N=window.ReactJSXRuntime,q=(0,H.compose)([(0,e.withSelect)(((t,n)=>({innerBlocks:t("core/block-editor").getBlock(n.clientId).innerBlocks}))),(0,e.withDispatch)(((n,e)=>({onClick(r){const o=(0,t.createBlock)(e.allowedBlock);n("core/block-editor").insertBlock(o,e.innerBlocks.length,e.clientId).then((()=>{r()}))}})))])((({onClick:t,onClickAfter:n,clientId:e,allowedBlock:r,innerBlocks:o,isEnabled:i=!0,...c})=>{if(i)return(0,N.jsx)(z.Button,{onClick:()=>t(n),...c})})),U=JSON.parse('{"UU":"pulsar/embla-carousel"}'),$=(z.SVG,z.Path,z.Path,z.Path,z.Path,z.Path,(0,N.jsx)(z.SVG,{className:"icon-carousel",width:"26px",height:"18px",viewBox:"0 0 26 18",version:"1.1",xmlns:"http://www.w3.org/2000/svg",xmlnsXlink:"http://www.w3.org/1999/xlink",children:(0,N.jsx)(z.G,{strokeWidth:"1",children:(0,N.jsxs)(z.G,{transform:"translate(0.000000, -3.000000)",children:[(0,N.jsx)(z.Path,{d:"M20,5 L20,19 L6,19 L6,5 L20,5 L20,5 Z M20,3 L6,3 C4.9,3 4,3.9 4,5 L4,19 C4,20.1 4.9,21 6,21 L20,21 C21.1,21 22,20.1 22,19 L22,5 C22,3.9 21.1,3 20,3 Z",fillRule:"nonzero"}),(0,N.jsx)(z.Polygon,{fillRule:"nonzero",points:"15.14 12 12.14 15.7645914 10 13.2451362 7 17 19 17"}),(0,N.jsx)(z.Rect,{x:"7",y:"9",width:"12",height:"1"}),(0,N.jsx)(z.Rect,{x:"7",y:"7",width:"12",height:"1"}),(0,N.jsx)(z.Polygon,{transform:"translate(24.500000, 12.000000) rotate(-270.000000) translate(-24.500000, -12.000000) ",points:"24.5 10.5 27.5 13.5 21.5 13.5"}),(0,N.jsx)(z.Polygon,{transform:"translate(1.500000, 12.000000) rotate(-90.000000) translate(-1.500000, -12.000000) ",points:"1.5 10.5 4.5 13.5 -1.5 13.5"})]})})}));z.SVG,z.G,z.G,z.Path,z.Polygon,z.Rect,z.Rect,z.SVG,z.Path,z.SVG,z.Path,z.SVG,z.Path,z.SVG,z.Path,z.Path,z.SVG,z.Path,z.SVG,z.Path,z.SVG,z.Path,z.Path,(0,t.registerBlockType)(U.UU,{icon:$,edit:function({clientId:t,attributes:{options:i},setAttributes:c,isSelected:s}){const u=(0,n.useBlockProps)({className:"embla"}),{children:a,...l}=(0,n.useInnerBlocksProps)(u,{orientation:"vertical",template:[["pulsar/embla-carousel-viewport"],["pulsar/embla-carousel-buttons"],["pulsar/embla-carousel-dots"]],templateLock:!1}),d=(0,e.useSelect)((n=>n("core/block-editor").getBlock(t)?n("core/block-editor").getBlock(t).innerBlocks:[])),f=d.find((t=>"pulsar/embla-carousel-viewport"===t.name))||!1,p=(0,e.useSelect)((t=>f&&t("core/block-editor").getBlock(f.clientId)?t("core/block-editor").getBlock(f.clientId).innerBlocks:[])).find((t=>"core/query"===t.name||"woocommerce/product-collection"===t.name)),[m,g]=_({...i,container:p?"core/query"===p.name?".wp-block-post-template":"woocommerce/product-collection"===p.name?".wp-block-woocommerce-product-template":".embla__container":".embla__container"});(0,r.useEffect)((()=>{g&&c({emblaApi:g})}),[g,c]),(0,r.useEffect)((()=>{if(!g)return;c({emblaApi:g});const n=document.querySelector(`[data-block="${t}"]`),e=n?.querySelectorAll(".embla__button"),r=n?.querySelector(".embla__dots");if(!e||e.length<2||!r)return;const o=((t,n,e)=>{const r=()=>{t.scrollPrev()},o=()=>{t.scrollNext()};n.addEventListener("click",r,!1),e.addEventListener("click",o,!1);const i=((t,n,e)=>{const r=()=>{t.canScrollPrev()?n.removeAttribute("disabled"):n.setAttribute("disabled","disabled"),t.canScrollNext()?e.removeAttribute("disabled"):e.setAttribute("disabled","disabled")};return t.on("select",r).on("init",r).on("reInit",r),()=>{n.removeAttribute("disabled"),e.removeAttribute("disabled")}})(t,n,e);return()=>{i(),n.removeEventListener("click",r,!1),e.removeEventListener("click",o,!1)}})(g,e[0],e[1]),i=((t,n)=>{let e=[];const r=()=>{n.innerHTML=t.scrollSnapList().map((()=>'<button class="embla__dot" type="button"></button>')).join(""),e=Array.from(n.querySelectorAll(".embla__dot")),e.forEach(((n,e)=>{n.addEventListener("click",(()=>(n=>{t.scrollTo(n)})(e)),!1)}))},o=()=>{const n=t.previousScrollSnap(),r=t.selectedScrollSnap();e[n].classList.remove("embla__dot--selected"),e[r].classList.add("embla__dot--selected")};return t.on("init",r).on("reInit",r).on("init",o).on("reInit",o).on("select",o),()=>{n.innerHTML=""}})(g,r);return()=>{o(),i()}}),[t,g,d,c]),(0,r.useEffect)((()=>{g&&c({emblaApi:g})}),[g,c]);const h=(0,e.useSelect)((n=>n("core/block-editor").hasSelectedInnerBlock(t,!0)));return(0,N.jsxs)("div",{...l,children:[(0,N.jsx)("div",{className:"embla",ref:m,children:a}),f&&1===f?.attributes?.allowedBlocks?.length&&(s||h)&&(0,N.jsx)(q,{onClickAfter:()=>{},variant:"secondary",text:(0,o.__)("Add item","pulsar-blocks"),allowedBlock:f?.attributes?.allowedBlocks?.[0],style:{width:"50%",justifyContent:"center",marginTop:"1rem",marginLeft:"auto",marginRight:"auto",display:"flex"},clientId:f.clientId})]})},save:()=>(0,N.jsx)(n.InnerBlocks.Content,{})})}},e={};function r(t){var o=e[t];if(void 0!==o)return o.exports;var i=e[t]={exports:{}};return n[t](i,i.exports,r),i.exports}r.m=n,t=[],r.O=(n,e,o,i)=>{if(!e){var c=1/0;for(l=0;l<t.length;l++){for(var[e,o,i]=t[l],s=!0,u=0;u<e.length;u++)(!1&i||c>=i)&&Object.keys(r.O).every((t=>r.O[t](e[u])))?e.splice(u--,1):(s=!1,i<c&&(c=i));if(s){t.splice(l--,1);var a=o();void 0!==a&&(n=a)}}return n}i=i||0;for(var l=t.length;l>0&&t[l-1][2]>i;l--)t[l]=t[l-1];t[l]=[e,o,i]},r.o=(t,n)=>Object.prototype.hasOwnProperty.call(t,n),(()=>{var t={414:0,946:0};r.O.j=n=>0===t[n];var n=(n,e)=>{var o,i,[c,s,u]=e,a=0;if(c.some((n=>0!==t[n]))){for(o in s)r.o(s,o)&&(r.m[o]=s[o]);if(u)var l=u(r)}for(n&&n(e);a<c.length;a++)i=c[a],r.o(t,i)&&t[i]&&t[i][0](),t[i]=0;return r.O(l)},e=globalThis.webpackChunkpulsar_blocks=globalThis.webpackChunkpulsar_blocks||[];e.forEach(n.bind(null,0)),e.push=n.bind(null,e.push.bind(e))})();var o=r.O(void 0,[946],(()=>r(1450)));o=r.O(o)})();
+/******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./node_modules/embla-carousel-react/esm/embla-carousel-react.esm.js":
+/*!***************************************************************************!*\
+  !*** ./node_modules/embla-carousel-react/esm/embla-carousel-react.esm.js ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ useEmblaCarousel)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var embla_carousel_reactive_utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! embla-carousel-reactive-utils */ "./node_modules/embla-carousel-reactive-utils/esm/embla-carousel-reactive-utils.esm.js");
+/* harmony import */ var embla_carousel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! embla-carousel */ "./node_modules/embla-carousel/esm/embla-carousel.esm.js");
+
+
+
+
+function useEmblaCarousel(options = {}, plugins = []) {
+  const storedOptions = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(options);
+  const storedPlugins = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(plugins);
+  const [emblaApi, setEmblaApi] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
+  const [viewport, setViewport] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)();
+  const reInit = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
+    if (emblaApi) emblaApi.reInit(storedOptions.current, storedPlugins.current);
+  }, [emblaApi]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if ((0,embla_carousel_reactive_utils__WEBPACK_IMPORTED_MODULE_1__.areOptionsEqual)(storedOptions.current, options)) return;
+    storedOptions.current = options;
+    reInit();
+  }, [options, reInit]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if ((0,embla_carousel_reactive_utils__WEBPACK_IMPORTED_MODULE_1__.arePluginsEqual)(storedPlugins.current, plugins)) return;
+    storedPlugins.current = plugins;
+    reInit();
+  }, [plugins, reInit]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if ((0,embla_carousel_reactive_utils__WEBPACK_IMPORTED_MODULE_1__.canUseDOM)() && viewport) {
+      embla_carousel__WEBPACK_IMPORTED_MODULE_2__["default"].globalOptions = useEmblaCarousel.globalOptions;
+      const newEmblaApi = (0,embla_carousel__WEBPACK_IMPORTED_MODULE_2__["default"])(viewport, storedOptions.current, storedPlugins.current);
+      setEmblaApi(newEmblaApi);
+      return () => newEmblaApi.destroy();
+    } else {
+      setEmblaApi(undefined);
+    }
+  }, [viewport, setEmblaApi]);
+  return [setViewport, emblaApi];
+}
+useEmblaCarousel.globalOptions = undefined;
+
+
+//# sourceMappingURL=embla-carousel-react.esm.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/embla-carousel-reactive-utils/esm/embla-carousel-reactive-utils.esm.js":
+/*!*********************************************************************************************!*\
+  !*** ./node_modules/embla-carousel-reactive-utils/esm/embla-carousel-reactive-utils.esm.js ***!
+  \*********************************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   areOptionsEqual: () => (/* binding */ areOptionsEqual),
+/* harmony export */   arePluginsEqual: () => (/* binding */ arePluginsEqual),
+/* harmony export */   canUseDOM: () => (/* binding */ canUseDOM),
+/* harmony export */   sortAndMapPluginToOptions: () => (/* binding */ sortAndMapPluginToOptions)
+/* harmony export */ });
+function isObject(subject) {
+  return Object.prototype.toString.call(subject) === '[object Object]';
+}
+function isRecord(subject) {
+  return isObject(subject) || Array.isArray(subject);
+}
+function canUseDOM() {
+  return !!(typeof window !== 'undefined' && window.document && window.document.createElement);
+}
+function areOptionsEqual(optionsA, optionsB) {
+  const optionsAKeys = Object.keys(optionsA);
+  const optionsBKeys = Object.keys(optionsB);
+  if (optionsAKeys.length !== optionsBKeys.length) return false;
+  const breakpointsA = JSON.stringify(Object.keys(optionsA.breakpoints || {}));
+  const breakpointsB = JSON.stringify(Object.keys(optionsB.breakpoints || {}));
+  if (breakpointsA !== breakpointsB) return false;
+  return optionsAKeys.every(key => {
+    const valueA = optionsA[key];
+    const valueB = optionsB[key];
+    if (typeof valueA === 'function') return `${valueA}` === `${valueB}`;
+    if (!isRecord(valueA) || !isRecord(valueB)) return valueA === valueB;
+    return areOptionsEqual(valueA, valueB);
+  });
+}
+function sortAndMapPluginToOptions(plugins) {
+  return plugins.concat().sort((a, b) => a.name > b.name ? 1 : -1).map(plugin => plugin.options);
+}
+function arePluginsEqual(pluginsA, pluginsB) {
+  if (pluginsA.length !== pluginsB.length) return false;
+  const optionsA = sortAndMapPluginToOptions(pluginsA);
+  const optionsB = sortAndMapPluginToOptions(pluginsB);
+  return optionsA.every((optionA, index) => {
+    const optionB = optionsB[index];
+    return areOptionsEqual(optionA, optionB);
+  });
+}
+
+
+//# sourceMappingURL=embla-carousel-reactive-utils.esm.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/embla-carousel/esm/embla-carousel.esm.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/embla-carousel/esm/embla-carousel.esm.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ EmblaCarousel)
+/* harmony export */ });
+function isNumber(subject) {
+  return typeof subject === 'number';
+}
+function isString(subject) {
+  return typeof subject === 'string';
+}
+function isBoolean(subject) {
+  return typeof subject === 'boolean';
+}
+function isObject(subject) {
+  return Object.prototype.toString.call(subject) === '[object Object]';
+}
+function mathAbs(n) {
+  return Math.abs(n);
+}
+function mathSign(n) {
+  return Math.sign(n);
+}
+function deltaAbs(valueB, valueA) {
+  return mathAbs(valueB - valueA);
+}
+function factorAbs(valueB, valueA) {
+  if (valueB === 0 || valueA === 0) return 0;
+  if (mathAbs(valueB) <= mathAbs(valueA)) return 0;
+  const diff = deltaAbs(mathAbs(valueB), mathAbs(valueA));
+  return mathAbs(diff / valueB);
+}
+function roundToTwoDecimals(num) {
+  return Math.round(num * 100) / 100;
+}
+function arrayKeys(array) {
+  return objectKeys(array).map(Number);
+}
+function arrayLast(array) {
+  return array[arrayLastIndex(array)];
+}
+function arrayLastIndex(array) {
+  return Math.max(0, array.length - 1);
+}
+function arrayIsLastIndex(array, index) {
+  return index === arrayLastIndex(array);
+}
+function arrayFromNumber(n, startAt = 0) {
+  return Array.from(Array(n), (_, i) => startAt + i);
+}
+function objectKeys(object) {
+  return Object.keys(object);
+}
+function objectsMergeDeep(objectA, objectB) {
+  return [objectA, objectB].reduce((mergedObjects, currentObject) => {
+    objectKeys(currentObject).forEach(key => {
+      const valueA = mergedObjects[key];
+      const valueB = currentObject[key];
+      const areObjects = isObject(valueA) && isObject(valueB);
+      mergedObjects[key] = areObjects ? objectsMergeDeep(valueA, valueB) : valueB;
+    });
+    return mergedObjects;
+  }, {});
+}
+function isMouseEvent(evt, ownerWindow) {
+  return typeof ownerWindow.MouseEvent !== 'undefined' && evt instanceof ownerWindow.MouseEvent;
+}
+
+function Alignment(align, viewSize) {
+  const predefined = {
+    start,
+    center,
+    end
+  };
+  function start() {
+    return 0;
+  }
+  function center(n) {
+    return end(n) / 2;
+  }
+  function end(n) {
+    return viewSize - n;
+  }
+  function measure(n, index) {
+    if (isString(align)) return predefined[align](n);
+    return align(viewSize, n, index);
+  }
+  const self = {
+    measure
+  };
+  return self;
+}
+
+function EventStore() {
+  let listeners = [];
+  function add(node, type, handler, options = {
+    passive: true
+  }) {
+    let removeListener;
+    if ('addEventListener' in node) {
+      node.addEventListener(type, handler, options);
+      removeListener = () => node.removeEventListener(type, handler, options);
+    } else {
+      const legacyMediaQueryList = node;
+      legacyMediaQueryList.addListener(handler);
+      removeListener = () => legacyMediaQueryList.removeListener(handler);
+    }
+    listeners.push(removeListener);
+    return self;
+  }
+  function clear() {
+    listeners = listeners.filter(remove => remove());
+  }
+  const self = {
+    add,
+    clear
+  };
+  return self;
+}
+
+function Animations(ownerDocument, ownerWindow, update, render) {
+  const documentVisibleHandler = EventStore();
+  const fixedTimeStep = 1000 / 60;
+  let lastTimeStamp = null;
+  let accumulatedTime = 0;
+  let animationId = 0;
+  function init() {
+    documentVisibleHandler.add(ownerDocument, 'visibilitychange', () => {
+      if (ownerDocument.hidden) reset();
+    });
+  }
+  function destroy() {
+    stop();
+    documentVisibleHandler.clear();
+  }
+  function animate(timeStamp) {
+    if (!animationId) return;
+    if (!lastTimeStamp) {
+      lastTimeStamp = timeStamp;
+      update();
+      update();
+    }
+    const timeElapsed = timeStamp - lastTimeStamp;
+    lastTimeStamp = timeStamp;
+    accumulatedTime += timeElapsed;
+    while (accumulatedTime >= fixedTimeStep) {
+      update();
+      accumulatedTime -= fixedTimeStep;
+    }
+    const alpha = accumulatedTime / fixedTimeStep;
+    render(alpha);
+    if (animationId) {
+      animationId = ownerWindow.requestAnimationFrame(animate);
+    }
+  }
+  function start() {
+    if (animationId) return;
+    animationId = ownerWindow.requestAnimationFrame(animate);
+  }
+  function stop() {
+    ownerWindow.cancelAnimationFrame(animationId);
+    lastTimeStamp = null;
+    accumulatedTime = 0;
+    animationId = 0;
+  }
+  function reset() {
+    lastTimeStamp = null;
+    accumulatedTime = 0;
+  }
+  const self = {
+    init,
+    destroy,
+    start,
+    stop,
+    update,
+    render
+  };
+  return self;
+}
+
+function Axis(axis, contentDirection) {
+  const isRightToLeft = contentDirection === 'rtl';
+  const isVertical = axis === 'y';
+  const scroll = isVertical ? 'y' : 'x';
+  const cross = isVertical ? 'x' : 'y';
+  const sign = !isVertical && isRightToLeft ? -1 : 1;
+  const startEdge = getStartEdge();
+  const endEdge = getEndEdge();
+  function measureSize(nodeRect) {
+    const {
+      height,
+      width
+    } = nodeRect;
+    return isVertical ? height : width;
+  }
+  function getStartEdge() {
+    if (isVertical) return 'top';
+    return isRightToLeft ? 'right' : 'left';
+  }
+  function getEndEdge() {
+    if (isVertical) return 'bottom';
+    return isRightToLeft ? 'left' : 'right';
+  }
+  function direction(n) {
+    return n * sign;
+  }
+  const self = {
+    scroll,
+    cross,
+    startEdge,
+    endEdge,
+    measureSize,
+    direction
+  };
+  return self;
+}
+
+function Limit(min = 0, max = 0) {
+  const length = mathAbs(min - max);
+  function reachedMin(n) {
+    return n < min;
+  }
+  function reachedMax(n) {
+    return n > max;
+  }
+  function reachedAny(n) {
+    return reachedMin(n) || reachedMax(n);
+  }
+  function constrain(n) {
+    if (!reachedAny(n)) return n;
+    return reachedMin(n) ? min : max;
+  }
+  function removeOffset(n) {
+    if (!length) return n;
+    return n - length * Math.ceil((n - max) / length);
+  }
+  const self = {
+    length,
+    max,
+    min,
+    constrain,
+    reachedAny,
+    reachedMax,
+    reachedMin,
+    removeOffset
+  };
+  return self;
+}
+
+function Counter(max, start, loop) {
+  const {
+    constrain
+  } = Limit(0, max);
+  const loopEnd = max + 1;
+  let counter = withinLimit(start);
+  function withinLimit(n) {
+    return !loop ? constrain(n) : mathAbs((loopEnd + n) % loopEnd);
+  }
+  function get() {
+    return counter;
+  }
+  function set(n) {
+    counter = withinLimit(n);
+    return self;
+  }
+  function add(n) {
+    return clone().set(get() + n);
+  }
+  function clone() {
+    return Counter(max, get(), loop);
+  }
+  const self = {
+    get,
+    set,
+    add,
+    clone
+  };
+  return self;
+}
+
+function DragHandler(axis, rootNode, ownerDocument, ownerWindow, target, dragTracker, location, animation, scrollTo, scrollBody, scrollTarget, index, eventHandler, percentOfView, dragFree, dragThreshold, skipSnaps, baseFriction, watchDrag) {
+  const {
+    cross: crossAxis,
+    direction
+  } = axis;
+  const focusNodes = ['INPUT', 'SELECT', 'TEXTAREA'];
+  const nonPassiveEvent = {
+    passive: false
+  };
+  const initEvents = EventStore();
+  const dragEvents = EventStore();
+  const goToNextThreshold = Limit(50, 225).constrain(percentOfView.measure(20));
+  const snapForceBoost = {
+    mouse: 300,
+    touch: 400
+  };
+  const freeForceBoost = {
+    mouse: 500,
+    touch: 600
+  };
+  const baseSpeed = dragFree ? 43 : 25;
+  let isMoving = false;
+  let startScroll = 0;
+  let startCross = 0;
+  let pointerIsDown = false;
+  let preventScroll = false;
+  let preventClick = false;
+  let isMouse = false;
+  function init(emblaApi) {
+    if (!watchDrag) return;
+    function downIfAllowed(evt) {
+      if (isBoolean(watchDrag) || watchDrag(emblaApi, evt)) down(evt);
+    }
+    const node = rootNode;
+    initEvents.add(node, 'dragstart', evt => evt.preventDefault(), nonPassiveEvent).add(node, 'touchmove', () => undefined, nonPassiveEvent).add(node, 'touchend', () => undefined).add(node, 'touchstart', downIfAllowed).add(node, 'mousedown', downIfAllowed).add(node, 'touchcancel', up).add(node, 'contextmenu', up).add(node, 'click', click, true);
+  }
+  function destroy() {
+    initEvents.clear();
+    dragEvents.clear();
+  }
+  function addDragEvents() {
+    const node = isMouse ? ownerDocument : rootNode;
+    dragEvents.add(node, 'touchmove', move, nonPassiveEvent).add(node, 'touchend', up).add(node, 'mousemove', move, nonPassiveEvent).add(node, 'mouseup', up);
+  }
+  function isFocusNode(node) {
+    const nodeName = node.nodeName || '';
+    return focusNodes.includes(nodeName);
+  }
+  function forceBoost() {
+    const boost = dragFree ? freeForceBoost : snapForceBoost;
+    const type = isMouse ? 'mouse' : 'touch';
+    return boost[type];
+  }
+  function allowedForce(force, targetChanged) {
+    const next = index.add(mathSign(force) * -1);
+    const baseForce = scrollTarget.byDistance(force, !dragFree).distance;
+    if (dragFree || mathAbs(force) < goToNextThreshold) return baseForce;
+    if (skipSnaps && targetChanged) return baseForce * 0.5;
+    return scrollTarget.byIndex(next.get(), 0).distance;
+  }
+  function down(evt) {
+    const isMouseEvt = isMouseEvent(evt, ownerWindow);
+    isMouse = isMouseEvt;
+    preventClick = dragFree && isMouseEvt && !evt.buttons && isMoving;
+    isMoving = deltaAbs(target.get(), location.get()) >= 2;
+    if (isMouseEvt && evt.button !== 0) return;
+    if (isFocusNode(evt.target)) return;
+    pointerIsDown = true;
+    dragTracker.pointerDown(evt);
+    scrollBody.useFriction(0).useDuration(0);
+    target.set(location);
+    addDragEvents();
+    startScroll = dragTracker.readPoint(evt);
+    startCross = dragTracker.readPoint(evt, crossAxis);
+    eventHandler.emit('pointerDown');
+  }
+  function move(evt) {
+    const isTouchEvt = !isMouseEvent(evt, ownerWindow);
+    if (isTouchEvt && evt.touches.length >= 2) return up(evt);
+    const lastScroll = dragTracker.readPoint(evt);
+    const lastCross = dragTracker.readPoint(evt, crossAxis);
+    const diffScroll = deltaAbs(lastScroll, startScroll);
+    const diffCross = deltaAbs(lastCross, startCross);
+    if (!preventScroll && !isMouse) {
+      if (!evt.cancelable) return up(evt);
+      preventScroll = diffScroll > diffCross;
+      if (!preventScroll) return up(evt);
+    }
+    const diff = dragTracker.pointerMove(evt);
+    if (diffScroll > dragThreshold) preventClick = true;
+    scrollBody.useFriction(0.3).useDuration(0.75);
+    animation.start();
+    target.add(direction(diff));
+    evt.preventDefault();
+  }
+  function up(evt) {
+    const currentLocation = scrollTarget.byDistance(0, false);
+    const targetChanged = currentLocation.index !== index.get();
+    const rawForce = dragTracker.pointerUp(evt) * forceBoost();
+    const force = allowedForce(direction(rawForce), targetChanged);
+    const forceFactor = factorAbs(rawForce, force);
+    const speed = baseSpeed - 10 * forceFactor;
+    const friction = baseFriction + forceFactor / 50;
+    preventScroll = false;
+    pointerIsDown = false;
+    dragEvents.clear();
+    scrollBody.useDuration(speed).useFriction(friction);
+    scrollTo.distance(force, !dragFree);
+    isMouse = false;
+    eventHandler.emit('pointerUp');
+  }
+  function click(evt) {
+    if (preventClick) {
+      evt.stopPropagation();
+      evt.preventDefault();
+      preventClick = false;
+    }
+  }
+  function pointerDown() {
+    return pointerIsDown;
+  }
+  const self = {
+    init,
+    destroy,
+    pointerDown
+  };
+  return self;
+}
+
+function DragTracker(axis, ownerWindow) {
+  const logInterval = 170;
+  let startEvent;
+  let lastEvent;
+  function readTime(evt) {
+    return evt.timeStamp;
+  }
+  function readPoint(evt, evtAxis) {
+    const property = evtAxis || axis.scroll;
+    const coord = `client${property === 'x' ? 'X' : 'Y'}`;
+    return (isMouseEvent(evt, ownerWindow) ? evt : evt.touches[0])[coord];
+  }
+  function pointerDown(evt) {
+    startEvent = evt;
+    lastEvent = evt;
+    return readPoint(evt);
+  }
+  function pointerMove(evt) {
+    const diff = readPoint(evt) - readPoint(lastEvent);
+    const expired = readTime(evt) - readTime(startEvent) > logInterval;
+    lastEvent = evt;
+    if (expired) startEvent = evt;
+    return diff;
+  }
+  function pointerUp(evt) {
+    if (!startEvent || !lastEvent) return 0;
+    const diffDrag = readPoint(lastEvent) - readPoint(startEvent);
+    const diffTime = readTime(evt) - readTime(startEvent);
+    const expired = readTime(evt) - readTime(lastEvent) > logInterval;
+    const force = diffDrag / diffTime;
+    const isFlick = diffTime && !expired && mathAbs(force) > 0.1;
+    return isFlick ? force : 0;
+  }
+  const self = {
+    pointerDown,
+    pointerMove,
+    pointerUp,
+    readPoint
+  };
+  return self;
+}
+
+function NodeRects() {
+  function measure(node) {
+    const {
+      offsetTop,
+      offsetLeft,
+      offsetWidth,
+      offsetHeight
+    } = node;
+    const offset = {
+      top: offsetTop,
+      right: offsetLeft + offsetWidth,
+      bottom: offsetTop + offsetHeight,
+      left: offsetLeft,
+      width: offsetWidth,
+      height: offsetHeight
+    };
+    return offset;
+  }
+  const self = {
+    measure
+  };
+  return self;
+}
+
+function PercentOfView(viewSize) {
+  function measure(n) {
+    return viewSize * (n / 100);
+  }
+  const self = {
+    measure
+  };
+  return self;
+}
+
+function ResizeHandler(container, eventHandler, ownerWindow, slides, axis, watchResize, nodeRects) {
+  const observeNodes = [container].concat(slides);
+  let resizeObserver;
+  let containerSize;
+  let slideSizes = [];
+  let destroyed = false;
+  function readSize(node) {
+    return axis.measureSize(nodeRects.measure(node));
+  }
+  function init(emblaApi) {
+    if (!watchResize) return;
+    containerSize = readSize(container);
+    slideSizes = slides.map(readSize);
+    function defaultCallback(entries) {
+      for (const entry of entries) {
+        if (destroyed) return;
+        const isContainer = entry.target === container;
+        const slideIndex = slides.indexOf(entry.target);
+        const lastSize = isContainer ? containerSize : slideSizes[slideIndex];
+        const newSize = readSize(isContainer ? container : slides[slideIndex]);
+        const diffSize = mathAbs(newSize - lastSize);
+        if (diffSize >= 0.5) {
+          emblaApi.reInit();
+          eventHandler.emit('resize');
+          break;
+        }
+      }
+    }
+    resizeObserver = new ResizeObserver(entries => {
+      if (isBoolean(watchResize) || watchResize(emblaApi, entries)) {
+        defaultCallback(entries);
+      }
+    });
+    ownerWindow.requestAnimationFrame(() => {
+      observeNodes.forEach(node => resizeObserver.observe(node));
+    });
+  }
+  function destroy() {
+    destroyed = true;
+    if (resizeObserver) resizeObserver.disconnect();
+  }
+  const self = {
+    init,
+    destroy
+  };
+  return self;
+}
+
+function ScrollBody(location, offsetLocation, previousLocation, target, baseDuration, baseFriction) {
+  let scrollVelocity = 0;
+  let scrollDirection = 0;
+  let scrollDuration = baseDuration;
+  let scrollFriction = baseFriction;
+  let rawLocation = location.get();
+  let rawLocationPrevious = 0;
+  function seek() {
+    const displacement = target.get() - location.get();
+    const isInstant = !scrollDuration;
+    let scrollDistance = 0;
+    if (isInstant) {
+      scrollVelocity = 0;
+      previousLocation.set(target);
+      location.set(target);
+      scrollDistance = displacement;
+    } else {
+      previousLocation.set(location);
+      scrollVelocity += displacement / scrollDuration;
+      scrollVelocity *= scrollFriction;
+      rawLocation += scrollVelocity;
+      location.add(scrollVelocity);
+      scrollDistance = rawLocation - rawLocationPrevious;
+    }
+    scrollDirection = mathSign(scrollDistance);
+    rawLocationPrevious = rawLocation;
+    return self;
+  }
+  function settled() {
+    const diff = target.get() - offsetLocation.get();
+    return mathAbs(diff) < 0.001;
+  }
+  function duration() {
+    return scrollDuration;
+  }
+  function direction() {
+    return scrollDirection;
+  }
+  function velocity() {
+    return scrollVelocity;
+  }
+  function useBaseDuration() {
+    return useDuration(baseDuration);
+  }
+  function useBaseFriction() {
+    return useFriction(baseFriction);
+  }
+  function useDuration(n) {
+    scrollDuration = n;
+    return self;
+  }
+  function useFriction(n) {
+    scrollFriction = n;
+    return self;
+  }
+  const self = {
+    direction,
+    duration,
+    velocity,
+    seek,
+    settled,
+    useBaseFriction,
+    useBaseDuration,
+    useFriction,
+    useDuration
+  };
+  return self;
+}
+
+function ScrollBounds(limit, location, target, scrollBody, percentOfView) {
+  const pullBackThreshold = percentOfView.measure(10);
+  const edgeOffsetTolerance = percentOfView.measure(50);
+  const frictionLimit = Limit(0.1, 0.99);
+  let disabled = false;
+  function shouldConstrain() {
+    if (disabled) return false;
+    if (!limit.reachedAny(target.get())) return false;
+    if (!limit.reachedAny(location.get())) return false;
+    return true;
+  }
+  function constrain(pointerDown) {
+    if (!shouldConstrain()) return;
+    const edge = limit.reachedMin(location.get()) ? 'min' : 'max';
+    const diffToEdge = mathAbs(limit[edge] - location.get());
+    const diffToTarget = target.get() - location.get();
+    const friction = frictionLimit.constrain(diffToEdge / edgeOffsetTolerance);
+    target.subtract(diffToTarget * friction);
+    if (!pointerDown && mathAbs(diffToTarget) < pullBackThreshold) {
+      target.set(limit.constrain(target.get()));
+      scrollBody.useDuration(25).useBaseFriction();
+    }
+  }
+  function toggleActive(active) {
+    disabled = !active;
+  }
+  const self = {
+    shouldConstrain,
+    constrain,
+    toggleActive
+  };
+  return self;
+}
+
+function ScrollContain(viewSize, contentSize, snapsAligned, containScroll, pixelTolerance) {
+  const scrollBounds = Limit(-contentSize + viewSize, 0);
+  const snapsBounded = measureBounded();
+  const scrollContainLimit = findScrollContainLimit();
+  const snapsContained = measureContained();
+  function usePixelTolerance(bound, snap) {
+    return deltaAbs(bound, snap) <= 1;
+  }
+  function findScrollContainLimit() {
+    const startSnap = snapsBounded[0];
+    const endSnap = arrayLast(snapsBounded);
+    const min = snapsBounded.lastIndexOf(startSnap);
+    const max = snapsBounded.indexOf(endSnap) + 1;
+    return Limit(min, max);
+  }
+  function measureBounded() {
+    return snapsAligned.map((snapAligned, index) => {
+      const {
+        min,
+        max
+      } = scrollBounds;
+      const snap = scrollBounds.constrain(snapAligned);
+      const isFirst = !index;
+      const isLast = arrayIsLastIndex(snapsAligned, index);
+      if (isFirst) return max;
+      if (isLast) return min;
+      if (usePixelTolerance(min, snap)) return min;
+      if (usePixelTolerance(max, snap)) return max;
+      return snap;
+    }).map(scrollBound => parseFloat(scrollBound.toFixed(3)));
+  }
+  function measureContained() {
+    if (contentSize <= viewSize + pixelTolerance) return [scrollBounds.max];
+    if (containScroll === 'keepSnaps') return snapsBounded;
+    const {
+      min,
+      max
+    } = scrollContainLimit;
+    return snapsBounded.slice(min, max);
+  }
+  const self = {
+    snapsContained,
+    scrollContainLimit
+  };
+  return self;
+}
+
+function ScrollLimit(contentSize, scrollSnaps, loop) {
+  const max = scrollSnaps[0];
+  const min = loop ? max - contentSize : arrayLast(scrollSnaps);
+  const limit = Limit(min, max);
+  const self = {
+    limit
+  };
+  return self;
+}
+
+function ScrollLooper(contentSize, limit, location, vectors) {
+  const jointSafety = 0.1;
+  const min = limit.min + jointSafety;
+  const max = limit.max + jointSafety;
+  const {
+    reachedMin,
+    reachedMax
+  } = Limit(min, max);
+  function shouldLoop(direction) {
+    if (direction === 1) return reachedMax(location.get());
+    if (direction === -1) return reachedMin(location.get());
+    return false;
+  }
+  function loop(direction) {
+    if (!shouldLoop(direction)) return;
+    const loopDistance = contentSize * (direction * -1);
+    vectors.forEach(v => v.add(loopDistance));
+  }
+  const self = {
+    loop
+  };
+  return self;
+}
+
+function ScrollProgress(limit) {
+  const {
+    max,
+    length
+  } = limit;
+  function get(n) {
+    const currentLocation = n - max;
+    return length ? currentLocation / -length : 0;
+  }
+  const self = {
+    get
+  };
+  return self;
+}
+
+function ScrollSnaps(axis, alignment, containerRect, slideRects, slidesToScroll) {
+  const {
+    startEdge,
+    endEdge
+  } = axis;
+  const {
+    groupSlides
+  } = slidesToScroll;
+  const alignments = measureSizes().map(alignment.measure);
+  const snaps = measureUnaligned();
+  const snapsAligned = measureAligned();
+  function measureSizes() {
+    return groupSlides(slideRects).map(rects => arrayLast(rects)[endEdge] - rects[0][startEdge]).map(mathAbs);
+  }
+  function measureUnaligned() {
+    return slideRects.map(rect => containerRect[startEdge] - rect[startEdge]).map(snap => -mathAbs(snap));
+  }
+  function measureAligned() {
+    return groupSlides(snaps).map(g => g[0]).map((snap, index) => snap + alignments[index]);
+  }
+  const self = {
+    snaps,
+    snapsAligned
+  };
+  return self;
+}
+
+function SlideRegistry(containSnaps, containScroll, scrollSnaps, scrollContainLimit, slidesToScroll, slideIndexes) {
+  const {
+    groupSlides
+  } = slidesToScroll;
+  const {
+    min,
+    max
+  } = scrollContainLimit;
+  const slideRegistry = createSlideRegistry();
+  function createSlideRegistry() {
+    const groupedSlideIndexes = groupSlides(slideIndexes);
+    const doNotContain = !containSnaps || containScroll === 'keepSnaps';
+    if (scrollSnaps.length === 1) return [slideIndexes];
+    if (doNotContain) return groupedSlideIndexes;
+    return groupedSlideIndexes.slice(min, max).map((group, index, groups) => {
+      const isFirst = !index;
+      const isLast = arrayIsLastIndex(groups, index);
+      if (isFirst) {
+        const range = arrayLast(groups[0]) + 1;
+        return arrayFromNumber(range);
+      }
+      if (isLast) {
+        const range = arrayLastIndex(slideIndexes) - arrayLast(groups)[0] + 1;
+        return arrayFromNumber(range, arrayLast(groups)[0]);
+      }
+      return group;
+    });
+  }
+  const self = {
+    slideRegistry
+  };
+  return self;
+}
+
+function ScrollTarget(loop, scrollSnaps, contentSize, limit, targetVector) {
+  const {
+    reachedAny,
+    removeOffset,
+    constrain
+  } = limit;
+  function minDistance(distances) {
+    return distances.concat().sort((a, b) => mathAbs(a) - mathAbs(b))[0];
+  }
+  function findTargetSnap(target) {
+    const distance = loop ? removeOffset(target) : constrain(target);
+    const ascDiffsToSnaps = scrollSnaps.map((snap, index) => ({
+      diff: shortcut(snap - distance, 0),
+      index
+    })).sort((d1, d2) => mathAbs(d1.diff) - mathAbs(d2.diff));
+    const {
+      index
+    } = ascDiffsToSnaps[0];
+    return {
+      index,
+      distance
+    };
+  }
+  function shortcut(target, direction) {
+    const targets = [target, target + contentSize, target - contentSize];
+    if (!loop) return target;
+    if (!direction) return minDistance(targets);
+    const matchingTargets = targets.filter(t => mathSign(t) === direction);
+    if (matchingTargets.length) return minDistance(matchingTargets);
+    return arrayLast(targets) - contentSize;
+  }
+  function byIndex(index, direction) {
+    const diffToSnap = scrollSnaps[index] - targetVector.get();
+    const distance = shortcut(diffToSnap, direction);
+    return {
+      index,
+      distance
+    };
+  }
+  function byDistance(distance, snap) {
+    const target = targetVector.get() + distance;
+    const {
+      index,
+      distance: targetSnapDistance
+    } = findTargetSnap(target);
+    const reachedBound = !loop && reachedAny(target);
+    if (!snap || reachedBound) return {
+      index,
+      distance
+    };
+    const diffToSnap = scrollSnaps[index] - targetSnapDistance;
+    const snapDistance = distance + shortcut(diffToSnap, 0);
+    return {
+      index,
+      distance: snapDistance
+    };
+  }
+  const self = {
+    byDistance,
+    byIndex,
+    shortcut
+  };
+  return self;
+}
+
+function ScrollTo(animation, indexCurrent, indexPrevious, scrollBody, scrollTarget, targetVector, eventHandler) {
+  function scrollTo(target) {
+    const distanceDiff = target.distance;
+    const indexDiff = target.index !== indexCurrent.get();
+    targetVector.add(distanceDiff);
+    if (distanceDiff) {
+      if (scrollBody.duration()) {
+        animation.start();
+      } else {
+        animation.update();
+        animation.render(1);
+        animation.update();
+      }
+    }
+    if (indexDiff) {
+      indexPrevious.set(indexCurrent.get());
+      indexCurrent.set(target.index);
+      eventHandler.emit('select');
+    }
+  }
+  function distance(n, snap) {
+    const target = scrollTarget.byDistance(n, snap);
+    scrollTo(target);
+  }
+  function index(n, direction) {
+    const targetIndex = indexCurrent.clone().set(n);
+    const target = scrollTarget.byIndex(targetIndex.get(), direction);
+    scrollTo(target);
+  }
+  const self = {
+    distance,
+    index
+  };
+  return self;
+}
+
+function SlideFocus(root, slides, slideRegistry, scrollTo, scrollBody, eventStore, eventHandler, watchFocus) {
+  const focusListenerOptions = {
+    passive: true,
+    capture: true
+  };
+  let lastTabPressTime = 0;
+  function init(emblaApi) {
+    if (!watchFocus) return;
+    function defaultCallback(index) {
+      const nowTime = new Date().getTime();
+      const diffTime = nowTime - lastTabPressTime;
+      if (diffTime > 10) return;
+      eventHandler.emit('slideFocusStart');
+      root.scrollLeft = 0;
+      const group = slideRegistry.findIndex(group => group.includes(index));
+      if (!isNumber(group)) return;
+      scrollBody.useDuration(0);
+      scrollTo.index(group, 0);
+      eventHandler.emit('slideFocus');
+    }
+    eventStore.add(document, 'keydown', registerTabPress, false);
+    slides.forEach((slide, slideIndex) => {
+      eventStore.add(slide, 'focus', evt => {
+        if (isBoolean(watchFocus) || watchFocus(emblaApi, evt)) {
+          defaultCallback(slideIndex);
+        }
+      }, focusListenerOptions);
+    });
+  }
+  function registerTabPress(event) {
+    if (event.code === 'Tab') lastTabPressTime = new Date().getTime();
+  }
+  const self = {
+    init
+  };
+  return self;
+}
+
+function Vector1D(initialValue) {
+  let value = initialValue;
+  function get() {
+    return value;
+  }
+  function set(n) {
+    value = normalizeInput(n);
+  }
+  function add(n) {
+    value += normalizeInput(n);
+  }
+  function subtract(n) {
+    value -= normalizeInput(n);
+  }
+  function normalizeInput(n) {
+    return isNumber(n) ? n : n.get();
+  }
+  const self = {
+    get,
+    set,
+    add,
+    subtract
+  };
+  return self;
+}
+
+function Translate(axis, container) {
+  const translate = axis.scroll === 'x' ? x : y;
+  const containerStyle = container.style;
+  let previousTarget = null;
+  let disabled = false;
+  function x(n) {
+    return `translate3d(${n}px,0px,0px)`;
+  }
+  function y(n) {
+    return `translate3d(0px,${n}px,0px)`;
+  }
+  function to(target) {
+    if (disabled) return;
+    const newTarget = roundToTwoDecimals(axis.direction(target));
+    if (newTarget === previousTarget) return;
+    containerStyle.transform = translate(newTarget);
+    previousTarget = newTarget;
+  }
+  function toggleActive(active) {
+    disabled = !active;
+  }
+  function clear() {
+    if (disabled) return;
+    containerStyle.transform = '';
+    if (!container.getAttribute('style')) container.removeAttribute('style');
+  }
+  const self = {
+    clear,
+    to,
+    toggleActive
+  };
+  return self;
+}
+
+function SlideLooper(axis, viewSize, contentSize, slideSizes, slideSizesWithGaps, snaps, scrollSnaps, location, slides) {
+  const roundingSafety = 0.5;
+  const ascItems = arrayKeys(slideSizesWithGaps);
+  const descItems = arrayKeys(slideSizesWithGaps).reverse();
+  const loopPoints = startPoints().concat(endPoints());
+  function removeSlideSizes(indexes, from) {
+    return indexes.reduce((a, i) => {
+      return a - slideSizesWithGaps[i];
+    }, from);
+  }
+  function slidesInGap(indexes, gap) {
+    return indexes.reduce((a, i) => {
+      const remainingGap = removeSlideSizes(a, gap);
+      return remainingGap > 0 ? a.concat([i]) : a;
+    }, []);
+  }
+  function findSlideBounds(offset) {
+    return snaps.map((snap, index) => ({
+      start: snap - slideSizes[index] + roundingSafety + offset,
+      end: snap + viewSize - roundingSafety + offset
+    }));
+  }
+  function findLoopPoints(indexes, offset, isEndEdge) {
+    const slideBounds = findSlideBounds(offset);
+    return indexes.map(index => {
+      const initial = isEndEdge ? 0 : -contentSize;
+      const altered = isEndEdge ? contentSize : 0;
+      const boundEdge = isEndEdge ? 'end' : 'start';
+      const loopPoint = slideBounds[index][boundEdge];
+      return {
+        index,
+        loopPoint,
+        slideLocation: Vector1D(-1),
+        translate: Translate(axis, slides[index]),
+        target: () => location.get() > loopPoint ? initial : altered
+      };
+    });
+  }
+  function startPoints() {
+    const gap = scrollSnaps[0];
+    const indexes = slidesInGap(descItems, gap);
+    return findLoopPoints(indexes, contentSize, false);
+  }
+  function endPoints() {
+    const gap = viewSize - scrollSnaps[0] - 1;
+    const indexes = slidesInGap(ascItems, gap);
+    return findLoopPoints(indexes, -contentSize, true);
+  }
+  function canLoop() {
+    return loopPoints.every(({
+      index
+    }) => {
+      const otherIndexes = ascItems.filter(i => i !== index);
+      return removeSlideSizes(otherIndexes, viewSize) <= 0.1;
+    });
+  }
+  function loop() {
+    loopPoints.forEach(loopPoint => {
+      const {
+        target,
+        translate,
+        slideLocation
+      } = loopPoint;
+      const shiftLocation = target();
+      if (shiftLocation === slideLocation.get()) return;
+      translate.to(shiftLocation);
+      slideLocation.set(shiftLocation);
+    });
+  }
+  function clear() {
+    loopPoints.forEach(loopPoint => loopPoint.translate.clear());
+  }
+  const self = {
+    canLoop,
+    clear,
+    loop,
+    loopPoints
+  };
+  return self;
+}
+
+function SlidesHandler(container, eventHandler, watchSlides) {
+  let mutationObserver;
+  let destroyed = false;
+  function init(emblaApi) {
+    if (!watchSlides) return;
+    function defaultCallback(mutations) {
+      for (const mutation of mutations) {
+        if (mutation.type === 'childList') {
+          emblaApi.reInit();
+          eventHandler.emit('slidesChanged');
+          break;
+        }
+      }
+    }
+    mutationObserver = new MutationObserver(mutations => {
+      if (destroyed) return;
+      if (isBoolean(watchSlides) || watchSlides(emblaApi, mutations)) {
+        defaultCallback(mutations);
+      }
+    });
+    mutationObserver.observe(container, {
+      childList: true
+    });
+  }
+  function destroy() {
+    if (mutationObserver) mutationObserver.disconnect();
+    destroyed = true;
+  }
+  const self = {
+    init,
+    destroy
+  };
+  return self;
+}
+
+function SlidesInView(container, slides, eventHandler, threshold) {
+  const intersectionEntryMap = {};
+  let inViewCache = null;
+  let notInViewCache = null;
+  let intersectionObserver;
+  let destroyed = false;
+  function init() {
+    intersectionObserver = new IntersectionObserver(entries => {
+      if (destroyed) return;
+      entries.forEach(entry => {
+        const index = slides.indexOf(entry.target);
+        intersectionEntryMap[index] = entry;
+      });
+      inViewCache = null;
+      notInViewCache = null;
+      eventHandler.emit('slidesInView');
+    }, {
+      root: container.parentElement,
+      threshold
+    });
+    slides.forEach(slide => intersectionObserver.observe(slide));
+  }
+  function destroy() {
+    if (intersectionObserver) intersectionObserver.disconnect();
+    destroyed = true;
+  }
+  function createInViewList(inView) {
+    return objectKeys(intersectionEntryMap).reduce((list, slideIndex) => {
+      const index = parseInt(slideIndex);
+      const {
+        isIntersecting
+      } = intersectionEntryMap[index];
+      const inViewMatch = inView && isIntersecting;
+      const notInViewMatch = !inView && !isIntersecting;
+      if (inViewMatch || notInViewMatch) list.push(index);
+      return list;
+    }, []);
+  }
+  function get(inView = true) {
+    if (inView && inViewCache) return inViewCache;
+    if (!inView && notInViewCache) return notInViewCache;
+    const slideIndexes = createInViewList(inView);
+    if (inView) inViewCache = slideIndexes;
+    if (!inView) notInViewCache = slideIndexes;
+    return slideIndexes;
+  }
+  const self = {
+    init,
+    destroy,
+    get
+  };
+  return self;
+}
+
+function SlideSizes(axis, containerRect, slideRects, slides, readEdgeGap, ownerWindow) {
+  const {
+    measureSize,
+    startEdge,
+    endEdge
+  } = axis;
+  const withEdgeGap = slideRects[0] && readEdgeGap;
+  const startGap = measureStartGap();
+  const endGap = measureEndGap();
+  const slideSizes = slideRects.map(measureSize);
+  const slideSizesWithGaps = measureWithGaps();
+  function measureStartGap() {
+    if (!withEdgeGap) return 0;
+    const slideRect = slideRects[0];
+    return mathAbs(containerRect[startEdge] - slideRect[startEdge]);
+  }
+  function measureEndGap() {
+    if (!withEdgeGap) return 0;
+    const style = ownerWindow.getComputedStyle(arrayLast(slides));
+    return parseFloat(style.getPropertyValue(`margin-${endEdge}`));
+  }
+  function measureWithGaps() {
+    return slideRects.map((rect, index, rects) => {
+      const isFirst = !index;
+      const isLast = arrayIsLastIndex(rects, index);
+      if (isFirst) return slideSizes[index] + startGap;
+      if (isLast) return slideSizes[index] + endGap;
+      return rects[index + 1][startEdge] - rect[startEdge];
+    }).map(mathAbs);
+  }
+  const self = {
+    slideSizes,
+    slideSizesWithGaps,
+    startGap,
+    endGap
+  };
+  return self;
+}
+
+function SlidesToScroll(axis, viewSize, slidesToScroll, loop, containerRect, slideRects, startGap, endGap, pixelTolerance) {
+  const {
+    startEdge,
+    endEdge,
+    direction
+  } = axis;
+  const groupByNumber = isNumber(slidesToScroll);
+  function byNumber(array, groupSize) {
+    return arrayKeys(array).filter(i => i % groupSize === 0).map(i => array.slice(i, i + groupSize));
+  }
+  function bySize(array) {
+    if (!array.length) return [];
+    return arrayKeys(array).reduce((groups, rectB, index) => {
+      const rectA = arrayLast(groups) || 0;
+      const isFirst = rectA === 0;
+      const isLast = rectB === arrayLastIndex(array);
+      const edgeA = containerRect[startEdge] - slideRects[rectA][startEdge];
+      const edgeB = containerRect[startEdge] - slideRects[rectB][endEdge];
+      const gapA = !loop && isFirst ? direction(startGap) : 0;
+      const gapB = !loop && isLast ? direction(endGap) : 0;
+      const chunkSize = mathAbs(edgeB - gapB - (edgeA + gapA));
+      if (index && chunkSize > viewSize + pixelTolerance) groups.push(rectB);
+      if (isLast) groups.push(array.length);
+      return groups;
+    }, []).map((currentSize, index, groups) => {
+      const previousSize = Math.max(groups[index - 1] || 0);
+      return array.slice(previousSize, currentSize);
+    });
+  }
+  function groupSlides(array) {
+    return groupByNumber ? byNumber(array, slidesToScroll) : bySize(array);
+  }
+  const self = {
+    groupSlides
+  };
+  return self;
+}
+
+function Engine(root, container, slides, ownerDocument, ownerWindow, options, eventHandler) {
+  // Options
+  const {
+    align,
+    axis: scrollAxis,
+    direction,
+    startIndex,
+    loop,
+    duration,
+    dragFree,
+    dragThreshold,
+    inViewThreshold,
+    slidesToScroll: groupSlides,
+    skipSnaps,
+    containScroll,
+    watchResize,
+    watchSlides,
+    watchDrag,
+    watchFocus
+  } = options;
+  // Measurements
+  const pixelTolerance = 2;
+  const nodeRects = NodeRects();
+  const containerRect = nodeRects.measure(container);
+  const slideRects = slides.map(nodeRects.measure);
+  const axis = Axis(scrollAxis, direction);
+  const viewSize = axis.measureSize(containerRect);
+  const percentOfView = PercentOfView(viewSize);
+  const alignment = Alignment(align, viewSize);
+  const containSnaps = !loop && !!containScroll;
+  const readEdgeGap = loop || !!containScroll;
+  const {
+    slideSizes,
+    slideSizesWithGaps,
+    startGap,
+    endGap
+  } = SlideSizes(axis, containerRect, slideRects, slides, readEdgeGap, ownerWindow);
+  const slidesToScroll = SlidesToScroll(axis, viewSize, groupSlides, loop, containerRect, slideRects, startGap, endGap, pixelTolerance);
+  const {
+    snaps,
+    snapsAligned
+  } = ScrollSnaps(axis, alignment, containerRect, slideRects, slidesToScroll);
+  const contentSize = -arrayLast(snaps) + arrayLast(slideSizesWithGaps);
+  const {
+    snapsContained,
+    scrollContainLimit
+  } = ScrollContain(viewSize, contentSize, snapsAligned, containScroll, pixelTolerance);
+  const scrollSnaps = containSnaps ? snapsContained : snapsAligned;
+  const {
+    limit
+  } = ScrollLimit(contentSize, scrollSnaps, loop);
+  // Indexes
+  const index = Counter(arrayLastIndex(scrollSnaps), startIndex, loop);
+  const indexPrevious = index.clone();
+  const slideIndexes = arrayKeys(slides);
+  // Animation
+  const update = ({
+    dragHandler,
+    scrollBody,
+    scrollBounds,
+    options: {
+      loop
+    }
+  }) => {
+    if (!loop) scrollBounds.constrain(dragHandler.pointerDown());
+    scrollBody.seek();
+  };
+  const render = ({
+    scrollBody,
+    translate,
+    location,
+    offsetLocation,
+    previousLocation,
+    scrollLooper,
+    slideLooper,
+    dragHandler,
+    animation,
+    eventHandler,
+    scrollBounds,
+    options: {
+      loop
+    }
+  }, alpha) => {
+    const shouldSettle = scrollBody.settled();
+    const withinBounds = !scrollBounds.shouldConstrain();
+    const hasSettled = loop ? shouldSettle : shouldSettle && withinBounds;
+    const hasSettledAndIdle = hasSettled && !dragHandler.pointerDown();
+    if (hasSettledAndIdle) animation.stop();
+    const interpolatedLocation = location.get() * alpha + previousLocation.get() * (1 - alpha);
+    offsetLocation.set(interpolatedLocation);
+    if (loop) {
+      scrollLooper.loop(scrollBody.direction());
+      slideLooper.loop();
+    }
+    translate.to(offsetLocation.get());
+    if (hasSettledAndIdle) eventHandler.emit('settle');
+    if (!hasSettled) eventHandler.emit('scroll');
+  };
+  const animation = Animations(ownerDocument, ownerWindow, () => update(engine), alpha => render(engine, alpha));
+  // Shared
+  const friction = 0.68;
+  const startLocation = scrollSnaps[index.get()];
+  const location = Vector1D(startLocation);
+  const previousLocation = Vector1D(startLocation);
+  const offsetLocation = Vector1D(startLocation);
+  const target = Vector1D(startLocation);
+  const scrollBody = ScrollBody(location, offsetLocation, previousLocation, target, duration, friction);
+  const scrollTarget = ScrollTarget(loop, scrollSnaps, contentSize, limit, target);
+  const scrollTo = ScrollTo(animation, index, indexPrevious, scrollBody, scrollTarget, target, eventHandler);
+  const scrollProgress = ScrollProgress(limit);
+  const eventStore = EventStore();
+  const slidesInView = SlidesInView(container, slides, eventHandler, inViewThreshold);
+  const {
+    slideRegistry
+  } = SlideRegistry(containSnaps, containScroll, scrollSnaps, scrollContainLimit, slidesToScroll, slideIndexes);
+  const slideFocus = SlideFocus(root, slides, slideRegistry, scrollTo, scrollBody, eventStore, eventHandler, watchFocus);
+  // Engine
+  const engine = {
+    ownerDocument,
+    ownerWindow,
+    eventHandler,
+    containerRect,
+    slideRects,
+    animation,
+    axis,
+    dragHandler: DragHandler(axis, root, ownerDocument, ownerWindow, target, DragTracker(axis, ownerWindow), location, animation, scrollTo, scrollBody, scrollTarget, index, eventHandler, percentOfView, dragFree, dragThreshold, skipSnaps, friction, watchDrag),
+    eventStore,
+    percentOfView,
+    index,
+    indexPrevious,
+    limit,
+    location,
+    offsetLocation,
+    previousLocation,
+    options,
+    resizeHandler: ResizeHandler(container, eventHandler, ownerWindow, slides, axis, watchResize, nodeRects),
+    scrollBody,
+    scrollBounds: ScrollBounds(limit, offsetLocation, target, scrollBody, percentOfView),
+    scrollLooper: ScrollLooper(contentSize, limit, offsetLocation, [location, offsetLocation, previousLocation, target]),
+    scrollProgress,
+    scrollSnapList: scrollSnaps.map(scrollProgress.get),
+    scrollSnaps,
+    scrollTarget,
+    scrollTo,
+    slideLooper: SlideLooper(axis, viewSize, contentSize, slideSizes, slideSizesWithGaps, snaps, scrollSnaps, offsetLocation, slides),
+    slideFocus,
+    slidesHandler: SlidesHandler(container, eventHandler, watchSlides),
+    slidesInView,
+    slideIndexes,
+    slideRegistry,
+    slidesToScroll,
+    target,
+    translate: Translate(axis, container)
+  };
+  return engine;
+}
+
+function EventHandler() {
+  let listeners = {};
+  let api;
+  function init(emblaApi) {
+    api = emblaApi;
+  }
+  function getListeners(evt) {
+    return listeners[evt] || [];
+  }
+  function emit(evt) {
+    getListeners(evt).forEach(e => e(api, evt));
+    return self;
+  }
+  function on(evt, cb) {
+    listeners[evt] = getListeners(evt).concat([cb]);
+    return self;
+  }
+  function off(evt, cb) {
+    listeners[evt] = getListeners(evt).filter(e => e !== cb);
+    return self;
+  }
+  function clear() {
+    listeners = {};
+  }
+  const self = {
+    init,
+    emit,
+    off,
+    on,
+    clear
+  };
+  return self;
+}
+
+const defaultOptions = {
+  align: 'center',
+  axis: 'x',
+  container: null,
+  slides: null,
+  containScroll: 'trimSnaps',
+  direction: 'ltr',
+  slidesToScroll: 1,
+  inViewThreshold: 0,
+  breakpoints: {},
+  dragFree: false,
+  dragThreshold: 10,
+  loop: false,
+  skipSnaps: false,
+  duration: 25,
+  startIndex: 0,
+  active: true,
+  watchDrag: true,
+  watchResize: true,
+  watchSlides: true,
+  watchFocus: true
+};
+
+function OptionsHandler(ownerWindow) {
+  function mergeOptions(optionsA, optionsB) {
+    return objectsMergeDeep(optionsA, optionsB || {});
+  }
+  function optionsAtMedia(options) {
+    const optionsAtMedia = options.breakpoints || {};
+    const matchedMediaOptions = objectKeys(optionsAtMedia).filter(media => ownerWindow.matchMedia(media).matches).map(media => optionsAtMedia[media]).reduce((a, mediaOption) => mergeOptions(a, mediaOption), {});
+    return mergeOptions(options, matchedMediaOptions);
+  }
+  function optionsMediaQueries(optionsList) {
+    return optionsList.map(options => objectKeys(options.breakpoints || {})).reduce((acc, mediaQueries) => acc.concat(mediaQueries), []).map(ownerWindow.matchMedia);
+  }
+  const self = {
+    mergeOptions,
+    optionsAtMedia,
+    optionsMediaQueries
+  };
+  return self;
+}
+
+function PluginsHandler(optionsHandler) {
+  let activePlugins = [];
+  function init(emblaApi, plugins) {
+    activePlugins = plugins.filter(({
+      options
+    }) => optionsHandler.optionsAtMedia(options).active !== false);
+    activePlugins.forEach(plugin => plugin.init(emblaApi, optionsHandler));
+    return plugins.reduce((map, plugin) => Object.assign(map, {
+      [plugin.name]: plugin
+    }), {});
+  }
+  function destroy() {
+    activePlugins = activePlugins.filter(plugin => plugin.destroy());
+  }
+  const self = {
+    init,
+    destroy
+  };
+  return self;
+}
+
+function EmblaCarousel(root, userOptions, userPlugins) {
+  const ownerDocument = root.ownerDocument;
+  const ownerWindow = ownerDocument.defaultView;
+  const optionsHandler = OptionsHandler(ownerWindow);
+  const pluginsHandler = PluginsHandler(optionsHandler);
+  const mediaHandlers = EventStore();
+  const eventHandler = EventHandler();
+  const {
+    mergeOptions,
+    optionsAtMedia,
+    optionsMediaQueries
+  } = optionsHandler;
+  const {
+    on,
+    off,
+    emit
+  } = eventHandler;
+  const reInit = reActivate;
+  let destroyed = false;
+  let engine;
+  let optionsBase = mergeOptions(defaultOptions, EmblaCarousel.globalOptions);
+  let options = mergeOptions(optionsBase);
+  let pluginList = [];
+  let pluginApis;
+  let container;
+  let slides;
+  function storeElements() {
+    const {
+      container: userContainer,
+      slides: userSlides
+    } = options;
+    const customContainer = isString(userContainer) ? root.querySelector(userContainer) : userContainer;
+    container = customContainer || root.children[0];
+    const customSlides = isString(userSlides) ? container.querySelectorAll(userSlides) : userSlides;
+    slides = [].slice.call(customSlides || container.children);
+  }
+  function createEngine(options) {
+    const engine = Engine(root, container, slides, ownerDocument, ownerWindow, options, eventHandler);
+    if (options.loop && !engine.slideLooper.canLoop()) {
+      const optionsWithoutLoop = Object.assign({}, options, {
+        loop: false
+      });
+      return createEngine(optionsWithoutLoop);
+    }
+    return engine;
+  }
+  function activate(withOptions, withPlugins) {
+    if (destroyed) return;
+    optionsBase = mergeOptions(optionsBase, withOptions);
+    options = optionsAtMedia(optionsBase);
+    pluginList = withPlugins || pluginList;
+    storeElements();
+    engine = createEngine(options);
+    optionsMediaQueries([optionsBase, ...pluginList.map(({
+      options
+    }) => options)]).forEach(query => mediaHandlers.add(query, 'change', reActivate));
+    if (!options.active) return;
+    engine.translate.to(engine.location.get());
+    engine.animation.init();
+    engine.slidesInView.init();
+    engine.slideFocus.init(self);
+    engine.eventHandler.init(self);
+    engine.resizeHandler.init(self);
+    engine.slidesHandler.init(self);
+    if (engine.options.loop) engine.slideLooper.loop();
+    if (container.offsetParent && slides.length) engine.dragHandler.init(self);
+    pluginApis = pluginsHandler.init(self, pluginList);
+  }
+  function reActivate(withOptions, withPlugins) {
+    const startIndex = selectedScrollSnap();
+    deActivate();
+    activate(mergeOptions({
+      startIndex
+    }, withOptions), withPlugins);
+    eventHandler.emit('reInit');
+  }
+  function deActivate() {
+    engine.dragHandler.destroy();
+    engine.eventStore.clear();
+    engine.translate.clear();
+    engine.slideLooper.clear();
+    engine.resizeHandler.destroy();
+    engine.slidesHandler.destroy();
+    engine.slidesInView.destroy();
+    engine.animation.destroy();
+    pluginsHandler.destroy();
+    mediaHandlers.clear();
+  }
+  function destroy() {
+    if (destroyed) return;
+    destroyed = true;
+    mediaHandlers.clear();
+    deActivate();
+    eventHandler.emit('destroy');
+    eventHandler.clear();
+  }
+  function scrollTo(index, jump, direction) {
+    if (!options.active || destroyed) return;
+    engine.scrollBody.useBaseFriction().useDuration(jump === true ? 0 : options.duration);
+    engine.scrollTo.index(index, direction || 0);
+  }
+  function scrollNext(jump) {
+    const next = engine.index.add(1).get();
+    scrollTo(next, jump, -1);
+  }
+  function scrollPrev(jump) {
+    const prev = engine.index.add(-1).get();
+    scrollTo(prev, jump, 1);
+  }
+  function canScrollNext() {
+    const next = engine.index.add(1).get();
+    return next !== selectedScrollSnap();
+  }
+  function canScrollPrev() {
+    const prev = engine.index.add(-1).get();
+    return prev !== selectedScrollSnap();
+  }
+  function scrollSnapList() {
+    return engine.scrollSnapList;
+  }
+  function scrollProgress() {
+    return engine.scrollProgress.get(engine.offsetLocation.get());
+  }
+  function selectedScrollSnap() {
+    return engine.index.get();
+  }
+  function previousScrollSnap() {
+    return engine.indexPrevious.get();
+  }
+  function slidesInView() {
+    return engine.slidesInView.get();
+  }
+  function slidesNotInView() {
+    return engine.slidesInView.get(false);
+  }
+  function plugins() {
+    return pluginApis;
+  }
+  function internalEngine() {
+    return engine;
+  }
+  function rootNode() {
+    return root;
+  }
+  function containerNode() {
+    return container;
+  }
+  function slideNodes() {
+    return slides;
+  }
+  const self = {
+    canScrollNext,
+    canScrollPrev,
+    containerNode,
+    internalEngine,
+    destroy,
+    off,
+    on,
+    emit,
+    plugins,
+    previousScrollSnap,
+    reInit,
+    rootNode,
+    scrollNext,
+    scrollPrev,
+    scrollProgress,
+    scrollSnapList,
+    scrollTo,
+    selectedScrollSnap,
+    slideNodes,
+    slidesInView,
+    slidesNotInView
+  };
+  activate(userOptions, userPlugins);
+  setTimeout(() => eventHandler.emit('init'), 0);
+  return self;
+}
+EmblaCarousel.globalOptions = undefined;
+
+
+//# sourceMappingURL=embla-carousel.esm.js.map
+
+
+/***/ }),
+
+/***/ "./src/components/icons.js":
+/*!*********************************!*\
+  !*** ./src/components/icons.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Accordion: () => (/* binding */ Accordion),
+/* harmony export */   AccordionItem: () => (/* binding */ AccordionItem),
+/* harmony export */   Carousel: () => (/* binding */ Carousel),
+/* harmony export */   CarouselSlide: () => (/* binding */ CarouselSlide),
+/* harmony export */   LinkedCarousels: () => (/* binding */ LinkedCarousels),
+/* harmony export */   MediaViewer: () => (/* binding */ MediaViewer),
+/* harmony export */   Megamenu: () => (/* binding */ Megamenu),
+/* harmony export */   Modal: () => (/* binding */ Modal),
+/* harmony export */   Tab: () => (/* binding */ Tab),
+/* harmony export */   Tabs: () => (/* binding */ Tabs),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__);
+
+
+const LinkedCarousels = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.SVG, {
+  xmlns: "http://www.w3.org/2000/svg",
+  xmlSpace: "preserve",
+  fillRule: "evenodd",
+  strokeLinejoin: "round",
+  strokeMiterlimit: "2",
+  clipRule: "evenodd",
+  viewBox: "0 0 24 24",
+  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+    d: "M18.003 19.399H5.931a.11.11 0 0 0-.11.11v1.537c0 .06.049.11.11.11h12.072a.11.11 0 0 0 .11-.11v-1.537a.11.11 0 0 0-.11-.11ZM5.931 18.082c-.788 0-1.427.639-1.427 1.427v1.537c0 .788.639 1.427 1.427 1.427h12.072c.789 0 1.427-.639 1.427-1.427v-1.537c0-.788-.638-1.427-1.427-1.427H5.931Z"
+  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+    fillRule: "nonzero",
+    d: "M17.837 3.191v11.647H6.19V3.191h11.647Zm0-1.664H6.19c-.915 0-1.663.749-1.663 1.664v11.647c0 .915.748 1.663 1.663 1.663h11.647c.915 0 1.664-.748 1.664-1.663V3.191a1.67 1.67 0 0 0-1.664-1.664Z"
+  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+    fillRule: "nonzero",
+    d: "m13.794 9.014-2.496 3.132-1.78-2.096-2.496 3.124h9.983l-3.211-4.16Z"
+  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+    d: "M7.022 6.519h9.983v.832H7.022zM7.022 4.855h9.983v.832H7.022z"
+  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+    fillRule: "nonzero",
+    d: "M22.476 9.014 19.98 11.51V6.519l2.496 2.495ZM1.524 9.014 4.02 6.519v4.991L1.524 9.014Z"
+  })]
+});
+const Carousel = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.SVG, {
+  className: "icon-carousel",
+  width: "26px",
+  height: "18px",
+  viewBox: "0 0 26 18",
+  version: "1.1",
+  xmlns: "http://www.w3.org/2000/svg",
+  xmlnsXlink: "http://www.w3.org/1999/xlink",
+  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.G, {
+    strokeWidth: "1",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.G, {
+      transform: "translate(0.000000, -3.000000)",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+        d: "M20,5 L20,19 L6,19 L6,5 L20,5 L20,5 Z M20,3 L6,3 C4.9,3 4,3.9 4,5 L4,19 C4,20.1 4.9,21 6,21 L20,21 C21.1,21 22,20.1 22,19 L22,5 C22,3.9 21.1,3 20,3 Z",
+        fillRule: "nonzero"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Polygon, {
+        fillRule: "nonzero",
+        points: "15.14 12 12.14 15.7645914 10 13.2451362 7 17 19 17"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Rect, {
+        x: "7",
+        y: "9",
+        width: "12",
+        height: "1"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Rect, {
+        x: "7",
+        y: "7",
+        width: "12",
+        height: "1"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Polygon, {
+        transform: "translate(24.500000, 12.000000) rotate(-270.000000) translate(-24.500000, -12.000000) ",
+        points: "24.5 10.5 27.5 13.5 21.5 13.5"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Polygon, {
+        transform: "translate(1.500000, 12.000000) rotate(-90.000000) translate(-1.500000, -12.000000) ",
+        points: "1.5 10.5 4.5 13.5 -1.5 13.5"
+      })]
+    })
+  })
+});
+const CarouselSlide = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.SVG, {
+  className: "icon-carousel-slide",
+  width: "26px",
+  height: "18px",
+  viewBox: "0 0 26 18",
+  version: "1.1",
+  xmlns: "http://www.w3.org/2000/svg",
+  xmlnsXlink: "http://www.w3.org/1999/xlink",
+  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.G, {
+    strokeWidth: "1",
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.G, {
+      transform: "translate(0.000000, -3.000000)",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+        d: "M20,5 L20,19 L6,19 L6,5 L20,5 L20,5 Z M20,3 L6,3 C4.9,3 4,3.9 4,5 L4,19 C4,20.1 4.9,21 6,21 L20,21 C21.1,21 22,20.1 22,19 L22,5 C22,3.9 21.1,3 20,3 Z",
+        fillRule: "nonzero"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Polygon, {
+        fillRule: "nonzero",
+        points: "15.14 12 12.14 15.7645914 10 13.2451362 7 17 19 17"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Rect, {
+        x: "7",
+        y: "9",
+        width: "12",
+        height: "1"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Rect, {
+        x: "7",
+        y: "7",
+        width: "12",
+        height: "1"
+      })]
+    })
+  })
+});
+const Accordion = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.SVG, {
+  fill: "none",
+  viewBox: "0 0 24 24",
+  xmlns: "http://www.w3.org/2000/svg",
+  width: "24",
+  height: "24",
+  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+    clipRule: "evenodd",
+    d: "m19 7c0-.27614-.2239-.5-.5-.5h-13c-.27614 0-.5.22386-.5.5v4.5c0 .2761.22386.5.5.5h13c.2761 0 .5-.2239.5-.5zm-.125 10h-13.75c-.06904 0-.125.056-.125.125v1.75c0 .069.05596.125.125.125h13.75c.069 0 .125-.056.125-.125v-1.75c0-.069-.056-.125-.125-.125zm-13.75-13.5c-.89746 0-1.625.72754-1.625 1.625v6.75c0 .8975.72754 1.625 1.625 1.625h13.75c.8975 0 1.625-.7275 1.625-1.625v-6.75c0-.89746-.7275-1.625-1.625-1.625zm0 12c-.89746 0-1.625.7275-1.625 1.625v1.75c0 .8975.72754 1.625 1.625 1.625h13.75c.8975 0 1.625-.7275 1.625-1.625v-1.75c0-.8975-.7275-1.625-1.625-1.625z",
+    fill: "currentColor",
+    fillRule: "evenodd"
+  })
+});
+const AccordionItem = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.SVG, {
+  fill: "none",
+  viewBox: "0 0 24 24",
+  xmlns: "http://www.w3.org/2000/svg",
+  width: "24",
+  height: "24",
+  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+    d: "m19 9c0-.27614-.2239-.5-.5-.5h-13c-.27614 0-.5.22386-.5.5v7.5c0 .2761.22386.5.5.5h13c.2761 0 .5-.2239.5-.5zm-13.875-3.5c-.89746 0-1.625.72754-1.625 1.625v9.75c0 .8975.72754 1.625 1.625 1.625h13.75c.8975 0 1.625-.7275 1.625-1.625v-9.75c0-.89746-.7275-1.625-1.625-1.625z",
+    fill: "currentColor",
+    fillRule: "evenodd"
+  })
+});
+const Megamenu = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.SVG, {
+  width: "24px",
+  height: "24px",
+  viewBox: "0 0 24 24",
+  version: "1.1",
+  xmlns: "http://www.w3.org/2000/svg",
+  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+    d: "M20,12 L4,12 L4,13.5 L20,13.5 L20,12 Z M10,6.5 L4,6.5 L4,8 L10,8 L10,6.5 Z M20,17.5 L4,17.5 L4,19 L20,19 L20,17.5 Z M20,5.62462724 L16.000015,9 L12,5.62462724 L12.9791165,4.5 L16.000015,7.04920972 L19.0208935,4.5 L20,5.62462724 Z"
+  })
+});
+const Modal = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.SVG, {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: "24",
+  height: "24",
+  viewBox: "0 0 24 24",
+  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+    d: "M6.4 12.1h11.2v1.5H6.4zM6.5 15.5h11.2V17H6.5z"
+  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+    d: "M23.2 4.5c0-2.1-1.7-3.7-3.7-3.7-1 0-2 .4-2.7 1.2-.3.3-.5.7-.7 1H5c-1.1 0-1.9.9-1.9 2v14c0 1.1.8 2 1.9 2h14.1c1.1 0 1.9-.9 1.9-1.9V7.9c1.3-.5 2.2-1.8 2.2-3.4zM19.5 19c0 .2-.2.4-.4.4H5c-.2 0-.4-.2-.4-.4V5c0-.2.2-.4.4-.4h10.8c0 2.1 1.7 3.7 3.7 3.7V19zm0-12.2c-1.2 0-2.2-1-2.2-2.2 0-.6.2-1.1.6-1.5.4-.5 1-.7 1.6-.7 1.2 0 2.2 1 2.2 2.2s-1 2.2-2.2 2.2z"
+  })]
+});
+const MediaViewer = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.SVG, {
+  width: "24",
+  height: "24",
+  viewBox: "0 0 24 24",
+  xmlns: "http://www.w3.org/2000/svg",
+  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+    d: "M22.663 4.79382C22.663 5.07294 22.8893 5.29922 23.1684 5.29922C23.4476 5.29922 23.6738 5.07294 23.6738 4.79382V0.505396C23.6738 0.226273 23.4476 -1.49012e-07 23.1684 0L18.88 7.45059e-08C18.6009 -2.68221e-07 18.3746 0.226273 18.3746 0.505396C18.3746 0.784518 18.6009 1.01079 18.88 1.01079L22.663 1.01079V4.79382ZM18.4014 3.30688H5.19369C4.15594 3.30688 3.30688 4.15594 3.30688 5.19369V18.4014C3.30688 19.4391 4.15594 20.2882 5.19369 20.2882H18.4014C19.4391 20.2882 20.2882 19.4391 20.2882 18.4014V5.19369C20.2882 4.15594 19.4391 3.30688 18.4014 3.30688ZM5.19369 4.72199H18.4014C18.6844 4.72199 18.8731 4.91067 18.8731 5.19369V13.1183L16.0429 10.3824C15.7598 10.0994 15.2881 10.0994 15.0994 10.3824L11.7032 13.6843L8.96731 11.7975C8.68429 11.6088 8.40127 11.6088 8.21259 11.7975L4.81633 14.2504V5.19369C4.72199 4.91067 4.91067 4.72199 5.19369 4.72199ZM18.4014 18.8731H5.19369C4.91067 18.8731 4.72199 18.6844 4.72199 18.4014V16.1372L8.58995 13.307L11.4202 15.0994C11.7032 15.2881 12.0805 15.2881 12.2692 15.0051L15.5712 11.7975L18.8731 15.0051V18.4014C18.8731 18.6844 18.6844 18.8731 18.4014 18.8731ZM0.505396 18.3749C0.784518 18.3749 1.01079 18.6011 1.01079 18.8803V22.6633H4.79382C5.07294 22.6633 5.29922 22.8896 5.29922 23.1687C5.29922 23.4478 5.07294 23.6741 4.79382 23.6741H0.505396C0.226273 23.6741 -1.49012e-07 23.4478 0 23.1687V18.8803C-1.49012e-07 18.6011 0.226273 18.3749 0.505396 18.3749Z"
+  })
+});
+const Tabs = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.SVG, {
+  xmlns: "http://www.w3.org/2000/svg",
+  height: "24px",
+  viewBox: "0 -960 960 960",
+  width: "24px",
+  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+    d: "M212.31-140Q182-140 161-161q-21-21-21-51.31v-535.38Q140-778 161-799q21-21 51.31-21h535.38Q778-820 799-799q21 21 21 51.31v535.38Q820-182 799-161q-21 21-51.31 21H212.31Zm0-60h535.38q4.62 0 8.46-3.85 3.85-3.84 3.85-8.46v-280H200v280q0 4.62 3.85 8.46 3.84 3.85 8.46 3.85ZM680-640q17 0 28.5-11.5T720-680q0-17-11.5-28.5T680-720H520q-17 0-28.5 11.5T480-680q0 17 11.5 28.5T520-640h160Z"
+  })
+});
+const Tab = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.SVG, {
+  xmlns: "http://www.w3.org/2000/svg",
+  viewBox: "0 0 24 24",
+  width: "24",
+  height: "24",
+  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+    d: "M19.409 13.946c-.524.524-1.173.786-1.947.786H6.536c-.774 0-1.422-.262-1.946-.786-.524-.523-.785-1.172-.785-1.946s.261-1.423.785-1.946c.524-.524 1.172-.785 1.946-.785h10.926c.774 0 1.423.261 1.947.785.523.523.785 1.172.785 1.946s-.262 1.423-.785 1.946Z"
+  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_0__.Path, {
+    d: "M23.321 9.962c0-2.208-1.792-4-4-4H4.679c-2.208 0-4 1.792-4 4v4.076c0 2.208 1.792 4 4 4h14.642c2.208 0 4-1.792 4-4V9.962Zm-1.4 0v4.076c0 1.435-1.165 2.6-2.6 2.6H4.679a2.601 2.601 0 0 1-2.6-2.6V9.962c0-1.435 1.165-2.6 2.6-2.6h14.642c1.435 0 2.6 1.165 2.6 2.6Z"
+  })]
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  LinkedCarousels,
+  Carousel,
+  CarouselSlide,
+  Accordion,
+  AccordionItem,
+  Megamenu,
+  Modal,
+  MediaViewer,
+  Tabs,
+  Tab
+});
+
+/***/ }),
+
+/***/ "./src/components/single-block-type-appender.js":
+/*!******************************************************!*\
+  !*** ./src/components/single-block-type-appender.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/compose */ "@wordpress/compose");
+/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_compose__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__);
+/**
+ * WordPress Imports
+ */
+
+
+
+
+
+/**
+ * Custom Appender meant to be used when there is only one type of block that can be inserted to an InnerBlocks instance.
+ *
+ * @param {Object}   props
+ * @param {Function} props.onClick
+ * @param {Function} props.onClickAfter
+ * @param {string}   props.clientId
+ * @param {Array}    props.allowedBlock
+ * @param {Array}    props.innerBlocks
+ * @param {boolean}  props.isEnabled
+ */
+
+const SingleBlockTypeAppender = ({
+  onClick,
+  onClickAfter,
+  clientId,
+  allowedBlock,
+  innerBlocks,
+  isEnabled = true,
+  ...props
+}) => {
+  if (isEnabled) {
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wordpress_components__WEBPACK_IMPORTED_MODULE_1__.Button, {
+      onClick: () => onClick(onClickAfter),
+      ...props
+    });
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_wordpress_compose__WEBPACK_IMPORTED_MODULE_3__.compose)([(0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.withSelect)((select, ownProps) => {
+  return {
+    innerBlocks: select('core/block-editor').getBlock(ownProps.clientId).innerBlocks
+  };
+}), (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_2__.withDispatch)((dispatch, ownProps) => {
+  return {
+    onClick(onClickAfter) {
+      const newBlock = (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.createBlock)(ownProps.allowedBlock);
+      dispatch('core/block-editor').insertBlock(newBlock, ownProps.innerBlocks.length, ownProps.clientId).then(() => {
+        onClickAfter();
+      });
+    }
+  };
+})])(SingleBlockTypeAppender));
+
+/***/ }),
+
+/***/ "./src/embla-carousel/block.json":
+/*!***************************************!*\
+  !*** ./src/embla-carousel/block.json ***!
+  \***************************************/
+/***/ ((module) => {
+
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":3,"name":"pulsar/embla-carousel","version":"0.1.0","title":"Carousel","category":"design","icon":"smiley","description":"Carousel","allowedBlocks":["pulsar/carousel-viewport","pulsar/carousel-dots","pulsar/carousel-buttons","core/group"],"attributes":{"emblaApi":{"type":"object"},"options":{"type":"object","default":{"align":"start","axis":"x"}},"fade":{"type":"boolean","default":false},"autoplay":{"type":"boolean","default":false},"autoplayOptions":{"type":"object","default":{}},"autoscroll":{"type":"boolean","default":false},"autoscrollOptions":{"type":"object","default":{}},"align":{"type":"string","default":"wide"}},"supports":{"inserter":true,"align":["wide","full"]},"providesContext":{"emblaApi":"emblaApi"},"textdomain":"pulsar","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css","render":"file:./render.php","viewScript":"file:./view.js"}');
+
+/***/ }),
+
+/***/ "./src/embla-carousel/edit.js":
+/*!************************************!*\
+  !*** ./src/embla-carousel/edit.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Edit)
+/* harmony export */ });
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var embla_carousel_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! embla-carousel-react */ "./node_modules/embla-carousel-react/esm/embla-carousel-react.esm.js");
+/* harmony import */ var _components_single_block_type_appender__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/single-block-type-appender */ "./src/components/single-block-type-appender.js");
+/* harmony import */ var _utils_embla__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/embla */ "./src/utils/embla.js");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./editor.scss */ "./src/embla-carousel/editor.scss");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__);
+
+
+
+
+
+
+
+
+
+function Edit({
+  clientId,
+  attributes: {
+    options
+  },
+  setAttributes,
+  isSelected
+}) {
+  const blockProps = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.useBlockProps)({
+    className: 'embla'
+  });
+  const {
+    children,
+    ...innerBlocksProps
+  } = (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.useInnerBlocksProps)(blockProps, {
+    orientation: 'vertical',
+    template: [['pulsar/embla-carousel-viewport'], ['pulsar/embla-carousel-buttons'], ['pulsar/embla-carousel-dots']],
+    templateLock: false
+  });
+  const innerBlocks = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => select('core/block-editor').getBlock(clientId) ? select('core/block-editor').getBlock(clientId).innerBlocks : []);
+  const viewportBlock = innerBlocks.find(block => block.name === 'pulsar/embla-carousel-viewport') || false;
+  const viewportInnerBlocks = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => viewportBlock && select('core/block-editor').getBlock(viewportBlock.clientId) ? select('core/block-editor').getBlock(viewportBlock.clientId).innerBlocks : []);
+  const hasQueryLoop = viewportInnerBlocks.find(block => block.name === 'core/query' || block.name === 'woocommerce/product-collection');
+  const getContainer = () => {
+    if (!hasQueryLoop) {
+      return '.embla__container';
+    }
+    if (hasQueryLoop.name === 'core/query') {
+      return '.wp-block-post-template';
+    }
+    if (hasQueryLoop.name === 'woocommerce/product-collection') {
+      return '.wp-block-woocommerce-product-template';
+    }
+    return '.embla__container';
+  };
+  const [emblaRef, emblaApi] = (0,embla_carousel_react__WEBPACK_IMPORTED_MODULE_8__["default"])({
+    ...options,
+    container: getContainer()
+  });
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
+    if (!emblaApi) return;
+    setAttributes({
+      emblaApi
+    });
+  }, [emblaApi, setAttributes]);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
+    if (!emblaApi) return;
+    setAttributes({
+      emblaApi
+    });
+    const block = document.querySelector(`[data-block="${clientId}"]`);
+    const buttons = block?.querySelectorAll('.embla__button');
+    const dotsNode = block?.querySelector('.embla__dots');
+    if (!buttons || buttons.length < 2 || !dotsNode) return;
+    const removePrevNextBtnsClickHandlers = (0,_utils_embla__WEBPACK_IMPORTED_MODULE_5__.addPrevNextBtnsClickHandlers)(emblaApi, buttons[0], buttons[1]);
+    const removeDotBtnsAndClickHandlers = (0,_utils_embla__WEBPACK_IMPORTED_MODULE_5__.addDotBtnsAndClickHandlers)(emblaApi, dotsNode);
+    return () => {
+      removePrevNextBtnsClickHandlers();
+      removeDotBtnsAndClickHandlers();
+    };
+  }, [clientId, emblaApi, innerBlocks, setAttributes]);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_2__.useEffect)(() => {
+    if (!emblaApi) return;
+    setAttributes({
+      emblaApi
+    });
+  }, [emblaApi, setAttributes]);
+  const isInnerBlockSelected = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => select('core/block-editor').hasSelectedInnerBlock(clientId, true));
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsxs)("div", {
+    ...innerBlocksProps,
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)("div", {
+      className: "embla",
+      ref: emblaRef,
+      children: children
+    }), viewportBlock && viewportBlock?.attributes?.allowedBlocks?.length === 1 && (isSelected || isInnerBlockSelected) && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_components_single_block_type_appender__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      onClickAfter: () => {},
+      variant: "secondary",
+      text: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_3__.__)('Add item', 'pulsar-blocks'),
+      allowedBlock: viewportBlock?.attributes?.allowedBlocks?.[0],
+      style: {
+        width: '50%',
+        justifyContent: 'center',
+        marginTop: '1rem',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        display: 'flex'
+      },
+      clientId: viewportBlock.clientId
+    })]
+  });
+}
+
+/***/ }),
+
+/***/ "./src/embla-carousel/editor.scss":
+/*!****************************************!*\
+  !*** ./src/embla-carousel/editor.scss ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/embla-carousel/index.js":
+/*!*************************************!*\
+  !*** ./src/embla-carousel/index.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ "./src/embla-carousel/style.scss");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./src/embla-carousel/edit.js");
+/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./src/embla-carousel/save.js");
+/* harmony import */ var _block_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./block.json */ "./src/embla-carousel/block.json");
+/* harmony import */ var _components_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/icons */ "./src/components/icons.js");
+/**
+ * Registers a new block provided a unique name and an object defining its behavior.
+ *
+ * @see https://developer.wordpress.org/block-editor/developers/block-api/#registering-a-block
+ */
+
+
+/**
+ * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
+ * All files containing `style` keyword are bundled together. The code used
+ * gets applied both to the front of your site and to the editor. All other files
+ * get applied to the editor only.
+ *
+ * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
+ */
+
+
+/**
+ * Internal dependencies
+ */
+
+
+
+
+
+/**
+ * Every block starts by registering a new block type definition.
+ *
+ * @see https://developer.wordpress.org/block-editor/developers/block-api/#registering-a-block
+ */
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)(_block_json__WEBPACK_IMPORTED_MODULE_4__.name, {
+  icon: _components_icons__WEBPACK_IMPORTED_MODULE_5__.Carousel,
+  /**
+   * @see ./edit.js
+   */
+  edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
+  /**
+   * @see ./save.js
+   */
+  save: _save__WEBPACK_IMPORTED_MODULE_3__["default"]
+});
+
+/***/ }),
+
+/***/ "./src/embla-carousel/save.js":
+/*!************************************!*\
+  !*** ./src/embla-carousel/save.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "react/jsx-runtime");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__);
+/**
+ * WordPress dependencies
+ */
+
+
+const Save = () => /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_0__.InnerBlocks.Content, {});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Save);
+
+/***/ }),
+
+/***/ "./src/embla-carousel/style.scss":
+/*!***************************************!*\
+  !*** ./src/embla-carousel/style.scss ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./src/utils/embla.js":
+/*!****************************!*\
+  !*** ./src/utils/embla.js ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   addDotBtnsAndClickHandlers: () => (/* binding */ addDotBtnsAndClickHandlers),
+/* harmony export */   addPrevNextBtnsClickHandlers: () => (/* binding */ addPrevNextBtnsClickHandlers),
+/* harmony export */   addTogglePrevNextBtnsActive: () => (/* binding */ addTogglePrevNextBtnsActive),
+/* harmony export */   setupProgressBar: () => (/* binding */ setupProgressBar),
+/* harmony export */   useEmblaCarousels: () => (/* binding */ useEmblaCarousels),
+/* harmony export */   usePrevNextButtons: () => (/* binding */ usePrevNextButtons)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+const usePrevNextButtons = emblaApi => {
+  const [prevBtnDisabled, setPrevBtnDisabled] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
+  const [nextBtnDisabled, setNextBtnDisabled] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(true);
+  const onPrevButtonClick = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
+    if (!emblaApi) return;
+    emblaApi.scrollPrev();
+  }, [emblaApi]);
+  const onNextButtonClick = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
+    if (!emblaApi) return;
+    emblaApi.scrollNext();
+  }, [emblaApi]);
+  const onSelect = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useCallback)(emblaApi => {
+    setPrevBtnDisabled(!emblaApi.canScrollPrev());
+    setNextBtnDisabled(!emblaApi.canScrollNext());
+  }, []);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (!emblaApi) return;
+    onSelect(emblaApi);
+    emblaApi.on('reInit', onSelect).on('select', onSelect);
+  }, [emblaApi, onSelect]);
+  return {
+    prevBtnDisabled,
+    nextBtnDisabled,
+    onPrevButtonClick,
+    onNextButtonClick
+  };
+};
+const addTogglePrevNextBtnsActive = (emblaApi, prevBtn, nextBtn) => {
+  const togglePrevNextBtnsState = () => {
+    if (emblaApi.canScrollPrev()) prevBtn.removeAttribute('disabled');else prevBtn.setAttribute('disabled', 'disabled');
+    if (emblaApi.canScrollNext()) nextBtn.removeAttribute('disabled');else nextBtn.setAttribute('disabled', 'disabled');
+  };
+  emblaApi.on('select', togglePrevNextBtnsState).on('init', togglePrevNextBtnsState).on('reInit', togglePrevNextBtnsState);
+  return () => {
+    prevBtn.removeAttribute('disabled');
+    nextBtn.removeAttribute('disabled');
+  };
+};
+const addPrevNextBtnsClickHandlers = (emblaApi, prevBtn, nextBtn) => {
+  const scrollPrev = () => {
+    emblaApi.scrollPrev();
+  };
+  const scrollNext = () => {
+    emblaApi.scrollNext();
+  };
+  prevBtn.addEventListener('click', scrollPrev, false);
+  nextBtn.addEventListener('click', scrollNext, false);
+  const removeTogglePrevNextBtnsActive = addTogglePrevNextBtnsActive(emblaApi, prevBtn, nextBtn);
+  return () => {
+    removeTogglePrevNextBtnsActive();
+    prevBtn.removeEventListener('click', scrollPrev, false);
+    nextBtn.removeEventListener('click', scrollNext, false);
+  };
+};
+const addDotBtnsAndClickHandlers = (emblaApi, dotsNode) => {
+  let dotNodes = [];
+  const addDotBtnsWithClickHandlers = () => {
+    dotsNode.innerHTML = emblaApi.scrollSnapList().map(() => '<button class="embla__dot" type="button"></button>').join('');
+    const scrollTo = index => {
+      emblaApi.scrollTo(index);
+    };
+    dotNodes = Array.from(dotsNode.querySelectorAll('.embla__dot'));
+    dotNodes.forEach((dotNode, index) => {
+      dotNode.addEventListener('click', () => scrollTo(index), false);
+    });
+  };
+  const toggleDotBtnsActive = () => {
+    const previous = emblaApi.previousScrollSnap();
+    const selected = emblaApi.selectedScrollSnap();
+    dotNodes[previous].classList.remove('embla__dot--selected');
+    dotNodes[selected].classList.add('embla__dot--selected');
+  };
+  emblaApi.on('init', addDotBtnsWithClickHandlers).on('reInit', addDotBtnsWithClickHandlers).on('init', toggleDotBtnsActive).on('reInit', toggleDotBtnsActive).on('select', toggleDotBtnsActive);
+  return () => {
+    dotsNode.innerHTML = '';
+  };
+};
+const useEmblaCarousels = () => {
+  return (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_1__.useSelect)(select => {
+    const data = [];
+    const blocks = select(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.store).getBlocks();
+    const searchNestedBlocks = block => {
+      if (block?.innerBlocks) {
+        block.innerBlocks.forEach(innerBlock => {
+          if (innerBlock.name === 'pulsar/embla-carousel') {
+            data.push(innerBlock);
+          }
+          searchNestedBlocks(innerBlock);
+        });
+      }
+    };
+    blocks.forEach(block => {
+      if (block.name === 'pulsar/embla-carousel') {
+        data.push(block);
+      }
+      searchNestedBlocks(block);
+    });
+    return data;
+  });
+};
+const setupProgressBar = (emblaApi, progressNode) => {
+  const applyProgress = () => {
+    const indicateCurrentPosition = progressNode.parentElement.dataset.indicateCurrentPosition === 'true';
+    let finalProgress;
+    if (indicateCurrentPosition) {
+      const totalScrollSnaps = emblaApi.scrollSnapList().length;
+      const currentSnapIndex = emblaApi.selectedScrollSnap();
+      if (totalScrollSnaps > 0) {
+        finalProgress = (currentSnapIndex + 1) / totalScrollSnaps;
+      } else {
+        finalProgress = 0;
+      }
+    } else {
+      finalProgress = emblaApi.scrollProgress();
+      progressNode.style.transition = 'none';
+    }
+    finalProgress = Math.max(0, Math.min(1, finalProgress));
+    progressNode.style.transform = `translate3d(${finalProgress * 100}%,0px,0px)`;
+  };
+  const removeProgress = () => {
+    progressNode.removeAttribute('style');
+  };
+  return {
+    applyProgress,
+    removeProgress
+  };
+};
+
+/***/ }),
+
+/***/ "@wordpress/block-editor":
+/*!*************************************!*\
+  !*** external ["wp","blockEditor"] ***!
+  \*************************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["blockEditor"];
+
+/***/ }),
+
+/***/ "@wordpress/blocks":
+/*!********************************!*\
+  !*** external ["wp","blocks"] ***!
+  \********************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["blocks"];
+
+/***/ }),
+
+/***/ "@wordpress/components":
+/*!************************************!*\
+  !*** external ["wp","components"] ***!
+  \************************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["components"];
+
+/***/ }),
+
+/***/ "@wordpress/compose":
+/*!*********************************!*\
+  !*** external ["wp","compose"] ***!
+  \*********************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["compose"];
+
+/***/ }),
+
+/***/ "@wordpress/data":
+/*!******************************!*\
+  !*** external ["wp","data"] ***!
+  \******************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["data"];
+
+/***/ }),
+
+/***/ "@wordpress/element":
+/*!*********************************!*\
+  !*** external ["wp","element"] ***!
+  \*********************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["element"];
+
+/***/ }),
+
+/***/ "@wordpress/i18n":
+/*!******************************!*\
+  !*** external ["wp","i18n"] ***!
+  \******************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["i18n"];
+
+/***/ }),
+
+/***/ "react":
+/*!************************!*\
+  !*** external "React" ***!
+  \************************/
+/***/ ((module) => {
+
+module.exports = window["React"];
+
+/***/ }),
+
+/***/ "react/jsx-runtime":
+/*!**********************************!*\
+  !*** external "ReactJSXRuntime" ***!
+  \**********************************/
+/***/ ((module) => {
+
+module.exports = window["ReactJSXRuntime"];
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var [chunkIds, fn, priority] = deferred[i];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"embla-carousel/index": 0,
+/******/ 			"embla-carousel/style-index": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkId] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = globalThis["webpackChunkpulsar_blocks"] = globalThis["webpackChunkpulsar_blocks"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["embla-carousel/style-index"], () => (__webpack_require__("./src/embla-carousel/index.js")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
+/******/ })()
+;
+//# sourceMappingURL=index.js.map

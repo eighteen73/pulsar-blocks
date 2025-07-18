@@ -1,0 +1,25 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "pulsar/facetwp-facet",
+	"description": "Display a FacetWP Facet.",
+	"version": "1.0.0",
+	"title": "FacetWP Facet",
+	"category": "widgets",
+  "icon": "filter",
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"inserter": true,
+		"lock": true,
+		"multiple": true
+	},
+  "attributes": {
+    "facetName": {
+      "type": "string"
+    }
+  },
+	"textdomain": "pulsar",
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php"
+}

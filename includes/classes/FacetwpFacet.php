@@ -8,7 +8,6 @@
 namespace Eighteen73\PulsarBlocks;
 
 use WP_Error;
-use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
 
@@ -17,7 +16,7 @@ use function FWP;
 /**
  * Handles block registration.
  */
-class FilterFacetWP {
+class FacetwpFacet {
 
 	use Singleton;
 
@@ -41,7 +40,7 @@ class FilterFacetWP {
 	public function register_rest_routes(): void {
 		register_rest_route(
 			self::REST_NAMESPACE,
-			'/available-facets',
+			'/facetwp/available-facets',
 			[
 				'methods'  => WP_REST_Server::READABLE,
 				'callback' => [ $this, 'get_facet_names' ],

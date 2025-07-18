@@ -1,1 +1,67 @@
-.wp-block-pulsar-modal{display:block}.wp-block-pulsar-modal .wp-block-pulsar-modal__overlay{display:none}.wp-block-pulsar-modal.is-open{z-index:35}.wp-block-pulsar-modal.is-open .wp-block-pulsar-modal__overlay{display:flex}.wp-block-pulsar-modal__container{max-height:calc(100% - 200px)}.wp-block-pulsar-modal .components-resizable-box__container.has-show-handle .components-resizable-box__handle{display:none !important}.wp-block-pulsar-modal__editor-id{align-items:center;display:flex;flex-wrap:wrap;justify-content:space-between;margin-bottom:2em}.wp-block-pulsar-modal .components-placeholder{align-items:center;border:1px dashed;box-shadow:none;justify-content:center;line-height:1;text-align:center}.wp-block-pulsar-modal .components-placeholder svg{margin:0}.wp-block-post .wp-block-pulsar-modal{position:absolute;right:0;top:0}.wp-block-post .wp-block-pulsar-modal .components-placeholder{opacity:.8;padding:8px}.wp-block-post .wp-block-pulsar-modal .components-placeholder .components-placeholder__fieldset{display:none}.pulsar-modal-block__card .components-card-body{align-items:center;display:flex;gap:12px;justify-content:space-between}.pulsar-modal-block__card .components-heading{margin:0}.pulsar-modal-block__add-button{margin:16px}
+/*!**********************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/modal/editor.scss ***!
+  \**********************************************************************************************************************************************************************************************************************************************/
+.wp-block-pulsar-modal {
+  display: block;
+}
+.wp-block-pulsar-modal .wp-block-pulsar-modal__overlay {
+  display: none;
+}
+.wp-block-pulsar-modal.is-open {
+  z-index: 35;
+}
+.wp-block-pulsar-modal.is-open .wp-block-pulsar-modal__overlay {
+  display: flex;
+}
+.wp-block-pulsar-modal__container {
+  max-height: calc(100% - 200px);
+}
+.wp-block-pulsar-modal .components-resizable-box__container.has-show-handle .components-resizable-box__handle {
+  display: none !important;
+}
+.wp-block-pulsar-modal__editor-id {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 2em;
+}
+.wp-block-pulsar-modal .components-placeholder {
+  align-items: center;
+  border: 1px dashed;
+  box-shadow: none;
+  justify-content: center;
+  line-height: 1;
+  text-align: center;
+}
+.wp-block-pulsar-modal .components-placeholder svg {
+  margin: 0;
+}
+.wp-block-post .wp-block-pulsar-modal {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.wp-block-post .wp-block-pulsar-modal .components-placeholder {
+  opacity: 0.8;
+  padding: 8px;
+}
+.wp-block-post .wp-block-pulsar-modal .components-placeholder .components-placeholder__fieldset {
+  display: none;
+}
+
+.pulsar-modal-block__card .components-card-body {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+.pulsar-modal-block__card .components-heading {
+  margin: 0;
+}
+
+.pulsar-modal-block__add-button {
+  margin: 16px;
+}
+
+/*# sourceMappingURL=index.css.map*/
