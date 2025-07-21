@@ -61,9 +61,9 @@ export default function Edit({ attributes, setAttributes }) {
 	return (
 		<div {...blockProps}>
 			<InspectorControls>
-				<PanelBody title={__('Settings', 'pulsar')}>
+				<PanelBody title={__('Filter Layout', 'pulsar-blocks')}>
 					<SelectControl
-						label={__('Facet', 'pulsar')}
+						label={__('Facet', 'pulsar-blocks')}
 						value={facetName}
 						options={facetOptions}
 						onChange={(value) =>

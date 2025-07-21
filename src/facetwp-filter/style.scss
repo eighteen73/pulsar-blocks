@@ -1,0 +1,109 @@
+.wp-block-pulsar-facetwp-filter {
+	$block: &;
+	position: relative;
+
+	&__button {
+		align-items: center;
+		background-color: var(--wp--preset--color--base);
+		border: unset;
+		cursor: pointer;
+		display: flex;
+		font-weight: var(--wp--custom--typography--weight--heading);
+		gap: var(--wp--preset--spacing--md);
+		justify-content: space-between;
+		padding-block: var(--wp--preset--spacing--lg);
+		width: 100%;
+
+		&::after {
+			background-color: var(--wp--preset--color--contrast);
+			content: "";
+			display: block;
+			height: 12px;
+			mask-image: url("../../assets/svg/chevron-down.svg");
+			mask-position: center;
+			mask-repeat: no-repeat;
+			mask-size: contain;
+			width: 12px;
+		}
+
+		.is-active &::after {
+			mask-image: url("../../assets/svg/chevron-up.svg");
+		}
+	}
+
+	&__panel {
+		background-color: var(--wp--preset--color--base);
+		display: none;
+		width: 100%;
+
+		.is-active &,
+		.is-selected > &,
+		.has-child-selected > & {
+			display: block;
+			padding-bottom: var(--wp--preset--spacing--lg);
+		}
+
+		> :last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	&:where(.is-filter-layout-stacked) {
+		#{$block}__panel {
+			position: static;
+		}
+	}
+
+	.wp-block-pulsar-facetwp-filters__modal & {
+
+	}
+
+	.wp-block-pulsar-facetwp-filters__filters & {
+		&:where(.is-filter-layout-slide-out) {
+			#{$block}__button {
+				border: 1px solid var(--wp--custom--color--border);
+				font-size: var(--wp--preset--font-size--sm);
+				padding: var(--wp--preset--spacing--sm) var(--wp--preset--spacing--xl);
+
+				&::after {
+					display: none;
+				}
+			}
+
+			#{$block}__panel {
+				display: none;
+			}
+		}
+
+		&:where(.is-filter-layout-dropdowns) {
+			#{$block}__panel {
+				box-shadow: var(--wp--preset--shadow--md);
+				left: 0;
+				min-width: 250px;
+				padding: var(--wp--preset--spacing--2-xl);
+				position: absolute;
+				top: 100%;
+				z-index: 1000;
+			}
+
+			#{$block}__button {
+				border: 1px solid var(--wp--custom--color--border);
+				font-size: var(--wp--preset--font-size--sm);
+				font-weight: var(--wp--custom--typography--weight--body);
+				padding: var(--wp--preset--spacing--sm) var(--wp--preset--spacing--xl);
+			}
+		}
+
+		&:where(.is-not-collapsable.is-filter-layout-stacked) {
+			#{$block}__button {
+				&::after {
+					content: none;
+				}
+			}
+
+			#{$block}__panel {
+				display: block;
+			}
+		}
+	}
+}

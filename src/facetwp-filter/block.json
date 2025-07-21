@@ -1,0 +1,34 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "pulsar/facetwp-filter",
+	"description": "Display a FacetWP filter.",
+	"version": "1.0.0",
+	"title": "FacetWP Filter",
+	"category": "widgets",
+  "icon": "filter",
+  "parent": [ "pulsar/facetwp-filters" ],
+	"supports": {
+		"html": false,
+		"reusable": false,
+		"inserter": true,
+		"lock": false,
+		"multiple": true
+	},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "collapsable": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "usesContext": [ "id", "filterLayout", "collapsable" ],
+	"textdomain": "pulsar",
+	"editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "viewScriptModule": "file:./view.js",
+	"render": "file:./render.php",
+	"style": "file:./style-index.css"
+}

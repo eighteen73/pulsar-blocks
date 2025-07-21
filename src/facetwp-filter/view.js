@@ -1,0 +1,20 @@
+import { store, getContext } from '@wordpress/interactivity';
+
+store('pulsar/facetwp-filter', {
+	actions: {
+		toggle: () => {
+			const context = getContext();
+			context.isOpen = !context.isOpen;
+		},
+
+		open: () => {
+			const context = getContext();
+			context.isOpen = true;
+		},
+
+		close: () => {
+			const context = getContext();
+			context.isOpen = false;
+		},
+	},
+});
