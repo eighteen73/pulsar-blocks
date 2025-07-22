@@ -31,8 +31,7 @@
   },
   "usesContext": [
     "filtersModalId",
-    "filtersLayout",
-    "collapsable"
+    "filtersLayout"
   ],
   "textdomain": "pulsar",
   "editorScript": "file:./index.js",

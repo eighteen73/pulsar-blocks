@@ -14,8 +14,8 @@
 		"html": false,
 		"reusable": false,
 		"inserter": true,
-		"lock": true,
-		"multiple": false,
+		"lock": false,
+		"multiple": true,
 		"align": true,
     "spacing": {
       "margin": true

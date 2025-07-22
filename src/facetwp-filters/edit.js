@@ -10,19 +10,19 @@ import { useEffect } from '@wordpress/element';
 import { generateId } from '../utils/helpers';
 
 export default function Edit({ attributes, setAttributes }) {
-	const { id, filterLayout } = attributes;
+	const { filtersModalId, filtersLayout } = attributes;
 	const blockProps = useBlockProps({
-		className: `is-filter-layout-${filterLayout}`,
+		className: `is-filter-layout-${filtersLayout}`,
 	});
-	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
-		template: [['pulsar/facetwp-filter']],
+	const innerBlocksProps = useInnerBlocksProps({
+		className: 'wp-block-pulsar-facetwp-filters__items',
 	});
 
 	useEffect(() => {
-		if (!id) {
-			setAttributes({ id: generateId() });
+		if (!filtersModalId) {
+			setAttributes({ filtersModalId: generateId() });
 		}
-	}, [id, setAttributes]);
+	}, [filtersModalId, setAttributes]);
 
 	const filterLayouts = [
 		{
@@ -52,24 +52,22 @@ export default function Edit({ attributes, setAttributes }) {
 	];
 
 	return (
-		<div {...innerBlocksProps}>
+		<div {...blockProps}>
 			<InspectorControls group="settings">
 				<PanelBody title={__('Settings', 'pulsar-blocks')}>
 					<RadioControl
 						hideLabelFromVision={true}
 						label={__('Filter Layout', 'pulsar-blocks')}
-						selected={filterLayout}
+						selected={filtersLayout}
 						options={filterLayouts}
 						onChange={(value) =>
-							setAttributes({ filterLayout: value })
+							setAttributes({ filtersLayout: value })
 						}
 					/>
 				</PanelBody>
 			</InspectorControls>
 
-			<div className="wp-block-pulsar-facetwp-filters__items">
-				{children}
-			</div>
+			<div {...innerBlocksProps} />
 		</div>
 	);
 }

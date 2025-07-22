@@ -27,7 +27,7 @@
       "default": true
     }
   },
-  "usesContext": [ "filtersModalId", "filtersLayout", "collapsable" ],
+  "usesContext": [ "filtersModalId", "filtersLayout" ],
 	"textdomain": "pulsar",
 	"editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",

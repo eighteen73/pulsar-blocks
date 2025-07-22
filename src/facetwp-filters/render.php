@@ -9,18 +9,18 @@
  * @package Pulsar
  */
 
-$id              = $attributes['id'];
-$filter_layout   = $attributes['filterLayout'];
-$collapsable     = $attributes['collapsable'];
-$post_type       = get_post_type();
-$post_type_label = $post_type ? get_post_type_object( $post_type )->labels->singular_name : false;
+$filters_modal_id = $attributes['filtersModalId'];
+$filters_layout   = $attributes['filtersLayout'];
+$collapsable      = $attributes['collapsable'];
+$post_type        = get_post_type();
+$post_type_label  = $post_type ? get_post_type_object( $post_type )->labels->singular_name : false;
 ?>
 
 <div
 	data-wp-interactive="pulsar/facetwp-filters"
 	data-wp-init="callbacks.init"
-	data-wp-context='{ "isModalOpen": false, "id": "<?php echo esc_attr( $id ); ?>", "filterLayout": "<?php echo esc_attr( $filter_layout ); ?>", "openFilters": [] }'
-	<?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => "is-filter-layout-{$filter_layout}" ] ) ); ?>
+	data-wp-context='{ "isModalOpen": false, "filtersModalId": "<?php echo esc_attr( $filters_modal_id ); ?>", "filtersLayout": "<?php echo esc_attr( $filters_layout ); ?>", "openFilters": [] }'
+	<?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => "is-filter-layout-{$filters_layout}" ] ) ); ?>
 >
 	<button
 		class="wp-block-pulsar-facetwp-filters__open-modal"
@@ -31,7 +31,7 @@ $post_type_label = $post_type ? get_post_type_object( $post_type )->labels->sing
 	</button>
 
 	<div
-		data-modal-id="<?php echo esc_attr( $id ); ?>"
+		data-modal-id="<?php echo esc_attr( $filters_modal_id ); ?>"
 		class="wp-block-pulsar-facetwp-filters__modal"
 	>
 		<div class="wp-block-pulsar-facetwp-filters__modal-overlay">

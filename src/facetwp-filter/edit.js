@@ -17,7 +17,9 @@ export default function Edit({ attributes, setAttributes, context }) {
 	const blockProps = useBlockProps({
 		className: `is-filter-layout-${filtersLayout} ${collapsable ? 'is-collapsable' : 'is-not-collapsable'}`,
 	});
-	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps);
+	const innerBlocksProps = useInnerBlocksProps({
+		className: 'wp-block-pulsar-facetwp-filter__panel',
+	});
 
 	useEffect(() => {
 		if (!filterId) {
@@ -26,7 +28,7 @@ export default function Edit({ attributes, setAttributes, context }) {
 	}, [filterId, setAttributes]);
 
 	return (
-		<div {...innerBlocksProps}>
+		<div {...blockProps}>
 			{filtersLayout === 'stacked' && (
 				<InspectorControls group="settings">
 					<PanelBody title={__('Settings', 'pulsar-blocks')}>
@@ -51,9 +53,7 @@ export default function Edit({ attributes, setAttributes, context }) {
 				/>
 			</button>
 
-			<div className="wp-block-pulsar-facetwp-filter__panel">
-				{children}
-			</div>
+			<div {...innerBlocksProps} />
 		</div>
 	);
 }

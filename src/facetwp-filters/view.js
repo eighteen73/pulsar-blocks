@@ -10,28 +10,53 @@ store('pulsar/facetwp-filters', {
 	actions: {
 		openModal: () => {
 			const context = getContext();
-			const modal = window.pulsarBlocks.facetwpFilters.get(context.id);
+			const modal = window.pulsarBlocks.facetwpFilters.get(
+				context.filtersModalId
+			);
 			if (modal) {
 				modal.showModal(true);
 			}
 		},
 		closeModal: () => {
 			const context = getContext();
-			const modal = window.pulsarBlocks.facetwpFilters.get(context.id);
+			const modal = window.pulsarBlocks.facetwpFilters.get(
+				context.filtersModalId
+			);
 			if (modal) {
 				modal.closeModal();
 			}
 		},
 		toggleFilter: () => {
 			const context = getContext();
-			const { openFilters, filterId } = context;
+			const { openFilters, filterId, filtersLayout, filtersModalId } =
+				context;
+			const { ref } = getElement();
+			const isOpening = !openFilters.includes(filterId);
+			const isSlideOutItems =
+				filtersLayout === 'slide-out' &&
+				ref.closest('.wp-block-pulsar-facetwp-filters__items');
 
-			if (openFilters.includes(filterId)) {
+			if (!isOpening) {
+				// If the filter is already open, close it by removing it from the array.
 				context.openFilters = openFilters.filter(
-					(id) => id !== filterId
+					(filterIdentifier) => filterIdentifier !== filterId
 				);
+			} else if (isSlideOutItems) {
+				// If it's the slide-out layout, we are opening a filter, and the click
+				// is from outside the modal, set it as the *only* open filter.
+				context.openFilters = [filterId];
 			} else {
+				// For all other cases (e.g., inside the modal, or other layouts),
+				// add the new filter to the array of open filters.
 				context.openFilters = [...openFilters, filterId];
+			}
+
+			if (isOpening && isSlideOutItems) {
+				const modal =
+					window.pulsarBlocks.facetwpFilters.get(filtersModalId);
+				if (modal) {
+					modal.showModal(true);
+				}
 			}
 		},
 		resetFilters: () => {
@@ -43,16 +68,16 @@ store('pulsar/facetwp-filters', {
 	callbacks: {
 		init: () => {
 			const context = getContext();
-			const { id: modalId } = context;
+			const { filtersModalId } = context;
 			const { ref } = getElement();
 			const modalElement = ref.querySelector(
-				`[data-modal-id="${modalId}"]`
+				`[data-modal-id="${filtersModalId}"]`
 			);
 
-			if (!window.pulsarBlocks.facetwpFilters.has(modalId)) {
+			if (!window.pulsarBlocks.facetwpFilters.has(filtersModalId)) {
 				if (modalElement) {
 					const options = {
-						targetModal: modalId,
+						targetModal: filtersModalId,
 						modalElement,
 						closeTrigger: 'data-modal-close',
 						openClass: 'is-open',
@@ -62,7 +87,7 @@ store('pulsar/facetwp-filters', {
 							'wp-block-pulsar-facetwp-filters__modal-overlay',
 					};
 					window.pulsarBlocks.facetwpFilters.set(
-						modalId,
+						filtersModalId,
 						new Modal(options)
 					);
 				}
