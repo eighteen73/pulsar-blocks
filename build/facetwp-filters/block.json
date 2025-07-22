@@ -22,10 +22,10 @@
     }
   },
   "attributes": {
-    "id": {
+    "filtersModalId": {
       "type": "string"
     },
-    "filterLayout": {
+    "filtersLayout": {
       "type": "string",
       "default": "slide-out"
     },
@@ -35,8 +35,8 @@
     }
   },
   "providesContext": {
-    "id": "id",
-    "filterLayout": "filterLayout",
+    "filtersModalId": "filtersModalId",
+    "filtersLayout": "filtersLayout",
     "collapsable": "collapsable"
   },
   "textdomain": "pulsar",

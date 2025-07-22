@@ -9,19 +9,31 @@
  * @package Pulsar
  */
 
-$id            = $attributes['id'];
-$filter_layout = $attributes['filterLayout'];
-$collapsable   = $attributes['collapsable'];
-$post_type     = get_post_type();
+$id              = $attributes['id'];
+$filter_layout   = $attributes['filterLayout'];
+$collapsable     = $attributes['collapsable'];
+$post_type       = get_post_type();
 $post_type_label = $post_type ? get_post_type_object( $post_type )->labels->singular_name : false;
 ?>
 
-<div <?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => "is-filter-layout-{$filter_layout}" ] ) ); ?>>
-	<button class="wp-block-pulsar-facetwp-filters__open-modal" data-trigger-facetwp-filters-modal="<?php echo esc_attr( $id ); ?>">
+<div
+	data-wp-interactive="pulsar/facetwp-filters"
+	data-wp-init="callbacks.init"
+	data-wp-context='{ "isModalOpen": false, "id": "<?php echo esc_attr( $id ); ?>", "filterLayout": "<?php echo esc_attr( $filter_layout ); ?>", "openFilters": [] }'
+	<?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => "is-filter-layout-{$filter_layout}" ] ) ); ?>
+>
+	<button
+		class="wp-block-pulsar-facetwp-filters__open-modal"
+		data-wp-on--click="actions.openModal"
+		data-wp-bind--aria-expanded="context.isModalOpen"
+	>
 		<?php esc_html_e( 'Filters', 'pulsar' ); ?>
 	</button>
 
-	<div class="wp-block-pulsar-facetwp-filters__modal" id="pulsar-filters-modal-<?php echo esc_attr( $id ); ?>" data-modal-id="<?php echo esc_attr( $id ); ?>" data-modal-trigger-delay="0" data-modal-trigger-type="click">
+	<div
+		data-modal-id="<?php echo esc_attr( $id ); ?>"
+		class="wp-block-pulsar-facetwp-filters__modal"
+	>
 		<div class="wp-block-pulsar-facetwp-filters__modal-overlay">
 			<div class="wp-block-pulsar-facetwp-filters__modal-container" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e( 'Product Filters', 'pulsar' ); ?>">
 				<header class="wp-block-pulsar-facetwp-filters__modal-header">
@@ -37,11 +49,15 @@ $post_type_label = $post_type ? get_post_type_object( $post_type )->labels->sing
 						<span class="wp-block-pulsar-facetwp-filters__modal-count"></span>
 					</h2>
 
-					<button class="wp-block-pulsar-facetwp-filters__modal-clear" onclick="FWP.reset()">
+					<button class="wp-block-pulsar-facetwp-filters__modal-clear" data-wp-on--click="actions.resetFilters">
 						<?php esc_html_e( 'Clear All', 'pulsar' ); ?>
 					</button>
 
-					<button class="wp-block-pulsar-facetwp-filters__modal-close" data-modal-close aria-label="<?php esc_attr_e( 'Close modal', 'pulsar' ); ?>">
+					<button
+						class="wp-block-pulsar-facetwp-filters__modal-close"
+						data-wp-on--click="actions.closeModal"
+						aria-label="<?php esc_attr_e( 'Close modal', 'pulsar' ); ?>"
+					>
 						<span class="wp-block-pulsar-facetwp-filters__modal-close-icon"></span>
 					</button>
 				</header>
@@ -57,11 +73,14 @@ $post_type_label = $post_type ? get_post_type_object( $post_type )->labels->sing
 				</div>
 
 				<footer class="wp-block-pulsar-facetwp-filters__modal-footer">
-					<button class="wp-block-pulsar-facetwp-filters__modal-apply" data-modal-close>
+					<button
+						class="wp-block-pulsar-facetwp-filters__modal-apply"
+						data-wp-on--click="actions.closeModal"
+					>
 						<?php esc_html_e( 'Apply', 'pulsar' ); ?>
 					</button>
 
-					<button class="wp-block-pulsar-facetwp-filters__modal-reset" onclick="FWP.reset()">
+					<button class="wp-block-pulsar-facetwp-filters__modal-reset" data-wp-on--click="actions.resetFilters">
 						<?php esc_html_e( 'Reset', 'pulsar' ); ?>
 					</button>
 				</footer>
@@ -69,7 +88,7 @@ $post_type_label = $post_type ? get_post_type_object( $post_type )->labels->sing
 		</div>
 	</div>
 
-	<div class="wp-block-pulsar-facetwp-filters__filters">
+	<div class="wp-block-pulsar-facetwp-filters__items">
 		<?php echo $content; ?>
 	</div>
 </div>

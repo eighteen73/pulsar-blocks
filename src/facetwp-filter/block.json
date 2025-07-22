@@ -16,7 +16,10 @@
 		"multiple": true
 	},
   "attributes": {
-    "label": {
+    "filterId": {
+      "type": "string"
+    },
+    "filterLabel": {
       "type": "string"
     },
     "collapsable": {
@@ -24,11 +27,10 @@
       "default": true
     }
   },
-  "usesContext": [ "id", "filterLayout", "collapsable" ],
+  "usesContext": [ "filtersModalId", "filtersLayout", "collapsable" ],
 	"textdomain": "pulsar",
 	"editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
-  "viewScriptModule": "file:./view.js",
-	"render": "file:./render.php",
+  "render": "file:./render.php",
 	"style": "file:./style-index.css"
 }

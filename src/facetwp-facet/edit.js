@@ -69,6 +69,7 @@ export default function Edit({ attributes, setAttributes }) {
 						onChange={(value) =>
 							setAttributes({ facetName: value })
 						}
+						__next40pxDefaultSize
 					/>
 				</PanelBody>
 			</InspectorControls>

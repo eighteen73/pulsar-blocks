@@ -11,7 +11,9 @@ import { generateId } from '../utils/helpers';
 
 export default function Edit({ attributes, setAttributes }) {
 	const { id, filterLayout } = attributes;
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps({
+		className: `is-filter-layout-${filterLayout}`,
+	});
 	const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
 		template: [['pulsar/facetwp-filter']],
 	});

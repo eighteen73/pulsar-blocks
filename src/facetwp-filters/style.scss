@@ -128,7 +128,7 @@
 	}
 
 	// Desktop.
-	&__filters {
+	&__items {
 		display: none;
 
 		@media (min-width: 1024px) {
@@ -139,7 +139,7 @@
 	}
 
 	&:where(.is-filter-layout-stacked) {
-		#{$block}__filters {
+		#{$block}__items {
 			flex-direction: column;
 		}
 	}

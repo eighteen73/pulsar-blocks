@@ -2,7 +2,7 @@
 	$block: &;
 	position: relative;
 
-	&__button {
+	&__title {
 		align-items: center;
 		background-color: var(--wp--preset--color--base);
 		border: unset;
@@ -54,13 +54,9 @@
 		}
 	}
 
-	.wp-block-pulsar-facetwp-filters__modal & {
-
-	}
-
-	.wp-block-pulsar-facetwp-filters__filters & {
+	.wp-block-pulsar-facetwp-filters__items & {
 		&:where(.is-filter-layout-slide-out) {
-			#{$block}__button {
+			#{$block}__title {
 				border: 1px solid var(--wp--custom--color--border);
 				font-size: var(--wp--preset--font-size--sm);
 				padding: var(--wp--preset--spacing--sm) var(--wp--preset--spacing--xl);
@@ -86,7 +82,7 @@
 				z-index: 1000;
 			}
 
-			#{$block}__button {
+			#{$block}__title {
 				border: 1px solid var(--wp--custom--color--border);
 				font-size: var(--wp--preset--font-size--sm);
 				font-weight: var(--wp--custom--typography--weight--body);
@@ -95,7 +91,7 @@
 		}
 
 		&:where(.is-not-collapsable.is-filter-layout-stacked) {
-			#{$block}__button {
+			#{$block}__title {
 				&::after {
 					content: none;
 				}

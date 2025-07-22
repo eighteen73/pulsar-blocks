@@ -1,6 +1,7 @@
 export default class Modal {
 	constructor({
 		targetModal,
+		modalElement,
 		triggers = [],
 		dismissedDuration,
 		disableClosing = false,
@@ -40,9 +41,14 @@ export default class Modal {
 			: 'class';
 
 		// Save a reference to the modal and its original parent
-		this.modal = document.querySelector(
-			`[${this.modalSelector}="${this.modalId}"]`
-		);
+		this.modal =
+			modalElement ||
+			document.querySelector(`[${this.modalSelector}="${this.modalId}"]`);
+
+		if (!this.modal) {
+			return;
+		}
+
 		this.originalParent = this.modal.parentNode;
 
 		// Create a reference to the portal container
