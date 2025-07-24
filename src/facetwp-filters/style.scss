@@ -10,6 +10,15 @@
 	--modal-container-max-width: 400px;
 
 	&__open-modal {
+		border: unset;
+		box-shadow: unset;
+		cursor: pointer;
+		display: inline-flex;
+		font-size: unset;
+		margin: unset;
+		padding: unset;
+		width: 100%;
+
 		@media (min-width: 1024px) {
 			display: none;
 		}
