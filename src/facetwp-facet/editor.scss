@@ -4,5 +4,11 @@
 		color: #1e1e1e;
 		padding: 12px;
 		text-align: center;
+
+		.wp-block-pulsar-facetwp-filter__panel & {
+			border: unset;
+			padding: unset;
+			text-align: unset;
+		}
 	}
 }

@@ -1,13 +1,70 @@
+// Pulsar Blocks CSS Custom Properties Convention
+// Naming: --pb--block-name--element--property
+// Example: --pb--facetwp-filters--modal-header--background-color
+// - pb: Pulsar Blocks namespace
+// - block-name: The block or component (e.g., facetwp-filters)
+// - element: The element or sub-component (e.g., modal-header)
+// - property: The CSS property (e.g., background-color)
+// This convention ensures easy overriding, clarity, and avoids naming collisions.
 .wp-block-pulsar-facetwp-filters {
 	$block: &;
 
-	--modal-overlay-opacity: 0.4;
-	--modal-container-background-color: var(--wp--custom--color--surface--default, #fff);
-	--modal-header-background-color: var(--wp--preset--color--tint, #f2f2f2);
-	--modal-close-button-size: 48px;
-	--modal-close-icon-size: 14px;
-	--modal-close-icon-color: currentcolor;
-	--modal-container-max-width: 400px;
+	// Modal Overlay
+	--pb--facetwp-filters--modal-overlay--opacity: 0.4;
+	--pb--facetwp-filters--modal-overlay--background-color: var(--wp--preset--color--contrast, #000);
+
+	// Modal Container
+	--pb--facetwp-filters--modal-container--background-color: var(--wp--preset--color--base, #fff);
+	--pb--facetwp-filters--modal-container--max-width: 400px;
+
+	// Modal Header
+	--pb--facetwp-filters--modal-header--background-color: var(--wp--preset--color--tint, #f2f2f2);
+	--pb--facetwp-filters--modal-header--padding: var(--wp--preset--spacing--2-xl);
+	--pb--facetwp-filters--modal-header--gap: var(--wp--preset--spacing--sm);
+
+	// Modal Title
+	--pb--facetwp-filters--modal-title--font-size: var(--wp--preset--font-size--lg);
+	--pb--facetwp-filters--modal-title--gap: var(--wp--preset--spacing--sm);
+
+	// Modal Count
+	--pb--facetwp-filters--modal-count--color: var(--wp--preset--color--base-accent);
+	--pb--facetwp-filters--modal-count--font-size: var(--wp--preset--font-size--sm);
+	--pb--facetwp-filters--modal-count--font-weight: var(--wp--custom--typography--weight--body, 400);
+
+	// Modal Clear
+	--pb--facetwp-filters--modal-clear--font-size: var(--wp--preset--font-size--sm);
+
+	// Modal Close Button/Icon
+	--pb--facetwp-filters--modal-close-button--size: 48px;
+	--pb--facetwp-filters--modal-close-icon--size: 14px;
+	--pb--facetwp-filters--modal-close-icon--color: currentcolor;
+
+	// Modal Inner
+	--pb--facetwp-filters--modal-inner--padding: var(--wp--preset--spacing--2-xl);
+
+	// Modal Footer
+	--pb--facetwp-filters--modal-footer--padding: var(--wp--preset--spacing--2-xl);
+	--pb--facetwp-filters--modal-footer--gap: var(--wp--preset--spacing--sm);
+
+	// Modal Content
+	--pb--facetwp-filters--modal-content--border-top: 1px solid var(--wp--custom--color--border);
+
+	// Modal Applied Filters
+	--pb--facetwp-filters--modal-applied-filters--border-top: 1px solid var(--wp--custom--color--border);
+	--pb--facetwp-filters--modal-applied-filters--padding: var(--wp--preset--spacing--2-xl);
+	--pb--facetwp-filters--modal-applied-filters--margin-bottom: var(--wp--preset--spacing--lg);
+	--pb--facetwp-filters--modal-applied-filters--font-weight: var(--wp--custom--typography--weight--body, 400);
+	--pb--facetwp-filters--modal-applied-filters--font-size: var(--wp--preset--font-size--sm);
+
+	// Applied Filters
+	--pb--facetwp-filters--applied-filters--margin-bottom: var(--wp--preset--spacing--lg);
+
+	// Applied Filters Label
+	--pb--facetwp-filters--applied-filters-label--font-weight: var(--wp--custom--typography--weight--heading, 700);
+	--pb--facetwp-filters--applied-filters-label--margin-bottom: var(--wp--preset--spacing--lg);
+
+	// Items
+	--pb--facetwp-filters--items--gap: var(--wp--preset--spacing--md);
 
 	&__open-modal {
 		border: unset;
@@ -44,40 +101,45 @@
 			z-index: 10000;
 
 			&::before {
-				background-color: var(--modal-overlay-background-color, #000);
+				background-color: var(--pb--facetwp-filters--modal-overlay--background-color);
 				content: "";
 				inset: 0;
-				opacity: var(--modal-overlay-opacity);
+				opacity: var(--pb--facetwp-filters--modal-overlay--opacity);
 				position: absolute;
 			}
 		}
 
 		#{$block}__modal-container {
-			background-color: var(--modal-container-background-color);
+			background-color: var(--pb--facetwp-filters--modal-container--background-color);
 			display: flex;
 			flex-direction: column;
 			height: 100dvh;
-			max-width: var(--modal-container-max-width);
+			max-width: var(--pb--facetwp-filters--modal-container--max-width);
 			position: relative;
 			width: 100%;
 		}
 
 		#{$block}__modal-header {
 			align-items: center;
-			background-color: var(--modal-header-background-color);
+			background-color: var(--pb--facetwp-filters--modal-header--background-color);
 			display: flex;
-			gap: var(--wp--preset--spacing--sm);
+			gap: var(--pb--facetwp-filters--modal-header--gap);
 			justify-content: space-between;
-			padding: var(--wp--preset--spacing--2-xl);
+			padding: var(--pb--facetwp-filters--modal-header--padding);
 		}
 
 		#{$block}__modal-title {
-			font-size: var(--wp--preset--font-size--lg);
+			align-items: center;
+			display: flex;
+			font-size: var(--pb--facetwp-filters--modal-title--font-size);
+			gap: var(--pb--facetwp-filters--modal-title--gap);
 			margin: unset;
 		}
 
 		#{$block}__modal-count {
-			font-size: var(--wp--preset--font-size--sm);
+			color: var(--pb--facetwp-filters--modal-count--color);
+			font-size: var(--pb--facetwp-filters--modal-count--font-size);
+			font-weight: var(--pb--facetwp-filters--modal-count--font-weight);
 		}
 
 		#{$block}__modal-clear {
@@ -85,7 +147,7 @@
 			border: unset;
 			box-shadow: none;
 			cursor: pointer;
-			font-size: var(--wp--preset--font-size--sm);
+			font-size: var(--pb--facetwp-filters--modal-clear--font-size);
 			margin-left: auto;
 			padding: unset;
 		}
@@ -93,20 +155,20 @@
 		#{$block}__modal-inner {
 			flex: 1;
 			overflow-y: auto;
-			padding: var(--wp--preset--spacing--2-xl);
+			padding: var(--pb--facetwp-filters--modal-inner--padding);
 		}
 
 		#{$block}__modal-content {
 			> * + * {
-				border-top: 1px solid var(--wp--custom--color--border);
+				border-top: var(--pb--facetwp-filters--modal-content--border-top);
 			}
 		}
 
 		#{$block}__modal-footer {
 			display: grid;
-			gap: var(--wp--preset--spacing--sm);
+			gap: var(--pb--facetwp-filters--modal-footer--gap);
 			margin-top: auto;
-			padding: var(--wp--preset--spacing--2-xl);
+			padding: var(--pb--facetwp-filters--modal-footer--padding);
 
 			> * {
 				width: 100%;
@@ -119,19 +181,19 @@
 			border: none;
 			box-shadow: none;
 			cursor: pointer;
-			height: var(--modal-close-button-size);
+			height: var(--pb--facetwp-filters--modal-close-button--size);
 			margin: 0;
 			position: relative;
-			width: var(--modal-close-button-size);
+			width: var(--pb--facetwp-filters--modal-close-button--size);
 		}
 
 		#{$block}__modal-close-icon {
-			background-color: var(--modal-close-icon-color);
+			background-color: var(--pb--facetwp-filters--modal-close-icon--color);
 			inset: 0;
 			mask-image: url("../../assets/svg/close.svg");
 			mask-position: center;
 			mask-repeat: no-repeat;
-			mask-size: var(--modal-close-icon-size);
+			mask-size: var(--pb--facetwp-filters--modal-close-icon--size);
 			position: absolute;
 		}
 	}
@@ -143,7 +205,7 @@
 		@media (min-width: 1024px) {
 			display: flex;
 			flex-wrap: wrap;
-			gap: var(--wp--preset--spacing--md);
+			gap: var(--pb--facetwp-filters--items--gap);
 		}
 	}
 
@@ -153,16 +215,47 @@
 		}
 	}
 
-	#{$block}__modal-selected-filters {
-		margin-bottom: var(--wp--preset--spacing--lg);
+	#{$block}__modal-applied-filters {
+		margin-bottom: var(--pb--facetwp-filters--modal-applied-filters--margin-bottom);
 
 		ul {
 			margin: unset;
 			padding: unset;
 		}
+	}
 
-		&:where(:has(.facetwp-selections:empty)) {
+	#{$block}__modal-applied-filters-label {
+		font-weight: var(--pb--facetwp-filters--applied-filters-label--font-weight);
+		margin-bottom: var(--pb--facetwp-filters--applied-filters-label--margin-bottom);
+	}
+
+	// FacetWP specific styles.
+	.facetwp-selections {
+		ul,
+		li {
+			display: flex;
+			flex-wrap: wrap;
+			gap: var(--wp--preset--spacing--sm);
+		}
+
+		.facetwp-selection-label {
 			display: none;
+		}
+
+		.facetwp-selection-value {
+			align-items: center;
+			background-color: var(--wp--preset--color--tint);
+			background-image: unset;
+			border: 1px solid var(--wp--custom--color--border);
+			display: inline-flex;
+			gap: var(--wp--preset--spacing--sm);
+			margin: unset;
+			padding: var(--wp--preset--spacing--sm);
+
+			&::after {
+				content: "\d7";
+				font-size: var(--wp--preset--font-size--sm);
+			}
 		}
 	}
 }

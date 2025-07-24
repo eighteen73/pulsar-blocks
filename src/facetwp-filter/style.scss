@@ -1,29 +1,38 @@
 .wp-block-pulsar-facetwp-filter {
 	$block: &;
+
+	--pb--facetwp-filter--title--font-weight: var(--wp--custom--typography--weight--heading);
+	--pb--facetwp-filter--title--font-size: var(--wp--preset--font-size--sm);
+	--pb--facetwp-filter--title--padding: var(--wp--preset--spacing--lg);
+	--pb--facetwp-filter--title--background-color: var(--wp--preset--color--base);
+	--pb--facetwp-filter--title--color: var(--wp--preset--color--contrast);
+	--pb--facetwp-filter--title-icon--color: var(--wp--preset--color--contrast);
+	--pb--facetwp-filter--title-icon--size: 12px;
+
 	position: relative;
 
 	&__title {
 		align-items: center;
-		background-color: var(--wp--preset--color--base);
+		background-color: var(--pb--facetwp-filter--title--background-color);
 		border: unset;
 		cursor: pointer;
 		display: flex;
-		font-weight: var(--wp--custom--typography--weight--heading);
+		font-weight: var(--pb--facetwp-filter--title--font-weight);
 		gap: var(--wp--preset--spacing--md);
 		justify-content: space-between;
-		padding-block: var(--wp--preset--spacing--lg);
+		padding-block: var(--pb--facetwp-filter--title--padding);
 		width: 100%;
 
 		&::after {
-			background-color: var(--wp--preset--color--contrast);
+			background-color: var(--pb--facetwp-filter--title-icon--color);
 			content: "";
 			display: block;
-			height: 12px;
+			height: var(--pb--facetwp-filter--title-icon--size);
 			mask-image: url("../../assets/svg/chevron-down.svg");
 			mask-position: center;
 			mask-repeat: no-repeat;
 			mask-size: contain;
-			width: 12px;
+			width: var(--pb--facetwp-filter--title-icon--size);
 		}
 
 		.is-active &::after {

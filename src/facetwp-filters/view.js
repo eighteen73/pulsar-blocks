@@ -64,9 +64,25 @@ store('pulsar/facetwp-filters', {
 				window.FWP.reset();
 			}
 		},
+		onFacetwpLoaded: () => {
+			const context = getContext();
+
+			let count = 0;
+			const excludeFacets = ['pager', 'sort', 'reset'];
+
+			Object.entries(window.FWP.facets).forEach(([name, val]) => {
+				const type = window.FWP.facet_type?.[name];
+				if (!excludeFacets.includes(type) && val.length > 0) {
+					count += val.length;
+				}
+			});
+
+			context.appliedFilterCount = count;
+		},
 	},
 	callbacks: {
 		init: () => {
+			const { actions } = store('pulsar/facetwp-filters');
 			const context = getContext();
 			const { filtersModalId } = context;
 			const { ref } = getElement();
@@ -92,6 +108,8 @@ store('pulsar/facetwp-filters', {
 					);
 				}
 			}
+
+			actions.onFacetwpLoaded();
 		},
 		isActiveFilter: () => {
 			const context = getContext();

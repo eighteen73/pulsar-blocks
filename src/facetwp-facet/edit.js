@@ -61,7 +61,10 @@ export default function Edit({ attributes, setAttributes }) {
 	return (
 		<div {...blockProps}>
 			<InspectorControls>
-				<PanelBody title={__('Filter Layout', 'pulsar-blocks')}>
+				<PanelBody
+					title={__('Settings', 'pulsar-blocks')}
+					initialOpen={true}
+				>
 					<SelectControl
 						label={__('Facet', 'pulsar-blocks')}
 						value={facetName}
