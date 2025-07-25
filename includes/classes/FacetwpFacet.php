@@ -32,6 +32,9 @@ class FacetwpFacet {
 	 */
 	public function setup() {
 		add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
+
+		// Enable accessibility for FacetWP.
+		add_filter( 'facetwp_load_a11y', '__return_true' );
 	}
 
 	/**
