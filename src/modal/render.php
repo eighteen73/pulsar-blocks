@@ -33,7 +33,7 @@ $width                = $attributes['width'] ?? '';
 		get_block_wrapper_attributes(
 			[
 				'id'                            => "pulsar-modal-{$modal_id}",
-				'style'                         => ( $overlay_color ? '--modal-overlay-background-color: ' . $overlay_color . ';' : '' ) . ( $width ? '--modal-container-width: ' . $width . ';' : '' ),
+				'style'                         => ( $overlay_color ? '--pb--modal--overlay--background-color: ' . $overlay_color . ';' : '' ) . ( $width ? '--pb--modal--container--max-width: ' . $width . ';' : '' ),
 				'data-modal-id'                 => $modal_id,
 				'data-modal-trigger-delay'      => $trigger_delay ?: '0',
 				'data-modal-trigger-type'       => $trigger_type,

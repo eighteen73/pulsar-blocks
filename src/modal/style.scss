@@ -1,12 +1,15 @@
 .wp-block-pulsar-modal {
-	--modal-overlay-opacity: 1;
-	--modal-container-padding: var(--wp--preset--spacing--xl, 32px);
-	--modal-container-background-color: var(--wp--custom--color--surface--default, #fff);
-	--modal-container-box-shadow: var(--wp--custom--box-shadow--sm, 1px 1px 12px rgba(0, 0, 0, 0.1));
-	--modal-close-button-size: 48px;
-	--modal-close-icon-size: 14px;
-	--modal-close-icon-color: currentcolor;
-	--modal-container-max-width: var(--wp--style--global--content-size, 600px);
+	// stylelint-disable custom-property-pattern -- backwards compatibility
+	--pb--modal--overlay--background-color: var(--wp--preset--color--contrast, var(--wp--custom--color--surface--invert, #000));
+	--pb--modal--overlay--opacity: var(--modal-overlay-opacity, 1);
+	--pb--modal--container--padding: var(--modal-container-padding, var(--wp--preset--spacing--xl, 32px));
+	--pb--modal--container--background-color: var(--modal-container-background-color, var(--wp--custom--color--surface--default, #fff));
+	--pb--modal--container--box-shadow: var(--modal-container-box-shadow, var(--wp--custom--box-shadow--sm, 1px 1px 12px rgba(0, 0, 0, 0.1)));
+	--pb--modal--container--max-width: var(--modal-container-width, var(--wp--style--global--content-size, 600px));
+	--pb--modal--close-button--size: var(--modal-close-button-size, 48px);
+	--pb--modal--close-icon--size: var(--modal-close-icon-size, 14px);
+	--pb--modal--close-icon--color: var(--modal-close-icon-color, currentcolor);
+
 	display: none;
 	margin: 0;
 
@@ -24,23 +27,23 @@
 		z-index: 10000;
 
 		&::before {
-			background-color: var(--modal-overlay-background-color, #000);
+			background-color: var(--pb--modal--overlay--background-color);
 			content: "";
 			inset: 0;
-			opacity: var(--modal-overlay-opacity);
+			opacity: var(--pb--modal--overlay--opacity);
 			position: absolute;
 		}
 	}
 
 	&__container {
-		background-color: var(--modal-container-background-color);
-		box-shadow: var(--modal-container-box-shadow);
+		background-color: var(--pb--modal--container--background-color);
+		box-shadow: var(--pb--modal--container--box-shadow);
 		display: flex;
 		flex-direction: column;
 		max-height: calc(100dvh - var(--wp--custom--spacing--edge));
-		max-width: var(--modal-container-width, var(--modal-container-max-width));
+		max-width: var(--pb--modal--container--max-width);
 		overflow-y: auto;
-		padding: var(--modal-container-padding);
+		padding: var(--pb--modal--container--padding);
 		position: relative;
 		width: calc(100% - ( var(--wp--style--root--padding-left, 32px) + var(--wp--style--root--padding-right, 32px) ));
 	}
@@ -57,22 +60,22 @@
 		border: none;
 		box-shadow: none;
 		cursor: pointer;
-		height: var(--modal-close-button-size);
+		height: var(--pb--modal--close-button--size);
 		margin: 0;
 		position: absolute;
 		right: 0;
 		top: 0;
-		width: var(--modal-close-button-size);
+		width: var(--pb--modal--close-button--size);
 		z-index: 10001;
 	}
 
 	&__close-icon {
-		background-color: var(--modal-close-icon-color);
+		background-color: var(--pb--modal--close-icon--color);
 		inset: 0;
 		mask-image: url("../../assets/svg/close.svg");
 		mask-position: center;
 		mask-repeat: no-repeat;
-		mask-size: var(--modal-close-icon-size);
+		mask-size: var(--pb--modal--close-icon--size);
 		position: absolute;
 	}
 }
@@ -88,3 +91,4 @@
 .modal-is-open {
 	overflow: hidden;
 }
+// stylelint-enable custom-property-pattern
