@@ -80,7 +80,7 @@ $post_type_label  = $post_type ? get_post_type_object( $post_type )->labels->sin
 							<?php esc_html_e( 'Applied Filters', 'pulsar' ); ?>
 						</div>
 
-						<?php echo facetwp_display( 'selections' ); ?>
+						<?php echo facetwp_display( 'selections' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</div>
 
 					<div class="wp-block-pulsar-facetwp-filters__modal-content">
@@ -109,6 +109,6 @@ $post_type_label  = $post_type ? get_post_type_object( $post_type )->labels->sin
 	</div>
 
 	<div class="wp-block-pulsar-facetwp-filters__items">
-		<?php echo $content; ?>
+		<?php echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	</div>
 </div>

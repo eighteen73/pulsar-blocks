@@ -9,8 +9,8 @@
  * @package Pulsar
  */
 
- // Bail if FacetWP isn't activated.
- if ( ! function_exists( 'FWP' ) ) {
+// Bail if FacetWP isn't activated.
+if ( ! function_exists( 'FWP' ) ) {
 	return;
 }
 
@@ -24,5 +24,5 @@ if ( ! $facet_name ) {
 <div
 	<?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>
 >
-	<?php echo facetwp_display( 'facet', $facet_name ); ?>
+	<?php echo facetwp_display( 'facet', $facet_name ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 </div>

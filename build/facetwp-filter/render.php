@@ -37,6 +37,6 @@ $is_collapsable   = $collapsable ? 'is-collapsable' : 'is-not-collapsable';
 		id="<?php echo esc_attr( $filter_id ); ?>"
 		class="wp-block-pulsar-facetwp-filter__panel"
 	>
-		<?php echo $content; ?>
+		<?php echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	</div>
 </div>
