@@ -18,12 +18,14 @@ store('pulsar/facetwp-filters', {
 			}
 		},
 		closeModal: () => {
+			const { actions } = store('pulsar/facetwp-filters');
 			const context = getContext();
 			const modal = window.pulsarBlocks.facetwpFilters.get(
 				context.filtersModalId
 			);
 			if (modal) {
 				modal.closeModal();
+				actions.onModalClosed();
 			}
 		},
 		toggleFilter: () => {
@@ -78,6 +80,15 @@ store('pulsar/facetwp-filters', {
 			});
 
 			context.appliedFilterCount = count;
+		},
+		onModalClosed: (event) => {
+			const context = getContext();
+			const modalId = event.detail;
+			const filtersModalId = context.filtersModalId;
+
+			if (modalId === filtersModalId) {
+				context.openFilters = [];
+			}
 		},
 	},
 	callbacks: {

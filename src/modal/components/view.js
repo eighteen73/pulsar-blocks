@@ -190,6 +190,11 @@ export default class Modal {
 		if (this.dismissedDuration) {
 			this.setStorage();
 		}
+		window.dispatchEvent(
+			new CustomEvent('pulsar-modal-closed', {
+				detail: this.modalId,
+			})
+		);
 	}
 
 	moveToPortal() {

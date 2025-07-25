@@ -1,11 +1,3 @@
-// Pulsar Blocks CSS Custom Properties Convention
-// Naming: --pb--block-name--element--property
-// Example: --pb--facetwp-filters--modal-header--background-color
-// - pb: Pulsar Blocks namespace
-// - block-name: The block or component (e.g., facetwp-filters)
-// - element: The element or sub-component (e.g., modal-header)
-// - property: The CSS property (e.g., background-color)
-// This convention ensures easy overriding, clarity, and avoids naming collisions.
 .wp-block-pulsar-facetwp-filters {
 	$block: &;
 

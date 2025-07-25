@@ -5,6 +5,8 @@ import Edit from './edit';
 import Save from './save';
 import { Filter as icon } from '../components/icons';
 
+import './style.scss';
+
 const { name } = json;
 
 registerBlockType(name, {
