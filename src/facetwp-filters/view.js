@@ -81,6 +81,21 @@ store('pulsar/facetwp-filters', {
 
 			context.appliedFilterCount = count;
 		},
+		setFacetAvailable: () => {
+			const context = getContext();
+			const { filterId } = context;
+			const { ref } = getElement();
+			const panel = ref.querySelector(
+				'.wp-block-pulsar-facetwp-filter__panel'
+			);
+			if (!panel) return false;
+			const facet = panel.querySelector(
+				`.facetwp-facet[data-name="${filterId}"]`
+			);
+			if (!facet) return false;
+
+			context.isFacetAvailable = facet.children.length > 0;
+		},
 		onModalClosed: (event) => {
 			const context = getContext();
 			const modalId = event.detail;
@@ -126,6 +141,11 @@ store('pulsar/facetwp-filters', {
 			const context = getContext();
 			const { openFilters, filterId } = context;
 			return openFilters.includes(filterId);
+		},
+		isFacetAvailable: () => {
+			const context = getContext();
+			const { isFacetAvailable } = context;
+			return isFacetAvailable;
 		},
 	},
 });
