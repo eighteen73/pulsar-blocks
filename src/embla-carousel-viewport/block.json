@@ -7,7 +7,7 @@
 	"category": "design",
 	"icon": "images-alt",
 	"description": "Carousel Viewport",
-	"textdomain": "pulsar",
+	"textdomain": "pulsar-blocks",
   "parent": [
     "pulsar/carousel"
   ],

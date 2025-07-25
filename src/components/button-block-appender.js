@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 /**
  * WordPress dependencies
@@ -62,7 +62,7 @@ function ButtonBlockAppender(
 								ref={ref}
 								onFocus={onFocus}
 								tabIndex={tabIndex}
-								className={classnames(
+								className={clsx(
 									className,
 									'block-editor-button-block-appender'
 								)}

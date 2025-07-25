@@ -206,7 +206,7 @@ export default function Edit({
 							settings={[
 								{
 									colorValue: overlayColor,
-									label: __('Overlay', 'pulsar'),
+									label: __('Overlay', 'pulsar-blocks'),
 									onColorChange: (val) =>
 										setAttributes({ overlayColor: val }),
 									isShownByDefault: true,

@@ -1,6 +1,7 @@
 import { TextareaControl, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
+import clsx from 'clsx';
 
 import './advanced-controls.scss';
 
@@ -63,14 +64,6 @@ export default function AdvancedControls({
 		handleInputChange(tempInputValue);
 	});
 
-	const classNames = () => {
-		if (tempInputValue) {
-			return jsonValid ? 'is-valid' : 'is-invalid';
-		}
-
-		return null;
-	};
-
 	const jsonText = jsonValid
 		? __('JSON is valid', 'pulsar-blocks')
 		: __('JSON is invalid', 'pulsar-blocks');
@@ -90,7 +83,10 @@ export default function AdvancedControls({
 				rows={12}
 				onChange={(value) => handleInputChange(value)}
 				value={tempInputValue}
-				className={classNames()}
+				className={clsx({
+					'is-valid': tempInputValue && jsonValid,
+					'is-invalid': tempInputValue && !jsonValid,
+				})}
 			/>
 
 			<ToggleControl

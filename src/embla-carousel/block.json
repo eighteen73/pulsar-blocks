@@ -56,7 +56,7 @@
   "providesContext": {
     "emblaApi": "emblaApi"
   },
-	"textdomain": "pulsar",
+	"textdomain": "pulsar-blocks",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",

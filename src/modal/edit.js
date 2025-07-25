@@ -189,29 +189,29 @@ export function Edit(props) {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Settings', 'pulsar')}>
+				<PanelBody title={__('Settings', 'pulsar-blocks')}>
 					<p className="wp-block-pulsar-modal__editor-id">
-						{__('Modal ID', 'pulsar')}
+						{__('Modal ID', 'pulsar-blocks')}
 						{': '}
 						<code>{id}</code>
 					</p>
 					<TextControl
-						label={__('Modal Label', 'pulsar')}
+						label={__('Modal Label', 'pulsar-blocks')}
 						value={label}
-						placeholder={__('New Modal', 'pulsar')}
+						placeholder={__('New Modal', 'pulsar-blocks')}
 						onChange={(value) => setAttributes({ label: value })}
 						help={__(
 							'Used to differentiate modals from one another, and describes the modal to screen readers.',
-							'pulsar'
+							'pulsar-blocks'
 						)}
 					/>
 
 					<ToggleControl
-						label={__('Prevent closing', 'pulsar')}
+						label={__('Prevent closing', 'pulsar-blocks')}
 						checked={disableClosing || false}
 						help={__(
 							'If enabled, the modal will not be closable by clicking the close button or by clicking outside the modal. Use with caution.',
-							'pulsar'
+							'pulsar-blocks'
 						)}
 						onChange={() => {
 							setAttributes({
@@ -222,7 +222,7 @@ export function Edit(props) {
 					/>
 
 					<ToggleControl
-						label={__('Show close button', 'pulsar')}
+						label={__('Show close button', 'pulsar-blocks')}
 						checked={enableCloseButton || false}
 						onChange={() => {
 							setAttributes({
@@ -245,13 +245,13 @@ export function Edit(props) {
 					/>
 
 					<UnitControl
-						label={__('Dismissed duration', 'pulsar')}
+						label={__('Dismissed duration', 'pulsar-blocks')}
 						labelPosition="edge"
 						__unstableInputWidth="80px"
 						value={dismissedDuration}
 						help={__(
 							'Duration before this modal will appear again after being closed. Leave blank to always show this modal.',
-							'pulsar'
+							'pulsar-blocks'
 						)}
 						placeholder="0"
 						onChange={(val) =>
@@ -282,9 +282,12 @@ export function Edit(props) {
 						]}
 					/>
 				</PanelBody>
-				<PanelBody title={__('Triggers', 'pulsar')} initialOpen={false}>
+				<PanelBody
+					title={__('Triggers', 'pulsar-blocks')}
+					initialOpen={false}
+				>
 					<ToggleGroupControl
-						label={__('Trigger type', 'pulsar')}
+						label={__('Trigger type', 'pulsar-blocks')}
 						value={triggerType}
 						onChange={(val) => setAttributes({ triggerType: val })}
 						isBlock
@@ -302,10 +305,10 @@ export function Edit(props) {
 					{triggerType === 'scroll' && (
 						<>
 							<TextControl
-								label={__('Selector', 'pulsar')}
+								label={__('Selector', 'pulsar-blocks')}
 								help={__(
 									'CSS element selector that triggers the modal when that element is scrolled into view.',
-									'pulsar'
+									'pulsar-blocks'
 								)}
 								value={scrollSelector}
 								onChange={(val) =>
@@ -315,7 +318,7 @@ export function Edit(props) {
 								__nextHasNoMarginBottom
 							/>
 							<UnitControl
-								label={__('Scroll threshold', 'pulsar')}
+								label={__('Scroll threshold', 'pulsar-blocks')}
 								units={[
 									{
 										value: '%',
@@ -340,7 +343,7 @@ export function Edit(props) {
 					{(triggerType === 'load' || triggerType === 'scroll') && (
 						<>
 							<UnitControl
-								label={__('Delay', 'pulsar')}
+								label={__('Delay', 'pulsar-blocks')}
 								labelPosition="edge"
 								__unstableInputWidth="80px"
 								value={triggerDelay}
@@ -363,10 +366,10 @@ export function Edit(props) {
 
 					{triggerType === 'click' && (
 						<TextControl
-							label={__('Selector', 'pulsar')}
+							label={__('Selector', 'pulsar-blocks')}
 							help={__(
 								'Optional CSS selector to trigger the modal. Buttons and groups also have an option to trigger modals.',
-								'pulsar'
+								'pulsar-blocks'
 							)}
 							value={clickSelector}
 							onChange={(val) =>
@@ -384,7 +387,7 @@ export function Edit(props) {
 					settings={[
 						{
 							colorValue: overlayColor,
-							label: __('Overlay', 'pulsar'),
+							label: __('Overlay', 'pulsar-blocks'),
 							onColorChange: (val) =>
 								setAttributes({ overlayColor: val }),
 							isShownByDefault: true,
@@ -402,7 +405,7 @@ export function Edit(props) {
 			<BlockControls group="other">
 				<ToolbarGroup>
 					<ToolbarButton onClick={handleOpen}>
-						{__('Open Modal', 'pulsar')}
+						{__('Open Modal', 'pulsar-blocks')}
 					</ToolbarButton>
 				</ToolbarGroup>
 			</BlockControls>
@@ -420,7 +423,7 @@ export function Edit(props) {
 								<Toolbar label="Options">
 									<ToolbarGroup>
 										<ToolbarButton onClick={handleClose}>
-											{__('Close Modal', 'pulsar')}
+											{__('Close Modal', 'pulsar-blocks')}
 										</ToolbarButton>
 									</ToolbarGroup>
 								</Toolbar>
@@ -435,7 +438,7 @@ export function Edit(props) {
 								>
 									<span className="wp-block-pulsar-modal__close-icon"></span>
 									<span className="screen-reader-text">
-										{__('Close Modal', 'pulsar')}
+										{__('Close Modal', 'pulsar-blocks')}
 									</span>
 								</button>
 							)}
@@ -447,7 +450,7 @@ export function Edit(props) {
 						icon={icon}
 						isColumnLayout
 					>
-						{__('Modal ID: ', 'pulsar') + id}
+						{__('Modal ID: ', 'pulsar-blocks') + id}
 					</Placeholder>
 				)}
 			</div>

@@ -35,7 +35,7 @@ import { useMergeRefs } from '@wordpress/compose';
 /**
  * External dependencies
  */
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 /**
  * Internal dependencies
@@ -193,7 +193,7 @@ export default function Edit({
 	// Modify block props.
 	const blockProps = useBlockProps({
 		ref: useMergeRefs([setPopoverAnchor, listItemRef]),
-		className: classnames('wp-block-navigation-item', {
+		className: clsx('wp-block-navigation-item', {
 			'is-editing': isSelected,
 			'has-link': !!url,
 		}),

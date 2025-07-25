@@ -7,7 +7,7 @@
   "category": "design",
   "icon": "minus",
   "description": "Progress bar for the carousel",
-  "textdomain": "pulsar",
+  "textdomain": "pulsar-blocks",
   "ancestor": [
     "pulsar/embla-carousel"
   ],

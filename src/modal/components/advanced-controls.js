@@ -51,11 +51,12 @@ const withAdvancedControls = createHigherOrderComponent((BlockEdit) => {
 		const { selectBlock } = useDispatch(blockEditorStore);
 
 		const modalOptions = [
-			{ label: __('Select Modal', 'pulsar'), value: '' },
+			{ label: __('Select Modal', 'pulsar-blocks'), value: '' },
 			...modals.map((modal) => {
 				return {
 					label:
-						modal?.attributes?.label || __('New Modal', 'pulsar'),
+						modal?.attributes?.label ||
+						__('New Modal', 'pulsar-blocks'),
 					value: modal?.attributes?.id,
 				};
 			}),
@@ -72,7 +73,10 @@ const withAdvancedControls = createHigherOrderComponent((BlockEdit) => {
 					<InspectorAdvancedControls>
 						<BaseControl>
 							<ToggleControl
-								label={__('Show Modal on Click', 'pulsar')}
+								label={__(
+									'Show Modal on Click',
+									'pulsar-blocks'
+								)}
 								checked={
 									attributes?.modalTriggerEnabled || false
 								}
@@ -87,7 +91,7 @@ const withAdvancedControls = createHigherOrderComponent((BlockEdit) => {
 							/>
 							{attributes?.modalTriggerEnabled && (
 								<SelectControl
-									label={__('Modal', 'pulsar')}
+									label={__('Modal', 'pulsar-blocks')}
 									value={attributes?.modalTriggerId}
 									options={modalOptions}
 									onChange={(val) => {
@@ -99,13 +103,13 @@ const withAdvancedControls = createHigherOrderComponent((BlockEdit) => {
 							)}
 							{selectedModal !== null && (
 								<Button
-									label={__('Edit Modal', 'pulsar')}
+									label={__('Edit Modal', 'pulsar-blocks')}
 									variant="secondary"
 									onClick={() =>
 										selectBlock(selectedModal.clientId)
 									}
 								>
-									{__('Open Modal', 'pulsar')}
+									{__('Open Modal', 'pulsar-blocks')}
 								</Button>
 							)}
 						</BaseControl>
