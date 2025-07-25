@@ -9,6 +9,11 @@
  * @package Pulsar
  */
 
+// Bail if WooCommerce isn't activated.
+if ( ! class_exists( 'WooCommerce' ) ) {
+	return;
+}
+
 /**
  * Filter tabs and allow third parties to add their own.
  *

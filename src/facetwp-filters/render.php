@@ -9,6 +9,11 @@
  * @package Pulsar
  */
 
+// Bail if FacetWP isn't activated.
+if ( ! function_exists( 'FWP' ) ) {
+	return;
+}
+
 $filters_modal_id = $attributes['filtersModalId'];
 $filters_layout   = $attributes['filtersLayout'];
 $collapsable      = $attributes['collapsable'];

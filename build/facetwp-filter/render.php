@@ -9,6 +9,11 @@
  * @package Pulsar
  */
 
+// Bail if FacetWP isn't activated.
+if ( ! function_exists( 'FWP' ) ) {
+	return;
+}
+
 $filters_modal_id = $block->context['filtersModalId'];
 $filters_layout   = $block->context['filtersLayout'];
 $filter_label     = $attributes['filterLabel'];
