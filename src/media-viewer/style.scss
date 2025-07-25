@@ -208,52 +208,54 @@ $grid-areas: (
 }
 
 .wp-block-pulsar-media-viewer__lightbox {
+	// stylelint-disable custom-property-pattern -- backwards compatibility
 	// Overlay
-	--lightbox-overlay-opacity: 0.95;
-	--lightbox-overlay-color: var(--wp--custom--color--surface--invert, #000);
+	--pb--media-viewer--lightbox--overlay--opacity: var(--lightbox-overlay-opacity, 0.95);
+	--pb--media-viewer--lightbox--overlay--color: var(--lightbox-overlay-color, var(--wp--preset--color--contrast, var(--wp--custom--color--surface--invert, #000)));
 
 	// Icons
-	--lightbox-icon-color: var(--wp--custom--color--text--invert, #fff);
-	--lightbox-icon-hover-color: var(--wp--custom--color--text--accent, #007cba);
-	--lightbox-icon-size: 24px;
+	--pb--media-viewer--lightbox--icon--color: var(--lightbox-icon-color, var(--wp--preset--color--base, var(--wp--custom--color--text--invert, #fff)));
+	--pb--media-viewer--lightbox--icon--hover-color: var(--lightbox-icon-hover-color, var(--wp--preset--color--base-accent, var(--wp--custom--color--text--accent, #007cba)));
+	--pb--media-viewer--lightbox--icon--size: var(--lightbox-icon-size, 24px);
 
 	// Prev/Next
-	--lightbox-navigation-background-color: var(--wp--custom--color--surface--invert, #000);
-	--lightbox-navigation-hover-background-color: var(--lightbox-navigation-background-color);
-	--lightbox-navigation-icon-color: var(--wp--custom--color--text--invert, #fff);
-	--lightbox-navigation-icon-hover-color: var(--wp--custom--color--text--secondary, #007cba);
-	--lightbox-navigation-size: 48px;
-	--lightbox-navigation-icon-size: 24px;
+	--pb--media-viewer--lightbox--navigation--background-color: var(--lightbox-navigation-background-color, var(--wp--preset--color--contrast, var(--wp--custom--color--surface--invert, #000)));
+	--pb--media-viewer--lightbox--navigation--hover-background-color: var(--pb--media-viewer--lightbox--navigation--background-color);
+	--pb--media-viewer--lightbox--navigation--icon--color: var(--lightbox-navigation-icon-color, var(--wp--preset--color--base, var(--wp--custom--color--text--invert, #fff)));
+	--pb--media-viewer--lightbox--navigation--icon--hover-color: var(--lightbox-navigation-icon-hover-color, var(--wp--preset--color--base-accent, var(--wp--custom--color--text--secondary, #007cba)));
+	--pb--media-viewer--lightbox--navigation--size: var(--lightbox-navigation-size, 48px);
+	--pb--media-viewer--lightbox--navigation--icon--size: var(--lightbox-navigation-icon-size, 24px);
 
 	// Toolbar
-	--lightbox-toolbar-background-color: transparent;
-	--lightbox-toolbar-button-size: 48px;
-	--lightbox-toolbar-icon-color: var(--wp--custom--color--text--invert, #fff);
-	--lightbox-toolbar-icon-hover-color: var(--wp--custom--color--text--secondary, #007cba);
-	--lightbox-toolbar-icon-size: 16px;
+	--pb--media-viewer--lightbox--toolbar--background-color: var(--lightbox-toolbar-background-color, transparent);
+	--pb--media-viewer--lightbox--toolbar--button-size: var(--lightbox-toolbar-button-size, 48px);
+	--pb--media-viewer--lightbox--toolbar--icon--color: var(--lightbox-toolbar-icon-color, var(--wp--preset--color--base, var(--wp--custom--color--text--invert, #fff)));
+	--pb--media-viewer--lightbox--toolbar--icon--hover-color: var(--lightbox-toolbar-icon-hover-color, var(--wp--preset--color--base-accent, var(--wp--custom--color--text--secondary, #007cba)));
+	--pb--media-viewer--lightbox--toolbar--icon--size: var(--lightbox-toolbar-icon-size, 16px);
 
 	// Captions
-	--lightbox-caption-color: var(--wp--custom--color--text--invert, #fff);
-	--lightbox-caption-padding: var(--wp--preset--spacing--md, 24px);
-	--lightbox-caption-font-size: var(--wp--preset--font-size--md, 14px);
-	--lightbox-caption-width: var(--wp--style--global--content-size);
+	--pb--media-viewer--lightbox--caption--color: var(--lightbox-caption-color, var(--wp--preset--color--base, var(--wp--custom--color--text--invert, #fff)));
+	--pb--media-viewer--lightbox--caption--padding: var(--lightbox-caption-padding, var(--wp--preset--spacing--md, 24px));
+	--pb--media-viewer--lightbox--caption--font-size: var(--lightbox-caption-font-size, var(--wp--preset--font-size--md, 14px));
+	--pb--media-viewer--lightbox--caption--width: var(--lightbox-caption-width, var(--wp--style--global--content-size));
 
 	// Thumbnails
-	--lightbox-thumb-background-color: transparent;
-	--lightbox-thumb-border-color: var(--wp--custom--color--border--invert, #fff);
-	--lightbox-thumb-border-hover-color: var(--wp--custom--color--border--primary, #007cba);
-	--lightbox-thumb-border-width: 2px;
-	--lightbox-thumb-border-radius: 0;
+	--pb--media-viewer--lightbox--thumb--background-color: var(--lightbox-thumb-background-color, transparent);
+	--pb--media-viewer--lightbox--thumb--border--color: var(--lightbox-thumb-border-color, var(--wp--custom--color--border-invert, var(--wp--custom--color--border--invert, #fff)));
+	--pb--media-viewer--lightbox--thumb--border--hover-color: var(--lightbox-thumb-border-hover-color, var(--wp--preset--color--base-accent, var(--wp--custom--color--border--primary, #007cba)));
+	--pb--media-viewer--lightbox--thumb--border--width: var(--lightbox-thumb-border-width, 2px);
+	--pb--media-viewer--lightbox--thumb--border--radius: var(--lightbox-thumb-border-radius, 0);
 
 	// Counter
-	--lightbox-counter-color: var(--wp--custom--color--text--invert, #fff);
-	--lightbox-counter-font-size: var(--wp--preset--font-size--lg, 20px);
+	--pb--media-viewer--lightbox--counter--color: var(--lightbox-counter-color, var(--wp--preset--color--base, var(--wp--custom--color--text--invert, #fff)));
+	--pb--media-viewer--lightbox--counter--font-size: var(--lightbox-counter-font-size, var(--wp--preset--font-size--lg, 20px));
+	// stylelint-enable custom-property-pattern
 
 	.lg-backdrop {
-		background-color: var(--lightbox-overlay-color);
+		background-color: var(--pb--media-viewer--lightbox--overlay--color);
 
 		&.in {
-			opacity: var(--lightbox-overlay-opacity);
+			opacity: var(--pb--media-viewer--lightbox--overlay--opacity);
 		}
 	}
 
@@ -263,16 +265,16 @@ $grid-areas: (
 
 	.lg-next,
 	.lg-prev {
-		background-color: var(--lightbox-navigation-background-color);
+		background-color: var(--pb--media-viewer--lightbox--navigation--background-color);
 		border: none;
 		cursor: pointer;
 		display: block;
-		height: var(--lightbox-navigation-size);
+		height: var(--pb--media-viewer--lightbox--navigation--size);
 		outline: none;
 		padding: 0;
 		position: absolute;
 		top: 50%;
-		width: var(--lightbox-navigation-size);
+		width: var(--pb--media-viewer--lightbox--navigation--size);
 		z-index: 1084;
 
 		&.disabled {
@@ -285,20 +287,20 @@ $grid-areas: (
 		}
 
 		&::before {
-			background-color: var(--lightbox-navigation-icon-color);
+			background-color: var(--pb--media-viewer--lightbox--navigation--icon--color);
 			content: "";
 			inset: 0;
 			mask-position: center;
 			mask-repeat: no-repeat;
-			mask-size: var(--lightbox-navigation-icon-size);
+			mask-size: var(--pb--media-viewer--lightbox--navigation--icon--size);
 			position: absolute;
 		}
 
 		&:hover {
-			background-color: var(--lightbox-navigation-hover-background-color);
+			background-color: var(--pb--media-viewer--lightbox--navigation--hover-background-color);
 
 			&::before {
-				background-color: var(--lightbox-navigation-icon-hover-color);
+				background-color: var(--pb--media-viewer--lightbox--navigation--icon--hover-color);
 			}
 		}
 	}
@@ -321,7 +323,7 @@ $grid-areas: (
 
 	// Toolbar
 	.lg-toolbar {
-		height: var(--lightbox-toolbar-button-size);
+		height: var(--pb--media-viewer--lightbox--toolbar--button-size);
 		left: 0;
 		position: absolute;
 		top: 0;
@@ -329,7 +331,7 @@ $grid-areas: (
 		z-index: 1082;
 
 		.lg-media-overlap & {
-			background-image: var(--lightbox-toolbar-background-color);
+			background-image: var(--pb--media-viewer--lightbox--toolbar--background-color);
 		}
 
 		.lg-icon {
@@ -338,23 +340,23 @@ $grid-areas: (
 			box-shadow: none;
 			cursor: pointer;
 			float: right;
-			height: var(--lightbox-toolbar-button-size);
+			height: var(--pb--media-viewer--lightbox--toolbar--button-size);
 			text-decoration: none;
-			width: var(--lightbox-toolbar-button-size);
+			width: var(--pb--media-viewer--lightbox--toolbar--button-size);
 
 			&::before {
-				background-color: var(--lightbox-toolbar-icon-color);
+				background-color: var(--pb--media-viewer--lightbox--toolbar--icon--color);
 				content: "";
 				inset: 0;
 				mask-position: center;
 				mask-repeat: no-repeat;
-				mask-size: var(--lightbox-toolbar-icon-size);
+				mask-size: var(--pb--media-viewer--lightbox--toolbar--icon--size);
 				position: absolute;
 			}
 
 			&:hover {
 				&::before {
-					background-color: var(--lightbox-toolbar-icon-hover-color);
+					background-color: var(--pb--media-viewer--lightbox--toolbar--icon--hover-color);
 				}
 			}
 		}
@@ -371,14 +373,14 @@ $grid-areas: (
 	// Caption
 	.lg-sub-html {
 		-webkit-box-orient: vertical;
-		color: var(--lightbox-caption-color);
+		color: var(--pb--media-viewer--lightbox--caption--color);
 		display: -webkit-box;
-		font-size: var(--lightbox-caption-font-size);
+		font-size: var(--pb--media-viewer--lightbox--caption--font-size);
 		-webkit-line-clamp: 2;
 		line-clamp: 2;
-		margin-block: var(--lightbox-caption-padding);
+		margin-block: var(--pb--media-viewer--lightbox--caption--padding);
 		margin-inline: auto;
-		max-width: var(--lightbox-caption-width, 800px);
+		max-width: var(--pb--media-viewer--lightbox--caption--width, 800px);
 		opacity: 0;
 		overflow: hidden;
 		text-align: center;
@@ -389,9 +391,9 @@ $grid-areas: (
 	// image counter
 	.lg-counter {
 		align-items: center;
-		color: var(--lightbox-counter-color);
+		color: var(--pb--media-viewer--lightbox--counter--color);
 		display: inline-flex;
-		font-size: var(--lightbox-counter-font-size);
+		font-size: var(--pb--media-viewer--lightbox--counter--font-size);
 		height: 100%;
 		padding-left: var(--wp--preset--spacing--lg, 32px);
 		vertical-align: middle;
@@ -447,7 +449,7 @@ $grid-areas: (
 	// Thumbnails
 	.lg-outer {
 		.lg-thumb-outer {
-			background-color: var(--lightbox-thumb-background-color);
+			background-color: var(--pb--media-viewer--lightbox--thumb--background-color);
 			float: left;
 			max-height: 350px;
 			overflow: hidden;
@@ -505,8 +507,8 @@ $grid-areas: (
 		}
 
 		.lg-thumb-item {
-			border: var(--lightbox-thumb-border-width) solid var(--lightbox-thumb-border-color);
-			border-radius: var(--lightbox-thumb-border-radius);
+			border: var(--pb--media-viewer--lightbox--thumb--border--width) solid var(--pb--media-viewer--lightbox--thumb--border--color);
+			border-radius: var(--pb--media-viewer--lightbox--thumb--border--radius);
 			cursor: pointer;
 			float: left;
 			height: 100%;
@@ -517,7 +519,7 @@ $grid-areas: (
 
 			&.active,
 			&:hover {
-				border-color: var(--lightbox-thumb-border-hover-color);
+				border-color: var(--pb--media-viewer--lightbox--thumb--border--hover-color);
 			}
 
 			img {

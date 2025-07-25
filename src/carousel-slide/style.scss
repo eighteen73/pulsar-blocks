@@ -1,3 +1,4 @@
+// stylelint-disable custom-property-pattern -- This is treated as a legacy block
 .wp-block-pulsar-carousel-slide {
 	background-color: var(--background-color);
 	display: flex;
@@ -80,3 +81,4 @@
 		}
 	}
 }
+// stylelint-enable custom-property-pattern

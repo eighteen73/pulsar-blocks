@@ -1,9 +1,12 @@
 .wp-block-pulsar-accordion {
 	$block: &;
+
+	// stylelint-disable custom-property-pattern -- backwards compatibility
 	--pb--accordion--font-size: var(--font-size, 1.5rem);
 	--pb--accordion--padding: var(--padding, 1rem);
 	--pb--accordion--gap: var(--gap, 1rem);
 	--pb--accordion--border: var(--border, 1px solid #ddd);
+	// stylelint-enable custom-property-pattern
 
 	display: flex;
 	flex-direction: column;
