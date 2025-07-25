@@ -1,31 +1,34 @@
 .wp-block-pulsar-embla-carousel-buttons {
-	--carousel-button-size: 32px;
-	--carousel-button-icon-size: 12px;
-	--carousel-button-gap: var(--wp--preset--spacing--md, 12px);
-	--carousel-button-background-color: var(--wp--custom--color--surface--default, transparent);
-	--carousel-button-icon-color: var(--wp--custom--color--surface--invert, currentcolor);
-	--carousel-button-border-radius: 50%;
+	// stylelint-disable custom-property-pattern -- backwards compatibility
+	--pb--embla-carousel--button--size: var(--carousel-button-size, 32px);
+	--pb--embla-carousel--button--icon-size: var(--carousel-button-icon-size, 12px);
+	--pb--embla-carousel--button--gap: var(--carousel-button-gap, var(--wp--preset--spacing--md, 12px));
+	--pb--embla-carousel--button--background-color: var(--carousel-button-background-color, transparent);
+	--pb--embla-carousel--button--icon-color: var(--carousel-button-icon-color, currentcolor);
+	--pb--embla-carousel--button--border-radius: var(--carousel-button-border-radius, 50%);
+	// stylelint-enable custom-property-pattern
+
 	align-items: center;
 	display: flex;
-	gap: var(--carousel-button-gap);
+	gap: var(--pb--embla-carousel--button--gap);
 	justify-content: center;
 
 	.embla__button {
 		align-items: center;
 		appearance: none;
-		background-color: var(--carousel-button-background-color);
+		background-color: var(--pb--embla-carousel--button--background-color);
 		border: 0;
-		border-radius: var(--carousel-button-border-radius);
+		border-radius: var(--pb--embla-carousel--button--border-radius);
 		cursor: pointer;
 		display: inline-flex;
-		height: var(--carousel-button-size);
+		height: var(--pb--embla-carousel--button--size);
 		justify-content: center;
 		margin: 0;
 		padding: 0;
 		position: relative;
 		text-decoration: none;
 		touch-action: manipulation;
-		width: var(--carousel-button-size);
+		width: var(--pb--embla-carousel--button--size);
 
 		&:disabled {
 			opacity: 0.3;
@@ -35,13 +38,13 @@
 			text-indent: -9999px;
 
 			&::after {
-				background-color: var(--carousel-button-icon-color);
+				background-color: var(--pb--embla-carousel--button--icon-color);
 				border-radius: inherit;
 				content: "";
 				inset: 0;
 				mask-position: center;
 				mask-repeat: no-repeat;
-				mask-size: var(--carousel-button-icon-size);
+				mask-size: var(--pb--embla-carousel--button--icon-size);
 				position: absolute;
 			}
 		}

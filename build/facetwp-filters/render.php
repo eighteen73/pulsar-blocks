@@ -19,7 +19,8 @@ $post_type_label  = $post_type ? get_post_type_object( $post_type )->labels->sin
 <div
 	data-wp-interactive="pulsar/facetwp-filters"
 	data-wp-init="callbacks.init"
-	data-wp-context='{ "isModalOpen": false, "filtersModalId": "<?php echo esc_attr( $filters_modal_id ); ?>", "filtersLayout": "<?php echo esc_attr( $filters_layout ); ?>", "openFilters": [] }'
+	data-wp-context='{ "isModalOpen": false, "filtersModalId": "<?php echo esc_attr( $filters_modal_id ); ?>", "filtersLayout": "<?php echo esc_attr( $filters_layout ); ?>", "openFilters": [], "appliedFilterCount": 0 }'
+	data-wp-on-async-window--facetwp-loaded="actions.onFacetwpLoaded"
 	<?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => "is-filter-layout-{$filters_layout}" ] ) ); ?>
 >
 	<button
@@ -46,10 +47,18 @@ $post_type_label  = $post_type ? get_post_type_object( $post_type )->labels->sin
 							<?php esc_html_e( 'Filters', 'pulsar' ); ?>
 						</span>
 
-						<span class="wp-block-pulsar-facetwp-filters__modal-count"></span>
+						<span
+							class="wp-block-pulsar-facetwp-filters__modal-count"
+							data-wp-text="context.appliedFilterCount"
+							data-wp-bind--hidden="!context.appliedFilterCount"
+						></span>
 					</h2>
 
-					<button class="wp-block-pulsar-facetwp-filters__modal-clear" data-wp-on--click="actions.resetFilters">
+					<button
+						class="wp-block-pulsar-facetwp-filters__modal-clear"
+						data-wp-on--click="actions.resetFilters"
+						data-wp-bind--hidden="!context.appliedFilterCount"
+					>
 						<?php esc_html_e( 'Clear All', 'pulsar' ); ?>
 					</button>
 
@@ -63,7 +72,14 @@ $post_type_label  = $post_type ? get_post_type_object( $post_type )->labels->sin
 				</header>
 
 				<div class="wp-block-pulsar-facetwp-filters__modal-inner">
-					<div class="wp-block-pulsar-facetwp-filters__modal-selected-filters">
+					<div
+						class="wp-block-pulsar-facetwp-filters__modal-applied-filters"
+						data-wp-bind--hidden="!context.appliedFilterCount"
+					>
+						<div class="wp-block-pulsar-facetwp-filters__modal-applied-filters-label">
+							<?php esc_html_e( 'Applied Filters', 'pulsar' ); ?>
+						</div>
+
 						<?php echo facetwp_display( 'selections' ); ?>
 					</div>
 
@@ -80,7 +96,11 @@ $post_type_label  = $post_type ? get_post_type_object( $post_type )->labels->sin
 						<?php esc_html_e( 'Apply', 'pulsar' ); ?>
 					</button>
 
-					<button class="wp-block-pulsar-facetwp-filters__modal-reset" data-wp-on--click="actions.resetFilters">
+					<button
+						class="wp-block-pulsar-facetwp-filters__modal-reset"
+						data-wp-on--click="actions.resetFilters"
+						data-wp-bind--hidden="!context.appliedFilterCount"
+					>
 						<?php esc_html_e( 'Reset', 'pulsar' ); ?>
 					</button>
 				</footer>

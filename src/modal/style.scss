@@ -9,6 +9,7 @@
 	--pb--modal--close-button--size: var(--modal-close-button-size, 48px);
 	--pb--modal--close-icon--size: var(--modal-close-icon-size, 14px);
 	--pb--modal--close-icon--color: var(--modal-close-icon-color, currentcolor);
+	// stylelint-enable custom-property-pattern
 
 	display: none;
 	margin: 0;
@@ -91,4 +92,3 @@
 .modal-is-open {
 	overflow: hidden;
 }
-// stylelint-enable custom-property-pattern
