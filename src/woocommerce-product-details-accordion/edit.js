@@ -1,13 +1,12 @@
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { PanelBody, ToggleControl } from '@wordpress/components';
-import ServerSideRender from '@wordpress/server-side-render';
 import { __ } from '@wordpress/i18n';
 
 export default function Edit({ attributes, setAttributes }) {
 	const blockProps = useBlockProps();
 	const { openMultiple, startOpen } = attributes;
 
-	const dummy_tabs = [
+	const dummyTabs = [
 		{
 			title: __('Description', 'pulsar-blocks'),
 			content: __('Description', 'pulsar-blocks'),
@@ -50,8 +49,11 @@ export default function Edit({ attributes, setAttributes }) {
 				</PanelBody>
 			</InspectorControls>
 
-			{dummy_tabs.map((tab, index) => (
-				<details className="wp-block-pulsar-woocommerce-product-details-accordion__details">
+			{dummyTabs.map((tab) => (
+				<details
+					key={tab.title}
+					className="wp-block-pulsar-woocommerce-product-details-accordion__details"
+				>
 					<summary className="wp-block-pulsar-woocommerce-product-details-accordion__summary">
 						{tab.title}
 					</summary>

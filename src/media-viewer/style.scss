@@ -207,6 +207,7 @@ $grid-areas: (
 	}
 }
 
+// stylelint-disable max-nesting-depth -- Due to the nature of the lightbox, this is unavoidable
 .wp-block-pulsar-media-viewer__lightbox {
 	// stylelint-disable custom-property-pattern -- backwards compatibility
 	// Overlay
@@ -539,3 +540,4 @@ $grid-areas: (
 		}
 	}
 }
+// stylelint-enable max-nesting-depth

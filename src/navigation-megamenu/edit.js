@@ -81,10 +81,10 @@ const useIsInvalidLink = (kind, type, id) => {
  *
  * @param {Object}   props               Properties passed to the function.
  * @param {Object}   props.attributes    Available block attributes.
- * @param            props.context
- * @param            props.clientId
- * @param            props.isSelected
- * @param            props.onReplace
+ * @param {Object}   props.context       Context object for the block.
+ * @param {string}   props.clientId      Unique client ID for the block.
+ * @param {boolean}  props.isSelected    Whether the block is selected.
+ * @param {Function} props.onReplace     Function to replace the block.
  * @param {Function} props.setAttributes Function that updates individual attributes.
  *
  * @return {Element} Element to render.

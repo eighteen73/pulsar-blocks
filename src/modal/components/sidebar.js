@@ -5,6 +5,7 @@ import { useDispatch } from '@wordpress/data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 import { store as editPostStore } from '@wordpress/edit-post';
 import {
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalHStack as HStack,
 	Button,
 	Card,

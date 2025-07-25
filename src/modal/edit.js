@@ -166,16 +166,21 @@ export function Edit(props) {
 			'--modal-container-width': widthWithUnit || undefined,
 			'--modal-overlay-background-color': overlayColor,
 		},
-		'data-trigger-delay':
-			triggerType === 'load' || triggerType === 'scroll'
-				? triggerDelay
-				: undefined,
-		'data-trigger-selector':
-			triggerType === 'click'
-				? clickSelector
-				: triggerType === 'scroll'
-					? scrollSelector
-					: undefined,
+		'data-trigger-delay': (() => {
+			if (triggerType === 'load' || triggerType === 'scroll') {
+				return triggerDelay;
+			}
+			return undefined;
+		})(),
+		'data-trigger-selector': (() => {
+			if (triggerType === 'click') {
+				return clickSelector;
+			}
+			if (triggerType === 'scroll') {
+				return scrollSelector;
+			}
+			return undefined;
+		})(),
 		'data-cookie-duration': dismissedDuration || undefined,
 		'data-modal-id': id,
 	});

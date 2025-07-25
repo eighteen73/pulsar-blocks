@@ -28,8 +28,7 @@ import './editor.scss';
  * @param {Function} param0.setAttributes
  * @param {string}   param0.clientId
  * @param {boolean}  param0.isSelected
- * @param            param0.context
- * @param            param0.context.linked
+ * @param {Object}   param0.context
  * @return {WPElement} Element to render.
  */
 export default function Edit({

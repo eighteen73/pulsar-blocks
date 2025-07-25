@@ -5,7 +5,9 @@ import {
 	Spinner,
 	ToggleControl,
 	Disabled,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
@@ -17,7 +19,6 @@ import ServerSideRender from '@wordpress/server-side-render';
  * @param {Object}   props               Properties passed to the function.
  * @param {Object}   props.attributes    Available block attributes.
  * @param {Function} props.setAttributes Function that updates individual attributes.
- * @param {boolean}  props.isResponsive   Indicates if the menu is responsive.
  * @return {Element} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
@@ -40,11 +41,12 @@ export default function Edit({ attributes, setAttributes }) {
 		setError(null);
 
 		apiFetch({ path: '/pulsar/v1/menu-locations' })
-			.then((locations) => {
-				setlocations(locations);
+			.then((locationsResponse) => {
+				setlocations(locationsResponse);
 				setIsLoading(false);
 			})
 			.catch((fetchError) => {
+				// eslint-disable-next-line no-console
 				console.error('Error fetching menu locations:', fetchError);
 				setError(
 					fetchError.message ||
@@ -56,9 +58,9 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const locationOptions = [
 		{ label: __('— Select a Menu Location —', 'pulsar-blocks'), value: '' },
-		...locations.map((location) => ({
-			label: location.name,
-			value: location.slug,
+		...locations.map((locationResponse) => ({
+			label: locationResponse.name,
+			value: locationResponse.slug,
 		})),
 	];
 

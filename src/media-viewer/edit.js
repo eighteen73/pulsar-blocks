@@ -191,10 +191,9 @@ export default function Edit({
 									label: size.name,
 									value: size.slug,
 								}))}
-								onChange={(value) => {
-									console.log(value);
-									setAttributes({ lightboxImageSize: value });
-								}}
+								onChange={(value) =>
+									setAttributes({ lightboxImageSize: value })
+								}
 								__nextHasNoMarginBottom
 							/>
 						</PanelBody>
