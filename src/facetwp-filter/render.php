@@ -24,9 +24,10 @@ $is_collapsable   = $collapsable ? 'is-collapsable' : 'is-not-collapsable';
 
 <div
 	<?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => "is-filter-layout-{$filters_layout} {$is_collapsable}" ] ) ); ?>
-	data-wp-context='{ "filterId": "<?php echo esc_attr( $filter_id ); ?>", "isFacetAvailable": true }'
-	data-wp-on-window--facetwp-loaded="actions.setFacetAvailable"
-	data-wp-class--is-unavailable="!callbacks.isFacetAvailable"
+	data-wp-context='{ "filterId": "<?php echo esc_attr( $filter_id ); ?>", "filtersLayout": "<?php echo esc_attr( $filters_layout ); ?>" }'
+	data-wp-class--is-active="callbacks.isActiveFilter"
+	data-wp-on--keydown="actions.handleKeydown"
+	data-filter-id="<?php echo esc_attr( $filter_id ); ?>"
 >
 	<button
 		class="wp-block-pulsar-facetwp-filter__title"

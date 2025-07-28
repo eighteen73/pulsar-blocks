@@ -10,6 +10,7 @@ export default class Modal {
 		closeTrigger = 'data-modal-close',
 		openClass = 'is-open',
 		bodyOpenClass = 'modal-is-open',
+		focusFirstNode = true,
 		focusableElements = 'a[href],area[href],input:not([disabled]):not([type="hidden"]):not([aria-hidden]),select:not([disabled]):not([aria-hidden]),textarea:not([disabled]):not([aria-hidden]),button:not([disabled]):not([aria-hidden]),iframe,object,embed,[contenteditable],[tabindex]:not([tabindex^="-"])',
 		storageKeyPrefix = 'pulsar_modal_',
 		escKeyCode = 27,
@@ -27,6 +28,7 @@ export default class Modal {
 		this.closeTrigger = closeTrigger;
 		this.openClass = openClass;
 		this.bodyOpenClass = bodyOpenClass;
+		this.focusFirstNode = focusFirstNode;
 		this.focusableElements = focusableElements;
 		this.storageKeyPrefix = storageKeyPrefix;
 		this.escKeyCode = escKeyCode;
@@ -72,6 +74,7 @@ export default class Modal {
 	dismissedDuration = 0;
 	disableClosing = false;
 	activeElement;
+	focusFirstNode;
 	focusableElements;
 	storageKeyPrefix;
 	escKeyCode;
@@ -167,7 +170,10 @@ export default class Modal {
 
 		this.updateAriaExpanded('true');
 		this.addEventListeners();
-		this.setFocusToFirstNode();
+
+		if (this.focusFirstNode) {
+			this.setFocusToFirstNode();
+		}
 	}
 
 	closeModal() {
@@ -298,6 +304,12 @@ export default class Modal {
 			nodesWhichAreNotCloseTargets[0].focus();
 		if (nodesWhichAreNotCloseTargets.length === 0)
 			focusableNodes[0].focus();
+	}
+
+	setFocusToNode(node) {
+		if (node) {
+			node.focus();
+		}
 	}
 
 	retainFocus(event) {

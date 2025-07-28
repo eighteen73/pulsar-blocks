@@ -25,7 +25,7 @@ store('pulsar/facetwp-filters', {
 			);
 			if (modal) {
 				modal.closeModal();
-				actions.onModalClosed();
+				actions.onModalClose();
 			}
 		},
 		toggleFilter: () => {
@@ -66,6 +66,12 @@ store('pulsar/facetwp-filters', {
 					window.pulsarBlocks.facetwpFilters.get(filtersModalId);
 				if (modal) {
 					modal.showModal(true);
+
+					const elementToFocus = modal.modal.querySelector(
+						`[data-filter-id="${filterId}"]`
+					);
+
+					modal.setFocusToNode(elementToFocus);
 				}
 			}
 		},
@@ -74,7 +80,7 @@ store('pulsar/facetwp-filters', {
 				window.FWP.reset();
 			}
 		},
-		onModalClosed: (event) => {
+		onModalClose: (event) => {
 			const context = getContext();
 			const modalId = event.detail;
 			const filtersModalId = context.filtersModalId;
@@ -83,7 +89,7 @@ store('pulsar/facetwp-filters', {
 				context.openFilters = [];
 			}
 		},
-		updateAppliedFilterCount: () => {
+		updateFilterCount: () => {
 			const context = getContext();
 
 			let count = 0;
@@ -97,24 +103,6 @@ store('pulsar/facetwp-filters', {
 			});
 
 			context.appliedFilterCount = count;
-		},
-		showActiveFilters: () => {
-			const { ref } = getElement();
-			const filters = ref.querySelectorAll(
-				'.wp-block-pulsar-facetwp-filter'
-			);
-
-			// Find all filters that dont have an empty facetwp-facet
-			const activeFilters = Array.from(filters).filter((filter) => {
-				const facets = filter.querySelectorAll('.facetwp-facet');
-				return Array.from(facets).some(
-					(facet) => facet.innerHTML.trim() !== '' || null
-				);
-			});
-
-			activeFilters.forEach((filter) => {
-				filter.classList.remove('is-inactive');
-			});
 		},
 		handleKeydown: (event) => {
 			const context = getContext();
@@ -160,6 +148,7 @@ store('pulsar/facetwp-filters', {
 					const options = {
 						targetModal: filtersModalId,
 						modalElement,
+						focusFirstNode: true,
 						closeTrigger: 'data-modal-close',
 						openClass: 'is-open',
 						containerClass:
@@ -173,8 +162,7 @@ store('pulsar/facetwp-filters', {
 					);
 				}
 			}
-			actions.showActiveFilters();
-			actions.updateAppliedFilterCount();
+			actions.updateFilterCount();
 		},
 		isActiveFilter: () => {
 			const context = getContext();

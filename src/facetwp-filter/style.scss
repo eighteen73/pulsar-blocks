@@ -11,6 +11,10 @@
 
 	position: relative;
 
+	&.is-disabled {
+		display: none;
+	}
+
 	&__title {
 		align-items: center;
 		background-color: var(--pb--facetwp-filter--title--background-color);

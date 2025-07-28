@@ -22,13 +22,13 @@ $post_type_label  = $post_type ? get_post_type_object( $post_type )->labels->sin
 ?>
 
 <div
+	<?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => "is-filter-layout-{$filters_layout}" ] ) ); ?>
+	data-wp-context='{ "isModalOpen": false, "filtersModalId": "<?php echo esc_attr( $filters_modal_id ); ?>", "filtersLayout": "<?php echo esc_attr( $filters_layout ); ?>", "openFilters": [], "appliedFilterCount": 0 }'
 	data-wp-interactive="pulsar/facetwp-filters"
 	data-wp-init="callbacks.init"
-	data-wp-context='{ "isModalOpen": false, "filtersModalId": "<?php echo esc_attr( $filters_modal_id ); ?>", "filtersLayout": "<?php echo esc_attr( $filters_layout ); ?>", "openFilters": [], "appliedFilterCount": 0 }'
-	data-wp-on-async-window--facetwp-loaded="actions.updateAppliedFilterCount"
-	data-wp-on-async-window--pulsar-modal-closed="actions.onModalClosed"
+	data-wp-on-async-window--facetwp-loaded="actions.updateFilterCount"
+	data-wp-on-async-window--pulsar-modal-closed="actions.onModalClose"
 	data-wp-on-document--click="actions.handleClickOutside"
-	<?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => "is-filter-layout-{$filters_layout}" ] ) ); ?>
 >
 	<button
 		class="wp-block-pulsar-facetwp-filters__open-modal"
