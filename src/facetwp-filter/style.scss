@@ -11,8 +11,9 @@
 
 	position: relative;
 
-	&.is-disabled {
-		display: none;
+	// Hide filters where all facets are empty (no child elements)
+	&:has(.facetwp-facet):not(:has(.facetwp-facet:not(:empty))) {
+		display: none !important; // stylelint-disable-line declaration-no-important -- Enforce hiding.
 	}
 
 	&__title {
