@@ -27,6 +27,7 @@ $post_type_label  = $post_type ? get_post_type_object( $post_type )->labels->sin
 	data-wp-context='{ "isModalOpen": false, "filtersModalId": "<?php echo esc_attr( $filters_modal_id ); ?>", "filtersLayout": "<?php echo esc_attr( $filters_layout ); ?>", "openFilters": [], "appliedFilterCount": 0 }'
 	data-wp-on-async-window--facetwp-loaded="actions.updateAppliedFilterCount"
 	data-wp-on-async-window--pulsar-modal-closed="actions.onModalClosed"
+	data-wp-on-document--click="actions.handleClickOutside"
 	<?php echo wp_kses_data( get_block_wrapper_attributes( [ 'class' => "is-filter-layout-{$filters_layout}" ] ) ); ?>
 >
 	<button

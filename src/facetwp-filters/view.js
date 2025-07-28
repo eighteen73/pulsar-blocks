@@ -41,8 +41,6 @@ store('pulsar/facetwp-filters', {
 				return;
 			}
 
-			// --- Handle opening a filter ---
-
 			const { ref } = getElement();
 			const { filtersLayout, filtersModalId } = context;
 			const isInsideItems = !!ref.closest(
@@ -118,6 +116,34 @@ store('pulsar/facetwp-filters', {
 				filter.classList.remove('is-inactive');
 			});
 		},
+		handleKeydown: (event) => {
+			const context = getContext();
+			const { actions } = store('pulsar/facetwp-filters');
+			const { openFilters, filterId } = context;
+
+			if (openFilters.includes(filterId) && event.key === 'Escape') {
+				actions.toggleFilter();
+			}
+		},
+		handleClickOutside: (event) => {
+			const context = getContext();
+			const { ref } = getElement();
+			const { openFilters, filtersLayout } = context;
+			const items = ref.querySelector(
+				'.wp-block-pulsar-facetwp-filters__items'
+			);
+
+			if (
+				filtersLayout !== 'dropdowns' ||
+				openFilters.length === 0 ||
+				!items ||
+				items.contains(event.target)
+			) {
+				return;
+			}
+
+			context.openFilters = [];
+		},
 	},
 	callbacks: {
 		init: () => {
@@ -147,7 +173,7 @@ store('pulsar/facetwp-filters', {
 					);
 				}
 			}
-			// actions.showActiveFilters();
+			actions.showActiveFilters();
 			actions.updateAppliedFilterCount();
 		},
 		isActiveFilter: () => {
