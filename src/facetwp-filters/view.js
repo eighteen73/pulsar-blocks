@@ -30,30 +30,40 @@ store('pulsar/facetwp-filters', {
 		},
 		toggleFilter: () => {
 			const context = getContext();
-			const { openFilters, filterId, filtersLayout, filtersModalId } =
-				context;
-			const { ref } = getElement();
+			const { openFilters, filterId } = context;
 			const isOpening = !openFilters.includes(filterId);
-			const isSlideOutItems =
-				filtersLayout === 'slide-out' &&
-				ref.closest('.wp-block-pulsar-facetwp-filters__items');
 
+			// If the filter is already open, close it.
 			if (!isOpening) {
-				// If the filter is already open, close it by removing it from the array.
 				context.openFilters = openFilters.filter(
-					(filterIdentifier) => filterIdentifier !== filterId
+					(fId) => fId !== filterId
 				);
-			} else if (isSlideOutItems) {
-				// If it's the slide-out layout, we are opening a filter, and the click
-				// is from outside the modal, set it as the *only* open filter.
+				return;
+			}
+
+			// --- Handle opening a filter ---
+
+			const { ref } = getElement();
+			const { filtersLayout, filtersModalId } = context;
+			const isInsideItems = !!ref.closest(
+				'.wp-block-pulsar-facetwp-filters__items'
+			);
+
+			// Dropdowns and slide-out triggers on desktop should only have one filter open at a time.
+			const isSingleOpenLayout =
+				(filtersLayout === 'dropdowns' ||
+					filtersLayout === 'slide-out') &&
+				isInsideItems;
+
+			if (isSingleOpenLayout) {
 				context.openFilters = [filterId];
 			} else {
-				// For all other cases (e.g., inside the modal, or other layouts),
-				// add the new filter to the array of open filters.
+				// For 'stacked' layout, and 'slide-out' inside the modal, allow multiple filters to be open.
 				context.openFilters = [...openFilters, filterId];
 			}
 
-			if (isOpening && isSlideOutItems) {
+			// If opening a slide-out filter from the desktop items list, show the modal.
+			if (filtersLayout === 'slide-out' && isInsideItems) {
 				const modal =
 					window.pulsarBlocks.facetwpFilters.get(filtersModalId);
 				if (modal) {
@@ -66,7 +76,16 @@ store('pulsar/facetwp-filters', {
 				window.FWP.reset();
 			}
 		},
-		onFacetwpLoaded: () => {
+		onModalClosed: (event) => {
+			const context = getContext();
+			const modalId = event.detail;
+			const filtersModalId = context.filtersModalId;
+
+			if (modalId === filtersModalId) {
+				context.openFilters = [];
+			}
+		},
+		updateAppliedFilterCount: () => {
 			const context = getContext();
 
 			let count = 0;
@@ -81,29 +100,23 @@ store('pulsar/facetwp-filters', {
 
 			context.appliedFilterCount = count;
 		},
-		setFacetAvailable: () => {
-			const context = getContext();
-			const { filterId } = context;
+		showActiveFilters: () => {
 			const { ref } = getElement();
-			const panel = ref.querySelector(
-				'.wp-block-pulsar-facetwp-filter__panel'
+			const filters = ref.querySelectorAll(
+				'.wp-block-pulsar-facetwp-filter'
 			);
-			if (!panel) return false;
-			const facet = panel.querySelector(
-				`.facetwp-facet[data-name="${filterId}"]`
-			);
-			if (!facet) return false;
 
-			context.isFacetAvailable = facet.children.length > 0;
-		},
-		onModalClosed: (event) => {
-			const context = getContext();
-			const modalId = event.detail;
-			const filtersModalId = context.filtersModalId;
+			// Find all filters that dont have an empty facetwp-facet
+			const activeFilters = Array.from(filters).filter((filter) => {
+				const facets = filter.querySelectorAll('.facetwp-facet');
+				return Array.from(facets).some(
+					(facet) => facet.innerHTML.trim() !== '' || null
+				);
+			});
 
-			if (modalId === filtersModalId) {
-				context.openFilters = [];
-			}
+			activeFilters.forEach((filter) => {
+				filter.classList.remove('is-inactive');
+			});
 		},
 	},
 	callbacks: {
@@ -134,18 +147,13 @@ store('pulsar/facetwp-filters', {
 					);
 				}
 			}
-
-			actions.onFacetwpLoaded();
+			// actions.showActiveFilters();
+			actions.updateAppliedFilterCount();
 		},
 		isActiveFilter: () => {
 			const context = getContext();
 			const { openFilters, filterId } = context;
 			return openFilters.includes(filterId);
-		},
-		isFacetAvailable: () => {
-			const context = getContext();
-			const { isFacetAvailable } = context;
-			return isFacetAvailable;
 		},
 	},
 });
