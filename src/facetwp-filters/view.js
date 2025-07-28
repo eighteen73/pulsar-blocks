@@ -68,7 +68,7 @@ store('pulsar/facetwp-filters', {
 					modal.showModal(true);
 
 					const elementToFocus = modal.modal.querySelector(
-						`[data-filter-id="${filterId}"]`
+						`[data-filter-id="${filterId}"] .wp-block-pulsar-facetwp-filter__title`
 					);
 
 					modal.setFocusToNode(elementToFocus);
