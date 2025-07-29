@@ -47,6 +47,7 @@ class FacetwpFacet {
 			[
 				'methods'  => WP_REST_Server::READABLE,
 				'callback' => [ $this, 'get_available_facets' ],
+				'permission_callback' => [ $this, 'rest_permission_check' ],
 			]
 		);
 	}
@@ -68,8 +69,8 @@ class FacetwpFacet {
 	 * @return bool|WP_Error
 	 */
 	public function rest_permission_check(): bool|WP_Error {
-		if ( ! current_user_can( 'edit_posts' ) ) {
-			return new WP_Error( 'rest_forbidden', esc_html__( 'You do not have permission to access this endpoint.', 'pulsar-blocks' ), [ 'status' => 401 ] );
+		if ( ! current_user_can( 'edit_theme_options' ) ) {
+			return new WP_Error( 'rest_forbidden', esc_html__( 'You do not have permission to access this endpoint.', 'pulsar' ), [ 'status' => 401 ] );
 		}
 		return true;
 	}
