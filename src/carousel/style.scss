@@ -1,5 +1,6 @@
 @import "@splidejs/splide/dist/css/splide-core.min";
 
+// stylelint-disable custom-property-pattern -- This is treated as a legacy block
 .wp-block-pulsar-carousel {
 	--accent-color: var(--wp--custom--pulsar--carousel--accent-color, #1f1f1f);
 	--transition-duration: var(--wp--custom--pulsar--carousel--transition-duration, 250ms);
@@ -148,3 +149,4 @@
 		width: 0;
 	}
 }
+// stylelint-enable custom-property-pattern

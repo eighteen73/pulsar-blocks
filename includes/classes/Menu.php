@@ -9,7 +9,6 @@ namespace Eighteen73\PulsarBlocks;
 
 use WP_Error;
 use WP_Post;
-use WP_Query;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;

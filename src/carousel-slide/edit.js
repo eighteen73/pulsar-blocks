@@ -13,7 +13,7 @@ import { useSelect } from '@wordpress/data';
 /**
  * Third party dependencies
  */
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { SplideSlide } from '@splidejs/react-splide';
 
 /**
@@ -136,7 +136,7 @@ export default function Edit(props) {
 	};
 
 	const blockProps = useBlockProps({
-		className: classnames(getPositionClassName(contentPosition), {
+		className: clsx(getPositionClassName(contentPosition), {
 			[`has-overlay`]: overlayColor,
 			[`has-overlay-opacity`]: overlayOpacity,
 			[`has-background`]: backgroundColor,

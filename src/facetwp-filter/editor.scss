@@ -1,0 +1,12 @@
+.wp-block-pulsar-facetwp-filter {
+	&.is-inactive {
+		display: block;
+	}
+
+	&__panel {
+		.is-selected > &,
+		.has-child-selected > & {
+			display: block !important; // stylelint-disable-line declaration-no-important
+		}
+	}
+}

@@ -6,9 +6,7 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 } from '@wordpress/block-editor';
-import { cleanForSlug } from '@wordpress/url';
 import { useEffect } from '@wordpress/element';
-import { useInstanceId } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
 
 /**

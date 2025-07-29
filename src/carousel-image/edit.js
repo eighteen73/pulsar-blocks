@@ -8,7 +8,8 @@ import { __ } from '@wordpress/i18n';
  * Third party dependencies
  */
 import { SplideSlide } from '@splidejs/react-splide';
-import { Image, MediaToolbar } from '@10up/block-components';
+import { Image } from '@10up/block-components/components/image'; // eslint-disable-line import/no-unresolved
+import { MediaToolbar } from '@10up/block-components/components/media-toolbar'; // eslint-disable-line import/no-unresolved
 
 /**
  * Block dependencies

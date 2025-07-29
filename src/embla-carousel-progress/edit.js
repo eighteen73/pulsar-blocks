@@ -11,9 +11,12 @@ export default function Edit({ attributes, setAttributes }) {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Settings', 'pulsar')} initialOpen={true}>
+				<PanelBody
+					title={__('Settings', 'pulsar-blocks')}
+					initialOpen={true}
+				>
 					<ToggleControl
-						label={__('Indicate current position', 'pulsar')}
+						label={__('Indicate current position', 'pulsar-blocks')}
 						checked={indicateCurrentPosition}
 						onChange={() =>
 							setAttributes({

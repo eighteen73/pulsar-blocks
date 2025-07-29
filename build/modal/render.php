@@ -33,7 +33,7 @@ $width                = $attributes['width'] ?? '';
 		get_block_wrapper_attributes(
 			[
 				'id'                            => "pulsar-modal-{$modal_id}",
-				'style'                         => ( $overlay_color ? '--modal-overlay-background-color: ' . $overlay_color . ';' : '' ) . ( $width ? '--modal-container-width: ' . $width . ';' : '' ),
+				'style'                         => ( $overlay_color ? '--pb--modal--overlay--background-color: ' . $overlay_color . ';' : '' ) . ( $width ? '--pb--modal--container--max-width: ' . $width . ';' : '' ),
 				'data-modal-id'                 => $modal_id,
 				'data-modal-trigger-delay'      => $trigger_delay ?: '0',
 				'data-modal-trigger-type'       => $trigger_type,
@@ -53,7 +53,7 @@ $width                = $attributes['width'] ?? '';
 			</div>
 
 			<?php if ( $enable_close_button ) : ?>
-				<button class="wp-block-pulsar-modal__close">
+				<button class="wp-block-pulsar-modal__close" data-modal-close>
 					<span class="wp-block-pulsar-modal__close-icon"></span>
 					<span class="screen-reader-text"><?php esc_html_e( 'Close modal', 'pulsar' ); ?></span>
 				</button>

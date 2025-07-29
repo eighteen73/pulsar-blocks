@@ -1,10 +1,16 @@
 /**
  * WordPress dependencies
  */
-import { __unstableStripHTML as stripHTML } from '@wordpress/dom';
+import {
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__unstableStripHTML as stripHTML,
+} from '@wordpress/dom';
 import { Popover, VisuallyHidden } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { __experimentalLinkControl as LinkControl } from '@wordpress/block-editor';
+import {
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalLinkControl as LinkControl,
+} from '@wordpress/block-editor';
 import { useMemo, useState } from '@wordpress/element';
 import { useInstanceId } from '@wordpress/compose';
 

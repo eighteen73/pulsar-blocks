@@ -18,7 +18,7 @@
 	}
 
 	.components-resizable-box__container.has-show-handle .components-resizable-box__handle {
-		display: none !important;
+		display: none !important; // stylelint-disable-line declaration-no-important
 	}
 
 	&__editor-id {

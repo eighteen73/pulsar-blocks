@@ -12,12 +12,12 @@ export default function Edit() {
 		<div {...blockProps}>
 			<button className="embla__button embla__button--prev">
 				<span className="embla__button-label">
-					{__('Previous', 'pulsar')}
+					{__('Previous', 'pulsar-blocks')}
 				</span>
 			</button>
 			<button className="embla__button embla__button--next">
 				<span className="embla__button-label">
-					{__('Next', 'pulsar')}
+					{__('Next', 'pulsar-blocks')}
 				</span>
 			</button>
 		</div>

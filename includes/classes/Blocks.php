@@ -19,7 +19,32 @@ class Blocks {
 	 * @return void
 	 */
 	public function setup() {
+		$this->conditional_register();
+
 		add_action( 'init', [ $this, 'register' ] );
+	}
+
+	/**
+	 * Short circuit block registration if the block is not available, typically due to a dependency not being met (e.g. plugin not active).
+	 *
+	 * @return void
+	 */
+	public function conditional_register() {
+		add_filter( 'pulsar_blocks_register_facetwp-filters', function() {
+			return function_exists( 'FWP' );
+		}, 10 );
+
+		add_filter( 'pulsar_blocks_register_facetwp-filter', function() {
+			return function_exists( 'FWP' );
+		}, 10 );
+
+		add_filter( 'pulsar_blocks_register_facetwp-facet', function() {
+			return function_exists( 'FWP' );
+		}, 10 );
+
+		add_filter( 'pulsar_blocks_register_woocommerce-product-details-accordion', function() {
+			return class_exists( 'WooCommerce' );
+		}, 10 );
 	}
 
 	/**
@@ -41,7 +66,17 @@ class Blocks {
 			// auto register all blocks that were found.
 			foreach ( $block_json_files as $filename ) {
 				$block_folder = dirname( $filename );
-				register_block_type( $block_folder );
+				$block_slug   = basename( $block_folder );
+
+				/**
+				 * Allow blocks to be conditionally registered via filter.
+				 * Usage: add_filter( 'pulsar_blocks_register_{$block_slug}', function( $should_register, $block_folder ) { ... }, 10, 2 );
+				 */
+				$should_register = apply_filters( "pulsar_blocks_register_{$block_slug}", true, $block_folder );
+
+				if ( $should_register ) {
+					register_block_type( $block_folder );
+				}
 			}
 		}
 	}

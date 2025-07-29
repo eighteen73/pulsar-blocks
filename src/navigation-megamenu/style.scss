@@ -11,7 +11,7 @@
 
 		@media (min-width: 1024px) {
 			left: 50%;
-			margin-top: calc(var(--megamenu-offset) * -1);
+			margin-top: calc(var(--megamenu-offset) * -1); // stylelint-disable-line custom-property-pattern -- backwards compatibility
 			max-width: var(--wp--style--global--content-size);
 			position: absolute;
 			right: unset;

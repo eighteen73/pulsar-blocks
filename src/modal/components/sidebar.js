@@ -5,6 +5,7 @@ import { useDispatch } from '@wordpress/data';
 import { store as blockEditorStore } from '@wordpress/block-editor';
 import { store as editPostStore } from '@wordpress/edit-post';
 import {
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalHStack as HStack,
 	Button,
 	Card,
@@ -15,10 +16,10 @@ import {
 import { edit, trash } from '@wordpress/icons';
 
 import { Modal as icon } from '../../components/icons';
-import { useModals } from '../../utils/modal';
+import { useBlocks } from '../../utils/use-blocks';
 
 function PluginSidebarModal() {
-	const modals = useModals();
+	const modals = useBlocks('pulsar/modal');
 
 	const { selectBlock, insertBlock, removeBlock } =
 		useDispatch(blockEditorStore);
@@ -27,7 +28,7 @@ function PluginSidebarModal() {
 
 	const handleAddModal = () => {
 		const newBlock = wp.blocks.createBlock('pulsar/modal', {
-			label: __('New Modal', 'pulsar'),
+			label: __('New Modal', 'pulsar-blocks'),
 		});
 
 		insertBlock(newBlock);
@@ -47,7 +48,7 @@ function PluginSidebarModal() {
 	return (
 		<PluginSidebar
 			name="plugin-sidebar-modal"
-			title={__('Modals', 'pulsar')}
+			title={__('Modals', 'pulsar-blocks')}
 			icon={icon}
 		>
 			<div className="plugin-sidebar-content">
@@ -63,14 +64,20 @@ function PluginSidebarModal() {
 									<HStack expanded={true}>
 										<Heading size={4}>
 											{modal.attributes.label ||
-												__('New Modal', 'pulsar')}
+												__(
+													'New Modal',
+													'pulsar-blocks'
+												)}
 										</Heading>
 									</HStack>
 									<HStack expanded={false}>
 										<Button
 											size="small"
 											icon={edit}
-											label={__('Edit Modal', 'pulsar')}
+											label={__(
+												'Edit Modal',
+												'pulsar-blocks'
+											)}
 											onClick={() =>
 												handleSelectBlock(
 													modal.clientId
@@ -80,7 +87,10 @@ function PluginSidebarModal() {
 										<Button
 											size="small"
 											icon={trash}
-											label={__('Remove Modal', 'pulsar')}
+											label={__(
+												'Remove Modal',
+												'pulsar-blocks'
+											)}
 											onClick={() =>
 												handleRemoveBlock(
 													modal.clientId
@@ -98,7 +108,7 @@ function PluginSidebarModal() {
 					onClick={handleAddModal}
 					className="pulsar-modal-block__add-button"
 				>
-					{__('Add Modal', 'pulsar')}
+					{__('Add Modal', 'pulsar-blocks')}
 				</Button>
 			</div>
 		</PluginSidebar>

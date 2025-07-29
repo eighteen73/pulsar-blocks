@@ -45,22 +45,6 @@ function createInnerTabsTemplate(count) {
 	return template;
 }
 
-function TabsInspectorControls({ setAttributes, attributes }) {
-	return (
-		<InspectorControls>
-			<PanelBody title={__('Settings', 'pulsar-blocks')}>
-				<PanelRow>
-					<ToggleControl
-						label={__('Vertical', 'pulsar-blocks')}
-						checked={attributes.vertical}
-						onChange={(vertical) => setAttributes({ vertical })}
-					/>
-				</PanelRow>
-			</PanelBody>
-		</InspectorControls>
-	);
-}
-
 function TabButton({ clientId, isActiveTab, tabNumber, setActiveTab }) {
 	const { isTabBlockSelected, title } = useSelect(
 		(select) => {

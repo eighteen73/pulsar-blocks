@@ -2,12 +2,12 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "pulsar/embla-carousel-dots",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"title": "Dots",
 	"category": "design",
 	"icon": "ellipsis",
 	"description": "Dot pagination for the carousel",
-	"textdomain": "pulsar",
+	"textdomain": "pulsar-blocks",
   "ancestor": [
     "pulsar/embla-carousel"
   ],

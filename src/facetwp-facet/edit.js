@@ -1,0 +1,83 @@
+import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
+import { SelectControl, PanelBody } from '@wordpress/components';
+import { useState, useEffect } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
+import apiFetch from '@wordpress/api-fetch';
+
+import './editor.scss';
+
+export default function Edit({ attributes, setAttributes }) {
+	const blockProps = useBlockProps();
+
+	const { facetName } = attributes;
+
+	const [isLoading, setIsLoading] = useState(true);
+	const [facets, setFacets] = useState([]);
+
+	useEffect(() => {
+		// Path to your custom REST API endpoint
+		apiFetch({ path: '/pulsar/v1/facetwp/available-facets' })
+			.then((data) => {
+				setFacets(data);
+				setIsLoading(false);
+			})
+			.catch((error) => {
+				console.error('Error fetching data:', error); // eslint-disable-line no-console
+				setIsLoading(false);
+			});
+	}, []); // The empty dependency array ensures this runs only once.
+
+	if (isLoading) {
+		return <p {...blockProps}>{__('Loading facets…', 'pulsar-blocks')}</p>;
+	}
+
+	if (!facets || facets.length === 0) {
+		return <p {...blockProps}>{__('No facets found.', 'pulsar-blocks')}</p>;
+	}
+
+	const facetOptions = facets
+		? [
+				{ label: __('Select a facet', 'pulsar-blocks'), value: '' },
+				...facets.map((facet) => ({
+					label: facet.label,
+					value: facet.name,
+				})),
+			]
+		: [];
+
+	const Preview = () => {
+		return (
+			<div className="wp-block-pulsar-facetwp-facet__preview">
+				{isLoading && __('Loading facets…', 'pulsar-blocks')}
+				{!facetName && __('Select a facet', 'pulsar-blocks')}
+				{!facets ||
+					(facets.length === 0 &&
+						__('No facets found.', 'pulsar-blocks'))}
+				{facets.find((facet) => facet.name === facetName)?.label}
+			</div>
+		);
+	};
+
+	return (
+		<div {...blockProps}>
+			<InspectorControls>
+				<PanelBody
+					title={__('Settings', 'pulsar-blocks')}
+					initialOpen={true}
+				>
+					<SelectControl
+						label={__('Facet', 'pulsar-blocks')}
+						value={facetName}
+						options={facetOptions}
+						onChange={(value) =>
+							setAttributes({ facetName: value })
+						}
+						__next40pxDefaultSize
+					/>
+				</PanelBody>
+			</InspectorControls>
+
+			<Preview />
+		</div>
+	);
+}

@@ -5,7 +5,9 @@ import {
 	Spinner,
 	ToggleControl,
 	Disabled,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
@@ -17,7 +19,6 @@ import ServerSideRender from '@wordpress/server-side-render';
  * @param {Object}   props               Properties passed to the function.
  * @param {Object}   props.attributes    Available block attributes.
  * @param {Function} props.setAttributes Function that updates individual attributes.
- * @param {boolean}  props.isResponsive   Indicates if the menu is responsive.
  * @return {Element} Element to render.
  */
 export default function Edit({ attributes, setAttributes }) {
@@ -40,25 +41,26 @@ export default function Edit({ attributes, setAttributes }) {
 		setError(null);
 
 		apiFetch({ path: '/pulsar/v1/menu-locations' })
-			.then((locations) => {
-				setlocations(locations);
+			.then((locationsResponse) => {
+				setlocations(locationsResponse);
 				setIsLoading(false);
 			})
 			.catch((fetchError) => {
+				// eslint-disable-next-line no-console
 				console.error('Error fetching menu locations:', fetchError);
 				setError(
 					fetchError.message ||
-						__('Failed to load menu locations.', 'pulsar')
+						__('Failed to load menu locations.', 'pulsar-blocks')
 				);
 				setIsLoading(false);
 			});
 	}, []);
 
 	const locationOptions = [
-		{ label: __('— Select a Menu Location —', 'pulsar'), value: '' },
-		...locations.map((location) => ({
-			label: location.name,
-			value: location.slug,
+		{ label: __('— Select a Menu Location —', 'pulsar-blocks'), value: '' },
+		...locations.map((locationResponse) => ({
+			label: locationResponse.name,
+			value: locationResponse.slug,
 		})),
 	];
 
@@ -74,7 +76,7 @@ export default function Edit({ attributes, setAttributes }) {
 					)}
 					{!isLoading && !error && (
 						<SelectControl
-							label={__('Location', 'pulsar')}
+							label={__('Location', 'pulsar-blocks')}
 							value={location}
 							options={locationOptions}
 							onChange={(newLocation) =>
@@ -82,27 +84,30 @@ export default function Edit({ attributes, setAttributes }) {
 							}
 							help={__(
 								'Select the menu location to display.',
-								'pulsar'
+								'pulsar-blocks'
 							)}
 						/>
 					)}
 					<SelectControl
-						label={__('Collapse', 'pulsar')}
+						label={__('Collapse', 'pulsar-blocks')}
 						help={__(
 							'Select when the menu should collapse into a toggle button.',
-							'pulsar'
+							'pulsar-blocks'
 						)}
 						options={[
 							{
-								label: __('Never', 'pulsar'),
+								label: __('Never', 'pulsar-blocks'),
 								value: 'never',
 							},
 							{
-								label: __('Small Screens Only', 'pulsar'),
+								label: __(
+									'Small Screens Only',
+									'pulsar-blocks'
+								),
 								value: 'small-only',
 							},
 							{
-								label: __('Always', 'pulsar'),
+								label: __('Always', 'pulsar-blocks'),
 								value: 'always',
 							},
 						]}
@@ -114,7 +119,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 					{!collapses && (
 						<ToggleGroupControl
-							label={__('Orientation', 'pulsar')}
+							label={__('Orientation', 'pulsar-blocks')}
 							value={orientation}
 							onChange={(newOrientation) =>
 								setAttributes({ orientation: newOrientation })
@@ -123,11 +128,11 @@ export default function Edit({ attributes, setAttributes }) {
 						>
 							<ToggleGroupControlOption
 								value="vertical"
-								label={__('Vertical', 'pulsar')}
+								label={__('Vertical', 'pulsar-blocks')}
 							/>
 							<ToggleGroupControlOption
 								value="horizontal"
-								label={__('Horizontal', 'pulsar')}
+								label={__('Horizontal', 'pulsar-blocks')}
 							/>
 						</ToggleGroupControl>
 					)}
@@ -135,14 +140,14 @@ export default function Edit({ attributes, setAttributes }) {
 
 				{collapses && (
 					<PanelBody
-						title={__('Submenu Options', 'pulsar')}
+						title={__('Submenu Options', 'pulsar-blocks')}
 						initialOpen={true}
 					>
 						<ToggleControl
-							label={__('Open on click', 'pulsar')}
+							label={__('Open on click', 'pulsar-blocks')}
 							help={__(
 								'Opens a submenu via a click rather than hover.',
-								'pulsar'
+								'pulsar-blocks'
 							)}
 							checked={submenuOpensOnClick}
 							onChange={(val) => {
@@ -151,7 +156,7 @@ export default function Edit({ attributes, setAttributes }) {
 						/>
 
 						<ToggleControl
-							label={__('Show back button', 'pulsar')}
+							label={__('Show back button', 'pulsar-blocks')}
 							checked={hasSubmenuBack}
 							onChange={(val) => {
 								setAttributes({ hasSubmenuBack: val });
@@ -159,10 +164,10 @@ export default function Edit({ attributes, setAttributes }) {
 						/>
 						{hasSubmenuBack && (
 							<ToggleControl
-								label={__('Show parent label', 'pulsar')}
+								label={__('Show parent label', 'pulsar-blocks')}
 								help={__(
 									'Show the parent menu item label as the back button.',
-									'pulsar'
+									'pulsar-blocks'
 								)}
 								checked={hasSubmenuLabel}
 								onChange={(val) => {
@@ -190,7 +195,10 @@ export default function Edit({ attributes, setAttributes }) {
 					</Disabled>
 				) : (
 					<p className="wp-block-pulsar-menu__placeholder">
-						{__('Select a menu location to display.', 'pulsar')}
+						{__(
+							'Select a menu location to display.',
+							'pulsar-blocks'
+						)}
 					</p>
 				)}
 			</div>

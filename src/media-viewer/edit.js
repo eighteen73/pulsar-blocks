@@ -191,10 +191,9 @@ export default function Edit({
 									label: size.name,
 									value: size.slug,
 								}))}
-								onChange={(value) => {
-									console.log(value);
-									setAttributes({ lightboxImageSize: value });
-								}}
+								onChange={(value) =>
+									setAttributes({ lightboxImageSize: value })
+								}
 								__nextHasNoMarginBottom
 							/>
 						</PanelBody>
@@ -206,7 +205,7 @@ export default function Edit({
 							settings={[
 								{
 									colorValue: overlayColor,
-									label: __('Overlay', 'pulsar'),
+									label: __('Overlay', 'pulsar-blocks'),
 									onColorChange: (val) =>
 										setAttributes({ overlayColor: val }),
 									isShownByDefault: true,

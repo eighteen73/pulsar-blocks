@@ -1,11 +1,7 @@
-/**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
- */
-
 .wp-block-pulsar-embla-carousel {
+	--pb--embla-carousel--slide--gap: var(--carousel-slide-gap, 0); // stylelint-disable-line custom-property-pattern -- backwards compatibility
+	--pb--embla-carousel--slide--width: var(--carousel-slide-width, 100%); // stylelint-disable-line custom-property-pattern -- backwards compatibility
+
 	.embla {
 		overflow: hidden;
 		position: relative;
@@ -15,7 +11,7 @@
 		}
 
 		.embla__container {
-			margin-left: calc(var(--carousel-slide-gap) * -1);
+			margin-left: calc(var(--pb--embla-carousel--slide--gap) * -1);
 		}
 
 		.embla__container:has(> *:not(.wp-block-query, .wp-block-woocommerce-product-collection)),
@@ -25,10 +21,10 @@
 			touch-action: pan-y pinch-zoom;
 
 			> * {
-				flex: 0 0 var(--carousel-slide-width, 100%);
+				flex: 0 0 var(--pb--embla-carousel--slide--width);
 				margin: 0;
 				min-width: 0;
-				padding-left: var(--carousel-slide-gap);
+				padding-left: var(--pb--embla-carousel--slide--gap);
 				transform: translate3d(0, 0, 0);
 			}
 		}

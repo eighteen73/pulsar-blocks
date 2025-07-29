@@ -1,22 +1,60 @@
 export default class Modal {
 	constructor({
 		targetModal,
+		modalElement,
 		triggers = [],
 		dismissedDuration,
 		disableClosing = false,
+		portalContainerId,
+		openTrigger = 'data-trigger-modal',
+		closeTrigger = 'data-modal-close',
+		openClass = 'is-open',
+		bodyOpenClass = 'modal-is-open',
+		focusFirstNode = true,
+		focusableElements = 'a[href],area[href],input:not([disabled]):not([type="hidden"]):not([aria-hidden]),select:not([disabled]):not([aria-hidden]),textarea:not([disabled]):not([aria-hidden]),button:not([disabled]):not([aria-hidden]),iframe,object,embed,[contenteditable],[tabindex]:not([tabindex^="-"])',
+		storageKeyPrefix = 'pulsar_modal_',
+		escKeyCode = 27,
+		tabKeyCode = 9,
+		modalSelector = 'data-modal-id',
+		overlayClass = 'wp-block-pulsar-modal',
+		overlayOverlayClass = 'wp-block-pulsar-modal__overlay',
 	}) {
 		this.modalId = targetModal;
 		this.dismissedDuration = dismissedDuration;
 		this.disableClosing = disableClosing;
 
+		// Set configurable properties
+		this.openTrigger = openTrigger;
+		this.closeTrigger = closeTrigger;
+		this.openClass = openClass;
+		this.bodyOpenClass = bodyOpenClass;
+		this.focusFirstNode = focusFirstNode;
+		this.focusableElements = focusableElements;
+		this.storageKeyPrefix = storageKeyPrefix;
+		this.escKeyCode = escKeyCode;
+		this.tabKeyCode = tabKeyCode;
+		this.modalSelector = modalSelector;
+		this.overlayClass = overlayClass;
+		this.overlayOverlayClass = overlayOverlayClass;
+
+		// Determine if closeTrigger is a class or data attribute
+		this.closeTriggerType = closeTrigger.startsWith('data-')
+			? 'data'
+			: 'class';
+
 		// Save a reference to the modal and its original parent
-		this.modal = document.querySelector(
-			`[data-modal-id="${this.modalId}"]`
-		);
+		this.modal =
+			modalElement ||
+			document.querySelector(`[${this.modalSelector}="${this.modalId}"]`);
+
+		if (!this.modal) {
+			return;
+		}
+
 		this.originalParent = this.modal.parentNode;
 
 		// Create a reference to the portal container
-		this.portalContainer = document.getElementById('pulsar-modal-portal');
+		this.portalContainer = document.getElementById(portalContainerId);
 
 		// Register triggers
 		if (triggers.length > 0) this.registerTriggers(...triggers);
@@ -28,15 +66,47 @@ export default class Modal {
 
 	modal;
 	modalId;
-	openTrigger = 'data-trigger-modal';
-	closeTrigger = 'wp-block-pulsar-modal__close';
-	openClass = 'is-open';
-	bodyOpenClass = 'modal-is-open';
+	openTrigger;
+	closeTrigger;
+	closeTriggerType;
+	openClass;
+	bodyOpenClass;
 	dismissedDuration = 0;
 	disableClosing = false;
 	activeElement;
-	focusableElements =
-		'a[href],area[href],input:not([disabled]):not([type="hidden"]):not([aria-hidden]),select:not([disabled]):not([aria-hidden]),textarea:not([disabled]):not([aria-hidden]),button:not([disabled]):not([aria-hidden]),iframe,object,embed,[contenteditable],[tabindex]:not([tabindex^="-"])';
+	focusFirstNode;
+	focusableElements;
+	storageKeyPrefix;
+	escKeyCode;
+	tabKeyCode;
+	modalSelector;
+	overlayClass;
+	overlayOverlayClass;
+
+	/**
+	 * Checks if an element is a close trigger based on the configured closeTrigger
+	 * @param {Element} element - The element to check
+	 * @return {boolean} - True if the element is a close trigger
+	 */
+	isCloseTrigger(element) {
+		if (!element) return false;
+
+		if (this.closeTriggerType === 'data') {
+			// Check if element has the data attribute
+			return (
+				element.hasAttribute(this.closeTrigger) ||
+				(element.parentNode &&
+					element.parentNode.hasAttribute(this.closeTrigger))
+			);
+		}
+
+		// Check if element has the class
+		return (
+			element.classList.contains(this.closeTrigger) ||
+			(element.parentNode &&
+				element.parentNode.classList.contains(this.closeTrigger))
+		);
+	}
 
 	/**
 	 * Loops through all openTriggers and binds click event
@@ -72,11 +142,13 @@ export default class Modal {
 
 	setStorage() {
 		const exp = new Date().getTime() + this.dismissedDuration * 60 * 1000;
-		window.localStorage.setItem('pulsar_modal_' + this.modalId, exp);
+		window.localStorage.setItem(this.storageKeyPrefix + this.modalId, exp);
 	}
 
 	getStorage() {
-		const exp = window.localStorage.getItem('pulsar_modal_' + this.modalId);
+		const exp = window.localStorage.getItem(
+			this.storageKeyPrefix + this.modalId
+		);
 		if (exp && new Date().getTime() < exp) {
 			return true;
 		}
@@ -98,7 +170,10 @@ export default class Modal {
 
 		this.updateAriaExpanded('true');
 		this.addEventListeners();
-		this.setFocusToFirstNode();
+
+		if (this.focusFirstNode) {
+			this.setFocusToFirstNode();
+		}
 	}
 
 	closeModal() {
@@ -121,6 +196,11 @@ export default class Modal {
 		if (this.dismissedDuration) {
 			this.setStorage();
 		}
+		window.dispatchEvent(
+			new CustomEvent('pulsar-modal-closed', {
+				detail: this.modalId,
+			})
+		);
 	}
 
 	moveToPortal() {
@@ -157,14 +237,10 @@ export default class Modal {
 		if (this.disableClosing) {
 			// If closing is disabled, only allow interactions within the modal content,
 			// not on the close button or overlay.
-			const isCloseButton =
-				event.target.classList.contains(this.closeTrigger) ||
-				event.target.parentNode.classList.contains(this.closeTrigger);
+			const isCloseButton = this.isCloseTrigger(event.target);
 			const isOverlay =
-				event.target.classList.contains('wp-block-pulsar-modal') ||
-				event.target.classList.contains(
-					'wp-block-pulsar-modal__overlay'
-				);
+				event.target.classList.contains(this.overlayClass) ||
+				event.target.classList.contains(this.overlayOverlayClass);
 
 			if (isCloseButton || isOverlay) {
 				event.preventDefault();
@@ -174,10 +250,9 @@ export default class Modal {
 		}
 
 		if (
-			event.target.classList.contains(this.closeTrigger) ||
-			event.target.parentNode.classList.contains(this.closeTrigger) ||
-			event.target.classList.contains('wp-block-pulsar-modal') ||
-			event.target.classList.contains('wp-block-pulsar-modal__overlay')
+			this.isCloseTrigger(event.target) ||
+			event.target.classList.contains(this.overlayClass) ||
+			event.target.classList.contains(this.overlayOverlayClass)
 		) {
 			event.preventDefault();
 			event.stopPropagation();
@@ -187,7 +262,7 @@ export default class Modal {
 
 	updateAriaExpanded(state) {
 		const triggers = document.querySelectorAll(
-			`[data-trigger-modal="${this.modalId}"]`
+			`[${this.openTrigger}="${this.modalId}"]`
 		);
 		triggers.forEach((trigger) => {
 			trigger.setAttribute('aria-expanded', state);
@@ -195,13 +270,13 @@ export default class Modal {
 	}
 
 	onKeydown(event) {
-		if (this.disableClosing && event.keyCode === 27) {
+		if (this.disableClosing && event.keyCode === this.escKeyCode) {
 			// esc
 			event.preventDefault();
 			return;
 		}
-		if (event.keyCode === 27) this.closeModal(event); // esc
-		if (event.keyCode === 9) this.retainFocus(event); // tab
+		if (event.keyCode === this.escKeyCode) this.closeModal(event); // esc
+		if (event.keyCode === this.tabKeyCode) this.retainFocus(event); // tab
 	}
 
 	getFocusableNodes() {
@@ -222,13 +297,19 @@ export default class Modal {
 		// remove nodes on whose click, the modal closes
 		// could not think of a better name :(
 		const nodesWhichAreNotCloseTargets = focusableNodes.filter((node) => {
-			return !node.classList.contains(this.closeTrigger);
+			return !this.isCloseTrigger(node);
 		});
 
 		if (nodesWhichAreNotCloseTargets.length > 0)
 			nodesWhichAreNotCloseTargets[0].focus();
 		if (nodesWhichAreNotCloseTargets.length === 0)
 			focusableNodes[0].focus();
+	}
+
+	setFocusToNode(node) {
+		if (node) {
+			node.focus();
+		}
 	}
 
 	retainFocus(event) {

@@ -2,12 +2,12 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "pulsar/embla-carousel-progress",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"title": "Progress",
 	"category": "design",
 	"icon": "minus",
 	"description": "Progress bar for the carousel",
-	"textdomain": "pulsar",
+	"textdomain": "pulsar-blocks",
   "ancestor": [
     "pulsar/embla-carousel"
   ],

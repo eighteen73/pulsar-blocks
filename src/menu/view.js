@@ -1,3 +1,4 @@
+/* global requestAnimationFrame */
 import { store, getContext, getElement } from '@wordpress/interactivity';
 import { createFocusTrap } from 'focus-trap';
 
@@ -180,18 +181,18 @@ store('pulsar/menu', {
 		},
 		openSubmenuOnHover: () => {
 			const { state } = store('pulsar/menu');
-			const context = getContext();
 			if (state.isCollapsed || state.isTouchEnabled) return;
 
+			const context = getContext();
 			const newOpenSubmenus = [...state.openSubmenus];
 			newOpenSubmenus.push(context.submenuId);
 			state.openSubmenus = newOpenSubmenus;
 		},
 		closeSubmenuOnHover: () => {
 			const { state } = store('pulsar/menu');
-			const context = getContext();
 			if (state.isCollapsed || state.isTouchEnabled) return;
 
+			const context = getContext();
 			const newOpenSubmenus = [...state.openSubmenus];
 			const index = newOpenSubmenus.indexOf(context.submenuId);
 			if (index !== -1) {

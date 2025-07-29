@@ -1,3 +1,4 @@
+/* global IntersectionObserver */
 /**
  * Internal dependencies
  */
@@ -55,6 +56,7 @@ window.addEventListener('DOMContentLoaded', () => {
 						parseInt(modalDismissedDuration) * 1440;
 					break;
 				default:
+					// eslint-disable-next-line no-console
 					console.warn(
 						`Unknown dismissed unit: ${modalDismissedUnit}`
 					);
@@ -63,7 +65,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
 		const options = Object.assign(
 			{},
-			{ openTrigger: 'data-trigger-modal' }
+			{
+				openTrigger: 'data-trigger-modal',
+				portalContainerId: 'pulsar-modal-portal',
+				closeTrigger: 'data-modal-close',
+			}
 		);
 
 		const triggers = [
@@ -116,6 +122,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				);
 				observer.observe(targetElement);
 			} else {
+				// eslint-disable-next-line no-console
 				console.warn(
 					`Pulsar Modal: Target element "${modalSelector}" not found for scroll trigger.`
 				);
