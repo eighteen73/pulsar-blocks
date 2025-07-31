@@ -2,35 +2,64 @@
 	// stylelint-disable custom-property-pattern -- backwards compatibility
 	--pb--menu--z-index: var(--menu-z-index, 1000);
 	--pb--menu--offset: var(--menu-offset, 0px); // stylelint-disable-line -- unit needed for calc
+
+	/// Menu items (ul)
 	--pb--menu--items--gap: var(--menu-items-gap, var(--wp--preset--spacing--lg, 24px));
-	--pb--menu--item--gap: var(--menu-item-gap, var(--wp--preset--spacing--xs, 8px));
+
+	/// Menu container
 	--pb--menu--container--background-color: var(--menu-container-background-color, var(--wp--custom--color--surface--default, #fff));
+
+	// Menu item
+	--pb--menu--item--color: var(--menu-item-color, var(--wp--custom--color--text--default, #000));
+	--pb--menu--item--background-color: var(--menu-item-background-color, transparent);
+	--pb--menu--item--hover-color: inherit;
+	--pb--menu--item--hover-background-color: inherit;
+	--pb--menu--item--padding: var(--menu-item-padding, var(--wp--preset--spacing--sm) var(--wp--custom--spacing--edge));
+	--pb--menu--item--divider-color: var(--menu-item-divider-color, var(--wp--custom--color--border--default));
+	--pb--menu--item--gap: var(--menu-item-gap, var(--wp--preset--spacing--xs, 8px));
+
+	/// Menu link
+	--pb--menu--link--color: inherit;
+	--pb--menu--link--border-radius: 0;
+	--pb--menu--link--hover-color: inherit;
+	--pb--menu--link--hover-background-color: inherit;
+	--pb--menu--link--padding: 0;
+
+	/// Open button
+	--pb--menu--open--background-color: var(--menu-open-background-color, transparent);
+	--pb--menu--open--icon-color: var(--menu-open-icon-color, var(--wp--custom--color--text--default, #000));
+	--pb--menu--open--size: var(--menu-open-size, 32px);
+	--pb--menu--open--icon-size: var(--menu-open-icon-size, 24px);
+
+	/// Close button
+	--pb--menu--close--background-color: var(--menu-close-background-color, transparent);
+	--pb--menu--close--icon-color: var(--menu-close-icon-color, var(--wp--custom--color--text--default, #000));
+	--pb--menu--close--size: var(--menu-close-size, 32px);
+	--pb--menu--close--icon-size: var(--menu-close-icon-size, 32px);
+
+	/// Submenu
+	--pb--menu--submenu--background-color: var(--menu-submenu-container-background-color, var(--wp--custom--color--surface--default, #fff));
+	--pb--menu--submenu--transition-duration: var(--menu-submenu-container-transition-duration, var(--wp--custom--transition-duration--quick, 200ms));
+	--pb--menu--submenu--min-width: var(--menu-submenu-container-min-width, 200px);
+	--pb--menu--submenu--padding: var(--menu-submenu-container-padding, var(--wp--preset--spacing--md, 16px));
+	--pb--menu--submenu--border-radius: 0;
+
+	/// Submenu toggle
 	--pb--menu--submenu-toggle--size: var(--menu-submenu-toggle-size, 18px);
 	--pb--menu--submenu-toggle--background-color: var(--menu-submenu-toggle-background-color, transparent);
 	--pb--menu--submenu-toggle--icon-size: var(--menu-submenu-icon-size, 8px);
 	--pb--menu--submenu-toggle--padding: var(--menu-submenu-toggle-padding, var(--wp--preset--spacing--md));
 	--pb--menu--submenu-toggle--icon-color: var(--menu-submenu-toggle-icon-color, var(--wp--custom--color--text--default, #000));
-	--pb--menu--submenu-container--background-color: var(--menu-submenu-container-background-color, var(--wp--custom--color--surface--default, #fff));
-	--pb--menu--submenu-container--transition-duration: var(--menu-submenu-container-transition-duration, var(--wp--custom--transition-duration--quick, 200ms));
-	--pb--menu--submenu-container--min-width: var(--menu-submenu-container-min-width, 200px);
-	--pb--menu--submenu-container--padding: var(--menu-submenu-container-padding, var(--wp--preset--spacing--md, 16px));
-	--pb--menu--item--color: var(--menu-item-color, var(--wp--custom--color--text--default, #000));
-	--pb--menu--item--padding: var(--menu-item-padding, var(--wp--preset--spacing--sm) var(--wp--custom--spacing--edge));
-	--pb--menu--item--divider-color: var(--menu-item-divider-color, var(--wp--custom--color--border--default));
-	--pb--menu--item--hover-color: var(--menu-item-hover-color, var(--wp--custom--color--text--default, #000));
-	--pb--menu--item--link-padding: var(--menu-item-link-padding, var(--wp--preset--spacing--sm) 0);
-	--pb--menu--open--background-color: var(--menu-open-background-color, transparent);
-	--pb--menu--open--icon-color: var(--menu-open-icon-color, var(--wp--custom--color--text--default, #000));
-	--pb--menu--open--size: var(--menu-open-size, 32px);
-	--pb--menu--open--icon-size: var(--menu-open-icon-size, 24px);
-	--pb--menu--close--background-color: var(--menu-close-background-color, transparent);
-	--pb--menu--close--icon-color: var(--menu-close-icon-color, var(--wp--custom--color--text--default, #000));
-	--pb--menu--close--size: var(--menu-close-size, 32px);
-	--pb--menu--close--icon-size: var(--menu-close-icon-size, 32px);
+
+	/// Submenu header
 	--pb--menu--submenu-header--background-color: var(--menu-submenu-header-background-color, var(--wp--custom--color--surface--invert, #000));
 	--pb--menu--submenu-header--color: var(--menu-submenu-header-color, var(--wp--custom--color--text--invert, #fff));
 	--pb--menu--submenu-header--padding: var(--menu-submenu-header-padding, var(--wp--preset--spacing--md) var(--wp--custom--spacing--edge));
+
+	/// Submenu back button
 	--pb--menu--submenu-back--gap: var(--menu-submenu-back-gap, var(--wp--preset--spacing--xs, 8px));
+	--pb--menu--submenu-back--background-color: transparent;
+	--pb--menu--submenu-back--color: #fff;
 	--pb--menu--submenu-back--icon-color: var(--menu-submenu-back-icon-color, var(--wp--custom--color--text--invert, #fff));
 	--pb--menu--submenu-back--icon-size: var(--menu-submenu-back-icon-size, 10px);
 	// stylelint-enable custom-property-pattern
@@ -41,26 +70,27 @@
 
 	// Menu open button
 	.wp-block-pulsar-menu__open {
+		align-items: center;
 		background-color: var(--pb--menu--open--background-color);
 		border: 0;
 		box-shadow: none;
+		display: inline-flex;
 		height: var(--pb--menu--open--size);
-		position: relative;
+		justify-content: center;
 		width: var(--pb--menu--open--size);
-
-		&::after {
-			background-color: var(--pb--menu--open--icon-color);
-			content: "";
-			inset: 0;
-			mask-image: url("../../assets/svg/menu-open.svg");
-			mask-position: center;
-			mask-repeat: no-repeat;
-			mask-size: var(--pb--menu--open--icon-size);
-			position: absolute;
-		}
 	}
 
-	:where(.has-open-menu) & .wp-block-pulsar-menu__open::after {
+	.wp-block-pulsar-menu__open-icon {
+		background-color: var(--pb--menu--open--icon-color);
+		height: var(--pb--menu--open--icon-size);
+		mask-image: url("../../assets/svg/menu-open.svg");
+		mask-position: center;
+		mask-repeat: no-repeat;
+		mask-size: var(--pb--menu--open--icon-size);
+		width: var(--pb--menu--open--icon-size);
+	}
+
+	:where(.has-open-menu) & .wp-block-pulsar-menu__open-icon {
 		mask-image: url("../../assets/svg/menu-close.svg");
 	}
 
@@ -74,7 +104,7 @@
 		position: fixed;
 		right: 0;
 		top: var(--pb--menu--offset);
-		transition: all var(--pb--menu--submenu-container--transition-duration);
+		transition: all var(--pb--menu--submenu--transition-duration);
 		visibility: hidden;
 		z-index: var(--pb--menu--z-index);
 
@@ -94,17 +124,14 @@
 		height: var(--pb--menu--close--size);
 		position: relative;
 		width: var(--pb--menu--close--size);
+	}
 
-		&::after {
-			background-color: var(--pb--menu--close--icon-color);
-			content: "";
-			inset: 0;
-			mask-image: url("../../assets/svg/menu-close.svg");
-			mask-position: center;
-			mask-repeat: no-repeat;
-			mask-size: var(--pb--menu--close--icon-size);
-			position: absolute;
-		}
+	.wp-block-pulsar-menu__close-icon {
+		background-color: var(--pb--menu--close--icon-color);
+		mask-image: url("../../assets/svg/menu-close.svg");
+		mask-position: center;
+		mask-repeat: no-repeat;
+		mask-size: var(--pb--menu--close--icon-size);
 	}
 
 	// Menu items
@@ -115,13 +142,19 @@
 
 		> * + * {
 			border-top: 1px solid var(--pb--menu--item--divider-color);
-			margin-top: var(--pb--menu--item--gap);
+			margin-top: var(--pb--menu--items--gap);
 		}
 	}
 
 	// Menu item
 	.wp-block-pulsar-menu__item {
+		background-color: var(--pb--menu--item--background-color);
 		color: var(--pb--menu--item--color);
+
+		&:hover {
+			background-color: var(--pb--menu--item--hover-background-color);
+			color: var(--pb--menu--item--hover-color);
+		}
 
 		// Menu item which has a submenu
 		&:where(.has-submenu) {
@@ -139,11 +172,17 @@
 
 	// Menu item link
 	.wp-block-pulsar-menu__link {
-		color: inherit;
+		border-radius: var(--pb--menu--link--border-radius);
+		color: var(--pb--menu--link--color);
 		display: flex;
 		flex-direction: column;
-		padding: var(--pb--menu--item--padding);
+		padding: var(--pb--menu--link--padding);
 		text-decoration: none;
+
+		&:hover {
+			background-color: var(--pb--menu--link--hover-background-color);
+			color: var(--pb--menu--link--hover-color);
+		}
 	}
 
 	// Hide links where there is a submenu. We want to show the toggle button instead.
@@ -162,7 +201,7 @@
 		display: inline-flex;
 		gap: var(--pb--menu--item--gap);
 		justify-content: space-between;
-		padding: var(--pb--menu--item--padding);
+		padding: var(--pb--menu--submenu-toggle--padding);
 		text-decoration: none;
 		width: 100%;
 	}
@@ -174,19 +213,19 @@
 		mask-image: url("../../assets/svg/menu-submenu-mobile.svg");
 		mask-position: center;
 		mask-repeat: no-repeat;
-		mask-size: 100%;
+		mask-size: contain;
 		width: var(--pb--menu--submenu-toggle--icon-size);
 	}
 
 	// Submenu
 	.wp-block-pulsar-menu__submenu {
-		background-color: var(--pb--menu--submenu-container--background-color);
+		background-color: var(--pb--menu--submenu--background-color);
 		height: 100dvh;
 		inset: 0;
 		overflow: hidden;
 		position: absolute;
 		transform: translateX(-100%);
-		transition: all var(--pb--menu--submenu-container--transition-duration);
+		transition: all var(--pb--menu--submenu--transition-duration);
 		visibility: hidden;
 		width: 100%;
 		z-index: var(--pb--menu--z-index);
@@ -207,7 +246,7 @@
 
 		> * + * {
 			border-top: 1px solid var(--pb--menu--item--divider-color);
-			margin-top: var(--pb--menu--item--gap);
+			margin-top: var(--pb--menu--items--gap);
 		}
 	}
 
@@ -228,10 +267,10 @@
 	// Submenu back button
 	.wp-block-pulsar-menu__back {
 		align-items: center;
-		background-color: transparent;
+		background-color: var(--pb--menu--submenu-back--background-color);
 		border: none;
 		box-shadow: none;
-		color: inherit;
+		color: var(--pb--menu--submenu-back--color);
 		cursor: pointer;
 		display: inline-flex;
 		gap: var(--pb--menu--submenu-back--gap);
@@ -246,7 +285,7 @@
 		mask-image: url("../../assets/svg/menu-back.svg");
 		mask-position: center;
 		mask-repeat: no-repeat;
-		mask-size: 100%;
+		mask-size: contain;
 		width: var(--pb--menu--submenu-toggle--icon-size);
 	}
 
@@ -277,7 +316,13 @@
 
 	// Menu item
 	.wp-block-pulsar-menu__item {
+		background-color: var(--pb--menu--item--background-color);
 		color: var(--pb--menu--item--color);
+
+		&:hover {
+			background-color: var(--pb--menu--item--hover-background-color);
+			color: var(--pb--menu--item--hover-color);
+		}
 
 		// Menu item which has a submenu
 		&:where(.has-submenu) {
@@ -296,10 +341,17 @@
 
 	// Menu item link
 	.wp-block-pulsar-menu__link {
-		color: inherit;
+		border-radius: var(--pb--menu--link--border-radius);
+		color: var(--pb--menu--link--color);
 		display: flex;
 		flex-direction: column;
+		padding: var(--pb--menu--link--padding);
 		text-decoration: none;
+
+		&:hover {
+			background-color: var(--pb--menu--link--hover-background-color);
+			color: var(--pb--menu--link--hover-color);
+		}
 	}
 
 	// If submenu items are set to open on click, hide the link.
@@ -349,14 +401,15 @@
 
 	// Submenu
 	.wp-block-pulsar-menu__submenu {
-		background-color: var(--pb--menu--submenu-container--background-color);
-		left: calc(var(--pb--menu--submenu-toggle--padding) * -1);
-		min-width: var(--pb--menu--submenu-container--min-width, 200px);
+		background-color: var(--pb--menu--submenu--background-color);
+		border-radius: var(--pb--menu--submenu--border-radius);
+		left: calc(var(--pb--menu--submenu--padding) * -1);
+		min-width: var(--pb--menu--submenu--min-width, 200px);
 		opacity: 0;
-		padding: var(--pb--menu--submenu-toggle--padding);
+		padding: var(--pb--menu--submenu--padding);
 		position: absolute;
 		top: 100%;
-		transition: all var(--pb--menu--submenu-container--transition-duration, var(--wp--custom--transition-duration--quick, 200ms));
+		transition: all var(--pb--menu--submenu--transition-duration, var(--wp--custom--transition-duration--quick, 200ms));
 		visibility: hidden;
 		width: 100%;
 		z-index: 10;
@@ -371,8 +424,12 @@
 
 		// Nested submenu
 		.wp-block-pulsar-menu__submenu {
-			left: 100%;
-			top: 0;
+			left: calc(100% + var(--pb--menu--submenu--padding));
+			top: calc(0 - var(--pb--menu--submenu--padding));
+		}
+
+		.wp-block-pulsar-menu__submenu-toggle-icon {
+			transform: rotate(-90deg);
 		}
 	}
 
@@ -386,7 +443,7 @@
 	.wp-block-pulsar-menu__submenu-items {
 		display: flex;
 		flex-direction: column;
-		gap: var(--pb--menu--item--gap);
+		gap: var(--pb--menu--items--gap);
 	}
 
 	// Submenu header
