@@ -1,7 +1,7 @@
 .wp-block-pulsar-facetwp-filter {
 	$block: &;
 
-	--pb--facetwp-filter--title--font-weight: var(--wp--custom--typography--weight--heading);
+	--pb--facetwp-filter--title--font-weight: var(--wp--custom--typography--font-weight--heading, 700);
 	--pb--facetwp-filter--title--font-size: var(--wp--preset--font-size--sm);
 	--pb--facetwp-filter--title--padding: var(--wp--preset--spacing--lg);
 	--pb--facetwp-filter--title--background-color: var(--wp--preset--color--base);

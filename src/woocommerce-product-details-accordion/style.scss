@@ -8,7 +8,7 @@
 	--pb--wc-product-details-accordion--details--color: var(--wp--preset--color--contrast);
 	--pb--wc-product-details-accordion--details--border-radius: calc(var(--wp--custom--global--is-rounded) * var(--wp--custom--border--radius--md));
 	--pb--wc-product-details-accordion--details--summary--font-size: var(--wp--preset--font-size--md);
-	--pb--wc-product-details-accordion--details--summary--font-weight: var(--wp--custom--typography--weight--heading);
+	--pb--wc-product-details-accordion--details--summary--font-weight: var(--wp--custom--typography--font-weight--heading, 700);
 	--pb--wc-product-details-accordion--details--summary--padding: var(--wp--preset--spacing--xl) var(--wp--preset--spacing--2-xl);
 	--pb--wc-product-details-accordion--icon--size: 12px;
 	--pb--wc-product-details-accordion--icon--color: var(--wp--preset--color--contrast);
@@ -74,7 +74,7 @@
 		th {
 			background-color: transparent !important; // stylelint-disable-line declaration-no-important
 			border: 0;
-			font-weight: var(--wp--custom--typography--weight--heading);
+			font-weight: var(--wp--custom--typography--font-weight--heading, 700);
 			line-height: unset;
 			padding: 0;
 			text-align: left;
