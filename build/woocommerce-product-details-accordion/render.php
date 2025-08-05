@@ -51,9 +51,10 @@ if ( ! empty( $product_tabs ) ) : ?>
 					?>
 				</div>
 			</details>
-		<?php endforeach; ?>
 
-		<?php $start_open = false; ?>
+			<?php $start_open = false; ?>
+
+		<?php endforeach; ?>
 
 		<?php do_action( 'woocommerce_product_after_tabs' ); ?>
 	</div>
