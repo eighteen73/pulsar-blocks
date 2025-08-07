@@ -437,6 +437,11 @@
 		.wp-block-pulsar-menu__submenu-toggle-icon {
 			transform: rotate(-90deg);
 		}
+
+		// Move the toggle button to the left so it looks visually aligned with active styling.
+		.submenu-opens-on-hover > .wp-block-pulsar-menu__submenu-toggle {
+			margin-right: var(--pb--menu--link--padding);
+		}
 	}
 
 	// When the submenu is open, show it.
