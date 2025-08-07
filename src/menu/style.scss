@@ -340,18 +340,24 @@
 	}
 
 	// Menu item link
-	.wp-block-pulsar-menu__link {
+	.wp-block-pulsar-menu__link,
+	.submenu-opens-on-click > .wp-block-pulsar-menu__submenu-toggle,
+	&:where(.is-touch-enabled) .has-submenu > .wp-block-pulsar-menu__submenu-toggle {
 		border-radius: var(--pb--menu--link--border-radius);
 		color: var(--pb--menu--link--color);
-		display: flex;
-		flex-direction: column;
 		padding: var(--pb--menu--link--padding);
-		text-decoration: none;
+		width: 100%;
 
 		&:hover {
 			background-color: var(--pb--menu--link--hover-background-color);
 			color: var(--pb--menu--link--hover-color);
 		}
+	}
+
+	.wp-block-pulsar-menu__link {
+		display: flex;
+		flex-direction: column;
+		text-decoration: none;
 	}
 
 	// If submenu items are set to open on click, hide the link.
