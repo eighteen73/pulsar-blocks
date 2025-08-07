@@ -343,6 +343,8 @@ class Menu {
 		} elseif ( is_home() || is_front_page() ) {
 			return $item->object == 'custom'
 				&& untrailingslashit( $item->url ) == untrailingslashit( home_url() );
+		} elseif ( $item->object == 'custom' ) {
+			return untrailingslashit( $item->url ) == untrailingslashit( home_url( add_query_arg( null, null ) ) );
 		}
 
 		return false;
