@@ -15,6 +15,8 @@ $post_id         = $block->context['postId'] ?? false;
 $in_query_loop   = $attributes['inQueryLoop'] ?? false;
 $tabs_id         = $in_query_loop && $post_id ? "{$id}-{$post_id}" : $id;
 $namespace       = "pulsar-tabs-{$tabs_id}";
+$collapses       = $attributes['collapses'] ?? false;
+$collapses_on    = $attributes['collapsesOn'] ?? 'sm';
 
 $inner_blocks = $block->inner_blocks;
 $tabs         = [];
@@ -33,9 +35,11 @@ foreach ( $inner_blocks as $block ) {
 	echo wp_kses_data(
 		get_block_wrapper_attributes(
 			[
-				'id'           => $namespace,
-				'class'        => $is_vertical ? 'is-vertical' : 'is-horizontal',
-				'data-tabs-id' => $tabs_id,
+				'id'                  => $namespace,
+				'class'               => $is_vertical ? 'is-vertical' : 'is-horizontal',
+				'data-tabs-id'        => $tabs_id,
+				'data-collapses'      => $collapses ? 'true' : 'false',
+				'data-collapses-on'   => $collapses_on,
 			]
 		)
 	);
@@ -54,6 +58,23 @@ foreach ( $inner_blocks as $block ) {
 			</button>
 		<?php endforeach; ?>
 	</div>
+
+	<?php if ( $collapses ) : ?>
+		<select
+			class="wp-block-pulsar-tabs__select"
+			aria-label="<?php esc_attr_e( 'Select tab', 'pulsar-blocks' ); ?>"
+			data-collapses-on="<?php echo esc_attr( $collapses_on ); ?>"
+		>
+			<?php foreach ( $tabs as $index => $tab ) : ?>
+				<option
+					value="<?php echo esc_attr( $tab['tab_number'] ); ?>"
+					<?php selected( $tab['tab_number'], 1 ); ?>
+				>
+					<?php echo esc_html( $tab['title'] ); ?>
+				</option>
+			<?php endforeach; ?>
+		</select>
+	<?php endif; ?>
 
 	<?php echo $content; // phpcs:disable ?>
 </div>

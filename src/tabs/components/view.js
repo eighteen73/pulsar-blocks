@@ -10,6 +10,11 @@ export default class Tabs {
 		this.tabs = Array.from(this.tablistNode.querySelectorAll('[role=tab]'));
 		this.tabpanels = [];
 
+		// Find the select element for mobile view
+		this.selectNode = this.tablistNode.querySelector(
+			'.wp-block-pulsar-tabs__select'
+		);
+
 		for (let i = 0; i < this.tabs.length; i += 1) {
 			const tab = this.tabs[i];
 			const tabpanel = document.getElementById(
@@ -26,18 +31,37 @@ export default class Tabs {
 			}
 			this.lastTab = tab;
 		}
+
+		// Add select element event listener if it exists
+		if (this.selectNode) {
+			this.selectNode.addEventListener(
+				'change',
+				this.onSelectChange.bind(this)
+			);
+		}
 	}
 
 	setSelectedTab(currentTab, setFocus) {
 		if (typeof setFocus !== 'boolean') {
 			setFocus = true;
 		}
+
+		let selectedTabNumber = null;
+
 		for (let i = 0; i < this.tabs.length; i += 1) {
 			const tab = this.tabs[i];
 			if (currentTab === tab) {
 				tab.setAttribute('aria-selected', 'true');
 				tab.removeAttribute('tabindex');
 				this.tabpanels[i].removeAttribute('hidden');
+
+				// Extract tab number for select sync
+				const tabId = tab.id;
+				const match = tabId.match(/-tab-(\d+)$/);
+				if (match) {
+					selectedTabNumber = match[1];
+				}
+
 				if (setFocus) {
 					tab.focus();
 				}
@@ -46,6 +70,11 @@ export default class Tabs {
 				tab.tabIndex = -1;
 				this.tabpanels[i].setAttribute('hidden', true);
 			}
+		}
+
+		// Sync the select element without triggering its change event
+		if (this.selectNode && selectedTabNumber) {
+			this.selectNode.value = selectedTabNumber;
 		}
 	}
 
@@ -71,7 +100,27 @@ export default class Tabs {
 		}
 	}
 
+	/* HELPER METHODS */
+
+	getTabByNumber(tabNumber) {
+		return this.tabs.find((tab) => {
+			const tabId = tab.id;
+			const match = tabId.match(/-tab-(\d+)$/);
+			return match && match[1] === String(tabNumber);
+		});
+	}
+
 	/* EVENT HANDLERS */
+
+	onSelectChange(event) {
+		const selectedValue = event.target.value;
+		const selectedTab = this.getTabByNumber(selectedValue);
+
+		if (selectedTab) {
+			// Don't set focus when changing via select to avoid jumping focus
+			this.setSelectedTab(selectedTab, false);
+		}
+	}
 
 	onKeydown(event) {
 		const tgt = event.currentTarget;

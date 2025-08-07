@@ -18,6 +18,10 @@ import {
 	Placeholder,
 	TextControl,
 	ToggleControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
@@ -88,7 +92,15 @@ function TabButton({ clientId, isActiveTab, tabNumber, setActiveTab }) {
 }
 
 function TabsEdit({
-	attributes: { id, activeTab, tabsCount, isVertical, inQueryLoop },
+	attributes: {
+		id,
+		activeTab,
+		tabsCount,
+		isVertical,
+		inQueryLoop,
+		collapses,
+		collapsesOn,
+	},
 	clientId,
 	setAttributes,
 	isSelected,
@@ -157,23 +169,65 @@ function TabsEdit({
 		__unstableMarkNextChangeAsNotPersistent,
 	]);
 
+	// Define our breakpoints.
+	const breakpoints = ['sm', 'md', 'lg', 'xl'];
+
+	// Define useful helper text for each breakpoint.
+	const helpText = {
+		sm: __('Mobile screens.'),
+		md: __('Landscape mobiles and below.'),
+		lg: __('Tablets in portrait mode and below.'),
+		xl: __('Smaller laptops or tablets in landscape mode and below.'),
+	};
+
+	// Fetch the helper text for a breakpoint.
+	const getHelpText = (key) => helpText[key];
+
 	return (
 		<>
 			<InspectorControls>
 				<PanelBody title={__('Settings', 'pulsar-blocks')}>
-					<PanelRow>
-						<ToggleControl
-							label={__('Vertical', 'pulsar-blocks')}
-							help={__(
-								'Display tabs vertically.',
-								'pulsar-blocks'
-							)}
-							checked={isVertical}
-							onChange={(value) =>
-								setAttributes({ isVertical: value })
-							}
-						/>
-					</PanelRow>
+					<ToggleControl
+						label={__('Vertical', 'pulsar-blocks')}
+						help={__('Display tabs vertically.', 'pulsar-blocks')}
+						checked={isVertical}
+						onChange={(value) =>
+							setAttributes({ isVertical: value })
+						}
+					/>
+
+					<ToggleControl
+						label={__('Collapse', 'pulsar-blocks')}
+						help={__(
+							'Collapse tabs on smaller screens.',
+							'pulsar-blocks'
+						)}
+						checked={collapses}
+						onChange={(value) =>
+							setAttributes({ collapses: value })
+						}
+					/>
+
+					{collapses && (
+						<ToggleGroupControl
+							label={__('Collapse up to')}
+							onChange={(value) => {
+								setAttributes({ collapsesOn: value });
+							}}
+							value={collapsesOn}
+							isBlock
+							help={getHelpText(collapsesOn)}
+							style={{ width: '100%' }}
+						>
+							{breakpoints.map((breakpoint) => (
+								<ToggleGroupControlOption
+									key={breakpoint}
+									value={breakpoint}
+									label={breakpoint.toUpperCase()}
+								/>
+							))}
+						</ToggleGroupControl>
+					)}
 				</PanelBody>
 			</InspectorControls>
 

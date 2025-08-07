@@ -41,6 +41,14 @@
     "inQueryLoop": {
       "type": "boolean",
       "default": false
+    },
+    "collapses": {
+      "type": "boolean",
+      "default": false
+    },
+    "collapsesOn": {
+      "type": "string",
+      "default": "sm"
     }
   },
   "usesContext": [
