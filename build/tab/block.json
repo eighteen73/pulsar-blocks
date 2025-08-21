@@ -26,6 +26,9 @@
     "allowedBlocks": {
       "type": "array"
     },
+    "anchor": {
+      "type": "string"
+    },
     "templateLock": {
       "type": [
         "string",
@@ -49,7 +52,8 @@
     "interactivity": {
       "clientNavigation": true
     },
-    "reusable": false
+    "reusable": false,
+    "anchor": true
   },
   "textdomain": "pulsar-blocks",
   "editorScript": "file:./index.js",

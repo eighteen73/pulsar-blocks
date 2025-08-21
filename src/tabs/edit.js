@@ -100,6 +100,8 @@ function TabsEdit({
 		inQueryLoop,
 		collapses,
 		collapsesOn,
+		deepLinking,
+		deepLinkingUpdateHistory,
 	},
 	clientId,
 	setAttributes,
@@ -227,6 +229,31 @@ function TabsEdit({
 								/>
 							))}
 						</ToggleGroupControl>
+					)}
+
+					<ToggleControl
+						label={__('Deep Linking', 'pulsar-blocks')}
+						help={__('Enable deep linking.', 'pulsar-blocks')}
+						checked={deepLinking}
+						onChange={(value) =>
+							setAttributes({ deepLinking: value })
+						}
+					/>
+
+					{deepLinking && (
+						<ToggleControl
+							label={__('Update History', 'pulsar-blocks')}
+							help={__(
+								'Update history on deep linking. If enabled, the URL will be updated when the tab is changed.',
+								'pulsar-blocks'
+							)}
+							checked={deepLinkingUpdateHistory}
+							onChange={(value) =>
+								setAttributes({
+									deepLinkingUpdateHistory: value,
+								})
+							}
+						/>
 					)}
 				</PanelBody>
 			</InspectorControls>

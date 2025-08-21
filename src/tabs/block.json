@@ -39,6 +39,14 @@
     "collapsesOn": {
       "type": "string",
       "default": "sm"
+    },
+    "deepLinking": {
+      "type": "boolean",
+      "default": false
+    },
+    "deepLinkingUpdateHistory": {
+      "type": "boolean",
+      "default": false
     }
 	},
   "usesContext": [ "postId", "postType", "queryId" ],

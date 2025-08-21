@@ -9,16 +9,20 @@
  * @package PulsarBlocks
  */
 
-$id         = $block->context['tabs/id'];
-$post_id    = $block->context['postId'] ?? false;
-$namespace  = "pulsar-tabs-{$id}" . ( $post_id ? "-{$post_id}" : '' );
-$tab_number = $attributes['tabNumber'];
+$id              = $block->context['tabs/id'];
+$post_id         = $block->context['postId'] ?? false;
+$namespace       = "pulsar-tabs-{$id}" . ( $post_id ? "-{$post_id}" : '' );
+$tab_number      = $attributes['tabNumber'];
+$anchor          = $attributes['anchor'];
+$title           = $attributes['title'];
+$deep_linking_id = $anchor ? $anchor : ( $title ? sanitize_title( $title ) : "{$namespace}-tabpanel-{$tab_number}" );
 
 $wrapper_attributes = [
-	'id'              => "{$namespace}-tabpanel-{$tab_number}",
-	'class'           => 'wp-block-pulsar-tabs__panel',
-	'role'            => 'tabpanel',
-	'aria-labelledby' => "{$namespace}-tab-{$tab_number}",
+	'id'                   => "{$namespace}-tabpanel-{$tab_number}",
+	'class'                => 'wp-block-pulsar-tabs__panel',
+	'role'                 => 'tabpanel',
+	'aria-labelledby'      => "{$namespace}-tab-{$tab_number}",
+	'data-deep-linking-id' => $deep_linking_id,
 ];
 
 if ( $tab_number !== 1 ) {
