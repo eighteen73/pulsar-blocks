@@ -9,14 +9,16 @@
  * @package PulsarBlocks
  */
 
-$is_vertical     = $attributes['isVertical'];
-$id              = $attributes['id'];
-$post_id         = $block->context['postId'] ?? false;
-$in_query_loop   = $attributes['inQueryLoop'] ?? false;
-$tabs_id         = $in_query_loop && $post_id ? "{$id}-{$post_id}" : $id;
-$namespace       = "pulsar-tabs-{$tabs_id}";
-$collapses       = $attributes['collapses'] ?? false;
-$collapses_on    = $attributes['collapsesOn'] ?? 'sm';
+$is_vertical                 = $attributes['isVertical'];
+$id                          = $attributes['id'];
+$post_id                     = $block->context['postId'] ?? false;
+$in_query_loop               = $attributes['inQueryLoop'] ?? false;
+$tabs_id                     = $in_query_loop && $post_id ? "{$id}-{$post_id}" : $id;
+$namespace                   = "pulsar-tabs-{$tabs_id}";
+$collapses                   = $attributes['collapses'] ?? false;
+$collapses_on                = $attributes['collapsesOn'] ?? 'sm';
+$deep_linking                = $attributes['deepLinking'] ?? false;
+$deep_linking_update_history = $attributes['deepLinkingUpdateHistory'] ?? false;
 
 $inner_blocks = $block->inner_blocks;
 $tabs         = [];
@@ -35,11 +37,13 @@ foreach ( $inner_blocks as $block ) {
 	echo wp_kses_data(
 		get_block_wrapper_attributes(
 			[
-				'id'                  => $namespace,
-				'class'               => $is_vertical ? 'is-vertical' : 'is-horizontal',
-				'data-tabs-id'        => $tabs_id,
-				'data-collapses'      => $collapses ? 'true' : 'false',
-				'data-collapses-on'   => $collapses_on,
+				'id'                               => $namespace,
+				'class'                            => $is_vertical ? 'is-vertical' : 'is-horizontal',
+				'data-tabs-id'                     => $tabs_id,
+				'data-collapses'                   => $collapses ? 'true' : 'false',
+				'data-collapses-on'                => $collapses_on,
+				'data-deep-linking'                => $deep_linking ? 'true' : 'false',
+				'data-deep-linking-update-history' => $deep_linking_update_history ? 'true' : 'false',
 			]
 		)
 	);

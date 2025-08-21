@@ -10,6 +10,14 @@ export default class Tabs {
 		this.tabs = Array.from(this.tablistNode.querySelectorAll('[role=tab]'));
 		this.tabpanels = [];
 
+		// Deep linking configuration
+		this.deepLinking =
+			this.tablistNode.getAttribute('data-deep-linking') === 'true';
+		this.deepLinkingUpdateHistory =
+			this.tablistNode.getAttribute(
+				'data-deep-linking-update-history'
+			) === 'true';
+
 		// Find the select element for mobile view
 		this.selectNode = this.tablistNode.querySelector(
 			'.wp-block-pulsar-tabs__select'
@@ -39,6 +47,11 @@ export default class Tabs {
 				this.onSelectChange.bind(this)
 			);
 		}
+
+		// Initialize deep linking
+		if (this.deepLinking) {
+			this.initializeDeepLinking();
+		}
 	}
 
 	setSelectedTab(currentTab, setFocus) {
@@ -65,6 +78,9 @@ export default class Tabs {
 				if (setFocus) {
 					tab.focus();
 				}
+
+				// Update URL hash for deep linking
+				this.updateUrlHash(tab);
 			} else {
 				tab.setAttribute('aria-selected', 'false');
 				tab.tabIndex = -1;
@@ -100,8 +116,6 @@ export default class Tabs {
 		}
 	}
 
-	/* HELPER METHODS */
-
 	getTabByNumber(tabNumber) {
 		return this.tabs.find((tab) => {
 			const tabId = tab.id;
@@ -109,9 +123,6 @@ export default class Tabs {
 			return match && match[1] === String(tabNumber);
 		});
 	}
-
-	/* EVENT HANDLERS */
-
 	onSelectChange(event) {
 		const selectedValue = event.target.value;
 		const selectedTab = this.getTabByNumber(selectedValue);
@@ -178,5 +189,97 @@ export default class Tabs {
 
 	onClick(event) {
 		this.setSelectedTab(event.currentTarget);
+	}
+
+	initializeDeepLinking() {
+		// Check for hash on page load
+		this.checkHashOnLoad();
+
+		// Listen for hash changes (browser back/forward)
+		window.addEventListener('hashchange', this.onHashChange.bind(this));
+	}
+
+	checkHashOnLoad() {
+		const hash = window.location.hash;
+		if (hash) {
+			this.activateTabByHash(hash);
+		}
+	}
+
+	onHashChange() {
+		const hash = window.location.hash;
+		if (hash) {
+			this.activateTabByHash(hash);
+		}
+	}
+
+	activateTabByHash(hash) {
+		// Remove the # from the hash
+		const targetId = hash.substring(1);
+
+		// Find the tab panel with matching data-deep-linking-id
+		let targetPanel = null;
+		let panelIndex = -1;
+
+		for (let i = 0; i < this.tabpanels.length; i += 1) {
+			const panel = this.tabpanels[i];
+			const deepLinkingId = panel.getAttribute('data-deep-linking-id');
+			if (deepLinkingId === targetId) {
+				targetPanel = panel;
+				panelIndex = i;
+				break;
+			}
+		}
+
+		if (!targetPanel || panelIndex === -1) {
+			return;
+		}
+
+		// Activate the corresponding tab button
+		if (this.tabs[panelIndex]) {
+			// Activate the tab without setting focus (since it's from a hash)
+			this.setSelectedTab(this.tabs[panelIndex], false);
+
+			// Scroll the tab into view
+			this.scrollTabIntoView(this.tabs[panelIndex]);
+		}
+	}
+
+	scrollTabIntoView(tab) {
+		// Small delay to ensure the tab is visible before scrolling
+		setTimeout(() => {
+			tab.scrollIntoView({
+				behavior: 'smooth',
+				block: 'start',
+			});
+		}, 100);
+	}
+
+	updateUrlHash(tab) {
+		if (!this.deepLinking) {
+			return;
+		}
+
+		// Find the corresponding panel and get its deep linking ID
+		const panelId = tab.getAttribute('aria-controls');
+		const panel = document.getElementById(panelId);
+
+		if (!panel) {
+			return;
+		}
+
+		const deepLinkingId = panel.getAttribute('data-deep-linking-id');
+		if (!deepLinkingId) {
+			return;
+		}
+
+		const newHash = `#${deepLinkingId}`;
+
+		// Update the URL without triggering a hashchange event
+		if (this.deepLinkingUpdateHistory) {
+			window.history.pushState(null, null, newHash);
+		} else {
+			window.history.replaceState(null, null, newHash);
+		}
 	}
 }

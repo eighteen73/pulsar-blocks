@@ -8,12 +8,13 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 
 export default function Edit({
-	attributes: { allowedBlocks, templateLock },
+	attributes,
 	clientId,
 	context: { 'tabs/activeTab': activeTab },
 	isSelected,
 	setAttributes,
 }) {
+	const { allowedBlocks, templateLock } = attributes;
 	const { tabNumber, hasChildBlocks, isTabSelected } = useSelect(
 		(select) => {
 			const {
@@ -64,6 +65,8 @@ export default function Edit({
 		setAttributes,
 		__unstableMarkNextChangeAsNotPersistent,
 	]);
+
+	console.log(attributes);
 
 	return (
 		<div
