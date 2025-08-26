@@ -29,6 +29,7 @@ export default function Edit({ attributes, setAttributes }) {
 		hasSubmenuBack,
 		hasSubmenuLabel,
 		submenuOpensOnClick,
+		hasViewAll,
 	} = attributes;
 	const blockProps = useBlockProps();
 
@@ -163,17 +164,34 @@ export default function Edit({ attributes, setAttributes }) {
 							}}
 						/>
 						{hasSubmenuBack && (
-							<ToggleControl
-								label={__('Show parent label', 'pulsar-blocks')}
-								help={__(
-									'Show the parent menu item label as the back button.',
-									'pulsar-blocks'
-								)}
-								checked={hasSubmenuLabel}
-								onChange={(val) => {
-									setAttributes({ hasSubmenuLabel: val });
-								}}
-							/>
+							<>
+								<ToggleControl
+									label={__(
+										'Show parent label',
+										'pulsar-blocks'
+									)}
+									help={__(
+										'Show the parent menu item label as the back button.',
+										'pulsar-blocks'
+									)}
+									checked={hasSubmenuLabel}
+									onChange={(val) => {
+										setAttributes({ hasSubmenuLabel: val });
+									}}
+								/>
+
+								<ToggleControl
+									label={__('Show View All', 'pulsar-blocks')}
+									help={__(
+										'Show the View All link to the parent menu item.',
+										'pulsar-blocks'
+									)}
+									checked={hasViewAll}
+									onChange={(val) => {
+										setAttributes({ hasViewAll: val });
+									}}
+								/>
+							</>
 						)}
 					</PanelBody>
 				)}
@@ -190,6 +208,7 @@ export default function Edit({ attributes, setAttributes }) {
 								hasSubmenuLabel,
 								submenuOpensOnClick,
 								orientation,
+								hasViewAll,
 							}}
 						/>
 					</Disabled>

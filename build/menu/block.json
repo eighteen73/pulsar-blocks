@@ -28,6 +28,10 @@
       "type": "boolean",
       "default": false
     },
+    "hasViewAll": {
+      "type": "boolean",
+      "default": false
+    },
     "submenuOpensOnClick": {
       "type": "boolean",
       "default": false

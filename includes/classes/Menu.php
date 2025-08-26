@@ -485,9 +485,10 @@ class Menu {
 	 * @param bool   $collapses Whether the menu collapses.
 	 * @param bool   $submenu_opens_on_click Whether to open the submenus on click.
 	 * @param bool   $has_submenu_label Whether to show the submenu label.
+	 * @param bool   $has_view_all Whether to show the view all link.
 	 * @return void
 	 */
-	public static function render_menu_items_list( string $location, array $items, int $parent_id = 0, bool $collapses = false, bool $submenu_opens_on_click = false, bool $has_submenu_label = false ): void {
+	public static function render_menu_items_list( string $location, array $items, int $parent_id = 0, bool $collapses = false, bool $submenu_opens_on_click = false, bool $has_submenu_label = false, bool $has_view_all = false ): void {
 		$is_submenu = $parent_id !== 0;
 		$children   = array_filter( $items, fn( $item ) => $item['parent_id'] === $parent_id );
 		usort( $children, fn( $a, $b ) => $a['order'] <=> $b['order'] );
@@ -596,13 +597,13 @@ class Menu {
 				<?php endif; ?>
 
 				<?php if ( $has_children ) : ?>
-					<?php self::render_submenu_header( $items, $item['id'], $location, $has_submenu_label ); ?>
+					<?php self::render_submenu_header( $items, $item['id'], $location, $has_submenu_label, $has_view_all ); ?>
 
-					<?php self::render_menu_items_list( $location, $items, $item['id'], $collapses, $submenu_opens_on_click, $has_submenu_label ); ?>
+					<?php self::render_menu_items_list( $location, $items, $item['id'], $collapses, $submenu_opens_on_click, $has_submenu_label, $has_view_all ); ?>
 				<?php endif; ?>
 
 				<?php if ( ! empty( $template_part_slug ) && $collapses && ! $has_children ) : ?>
-					<?php self::render_submenu_header( $items, $item['id'], $location, $has_submenu_label ); ?>
+					<?php self::render_submenu_header( $items, $item['id'], $location, $has_submenu_label, $has_view_all ); ?>
 
 					<div class="wp-block-pulsar-menu__submenu-template-part">
 						<?php echo self::render_template_part( $template_part_slug ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -628,9 +629,10 @@ class Menu {
 	 * @param int    $parent_id The ID of the parent item to render children for.
 	 * @param string $location The menu location slug.
 	 * @param bool   $has_submenu_label Whether to show the submenu label.
+	 * @param bool   $has_view_all Whether to show the view all link.
 	 * @return void
 	 */
-	public static function render_submenu_header( array $items, int $parent_id, string $location, bool $has_submenu_label = false ): void {
+	public static function render_submenu_header( array $items, int $parent_id, string $location, bool $has_submenu_label = false, bool $has_view_all = false ): void {
 		?>
 		<div class="wp-block-pulsar-menu__submenu-header">
 			<button
@@ -649,10 +651,14 @@ class Menu {
 				$parent_item = reset( $parent_item );
 				if ( $parent_item ) {
 					?>
-					<span class="wp-block-pulsar-menu__parent-label"><?php echo esc_html( $parent_item['title'] ); ?></span>
+					<span class="wp-block-pulsar-menu__parent-label"><?php echo esc_html( apply_filters( 'pulsar_blocks/menu/parent_label', $parent_item['title'], $parent_item, $location ) ); ?></span>
 					<?php
 				}
 				?>
+			<?php endif; ?>
+
+			<?php if ( $has_view_all ) : ?>
+				<a href="<?php echo esc_url( $parent_item['url'] ); ?>" class="wp-block-pulsar-menu__view-all"><?php echo esc_html( apply_filters( 'pulsar_blocks/menu/view_all_label', esc_html__( 'View All', 'pulsar' ), $parent_item, $location ) ); ?></a>
 			<?php endif; ?>
 		</div>
 		<?php
