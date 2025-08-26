@@ -645,20 +645,20 @@ class Menu {
 				<span><?php echo wp_kses_post( apply_filters( 'pulsar/menu/back-label', esc_html__( 'Back', 'pulsar' ), $items, $parent_id, $has_submenu_label, $location ) ); ?></span>
 			</button>
 
-			<?php if ( $has_submenu_label ) : ?>
+			<?php if ( $has_submenu_label || $has_view_all ) : ?>
 				<?php
-				$parent_item = array_filter( $items, fn( $item ) => $item['id'] === $parent_id );
+				$parent_item = array_filter( $items, fn( $item ) => $item['id'] == $parent_id );
 				$parent_item = reset( $parent_item );
-				if ( $parent_item ) {
+				if ( $parent_item && $has_submenu_label ) {
 					?>
 					<span class="wp-block-pulsar-menu__parent-label"><?php echo esc_html( apply_filters( 'pulsar_blocks/menu/parent_label', $parent_item['title'], $parent_item, $location ) ); ?></span>
 					<?php
 				}
 				?>
-			<?php endif; ?>
 
-			<?php if ( $has_view_all ) : ?>
-				<a href="<?php echo esc_url( $parent_item['url'] ); ?>" class="wp-block-pulsar-menu__view-all"><?php echo esc_html( apply_filters( 'pulsar_blocks/menu/view_all_label', esc_html__( 'View All', 'pulsar' ), $parent_item, $location ) ); ?></a>
+				<?php if ( $parent_item && $has_view_all ) : ?>
+					<a href="<?php echo esc_url( $parent_item['url'] ); ?>" class="wp-block-pulsar-menu__view-all"><?php echo esc_html( apply_filters( 'pulsar_blocks/menu/view_all_label', esc_html__( 'View All', 'pulsar' ), $parent_item, $location ) ); ?></a>
+				<?php endif; ?>
 			<?php endif; ?>
 		</div>
 		<?php
