@@ -20,7 +20,7 @@ $wrapper_attributes = [
 	'data-show-thumbnails' => $show_thumbnails,
 ];
 
-if ( $attributes['overlayColor'] ) {
+if ( isset( $attributes['overlayColor'] ) ) {
 	$wrapper_attributes['data-overlay-color'] = $attributes['overlayColor'];
 }
 ?>
