@@ -1,24 +1,24 @@
 .wp-block-pulsar-icon-card {
-	--card-padding: var(--wp--preset--spacing--lg);
-	--card-border-radius: var(--wp--custom--border--radius--sm);
-	--card-icon-size: 42px;
-	--card-background-color: var(--wp--preset--color--base);
-	--card-color: var(--wp--preset--color--contrast);
-	--card-gap: var(--wp--preset--spacing--md);
-	--card-icon-color: var(--icon-color, var(--wp--preset--color--brand-primary));
-	--card-icon-background-color: var(--icon-background-color, var(--wp--preset--color--tint-primary));
+	--pb--icon-card--card--padding: var(--wp--preset--spacing--lg);
+	--pb--icon-card--card--border-radius: var(--wp--custom--border--radius--sm);
+	--pb--icon-card--icon--size: 42px;
+	--pb--icon-card--card--background-color: var(--wp--preset--color--base);
+	--pb--icon-card--card--color: var(--wp--preset--color--contrast);
+	--pb--icon-card--card--gap: var(--wp--preset--spacing--md);
+	--pb--icon-card--icon--color: var(--wp--preset--color--brand-primary);
+	--pb--icon-card--icon--background-color: var(--wp--preset--color--tint-primary);
 	align-items: center;
 
-	background-color: var(--card-background-color);
+	background-color: var(--pb--icon-card--card--background-color);
 	border: none;
-	border-radius: var(--card-border-radius);
+	border-radius: var(--pb--icon-card--card--border-radius);
 	box-shadow: none;
 	display: flex;
 	flex: 1 1 0%;
 	flex-direction: column;
-	gap: var(--card-gap);
+	gap: var(--pb--icon-card--card--gap);
 	isolation: isolate;
-	padding: var(--card-padding);
+	padding: var(--pb--icon-card--card--padding);
 	position: relative;
 	text-decoration: none;
 	transition: all var(--wp--custom--transition--duration--quick);
@@ -38,9 +38,9 @@
 
 		&:hover,
 		&:focus-visible {
-			--card-background-color: var(--wp--preset--color--brand-primary);
-			--card-color: var(--wp--preset--color--base);
-			--card-icon-color: var(--wp--preset--color--tint-primary);
+			--pb--icon-card--card--background-color: var(--wp--preset--color--brand-primary);
+			--pb--icon-card--card--color: var(--wp--preset--color--base);
+			--pb--icon-card--icon--color: var(--wp--preset--color--tint-primary);
 		}
 	}
 
@@ -56,10 +56,10 @@
 	}
 
 	.wp-block-pulsar-icon-card__icon {
-		color: var(--card-icon-color);
-		height: var(--card-icon-size);
+		color: var(--pb--icon-card--icon--color);
+		height: var(--pb--icon-card--icon--size);
 		text-align: center;
-		width: var(--card-icon-size);
+		width: var(--pb--icon-card--icon--size);
 
 		img {
 			display: inline-block;
@@ -74,7 +74,7 @@
 	}
 
 	.wp-block-pulsar-icon-card__content {
-		color: var(--card-color);
+		color: var(--pb--icon-card--card--color);
 		flex: 1 1 0%;
 		text-align: center;
 		transition: all var(--wp--custom--transition--duration--quick);
