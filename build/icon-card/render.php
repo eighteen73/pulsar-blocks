@@ -12,10 +12,10 @@
 $image_id = $attributes['imageId'] ?? null;
 $url      = $attributes['url'] ?? false;
 $target   = $attributes['openInNewTab'] ? '_blank' : '_self';
-$bookinghound = $attributes['bookingHound'] ?? false;
+
 ?>
 
-<?php if ( $url || $bookinghound ) : ?>
+<?php if ( $url ) : ?>
 	<a <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?> href="<?php echo esc_url( $url ); ?>" target="<?php echo esc_attr( $target ); ?>">
 <?php else : ?>
 	<div <?php echo wp_kses_data( get_block_wrapper_attributes() ); ?>>
@@ -48,7 +48,7 @@ $bookinghound = $attributes['bookingHound'] ?? false;
 								'xmlns' => true,
 								'width' => true,
 								'height' => true,
-								'viewbox' => true, // Note: 'viewBox' is corrected to 'viewbox' by kses
+								'viewbox' => true,
 							],
 							'g'     => [ 'fill' => true ],
 							'title' => [ 'title' => true ],
@@ -73,7 +73,7 @@ $bookinghound = $attributes['bookingHound'] ?? false;
 		<?php echo $content; ?>
 	</div>
 
-<?php if ( $url || $bookinghound ) : ?>
+<?php if ( $url ) : ?>
 	</a>
 <?php else : ?>
 	</div>
