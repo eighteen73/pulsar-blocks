@@ -12,6 +12,10 @@
       "type": "string",
       "default": "vertical"
     },
+    "contentAlignment": {
+      "type": "string",
+      "default": "center"
+    },
 		"mediaId": {
 			"type": "number"
 		},
@@ -34,7 +38,12 @@
 	},
   "allowedBlocks": ["core/heading", "core/paragraph"],
 	"supports": {
-		"html": false
+		"html": false,
+    "spacing": {
+      "blockGap": true,
+      "margin": true,
+      "padding": true
+    }
 	},
 	"textdomain": "pulsar-blocks",
 	"editorScript": "file:./index.js",

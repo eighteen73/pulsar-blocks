@@ -4,10 +4,10 @@
 	--pb--icon-text--padding: 0;
 	--pb--icon-text--border-radius: 0;
 	--pb--icon-text--icon--color: var(--wp--preset--color--brand-primary);
-	--pb--icon-text--icon--background-color: transparent;
-	--pb--icon-text--icon--size: 42px;
-	--pb--icon-text--icon--padding: 0;
-	--pb--icon-text--icon--border-radius: 0;
+	--pb--icon-text--icon--background-color: var(--wp--preset--color--tint-primary);
+	--pb--icon-text--icon--size: 48px;
+	--pb--icon-text--icon--padding: var(--wp--preset--spacing--md);
+	--pb--icon-text--icon--border-radius: var(--wp--custom--border--radius--full);
 	--pb--icon-text--content--background-color: transparent;
 	--pb--icon-text--content--color: var(--wp--preset--color--contrast);
 
@@ -28,8 +28,19 @@
 	}
 
 	&:where(.is-horizontal) {
-		align-items: center;
 		flex-direction: row;
+	}
+
+	&:where(.is-content-align-start) {
+		align-items: flex-start;
+	}
+
+	&:where(.is-content-align-center) {
+		align-items: center;
+	}
+
+	&:where(.is-content-align-end) {
+		align-items: flex-end;
 	}
 
 	&:where(a, button) {
@@ -50,21 +61,16 @@
 		align-items: center;
 		display: flex;
 		isolation: isolate;
-		justify-content: center;
 		position: relative;
-		width: 100%;
 		z-index: 1;
-
-		:where(.is-horizontal) & {
-			width: auto;
-		}
 	}
 
 	&__icon {
 		background-color: var(--pb--icon-text--icon--background-color);
+		border-radius: var(--pb--icon-text--icon--border-radius);
 		color: var(--pb--icon-text--icon--color);
 		height: var(--pb--icon-text--icon--size);
-		text-align: center;
+		padding: var(--pb--icon-text--icon--padding);
 		width: var(--pb--icon-text--icon--size);
 
 		:where(.has-icon-background-color) & {
@@ -87,8 +93,6 @@
 	&__content {
 		background-color: var(--pb--icon-text--content--background-color);
 		color: var(--pb--icon-text--content--color);
-		flex: 1 1 0%;
-		text-align: center;
 		width: 100%;
 
 		:where(.is-horizontal) & {

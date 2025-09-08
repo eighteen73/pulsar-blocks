@@ -2,12 +2,18 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	BlockControls,
+	BlockVerticalAlignmentControl,
+	BlockAlignmentToolbar,
 	InspectorControls,
 	withColors,
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
-import { ToolbarGroup, ToolbarButton } from '@wordpress/components';
+import {
+	ToolbarGroup,
+	ToolbarButton,
+	DropdownMenu,
+} from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { linkOff } from '@wordpress/icons';
 import { useState, useEffect } from '@wordpress/element';
@@ -15,7 +21,17 @@ import { useState, useEffect } from '@wordpress/element';
 import { MediaToolbar } from '@10up/block-components/components/media-toolbar';
 import { useMedia } from '@10up/block-components/hooks/use-media';
 import { LinkToolbar } from '@humanmade/block-editor-components';
-import { row, stack } from '@wordpress/icons';
+import {
+	justifyTop,
+	justifyCenter,
+	justifyBottom,
+	justifyLeft,
+	justifyCenterVertical,
+	justifyRight,
+	arrowRight,
+	arrowDown,
+} from '@wordpress/icons';
+import clsx from 'clsx';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -41,11 +57,21 @@ const Edit = ({
 		url,
 		opensInNewTab,
 		orientation,
+		contentAlignment,
 		iconColor: iconColorSlug,
 		iconBackgroundColor: iconBackgroundColorSlug,
 	} = attributes;
+
+	const classes = clsx('wp-block-pulsar-icon-text', {
+		'is-vertical': orientation === 'vertical',
+		'is-horizontal': orientation === 'horizontal',
+		'is-content-align-start': contentAlignment === 'start',
+		'is-content-align-center': contentAlignment === 'center',
+		'is-content-align-end': contentAlignment === 'end',
+	});
+
 	const blockProps = useBlockProps({
-		className: `is-${orientation}`,
+		className: classes,
 		style: {
 			'--pb--icon-text--icon--color': iconColor.color,
 			'--pb--icon-text--icon--background-color':
@@ -59,6 +85,26 @@ const Edit = ({
 	});
 
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
+
+	const verticalIcons = {
+		start: justifyLeft,
+		center: justifyCenter,
+		end: justifyRight,
+	};
+
+	const horizontalIcons = {
+		start: justifyTop,
+		center: justifyCenterVertical,
+		end: justifyBottom,
+	};
+
+	// Get the current alignment icon based on orientation
+	const getCurrentAlignmentIcon = () => {
+		if (orientation === 'vertical') {
+			return verticalIcons[contentAlignment] || verticalIcons.center;
+		}
+		return horizontalIcons[contentAlignment] || horizontalIcons.center;
+	};
 
 	// Helper function to find color slug from color value
 	const getColorSlug = (colorValue) => {
@@ -80,11 +126,6 @@ const Edit = ({
 	const processSvgContent = (svgString) => {
 		if (!svgString) return svgString;
 
-		// Option 1: Remove fill attributes entirely (uncomment if you prefer this approach)
-		// return svgString.replace(/\s+fill="[^"]*"/gi, '');
-
-		// Option 2: Replace fill attributes with currentColor for CSS styling
-		// This preserves the structure but allows CSS to control the color
 		return svgString.replace(
 			/fill=(['"])(?!none\b|currentColor\b)(.*?)\1/gi,
 			'fill="currentColor"'
@@ -177,26 +218,88 @@ const Edit = ({
 				)}
 
 				<ToolbarGroup>
-					<ToolbarButton
-						icon={stack}
-						label={__('Vertical', 'pulsar-blocks')}
-						isActive={orientation === 'vertical'}
-						onClick={() =>
-							setAttributes({
-								orientation: 'vertical',
-							})
+					<DropdownMenu
+						label={__('Content Alignment', 'pulsar-blocks')}
+						icon={getCurrentAlignmentIcon()}
+						value={contentAlignment}
+						onSelect={(value) =>
+							setAttributes({ contentAlignment: value })
 						}
+						controls={[
+							{
+								title:
+									orientation === 'vertical'
+										? __('Align Left', 'pulsar-blocks')
+										: __('Align Top', 'pulsar-blocks'),
+								icon:
+									orientation === 'vertical'
+										? verticalIcons.start
+										: horizontalIcons.start,
+								onClick: () =>
+									setAttributes({
+										contentAlignment: 'start',
+									}),
+								isActive: contentAlignment === 'start',
+							},
+							{
+								title: __('Align Center', 'pulsar-blocks'),
+								icon:
+									orientation === 'vertical'
+										? verticalIcons.center
+										: horizontalIcons.center,
+								onClick: () =>
+									setAttributes({
+										contentAlignment: 'center',
+									}),
+								isActive: contentAlignment === 'center',
+							},
+							{
+								title:
+									orientation === 'vertical'
+										? __('Align Right', 'pulsar-blocks')
+										: __('Align Bottom', 'pulsar-blocks'),
+								icon:
+									orientation === 'vertical'
+										? verticalIcons.end
+										: horizontalIcons.end,
+								onClick: () =>
+									setAttributes({
+										contentAlignment: 'end',
+									}),
+								isActive: contentAlignment === 'end',
+							},
+						]}
 					/>
 
-					<ToolbarButton
-						icon={row}
-						label={__('Horizontal', 'pulsar-blocks')}
-						isActive={orientation === 'horizontal'}
-						onClick={() =>
-							setAttributes({
-								orientation: 'horizontal',
-							})
+					<DropdownMenu
+						label={__('Orientation', 'pulsar-blocks')}
+						icon={
+							orientation === 'vertical' ? arrowDown : arrowRight
 						}
+						value={orientation}
+						onSelect={(value) =>
+							setAttributes({ orientation: value })
+						}
+						controls={[
+							{
+								title: __('Vertical', 'pulsar-blocks'),
+								icon: arrowDown,
+								onClick: () =>
+									setAttributes({
+										orientation: 'vertical',
+									}),
+								isActive: orientation === 'vertical',
+							},
+							{
+								title: __('Horizontal', 'pulsar-blocks'),
+								icon: arrowRight,
+								onClick: () =>
+									setAttributes({
+										orientation: 'horizontal',
+									}),
+								isActive: orientation === 'horizontal',
+							},
+						]}
 					/>
 				</ToolbarGroup>
 			</BlockControls>

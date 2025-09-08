@@ -16,10 +16,12 @@ $has_link              = ! empty( $url );
 $icon_color            = $attributes['iconColor'] ? "var(--wp--preset--color--{$attributes['iconColor']})" : null;
 $icon_background_color = $attributes['iconBackgroundColor'] ? "var(--wp--preset--color--{$attributes['iconBackgroundColor']})" : null;
 $orientation           = $attributes['orientation'] ?? 'horizontal';
+$content_alignment     = $attributes['contentAlignment'] ?? 'center';
 
 // Prepare wrapper attributes
 $wrapper_attributes = [];
 $wrapper_attributes['class'] = "is-{$orientation}";
+$wrapper_attributes['class'] .= " is-content-align-{$content_alignment}";
 if ( $has_link ) {
 	$wrapper_attributes['href']   = $url;
 	$wrapper_attributes['target'] = $attributes['opensInNewTab'] ? '_blank' : '_self';
