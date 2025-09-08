@@ -1,27 +1,34 @@
 .wp-block-pulsar-icon-text {
 	--pb--icon-text--gap: var(--wp--preset--spacing--lg);
+	--pb--icon-text--background-color: transparent;
+	--pb--icon-text--padding: 0;
+	--pb--icon-text--border-radius: 0;
 	--pb--icon-text--icon--color: var(--wp--preset--color--brand-primary);
-	--pb--icon-text--icon--background-color: var(--wp--preset--color--tint-primary);
+	--pb--icon-text--icon--background-color: transparent;
 	--pb--icon-text--icon--size: 42px;
-	--pb--icon-text--content--background-color: var(--wp--preset--color--base);
+	--pb--icon-text--icon--padding: 0;
+	--pb--icon-text--icon--border-radius: 0;
+	--pb--icon-text--content--background-color: transparent;
 	--pb--icon-text--content--color: var(--wp--preset--color--contrast);
 
+	background-color: var(--pb--icon-text--background-color);
 	border: none;
+	border-radius: var(--pb--icon-text--border-radius);
 	box-shadow: none;
 	display: flex;
 	flex: 1 1 0%;
 	gap: var(--pb--icon-text--gap);
 	isolation: isolate;
+	padding: var(--pb--icon-text--padding);
 	position: relative;
 	text-decoration: none;
 
 	&:where(.is-vertical) {
-		align-items: center;
 		flex-direction: column;
 	}
 
 	&:where(.is-horizontal) {
-		align-items: flex-start;
+		align-items: center;
 		flex-direction: row;
 	}
 
@@ -36,13 +43,6 @@
 			position: absolute;
 			transition: inherit;
 			z-index: -1;
-		}
-
-		&:hover,
-		&:focus-visible {
-			--pb--icon-text--background-color: var(--wp--preset--color--brand-primary);
-			--pb--icon-text--color: var(--wp--preset--color--base);
-			--pb--icon-text--icon-color: var(--wp--preset--color--tint-primary);
 		}
 	}
 
@@ -67,6 +67,11 @@
 		text-align: center;
 		width: var(--pb--icon-text--icon--size);
 
+		:where(.has-icon-background-color) & {
+			border-radius: var(--pb--icon-text--icon--border-radius);
+			padding: var(--pb--icon-text--icon--padding);
+		}
+
 		img {
 			display: inline-block;
 			height: auto;
@@ -80,10 +85,10 @@
 	}
 
 	&__content {
+		background-color: var(--pb--icon-text--content--background-color);
 		color: var(--pb--icon-text--content--color);
 		flex: 1 1 0%;
 		text-align: center;
-		transition: var(--pb--icon-text--transition);
 		width: 100%;
 
 		:where(.is-horizontal) & {
