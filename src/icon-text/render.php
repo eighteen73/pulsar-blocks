@@ -22,7 +22,7 @@ $wrapper_attributes = [];
 $wrapper_attributes['class'] = "is-{$orientation}";
 if ( $has_link ) {
 	$wrapper_attributes['href']   = $url;
-	$wrapper_attributes['target'] = $attributes['openInNewTab'] ? '_blank' : '_self';
+	$wrapper_attributes['target'] = $attributes['opensInNewTab'] ? '_blank' : '_self';
 }
 if ( $icon_color ) {
 	$wrapper_attributes['style'] = "{$wrapper_attributes['style']}--pb--icon-text--icon--color: {$icon_color};";

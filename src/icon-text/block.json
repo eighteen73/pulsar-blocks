@@ -21,7 +21,7 @@
 		"url": {
 			"type": "string"
 		},
-		"openInNewTab": {
+		"opensInNewTab": {
 			"type": "boolean",
 			"default": false
 		},
