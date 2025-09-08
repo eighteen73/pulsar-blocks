@@ -1,0 +1,101 @@
+.wp-block-pulsar-icon-text {
+	--pb--icon-text--gap: var(--wp--preset--spacing--lg);
+	--pb--icon-text--icon--color: var(--icon-color, var(--wp--preset--color--brand-primary));
+	--pb--icon-text--icon--background-color: var(--icon-background-color, var(--wp--preset--color--tint-primary));
+	--pb--icon-text--icon--size: 42px;
+	--pb--icon-text--content--background-color: var(--wp--preset--color--base);
+	--pb--icon-text--content--color: var(--wp--preset--color--contrast);
+
+	border: none;
+	box-shadow: none;
+	display: flex;
+	flex: 1 1 0%;
+	gap: var(--pb--icon-text--gap);
+	isolation: isolate;
+	position: relative;
+	text-decoration: none;
+
+	&:where(.is-vertical) {
+		align-items: center;
+		flex-direction: column;
+	}
+
+	&:where(.is-horizontal) {
+		align-items: flex-start;
+		flex-direction: row;
+	}
+
+	&:where(a, button) {
+		cursor: pointer;
+
+		&::before {
+			background-color: inherit;
+			border-radius: inherit;
+			content: "";
+			inset: 0;
+			position: absolute;
+			transition: inherit;
+			z-index: -1;
+		}
+
+		&:hover,
+		&:focus-visible {
+			--pb--icon-text--background-color: var(--wp--preset--color--brand-primary);
+			--pb--icon-text--color: var(--wp--preset--color--base);
+			--pb--icon-text--icon-color: var(--wp--preset--color--tint-primary);
+		}
+	}
+
+	&__icon-container {
+		align-items: center;
+		display: flex;
+		isolation: isolate;
+		justify-content: center;
+		position: relative;
+		width: 100%;
+		z-index: 1;
+
+		:where(.is-horizontal) & {
+			width: auto;
+		}
+	}
+
+	&__icon {
+		background-color: var(--pb--icon-text--icon--background-color);
+		color: var(--pb--icon-text--icon--color);
+		height: var(--pb--icon-text--icon--size);
+		text-align: center;
+		width: var(--pb--icon-text--icon--size);
+
+		img {
+			display: inline-block;
+			height: auto;
+		}
+
+		svg {
+			fill: currentcolor;
+			height: 100%;
+			width: 100%;
+		}
+	}
+
+	&__content {
+		color: var(--pb--icon-text--content--color);
+		flex: 1 1 0%;
+		text-align: center;
+		transition: var(--pb--icon-text--transition);
+		width: 100%;
+
+		:where(.is-horizontal) & {
+			text-align: left;
+		}
+
+		:first-child {
+			margin-top: 0;
+		}
+
+		:where(h1, h2, h3, h4, h5, h6) {
+			color: inherit;
+		}
+	}
+}
