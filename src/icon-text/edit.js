@@ -12,8 +12,6 @@ import { __ } from '@wordpress/i18n';
 import { linkOff } from '@wordpress/icons';
 import { useState, useEffect } from '@wordpress/element';
 
-import './editor.scss';
-
 import { MediaToolbar } from '@10up/block-components/components/media-toolbar';
 import { useMedia } from '@10up/block-components/hooks/use-media';
 import { LinkToolbar } from '@humanmade/block-editor-components';
