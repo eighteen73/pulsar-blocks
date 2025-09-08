@@ -6,13 +6,12 @@
  * @param string   $content     Rendered block output. ie. <InnerBlocks.Content />.
  * @param WP_Block $block       The instance of the WP_Block class that represents the block being rendered.
  *
- * @package Pulsar
+ * @package PulsarBlocks
  */
 
 $image_id = $attributes['imageId'] ?? null;
 $url      = $attributes['url'] ?? false;
 $target   = $attributes['openInNewTab'] ? '_blank' : '_self';
-
 ?>
 
 <?php if ( $url ) : ?>
@@ -25,11 +24,8 @@ $target   = $attributes['openInNewTab'] ? '_blank' : '_self';
 		<div class="wp-block-pulsar-icon-card__icon">
 			<?php if ( get_post_mime_type( $image_id ) === 'image/svg+xml' ) : ?>
 				<?php
-
 				$image_url = wp_get_attachment_url( $image_id );
-
 				if ( $image_url ) {
-
 					$svg_content = file_get_contents( $image_url );
 
 					if ( $svg_content ) {
@@ -41,19 +37,19 @@ $target   = $attributes['openInNewTab'] ? '_blank' : '_self';
 
 						$allowed_svg_tags = [
 							'svg'   => [
-								'class' => true,
-								'aria-hidden' => true,
+								'class'           => true,
+								'aria-hidden'     => true,
 								'aria-labelledby' => true,
-								'role' => true,
-								'xmlns' => true,
-								'width' => true,
-								'height' => true,
-								'viewbox' => true,
+								'role'            => true,
+								'xmlns'           => true,
+								'width'           => true,
+								'height'          => true,
+								'viewbox'         => true,
 							],
 							'g'     => [ 'fill' => true ],
 							'title' => [ 'title' => true ],
 							'path'  => [
-								'd' => true,
+								'd'    => true,
 								'fill' => true,
 							],
 						];
@@ -62,7 +58,6 @@ $target   = $attributes['openInNewTab'] ? '_blank' : '_self';
 					}
 				}
 				?>
-
 			<?php else : ?>
 				<?php echo wp_get_attachment_image( $image_id, 'thumbnail' ); ?>
 			<?php endif; ?>
@@ -70,7 +65,7 @@ $target   = $attributes['openInNewTab'] ? '_blank' : '_self';
 	</div>
 
 	<div class="wp-block-pulsar-icon-card__content">
-		<?php echo $content; ?>
+		<?php echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	</div>
 
 <?php if ( $url ) : ?>

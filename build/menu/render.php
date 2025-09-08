@@ -81,7 +81,7 @@ $attributes = array_merge(
 			data-wp-on-async--click="actions.toggleMenuOnClick"
 			data-wp-bind--aria-expanded="state.isMenuOpen"
 			aria-controls="pulsar-menu-container-<?php echo esc_attr( $location ); ?>"
-			aria-label="<?php printf( esc_attr__( 'Open %s menu', 'pulsar' ), esc_attr( $menu_name ) ); ?>"
+			aria-label="<?php printf( esc_attr__( 'Open %s menu', 'pulsar-blocks' ), esc_attr( $menu_name ) ); ?>"
 		>
 			<span class="wp-block-pulsar-menu__open-icon" aria-hidden="true"></span>
 		</button>
@@ -101,7 +101,7 @@ $attributes = array_merge(
 				type="button"
 				class="wp-block-pulsar-menu__close"
 				data-wp-on-async--click="actions.closeMenuOnClick"
-				aria-label="<?php printf( esc_attr__( 'Close %s menu', 'pulsar' ), esc_attr( $menu_name ) ); ?>"
+				aria-label="<?php printf( esc_attr__( 'Close %s menu', 'pulsar-blocks' ), esc_attr( $menu_name ) ); ?>"
 			>
 				<span class="wp-block-pulsar-menu__close-icon" aria-hidden="true"></span>
 			</button>
