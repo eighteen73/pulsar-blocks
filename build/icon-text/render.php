@@ -25,10 +25,10 @@ if ( $has_link ) {
 	$wrapper_attributes['target'] = $attributes['openInNewTab'] ? '_blank' : '_self';
 }
 if ( $icon_color ) {
-	$wrapper_attributes['style'] = "{$wrapper_attributes['style']}--icon-color: {$icon_color};";
+	$wrapper_attributes['style'] = "{$wrapper_attributes['style']}--pb--icon-text--icon--color: {$icon_color};";
 }
 if ( $icon_background_color ) {
-	$wrapper_attributes['style'] = "{$wrapper_attributes['style']}--icon-background-color: {$icon_background_color};";
+	$wrapper_attributes['style'] = "{$wrapper_attributes['style']}--pb--icon-text--icon--background-color: {$icon_background_color};";
 }
 $tag = $has_link ? 'a' : 'div';
 ?>

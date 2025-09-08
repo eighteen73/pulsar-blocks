@@ -48,6 +48,11 @@ const Edit = ({
 	} = attributes;
 	const blockProps = useBlockProps({
 		className: `is-${orientation}`,
+		style: {
+			'--pb--icon-text--icon--color': iconColor.color,
+			'--pb--icon-text--icon--background-color':
+				iconBackgroundColor.color,
+		},
 	});
 	const innerBlocksProps = useInnerBlocksProps({
 		className: 'wp-block-pulsar-icon-text__content',
@@ -73,6 +78,21 @@ const Edit = ({
 		return colorSlug;
 	};
 
+	// Helper function to process SVG content for styling
+	const processSvgContent = (svgString) => {
+		if (!svgString) return svgString;
+
+		// Option 1: Remove fill attributes entirely (uncomment if you prefer this approach)
+		// return svgString.replace(/\s+fill="[^"]*"/gi, '');
+
+		// Option 2: Replace fill attributes with currentColor for CSS styling
+		// This preserves the structure but allows CSS to control the color
+		return svgString.replace(
+			/fill=(['"])(?!none\b|currentColor\b)(.*?)\1/gi,
+			'fill="currentColor"'
+		);
+	};
+
 	const Icon = () => {
 		const { media, hasResolvedMedia } = useMedia(mediaId);
 		const [svgContent, setSvgContent] = useState(null);
@@ -83,7 +103,9 @@ const Edit = ({
 				fetch(media.source_url)
 					.then((response) => response.text())
 					.then((data) => {
-						setSvgContent(data);
+						// Process the SVG to remove fill attributes
+						const processedSvg = processSvgContent(data);
+						setSvgContent(processedSvg);
 					})
 					.catch((error) => {
 						console.error('Error fetching SVG:', error);
