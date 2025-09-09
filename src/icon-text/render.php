@@ -13,26 +13,40 @@ $media_id              = $attributes['mediaId'] ?? null;
 $media_type            = $attributes['mediaType'] ?? null;
 $url                   = $attributes['url'] ?? false;
 $has_link              = ! empty( $url );
-$icon_color            = $attributes['iconColor'] ? "var(--wp--preset--color--{$attributes['iconColor']})" : null;
-$icon_background_color = $attributes['iconBackgroundColor'] ? "var(--wp--preset--color--{$attributes['iconBackgroundColor']})" : null;
+$icon_color            = isset( $attributes['iconColor'] ) && $attributes['iconColor'] ? "var(--wp--preset--color--{$attributes['iconColor']})" : null;
+$icon_background_color = isset( $attributes['iconBackgroundColor'] ) && $attributes['iconBackgroundColor'] ? "var(--wp--preset--color--{$attributes['iconBackgroundColor']})" : null;
 $orientation           = $attributes['orientation'] ?? 'horizontal';
 $content_alignment     = $attributes['contentAlignment'] ?? 'center';
 
 // Prepare wrapper attributes
-$wrapper_attributes = [];
-$wrapper_attributes['class'] = "is-{$orientation}";
-$wrapper_attributes['class'] .= " is-content-align-{$content_alignment}";
+$classes = [
+	"is-{$orientation}",
+	"is-content-align-{$content_alignment}",
+];
+
+$styles = [];
+
+if ( $icon_color ) {
+	$classes[] = 'has-icon-color';
+	$styles[] = "--pb--icon-text--icon--color: {$icon_color}";
+}
+
+if ( $icon_background_color ) {
+	$classes[] = 'has-icon-background-color';
+	$styles[] = "--pb--icon-text--icon--background-color: {$icon_background_color}";
+}
+
+$wrapper_attributes = [
+	'class' => implode( ' ', $classes ),
+];
+
+if ( ! empty( $styles ) ) {
+	$wrapper_attributes['style'] = implode( '; ', $styles ) . ';';
+}
+
 if ( $has_link ) {
 	$wrapper_attributes['href']   = $url;
 	$wrapper_attributes['target'] = $attributes['opensInNewTab'] ? '_blank' : '_self';
-}
-if ( $icon_color ) {
-	$wrapper_attributes['class'] .= ' has-icon-color';
-	$wrapper_attributes['style'] = "{$wrapper_attributes['style']}--pb--icon-text--icon--color: {$icon_color};";
-}
-if ( $icon_background_color ) {
-	$wrapper_attributes['class'] .= ' has-icon-background-color';
-	$wrapper_attributes['style'] = "{$wrapper_attributes['style']}--pb--icon-text--icon--background-color: {$icon_background_color};";
 }
 $tag = $has_link ? 'a' : 'div';
 ?>
