@@ -47,6 +47,22 @@ class Menu {
 
 		// Register REST API routes
 		add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
+
+		// Add cache invalidation hooks
+		$this->setup_cache_invalidation();
+	}
+
+	/**
+	 * Set up cache invalidation hooks.
+	 */
+	private function setup_cache_invalidation(): void {
+		// Clear cache when menus are updated
+		add_action( 'wp_update_nav_menu', [ $this, 'clear_menu_cache' ] );
+		add_action( 'wp_delete_nav_menu', [ $this, 'clear_menu_cache' ] );
+		add_action( 'wp_create_nav_menu', [ $this, 'clear_menu_cache' ] );
+
+		// Clear cache when menu items are updated
+		add_action( 'wp_update_nav_menu_item', [ $this, 'clear_menu_cache_for_item' ], 10, 3 );
 	}
 
 	/**
@@ -248,12 +264,61 @@ class Menu {
 	}
 
 	/**
+	 * Clear cache for a specific menu location or all locations.
+	 *
+	 * @param int $menu_id The menu ID.
+	 */
+	public function clear_menu_cache( int $menu_id = 0 ): void {
+		// If we have a specific menu ID, only clear cache for locations using that menu
+		if ( $menu_id > 0 ) {
+			$locations = get_nav_menu_locations();
+			foreach ( $locations as $location_slug => $assigned_menu_id ) {
+				if ( $assigned_menu_id === $menu_id ) {
+					delete_transient( "pulsar_blocks_menu_{$location_slug}" );
+				}
+			}
+		} else {
+			// Clear all menu caches
+			$this->clear_all_menu_cache();
+		}
+	}
+
+	/**
+	 * Clear cache for a menu item update.
+	 *
+	 * @param int   $menu_id         Nav menu ID.
+	 * @param int   $menu_item_db_id Menu item ID.
+	 * @param array $args            Menu item args.
+	 */
+	public function clear_menu_cache_for_item( int $menu_id, int $menu_item_db_id, array $args ): void {
+		$this->clear_menu_cache( $menu_id );
+	}
+
+	/**
+	 * Clear all menu location caches.
+	 */
+	public function clear_all_menu_cache(): void {
+		$locations = get_nav_menu_locations();
+		foreach ( array_keys( $locations ) as $location_slug ) {
+			delete_transient( "pulsar_blocks_menu_{$location_slug}" );
+		}
+	}
+
+	/**
 	 * Static helper to get formatted menu items for a location.
 	 *
 	 * @param string $location_slug The menu location slug.
 	 * @return array<int, array<string, mixed>>|null Array of formatted menu items or null on failure/not found.
 	 */
 	public static function get_formatted_items_for_location( string $location_slug ): ?array {
+		$transient_key = "pulsar_blocks_menu_{$location_slug}";
+		$cached_items  = get_transient( $transient_key );
+
+		if ( false !== $cached_items ) {
+			return $cached_items;
+		}
+
+		// No cache found, generate fresh data
 		$locations = get_nav_menu_locations();
 		if ( ! isset( $locations[ $location_slug ] ) || empty( $locations[ $location_slug ] ) ) {
 			return null;
@@ -307,6 +372,9 @@ class Menu {
 
 		// Process ancestor/parent relationships after all items are formatted
 		self::add_ancestor_classes( $formatted_items );
+
+		// Cache the result for 1 month
+		set_transient( $transient_key, $formatted_items, MONTH_IN_SECONDS );
 
 		return $formatted_items;
 	}

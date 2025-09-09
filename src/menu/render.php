@@ -26,11 +26,7 @@ if ( empty( $location ) ) {
 	return;
 }
 
-$menu_transient = "pulsar_blocks_menu_{$location}";
-if ( false === ( $all_items = get_transient( $menu_transient ) ) ) {
-	$all_items = Menu::get_formatted_items_for_location( $location );
-	set_transient( $menu_transient, $all_items, 60 );
-}
+$all_items = Menu::get_formatted_items_for_location( $location );
 
 if ( ! is_array( $all_items ) || empty( $all_items ) ) {
 	return;
