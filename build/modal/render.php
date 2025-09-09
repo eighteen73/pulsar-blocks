@@ -23,7 +23,7 @@ $trigger_selector     = $trigger_type === 'click' ? $click_selector : $scroll_se
 $dismissed_duration   = $attributes['dismissedDuration'] ?? '';
 $enable_close_button  = $attributes['enableCloseButton'] ?? false;
 $disable_closing      = $attributes['disableClosing'] ?? false;
-$aria_label           = $attributes['label'] ?? __( 'Modal', 'pulsar' );
+$aria_label           = $attributes['label'] ?? __( 'Modal', 'pulsar-blocks' );
 $width                = $attributes['width'] ?? '';
 ?>
 
@@ -55,7 +55,7 @@ $width                = $attributes['width'] ?? '';
 			<?php if ( $enable_close_button ) : ?>
 				<button class="wp-block-pulsar-modal__close" data-modal-close>
 					<span class="wp-block-pulsar-modal__close-icon"></span>
-					<span class="screen-reader-text"><?php esc_html_e( 'Close modal', 'pulsar' ); ?></span>
+					<span class="screen-reader-text"><?php esc_html_e( 'Close modal', 'pulsar-blocks' ); ?></span>
 				</button>
 			<?php endif; ?>
 		</div>
