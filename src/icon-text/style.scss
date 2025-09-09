@@ -1,5 +1,5 @@
 .wp-block-pulsar-icon-text {
-	--pb--icon-text--gap: var(--wp--preset--spacing--lg);
+	--pb--icon-text--gap: var(--wp--preset--spacing--xl);
 	--pb--icon-text--background-color: transparent;
 	--pb--icon-text--padding: 0;
 	--pb--icon-text--border-radius: 0;
@@ -10,6 +10,7 @@
 	--pb--icon-text--icon--border-radius: var(--wp--custom--border--radius--full);
 	--pb--icon-text--content--background-color: transparent;
 	--pb--icon-text--content--color: var(--wp--preset--color--contrast);
+	--pb--icon-text--content--gap: var(--wp--preset--spacing--md);
 
 	background-color: var(--pb--icon-text--background-color);
 	border: none;
@@ -25,6 +26,14 @@
 
 	&:where(.is-vertical) {
 		flex-direction: column;
+
+		&:where(.is-content-align-center) {
+			text-align: center;
+		}
+
+		&:where(.is-content-align-end) {
+			text-align: right;
+		}
 	}
 
 	&:where(.is-horizontal) {
@@ -105,6 +114,10 @@
 
 		:where(h1, h2, h3, h4, h5, h6) {
 			color: inherit;
+		}
+
+		> * + * {
+			margin-top: var(--pb--icon-text--content--gap);
 		}
 	}
 }

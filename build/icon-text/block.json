@@ -43,9 +43,12 @@
   "supports": {
     "html": false,
     "spacing": {
-      "blockGap": true,
       "margin": true,
-      "padding": true
+      "padding": true,
+      "__experimentalDefaultControls": {
+        "margin": false,
+        "padding": false
+      }
     }
   },
   "textdomain": "pulsar-blocks",
