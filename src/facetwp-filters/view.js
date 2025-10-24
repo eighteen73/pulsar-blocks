@@ -18,14 +18,12 @@ store('pulsar/facetwp-filters', {
 			}
 		},
 		closeModal: () => {
-			const { actions } = store('pulsar/facetwp-filters');
 			const context = getContext();
 			const modal = window.pulsarBlocks.facetwpFilters.get(
 				context.filtersModalId
 			);
 			if (modal) {
 				modal.closeModal();
-				actions.onModalClose();
 			}
 		},
 		toggleFilter: () => {
