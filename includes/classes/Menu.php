@@ -63,6 +63,7 @@ class Menu {
 
 		// Clear cache when menu items are updated
 		add_action( 'wp_update_nav_menu_item', [ $this, 'clear_menu_cache_for_item' ], 10, 3 );
+		add_action( 'post_updated', [ $this, 'maybe_clear_menu_cache' ], 10, 3 );
 	}
 
 	/**
@@ -301,6 +302,65 @@ class Menu {
 		$locations = get_nav_menu_locations();
 		foreach ( array_keys( $locations ) as $location_slug ) {
 			delete_transient( "pulsar_blocks_menu_{$location_slug}" );
+		}
+	}
+
+	/**
+	 * Conditionally clears the menu cache when a post linked in a navigation menu changes.
+	 *
+	 * @param int     $post_id     The ID of the updated post.
+	 * @param WP_Post $post_after  The post object following the update.
+	 * @param WP_Post $post_before The post object prior to the update.
+	 *
+	 * @return void
+	 */
+	public function maybe_clear_menu_cache( int $post_id, WP_Post $post_after, WP_Post $post_before ): void {
+		// Skip if autosave or revision
+		if ( wp_is_post_autosave( $post_id ) || wp_is_post_revision( $post_id ) ) {
+			return;
+		}
+
+		$before_title = $post_before->post_title;
+		$before_slug = $post_before->post_name;
+		$before_status = $post_before->post_status;
+		$after_title = $post_after->post_title;
+		$after_slug = $post_after->post_name;
+		$after_status = $post_after->post_status;
+
+		// Skip if post isn't published
+		if ( $after_status !== 'publish' ) {
+			return;
+		}
+
+		// Check if title, slug or status have changed
+		if ( $before_title === $after_title && $before_slug === $after_slug && $before_status === $after_status ) {
+			return;
+		}
+
+		// Check if post type is public
+		$public_post_types = get_post_types( [ 'public' => true ], 'names' );
+
+		if ( ! in_array( $post_after->post_type, $public_post_types, true ) ) {
+			return;
+		}
+
+		// Check if this post is linked in any nav menu item
+		$linked_menu_items = get_posts(
+			[
+				'post_type'      => 'nav_menu_item',
+				'meta_key'       => '_menu_item_object_id',
+				'meta_value'     => $post_id,
+				'fields'         => 'ids',
+				'no_found_rows'  => true,
+				'update_post_term_cache' => false,
+				'update_post_meta_cache' => false,
+				'posts_per_page' => 1,
+			]
+		);
+
+		// Clear menu cache if post is linked to any nav menu item
+		if ( ! empty( $linked_menu_items ) ) {
+			$this->clear_menu_cache();
 		}
 	}
 
