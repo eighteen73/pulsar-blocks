@@ -320,12 +320,12 @@ class Menu {
 			return;
 		}
 
-		$before_title = $post_before->post_title;
-		$before_slug = $post_before->post_name;
+		$before_title  = $post_before->post_title;
+		$before_slug   = $post_before->post_name;
 		$before_status = $post_before->post_status;
-		$after_title = $post_after->post_title;
-		$after_slug = $post_after->post_name;
-		$after_status = $post_after->post_status;
+		$after_title   = $post_after->post_title;
+		$after_slug    = $post_after->post_name;
+		$after_status  = $post_after->post_status;
 
 		// Skip if post isn't published
 		if ( $after_status !== 'publish' ) {
@@ -347,14 +347,14 @@ class Menu {
 		// Check if this post is linked in any nav menu item
 		$linked_menu_items = get_posts(
 			[
-				'post_type'      => 'nav_menu_item',
-				'meta_key'       => '_menu_item_object_id',
-				'meta_value'     => $post_id,
-				'fields'         => 'ids',
-				'no_found_rows'  => true,
+				'post_type'              => 'nav_menu_item',
+				'meta_key'               => '_menu_item_object_id',
+				'meta_value'             => $post_id,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
 				'update_post_term_cache' => false,
 				'update_post_meta_cache' => false,
-				'posts_per_page' => 1,
+				'posts_per_page'         => 1,
 			]
 		);
 
