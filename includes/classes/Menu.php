@@ -47,6 +47,23 @@ class Menu {
 
 		// Register REST API routes
 		add_action( 'rest_api_init', [ $this, 'register_rest_routes' ] );
+
+		// Add cache invalidation hooks
+		$this->setup_cache_invalidation();
+	}
+
+	/**
+	 * Set up cache invalidation hooks.
+	 */
+	private function setup_cache_invalidation(): void {
+		// Clear cache when menus are updated
+		add_action( 'wp_update_nav_menu', [ $this, 'clear_menu_cache' ] );
+		add_action( 'wp_delete_nav_menu', [ $this, 'clear_menu_cache' ] );
+		add_action( 'wp_create_nav_menu', [ $this, 'clear_menu_cache' ] );
+
+		// Clear cache when menu items are updated
+		add_action( 'wp_update_nav_menu_item', [ $this, 'clear_menu_cache_for_item' ], 10, 3 );
+		add_action( 'post_updated', [ $this, 'maybe_clear_menu_cache' ], 10, 3 );
 	}
 
 	/**
@@ -248,12 +265,120 @@ class Menu {
 	}
 
 	/**
+	 * Clear cache for a specific menu location or all locations.
+	 *
+	 * @param int $menu_id The menu ID.
+	 */
+	public function clear_menu_cache( int $menu_id = 0 ): void {
+		// If we have a specific menu ID, only clear cache for locations using that menu
+		if ( $menu_id > 0 ) {
+			$locations = get_nav_menu_locations();
+			foreach ( $locations as $location_slug => $assigned_menu_id ) {
+				if ( $assigned_menu_id === $menu_id ) {
+					delete_transient( "pulsar_blocks_menu_{$location_slug}" );
+				}
+			}
+		} else {
+			// Clear all menu caches
+			$this->clear_all_menu_cache();
+		}
+	}
+
+	/**
+	 * Clear cache for a menu item update.
+	 *
+	 * @param int   $menu_id         Nav menu ID.
+	 * @param int   $menu_item_db_id Menu item ID.
+	 * @param array $args            Menu item args.
+	 */
+	public function clear_menu_cache_for_item( int $menu_id, int $menu_item_db_id, array $args ): void {
+		$this->clear_menu_cache( $menu_id );
+	}
+
+	/**
+	 * Clear all menu location caches.
+	 */
+	public function clear_all_menu_cache(): void {
+		$locations = get_nav_menu_locations();
+		foreach ( array_keys( $locations ) as $location_slug ) {
+			delete_transient( "pulsar_blocks_menu_{$location_slug}" );
+		}
+	}
+
+	/**
+	 * Conditionally clears the menu cache when a post linked in a navigation menu changes.
+	 *
+	 * @param int     $post_id     The ID of the updated post.
+	 * @param WP_Post $post_after  The post object following the update.
+	 * @param WP_Post $post_before The post object prior to the update.
+	 *
+	 * @return void
+	 */
+	public function maybe_clear_menu_cache( int $post_id, WP_Post $post_after, WP_Post $post_before ): void {
+		// Skip if autosave or revision
+		if ( wp_is_post_autosave( $post_id ) || wp_is_post_revision( $post_id ) ) {
+			return;
+		}
+
+		$before_title  = $post_before->post_title;
+		$before_slug   = $post_before->post_name;
+		$before_status = $post_before->post_status;
+		$after_title   = $post_after->post_title;
+		$after_slug    = $post_after->post_name;
+		$after_status  = $post_after->post_status;
+
+		// Skip if post isn't published
+		if ( $after_status !== 'publish' ) {
+			return;
+		}
+
+		// Check if title, slug or status have changed
+		if ( $before_title === $after_title && $before_slug === $after_slug && $before_status === $after_status ) {
+			return;
+		}
+
+		// Check if post type is public
+		$public_post_types = get_post_types( [ 'public' => true ], 'names' );
+
+		if ( ! in_array( $post_after->post_type, $public_post_types, true ) ) {
+			return;
+		}
+
+		// Check if this post is linked in any nav menu item
+		$linked_menu_items = get_posts(
+			[
+				'post_type'              => 'nav_menu_item',
+				'meta_key'               => '_menu_item_object_id',
+				'meta_value'             => $post_id,
+				'fields'                 => 'ids',
+				'no_found_rows'          => true,
+				'update_post_term_cache' => false,
+				'update_post_meta_cache' => false,
+				'posts_per_page'         => 1,
+			]
+		);
+
+		// Clear menu cache if post is linked to any nav menu item
+		if ( ! empty( $linked_menu_items ) ) {
+			$this->clear_menu_cache();
+		}
+	}
+
+	/**
 	 * Static helper to get formatted menu items for a location.
 	 *
 	 * @param string $location_slug The menu location slug.
 	 * @return array<int, array<string, mixed>>|null Array of formatted menu items or null on failure/not found.
 	 */
 	public static function get_formatted_items_for_location( string $location_slug ): ?array {
+		$transient_key = "pulsar_blocks_menu_{$location_slug}";
+		$cached_items  = get_transient( $transient_key );
+
+		if ( false !== $cached_items ) {
+			return $cached_items;
+		}
+
+		// No cache found, generate fresh data
 		$locations = get_nav_menu_locations();
 		if ( ! isset( $locations[ $location_slug ] ) || empty( $locations[ $location_slug ] ) ) {
 			return null;
@@ -307,6 +432,9 @@ class Menu {
 
 		// Process ancestor/parent relationships after all items are formatted
 		self::add_ancestor_classes( $formatted_items );
+
+		// Cache the result for 1 month
+		set_transient( $transient_key, $formatted_items, MONTH_IN_SECONDS );
 
 		return $formatted_items;
 	}
