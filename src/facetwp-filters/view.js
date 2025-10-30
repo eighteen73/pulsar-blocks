@@ -18,14 +18,12 @@ store('pulsar/facetwp-filters', {
 			}
 		},
 		closeModal: () => {
-			const { actions } = store('pulsar/facetwp-filters');
 			const context = getContext();
 			const modal = window.pulsarBlocks.facetwpFilters.get(
 				context.filtersModalId
 			);
 			if (modal) {
 				modal.closeModal();
-				actions.onModalClose();
 			}
 		},
 		toggleFilter: () => {
@@ -95,12 +93,14 @@ store('pulsar/facetwp-filters', {
 			let count = 0;
 			const excludeFacets = ['pager', 'sort', 'reset'];
 
-			Object.entries(window.FWP.facets).forEach(([name, val]) => {
-				const type = window.FWP.facet_type?.[name];
-				if (!excludeFacets.includes(type) && val.length > 0) {
-					count += val.length;
-				}
-			});
+			if (window.FWP.facets) {
+				Object.entries(window.FWP.facets).forEach(([name, val]) => {
+					const type = window.FWP.facet_type?.[name];
+					if (!excludeFacets.includes(type) && val.length > 0) {
+						count += val.length;
+					}
+				});
+			}
 
 			context.appliedFilterCount = count;
 		},
