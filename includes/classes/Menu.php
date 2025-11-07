@@ -375,16 +375,19 @@ class Menu {
 		$cached_items  = get_transient( $transient_key );
 
 		if ( false !== $cached_items ) {
-			return $cached_items;
-		}
+			$menu_items = $cached_items;
+		} else {
+			// No cache found, generate fresh data
+			$locations = get_nav_menu_locations();
+			if ( ! isset( $locations[ $location_slug ] ) || empty( $locations[ $location_slug ] ) ) {
+				return null;
+			}
+			$menu_id    = $locations[ $location_slug ];
+			$menu_items = wp_get_nav_menu_items( $menu_id );
 
-		// No cache found, generate fresh data
-		$locations = get_nav_menu_locations();
-		if ( ! isset( $locations[ $location_slug ] ) || empty( $locations[ $location_slug ] ) ) {
-			return null;
+			// Cache the result for 1 month
+			set_transient( $transient_key, $menu_items, MONTH_IN_SECONDS );
 		}
-		$menu_id    = $locations[ $location_slug ];
-		$menu_items = wp_get_nav_menu_items( $menu_id );
 
 		if ( false === $menu_items || empty( $menu_items ) ) {
 			return [];
@@ -432,9 +435,6 @@ class Menu {
 
 		// Process ancestor/parent relationships after all items are formatted
 		self::add_ancestor_classes( $formatted_items );
-
-		// Cache the result for 1 month
-		set_transient( $transient_key, $formatted_items, MONTH_IN_SECONDS );
 
 		return $formatted_items;
 	}
