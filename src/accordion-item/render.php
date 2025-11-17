@@ -28,7 +28,7 @@ $h = "h{$block->context['level']}";
 					id="<?php echo esc_attr( $attributes['id'] ); ?>-title"
 					class="wp-block-pulsar-accordion__title"
 				>
-					<?php echo esc_html( $attributes['title'] ); ?>
+					<?php echo wp_kses_post( $attributes['title'] ); ?>
 				</span>
 				<span class="wp-block-pulsar-accordion__icon"></span>
 			</button>
