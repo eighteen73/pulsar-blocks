@@ -47,6 +47,7 @@ import { generateId } from '../utils/helpers';
 import { Modal as icon } from '../components/icons';
 
 import './editor.scss';
+import { ensureIdIsUnique } from '../utils/ensure-id-is-unique';
 
 export function Edit(props) {
 	const { attributes, setAttributes, isSelected, clientId } = props;
@@ -70,24 +71,7 @@ export function Edit(props) {
 
 	// Ensure that the modal ID is unique.
 	useEffect(() => {
-		const duplicates = modals.filter((obj, index, arr) =>
-			arr.find(
-				(innerObj) =>
-					innerObj.attributes.id === obj.attributes.id &&
-					innerObj.clientId !== obj.clientId
-			)
-		);
-
-		if (duplicates.length <= 1) {
-			return;
-		}
-
-		for (let i = 1; i < duplicates.length; i++) {
-			dispatch('core/block-editor').updateBlockAttributes(
-				duplicates[i].clientId,
-				{ id: generateId() }
-			);
-		}
+		ensureIdIsUnique(modals);
 	}, [clientId, modals]);
 
 	const [alreadyOpenedDefault, setAlreadyOpenedDefault] = useState(false);

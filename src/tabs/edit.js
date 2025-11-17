@@ -37,6 +37,8 @@ import { generateId } from '../utils/helpers';
  * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
  */
 import './editor.scss';
+import { useBlocks } from '../utils/use-blocks';
+import { ensureIdIsUnique } from '../utils/ensure-id-is-unique';
 
 const TAB_BLOCK_NAME = 'pulsar/tab';
 
@@ -113,6 +115,13 @@ function TabsEdit({
 				select(blockEditorStore).getBlockParentsByBlockName,
 		};
 	}, []);
+
+	const tabs = useBlocks('pulsar/tabs');
+
+	// Ensure that the tab ID is unique.
+	useEffect(() => {
+		ensureIdIsUnique(tabs);
+	}, [clientId, tabs]);
 
 	useEffect(() => {
 		if (!id) {
