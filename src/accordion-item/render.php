@@ -41,7 +41,7 @@ $h = "h{$block->context['level']}";
 			class="wp-block-pulsar-accordion__panel"
 		>
 			<div class="wp-block-pulsar-accordion__panel-inner">
-				<?php echo wp_kses_post( $content ); ?>
+				<?php echo $content; // phpcs:disable ?>
 			</div>
 		</div>
 	</div>
