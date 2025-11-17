@@ -47,7 +47,7 @@ import { generateId } from '../utils/helpers';
 import { Modal as icon } from '../components/icons';
 
 import './editor.scss';
-import { ensureIdIsUnique } from '../components/ensure-id-is-unique';
+import { ensureIdIsUnique } from '../utils/ensure-id-is-unique';
 
 export function Edit(props) {
 	const { attributes, setAttributes, isSelected, clientId } = props;
