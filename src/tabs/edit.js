@@ -38,7 +38,7 @@ import { generateId } from '../utils/helpers';
  */
 import './editor.scss';
 import { useBlocks } from '../utils/use-blocks';
-import { ensureIdIsUnique } from '../components/ensure-id-is-unique';
+import { ensureIdIsUnique } from '../utils/ensure-id-is-unique';
 
 const TAB_BLOCK_NAME = 'pulsar/tab';
 

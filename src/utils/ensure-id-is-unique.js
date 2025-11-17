@@ -1,5 +1,5 @@
 import { dispatch } from '@wordpress/data';
-import { generateId } from '../utils/helpers';
+import { generateId } from './helpers';
 
 export const ensureIdIsUnique = (blocks) => {
 	const duplicates = blocks.filter((obj, index, arr) =>
