@@ -125,7 +125,8 @@ store('pulsar/facetwp-filters', {
 				filtersLayout !== 'dropdowns' ||
 				openFilters.length === 0 ||
 				!items ||
-				items.contains(event.target)
+				items.contains(event.target) ||
+				ref.contains(event.target)
 			) {
 				return;
 			}
@@ -167,6 +168,7 @@ store('pulsar/facetwp-filters', {
 		isActiveFilter: () => {
 			const context = getContext();
 			const { openFilters, filterId } = context;
+
 			return openFilters.includes(filterId);
 		},
 	},
