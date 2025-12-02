@@ -1,20 +1,24 @@
 {
 	"name": "pulsar-blocks",
 	"scripts": {
+    "postinstall": "composer install -o",
 		"start": "wp-scripts start --experimental-modules",
 		"build": "wp-scripts build --experimental-modules",
+    "check-engines": "wp-scripts check-engines",
+		"check-licenses": "wp-scripts check-licenses",
+    "format": "npm run format:css && npm run format:js && format:php",
+		"format:css": "stylelint --fix './src/**/*.scss'",
+		"format:js": "eslint --fix './src/**/*.js'",
+		"format:php": "composer run format",
 		"lint": "npm run lint:css && npm run lint:js && npm run lint:php",
 		"lint:css": "stylelint './src/**/*.scss'",
 		"lint:js": "eslint './src/**/*.js'",
-		"lint:php": "./vendor/bin/phpcs .",
-		"format:css": "stylelint --fix './src/**/*.scss'",
-		"format:js": "eslint --fix './src/**/*.js'",
-		"format:php": "./vendor/bin/phpcbf .",
-		"i18n": "npm run i18n:textdomain && npm run i18n:pot",
-		"i18n:textdomain": "npx node-wp-i18n addtextdomain --exclude=vendor,node_modules",
-		"i18n:pot": "npx node-wp-i18n makepot . languages/pulsar-blocks.pot",
+		"lint:php": "composer run lint",
+		"lint:md:docs": "wp-scripts lint-md-docs",
+		"lint:pkg-json": "wp-scripts lint-pkg-json",
+		"packages-update": "wp-scripts packages-update",
 		"plugin-zip": "wp-scripts plugin-zip",
-		"packages-update": "wp-scripts packages-update"
+    "pot": "wp i18n make-pot . languages/pulsar-blocks.pot --domain=pulsar-blocks --exclude=node_modules,vendor,.git"
 	},
 	"devDependencies": {
 		"@10up/block-components": "^1.21.3",

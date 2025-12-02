@@ -29,8 +29,7 @@
 		}
 	},
 	"scripts": {
-		"test": [
-			"phpcs"
-		]
+		"lint": "./vendor/bin/phpcs",
+		"format": "./vendor/bin/phpcbf"
 	}
 }
