@@ -2,11 +2,11 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	BlockControls,
-	BlockVerticalAlignmentControl,
-	BlockAlignmentToolbar,
 	InspectorControls,
 	withColors,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import {
@@ -53,7 +53,6 @@ const Edit = ({
 }) => {
 	const {
 		mediaId,
-		mediaType,
 		url,
 		opensInNewTab,
 		orientation,
@@ -81,7 +80,7 @@ const Edit = ({
 	const innerBlocksProps = useInnerBlocksProps({
 		className: 'wp-block-pulsar-icon-text__content',
 		template: [['core/paragraph']],
-		orientation: orientation,
+		orientation,
 	});
 
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
@@ -147,7 +146,7 @@ const Edit = ({
 						setSvgContent(processedSvg);
 					})
 					.catch((error) => {
-						console.error('Error fetching SVG:', error);
+						console.error('Error fetching SVG:', error); // eslint-disable-line no-console
 						setSvgContent(null);
 					});
 			}

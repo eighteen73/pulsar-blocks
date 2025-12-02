@@ -66,8 +66,6 @@ export default function Edit({
 		__unstableMarkNextChangeAsNotPersistent,
 	]);
 
-	console.log(attributes);
-
 	return (
 		<div
 			{...innerBlocksProps}
