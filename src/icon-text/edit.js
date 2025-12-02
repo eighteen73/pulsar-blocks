@@ -15,13 +15,13 @@ import {
 	DropdownMenu,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { linkOff } from '@wordpress/icons';
 import { useState, useEffect } from '@wordpress/element';
 
 import { MediaToolbar } from '@10up/block-components/components/media-toolbar';
 import { useMedia } from '@10up/block-components/hooks/use-media';
 import { LinkToolbar } from '@humanmade/block-editor-components';
 import {
+	linkOff,
 	justifyTop,
 	justifyCenter,
 	justifyBottom,
@@ -40,6 +40,11 @@ import clsx from 'clsx';
  * @param {Object}   param0
  * @param {Object}   param0.attributes
  * @param {Function} param0.setAttributes
+ * @param {string}   param0.clientId
+ * @param {Object}   param0.iconColor
+ * @param {Function} param0.setIconColor
+ * @param {Object}   param0.iconBackgroundColor
+ * @param {Function} param0.setIconBackgroundColor
  * @return {WPElement} Element to render.
  */
 const Edit = ({
@@ -196,8 +201,14 @@ const Edit = ({
 				<LinkToolbar
 					opensInNewTab={opensInNewTab}
 					url={url}
-					onChange={({ opensInNewTab, url }) =>
-						setAttributes({ opensInNewTab, url })
+					onChange={({
+						opensInNewTab: newOpensInNewTab,
+						url: newUrl,
+					}) =>
+						setAttributes({
+							opensInNewTab: newOpensInNewTab,
+							url: newUrl,
+						})
 					}
 				/>
 
