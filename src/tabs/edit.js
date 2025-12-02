@@ -14,7 +14,6 @@ import { createBlocksFromInnerBlocksTemplate } from '@wordpress/blocks';
 import {
 	Button,
 	PanelBody,
-	PanelRow,
 	Placeholder,
 	TextControl,
 	ToggleControl,

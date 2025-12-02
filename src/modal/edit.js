@@ -39,7 +39,7 @@ import {
 	ToolbarGroup,
 	Popover,
 } from '@wordpress/components';
-import { useSelect, dispatch } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { store as editorStore } from '@wordpress/editor';
 
 import { useBlocks } from '../utils/use-blocks';

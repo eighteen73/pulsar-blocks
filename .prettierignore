@@ -1,1 +1,3 @@
-dist
+build
+vendor
+node_modules

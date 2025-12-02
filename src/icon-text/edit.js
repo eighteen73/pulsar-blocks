@@ -2,11 +2,11 @@ import {
 	useBlockProps,
 	useInnerBlocksProps,
 	BlockControls,
-	BlockVerticalAlignmentControl,
-	BlockAlignmentToolbar,
 	InspectorControls,
 	withColors,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
 	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
 } from '@wordpress/block-editor';
 import {
@@ -15,13 +15,13 @@ import {
 	DropdownMenu,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { linkOff } from '@wordpress/icons';
 import { useState, useEffect } from '@wordpress/element';
 
-import { MediaToolbar } from '@10up/block-components/components/media-toolbar';
-import { useMedia } from '@10up/block-components/hooks/use-media';
+import { MediaToolbar } from '@10up/block-components/components/media-toolbar'; // eslint-disable-line import/no-unresolved
+import { useMedia } from '@10up/block-components/hooks/use-media'; // eslint-disable-line import/no-unresolved
 import { LinkToolbar } from '@humanmade/block-editor-components';
 import {
+	linkOff,
 	justifyTop,
 	justifyCenter,
 	justifyBottom,
@@ -40,6 +40,11 @@ import clsx from 'clsx';
  * @param {Object}   param0
  * @param {Object}   param0.attributes
  * @param {Function} param0.setAttributes
+ * @param {string}   param0.clientId
+ * @param {Object}   param0.iconColor
+ * @param {Function} param0.setIconColor
+ * @param {Object}   param0.iconBackgroundColor
+ * @param {Function} param0.setIconBackgroundColor
  * @return {WPElement} Element to render.
  */
 const Edit = ({
@@ -53,7 +58,6 @@ const Edit = ({
 }) => {
 	const {
 		mediaId,
-		mediaType,
 		url,
 		opensInNewTab,
 		orientation,
@@ -81,7 +85,7 @@ const Edit = ({
 	const innerBlocksProps = useInnerBlocksProps({
 		className: 'wp-block-pulsar-icon-text__content',
 		template: [['core/paragraph']],
-		orientation: orientation,
+		orientation,
 	});
 
 	const colorGradientSettings = useMultipleOriginColorsAndGradients();
@@ -147,7 +151,7 @@ const Edit = ({
 						setSvgContent(processedSvg);
 					})
 					.catch((error) => {
-						console.error('Error fetching SVG:', error);
+						console.error('Error fetching SVG:', error); // eslint-disable-line no-console
 						setSvgContent(null);
 					});
 			}
@@ -197,8 +201,14 @@ const Edit = ({
 				<LinkToolbar
 					opensInNewTab={opensInNewTab}
 					url={url}
-					onChange={({ opensInNewTab, url }) =>
-						setAttributes({ opensInNewTab, url })
+					onChange={({
+						opensInNewTab: newOpensInNewTab,
+						url: newUrl,
+					}) =>
+						setAttributes({
+							opensInNewTab: newOpensInNewTab,
+							url: newUrl,
+						})
 					}
 				/>
 
