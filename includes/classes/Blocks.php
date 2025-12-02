@@ -30,21 +30,37 @@ class Blocks {
 	 * @return void
 	 */
 	public function conditional_register() {
-		add_filter( 'pulsar_blocks_register_facetwp-filters', function() {
-			return function_exists( 'FWP' );
-		}, 10 );
+		add_filter(
+			'pulsar_blocks_register_facetwp-filters',
+			function () {
+				return function_exists( 'FWP' );
+			},
+			10
+		);
 
-		add_filter( 'pulsar_blocks_register_facetwp-filter', function() {
-			return function_exists( 'FWP' );
-		}, 10 );
+		add_filter(
+			'pulsar_blocks_register_facetwp-filter',
+			function () {
+				return function_exists( 'FWP' );
+			},
+			10
+		);
 
-		add_filter( 'pulsar_blocks_register_facetwp-facet', function() {
-			return function_exists( 'FWP' );
-		}, 10 );
+		add_filter(
+			'pulsar_blocks_register_facetwp-facet',
+			function () {
+				return function_exists( 'FWP' );
+			},
+			10
+		);
 
-		add_filter( 'pulsar_blocks_register_woocommerce-product-details-accordion', function() {
-			return class_exists( 'WooCommerce' );
-		}, 10 );
+		add_filter(
+			'pulsar_blocks_register_woocommerce-product-details-accordion',
+			function () {
+				return class_exists( 'WooCommerce' );
+			},
+			10
+		);
 	}
 
 	/**
