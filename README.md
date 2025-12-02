@@ -40,7 +40,7 @@ Here is a short example of the steps required:
 
 #### 1. Register a variation
 
-Lets assume we want to create a carousel that displays the latest posts. The important parts here are that we set `hasTrack` to `false` (so that we can wrap the posts in the child block), the `template` and `templateLock`.
+Let's assume we want to create a carousel that displays the latest posts. The important parts here are that we set `hasTrack` to `false` (so that we can wrap the posts in the child block), the `template` and `templateLock`.
 
 ```
 import domReady from '@wordpress/dom-ready';
