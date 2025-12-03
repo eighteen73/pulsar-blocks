@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "pulsar/embla-carousel-viewport",
+  "version": "1.0.0",
+  "title": "Viewport",
+  "category": "design",
+  "icon": "images-alt",
+  "description": "Carousel Viewport",
+  "textdomain": "pulsar-blocks",
+  "parent": [
+    "pulsar/carousel"
+  ],
+  "attributes": {
+    "allowedBlocks": {
+      "type": "array"
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "render": "file:./render.php"
+}

@@ -1,0 +1,111 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "pulsar/modal",
+  "version": "1.0.0",
+  "title": "Modal",
+  "category": "widgets",
+  "description": "Display other content in a modal popup.",
+  "attributes": {
+    "id": {
+      "type": "string"
+    },
+    "inQueryLoop": {
+      "type": "boolean",
+      "default": false
+    },
+    "width": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "overlayColor": {
+      "type": "string"
+    },
+    "enableCloseButton": {
+      "type": "boolean",
+      "default": true
+    },
+    "disableClosing": {
+      "type": "boolean",
+      "default": false
+    },
+    "triggerType": {
+      "type": "string",
+      "default": "click"
+    },
+    "triggerDelay": {
+      "type": "string"
+    },
+    "clickSelector": {
+      "type": "string"
+    },
+    "scrollSelector": {
+      "type": "string"
+    },
+    "scrollThreshold": {
+      "type": "string"
+    },
+    "dismissedDuration": {
+      "type": "string"
+    }
+  },
+  "supports": {
+    "anchor": true,
+    "html": false,
+    "color": {
+      "background": true,
+      "text": true,
+      "gradients": true,
+      "link": false,
+      "__experimentalDefaultControls": {
+        "background": true,
+        "text": true
+      }
+    },
+    "spacing": {
+      "blockGap": false,
+      "margin": false,
+      "padding": true,
+      "__experimentalDefaultControls": {
+        "padding": true
+      }
+    },
+    "typography": {
+      "fontSize": true,
+      "lineHeight": true,
+      "__experimentalFontStyle": true,
+      "__experimentalFontWeight": true,
+      "__experimentalTextTransform": true,
+      "__experimentalFontFamily": true,
+      "__experimentalDefaultControls": {
+        "fontSize": true
+      }
+    },
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true,
+      "__experimentalDefaultControls": {
+        "color": true,
+        "radius": true,
+        "style": true,
+        "width": true
+      }
+    },
+    "shadow": true
+  },
+  "usesContext": [
+    "postId",
+    "postType",
+    "queryId"
+  ],
+  "textdomain": "pulsar-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php"
+}

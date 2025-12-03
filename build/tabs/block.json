@@ -1,0 +1,104 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "pulsar/tabs",
+  "version": "1.0.0",
+  "title": "Tabs",
+  "category": "widgets",
+  "icon": "welcome-widgets-menus",
+  "description": "Organise content using tabs.",
+  "example": {},
+  "allowedBlocks": [
+    "pulsar/tab"
+  ],
+  "attributes": {
+    "id": {
+      "type": "string"
+    },
+    "tabsCount": {
+      "type": "number"
+    },
+    "activeTab": {
+      "type": "number",
+      "default": 1
+    },
+    "templateLock": {
+      "type": [
+        "string",
+        "boolean"
+      ],
+      "enum": [
+        "all",
+        "insert",
+        "contentOnly",
+        false
+      ]
+    },
+    "isVertical": {
+      "type": "boolean",
+      "default": false
+    },
+    "inQueryLoop": {
+      "type": "boolean",
+      "default": false
+    },
+    "collapses": {
+      "type": "boolean",
+      "default": false
+    },
+    "collapsesOn": {
+      "type": "string",
+      "default": "sm"
+    },
+    "deepLinking": {
+      "type": "boolean",
+      "default": false
+    },
+    "deepLinkingUpdateHistory": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "usesContext": [
+    "postId",
+    "postType",
+    "queryId"
+  ],
+  "providesContext": {
+    "tabs/id": "id",
+    "tabs/activeTab": "activeTab"
+  },
+  "supports": {
+    "anchor": true,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false,
+    "interactivity": true
+  },
+  "variations": [
+    {
+      "name": "two-tabs",
+      "title": "Tabs",
+      "isDefault": true,
+      "scope": [
+        "inserter"
+      ],
+      "innerBlocks": [
+        [
+          "pulsar/tab"
+        ],
+        [
+          "pulsar/tab"
+        ]
+      ]
+    }
+  ],
+  "textdomain": "pulsar-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php"
+}

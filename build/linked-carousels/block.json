@@ -1,0 +1,24 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "pulsar/linked-carousels",
+  "version": "1.0.0",
+  "title": "Linked Carousels",
+  "description": "Links two carousels together so one can control the other.",
+  "category": "design",
+  "attributes": {
+    "isLinked": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "providesContext": {
+    "isLinked": "isLinked"
+  },
+  "textdomain": "pulsar-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php"
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "pulsar/embla-carousel-progress",
+  "version": "1.0.0",
+  "title": "Progress",
+  "category": "design",
+  "icon": "minus",
+  "description": "Progress bar for the carousel",
+  "textdomain": "pulsar-blocks",
+  "ancestor": [
+    "pulsar/embla-carousel"
+  ],
+  "attributes": {
+    "indicateCurrentPosition": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "usesContext": [
+    "emblaApi"
+  ],
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}
