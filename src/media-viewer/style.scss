@@ -1,7 +1,3 @@
-// Fix path issues with assets
-$lg-path-fonts: "../../assets/fonts";
-$lg-path-images: "../../assets/img";
-
 $grid-areas: (
 	1: "one",
 	2: "two",
@@ -13,7 +9,12 @@ $grid-areas: (
 	8: "eight"
 );
 
-@import "~lightgallery/scss/lightgallery-core";
+@use "~lightgallery/scss/lg-variables" as * with (
+	$lg-path-fonts: "../../assets/fonts",
+	$lg-path-images: "../../assets/img"
+);
+@use "~lightgallery/scss/lg-mixins" as *;
+@use "~lightgallery/scss/lightgallery-core" as *;
 
 .wp-block-pulsar-media-viewer {
 	position: relative;
