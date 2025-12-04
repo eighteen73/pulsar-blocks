@@ -3,7 +3,6 @@ import ClassNames from 'embla-carousel-class-names';
 import Fade from 'embla-carousel-fade';
 import Autoplay from 'embla-carousel-autoplay';
 import Autoscroll from 'embla-carousel-auto-scroll';
-import { setupProgressBar } from '../utils/embla';
 
 window.pulsarBlocks = window.pulsarBlocks || {};
 window.pulsarBlocks.emblaCarousels = new Map();
@@ -171,5 +170,40 @@ const addDotBtnsAndClickHandlers = (emblaApi, dotsNode) => {
 
 	return () => {
 		dotsNode.innerHTML = '';
+	};
+};
+
+const setupProgressBar = (emblaApi, progressNode) => {
+	const applyProgress = () => {
+		const indicateCurrentPosition =
+			progressNode.parentElement.dataset.indicateCurrentPosition ===
+			'true';
+		let finalProgress;
+
+		if (indicateCurrentPosition) {
+			const totalScrollSnaps = emblaApi.scrollSnapList().length;
+			const currentSnapIndex = emblaApi.selectedScrollSnap();
+
+			if (totalScrollSnaps > 0) {
+				finalProgress = (currentSnapIndex + 1) / totalScrollSnaps;
+			} else {
+				finalProgress = 0;
+			}
+		} else {
+			finalProgress = emblaApi.scrollProgress();
+			progressNode.style.transition = 'none';
+		}
+
+		finalProgress = Math.max(0, Math.min(1, finalProgress));
+		progressNode.style.transform = `translate3d(${finalProgress * 100}%,0px,0px)`;
+	};
+
+	const removeProgress = () => {
+		progressNode.removeAttribute('style');
+	};
+
+	return {
+		applyProgress,
+		removeProgress,
 	};
 };
