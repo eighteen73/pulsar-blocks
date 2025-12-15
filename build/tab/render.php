@@ -12,9 +12,9 @@
 $id              = $block->context['tabs/id'];
 $post_id         = $block->context['postId'] ?? false;
 $namespace       = "pulsar-tabs-{$id}" . ( $post_id ? "-{$post_id}" : '' );
-$tab_number      = $attributes['tabNumber'];
-$anchor          = $attributes['anchor'];
-$title           = $attributes['title'];
+$tab_number      = $attributes['tabNumber'] ?? 1;
+$anchor          = $attributes['anchor'] ?? '';
+$title           = $attributes['title'] ?? '';
 $deep_linking_id = $anchor ? $anchor : ( $title ? sanitize_title( $title ) : "{$namespace}-tabpanel-{$tab_number}" );
 
 $wrapper_attributes = [
