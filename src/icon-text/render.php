@@ -56,9 +56,9 @@ $tag = $has_link ? 'a' : 'div';
 		<div class="wp-block-pulsar-icon-text__icon">
 			<?php if ( get_post_mime_type( $media_id ) === 'image/svg+xml' ) : ?>
 				<?php
-				$media_url = wp_get_attachment_url( $media_id );
-				if ( $media_url ) {
-					$svg_content = file_get_contents( $media_url );
+				$media_path = get_attached_file( $media_id );
+				if ( $media_path && file_exists( $media_path ) ) {
+					$svg_content = file_get_contents( $media_path );
 
 					if ( $svg_content ) {
 						// Replace fill colors with currentColor for theming
