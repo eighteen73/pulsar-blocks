@@ -52,16 +52,16 @@ $default_attributes = [
 
 $collapse_attributes = [
 	'data-wp-interactive'             => 'pulsar/menu',
-	'data-wp-context'                 => '{ "isMenuOpen": false }',
+	'data-wp-context'                 => '{ "isMenuOpen": false, "isCollapsed": false, "openSubmenus": [], "menuTrap": null, "submenuTraps": {} }',
 	'data-wp-init--collapsed'         => 'callbacks.isCollapsed',
 	'data-wp-init--touch'             => 'callbacks.isTouchEnabled',
 	'data-wp-on-window--resize'       => 'callbacks.isCollapsed',
 	'data-wp-watch--collapsed'        => 'callbacks.isCollapsed',
 	'data-wp-watch--touch'            => 'callbacks.isTouchEnabled',
 	'data-wp-class--is-loading'       => '!state.isLoading',
-	'data-wp-class--is-menu-open'     => 'state.isMenuOpen',
-	'data-wp-class--is-collapsed'     => 'state.isCollapsed',
-	'data-wp-class--is-not-collapsed' => '!state.isCollapsed',
+	'data-wp-class--is-menu-open'     => 'context.isMenuOpen',
+	'data-wp-class--is-collapsed'     => 'context.isCollapsed',
+	'data-wp-class--is-not-collapsed' => '!context.isCollapsed',
 	'data-wp-class--is-touch-enabled' => 'callbacks.isTouchEnabled',
 	'data-breakpoint'                 => apply_filters( 'pulsar_menu_breakpoint', 1024, $location ),
 ];
@@ -79,7 +79,7 @@ $attributes = array_merge(
 			type="button"
 			class="wp-block-pulsar-menu__open"
 			data-wp-on-async--click="actions.toggleMenuOnClick"
-			data-wp-bind--aria-expanded="state.isMenuOpen"
+			data-wp-bind--aria-expanded="context.isMenuOpen"
 			aria-controls="pulsar-menu-container-<?php echo esc_attr( $location ); ?>"
 			aria-label="<?php printf( esc_attr__( 'Open %s menu', 'pulsar-blocks' ), esc_attr( $menu_name ) ); ?>"
 		>
@@ -91,9 +91,9 @@ $attributes = array_merge(
 		<div
 			id="pulsar-menu-container-<?php echo esc_attr( $location ); ?>"
 			class="wp-block-pulsar-menu__container"
-			data-wp-class--is-menu-open="state.isMenuOpen"
-			data-wp-bind--role='state.isMenuOpen ? "dialog" : null'
-			data-wp-bind--aria-modal='state.isMenuOpen ? "true" : null'
+			data-wp-class--is-menu-open="context.isMenuOpen"
+			data-wp-bind--role='context.isMenuOpen ? "dialog" : null'
+			data-wp-bind--aria-modal='context.isMenuOpen ? "true" : null'
 			data-wp-bind--aria-hidden='callbacks.isAriaHidden'
 			tabindex="-1"
 		>
