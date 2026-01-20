@@ -25,39 +25,64 @@ const activateWhenReady = (element, trap) => {
 store('pulsar/menu', {
 	state: {
 		isLoading: true,
-		isMenuOpen: false,
-		isCollapsed: false,
 		isTouchEnabled: false,
-		openSubmenus: [],
-		menuTrap: null,
-		submenuTraps: {},
+		activeMenuId: null,
+		menuInstances: {},
 	},
 	actions: {
 		toggleMenuOnClick: () => {
 			const { state } = store('pulsar/menu');
+			const context = getContext();
 			const { ref } = getElement();
 
-			state.isMenuOpen = !state.isMenuOpen;
+			// If opening this menu, close any other open menu first
+			if (
+				!context.isMenuOpen &&
+				state.activeMenuId &&
+				state.activeMenuId !== context.menuId
+			) {
+				const otherMenuContext =
+					state.menuInstances[state.activeMenuId];
+				if (otherMenuContext) {
+					otherMenuContext.isMenuOpen = false;
+					if (otherMenuContext.menuTrap) {
+						otherMenuContext.menuTrap.deactivate();
+					}
+					otherMenuContext.openSubmenus = [];
+				}
+			}
+
+			context.isMenuOpen = !context.isMenuOpen;
 			document.documentElement.classList.toggle(
 				'has-open-menu',
-				state.isMenuOpen
+				context.isMenuOpen
 			);
 
-			if (state.isMenuOpen) {
-				if (!state.menuTrap) {
+			if (context.isMenuOpen) {
+				// Register this menu as active
+				state.activeMenuId = context.menuId;
+				state.menuInstances[context.menuId] = context;
+				if (!context.menuTrap) {
 					const nav = ref.closest('.wp-block-pulsar-menu');
 					const container = nav.querySelector(
 						'.wp-block-pulsar-menu__container'
 					);
 
 					if (container) {
-						state.menuTrap = createFocusTrap(container, {
+						context.menuTrap = createFocusTrap(container, {
 							allowOutsideClick: true,
 							escapeDeactivates: true,
 							returnFocusOnDeactivate: true,
 							onDeactivate: () => {
-								state.isMenuOpen = false;
-								state.openSubmenus = [];
+								context.isMenuOpen = false;
+								context.openSubmenus = [];
+
+								// Clear this menu as active
+								if (state.activeMenuId === context.menuId) {
+									state.activeMenuId = null;
+									delete state.menuInstances[context.menuId];
+								}
+
 								document.documentElement.classList.remove(
 									'has-open-menu'
 								);
@@ -68,70 +93,100 @@ store('pulsar/menu', {
 							fallbackFocus: container,
 						});
 
-						activateWhenReady(container, state.menuTrap);
+						activateWhenReady(container, context.menuTrap);
 					}
 				} else {
 					activateWhenReady(
 						ref
 							.closest('.wp-block-pulsar-menu')
 							.querySelector('.wp-block-pulsar-menu__container'),
-						state.menuTrap
+						context.menuTrap
 					);
 				}
 			} else {
-				if (state.menuTrap) {
-					state.menuTrap.deactivate();
+				if (context.menuTrap) {
+					context.menuTrap.deactivate();
 				}
 
-				Object.keys(state.submenuTraps).forEach((submenuId) => {
-					if (state.submenuTraps[submenuId]) {
-						state.submenuTraps[submenuId].deactivate();
-						delete state.submenuTraps[submenuId];
+				Object.keys(context.submenuTraps).forEach((submenuId) => {
+					if (context.submenuTraps[submenuId]) {
+						context.submenuTraps[submenuId].deactivate();
+						delete context.submenuTraps[submenuId];
 					}
 				});
-				state.openSubmenus = [];
+				context.openSubmenus = [];
+
+				// Clear this menu as active if it's closing
+				if (state.activeMenuId === context.menuId) {
+					state.activeMenuId = null;
+					delete state.menuInstances[context.menuId];
+				}
 			}
 		},
 		openMenuOnClick: () => {
 			const { state } = store('pulsar/menu');
-			state.isMenuOpen = true;
+			const context = getContext();
+
+			// Close any other open menu first
+			if (state.activeMenuId && state.activeMenuId !== context.menuId) {
+				const otherMenuContext =
+					state.menuInstances[state.activeMenuId];
+				if (otherMenuContext) {
+					otherMenuContext.isMenuOpen = false;
+					if (otherMenuContext.menuTrap) {
+						otherMenuContext.menuTrap.deactivate();
+					}
+					otherMenuContext.openSubmenus = [];
+				}
+			}
+
+			context.isMenuOpen = true;
+			state.activeMenuId = context.menuId;
+			state.menuInstances[context.menuId] = context;
 			document.documentElement.classList.add('has-open-menu');
 		},
 		closeMenuOnClick: () => {
 			const { state } = store('pulsar/menu');
-			if (state.menuTrap) {
-				state.menuTrap.deactivate();
+			const context = getContext();
+			if (context.menuTrap) {
+				context.menuTrap.deactivate();
 			}
-			state.isMenuOpen = false;
-			state.openSubmenus = [];
+			context.isMenuOpen = false;
+			context.openSubmenus = [];
+
+			// Clear this menu as active if it's closing
+			if (state.activeMenuId === context.menuId) {
+				state.activeMenuId = null;
+				delete state.menuInstances[context.menuId];
+			}
+
 			document.documentElement.classList.remove('has-open-menu');
 		},
 		toggleSubmenuOnClick: () => {
-			const { state } = store('pulsar/menu');
 			const context = getContext();
 			const submenuId = context.submenuId;
-			const newOpenSubmenus = [...state.openSubmenus];
+			const newOpenSubmenus = [...context.openSubmenus];
 
 			if (newOpenSubmenus.includes(submenuId)) {
 				const index = newOpenSubmenus.indexOf(submenuId);
 				if (index !== -1) {
-					if (state.submenuTraps[submenuId]) {
-						state.submenuTraps[submenuId].deactivate();
-						delete state.submenuTraps[submenuId];
+					if (context.submenuTraps[submenuId]) {
+						context.submenuTraps[submenuId].deactivate();
+						delete context.submenuTraps[submenuId];
 					}
 					newOpenSubmenus.splice(index, 1);
 				}
 			} else {
 				newOpenSubmenus.push(submenuId);
 
-				if (state.isCollapsed) {
+				if (context.isCollapsed) {
 					const { ref } = getElement();
 					const submenuElement = ref
 						.closest('.wp-block-pulsar-menu__item')
 						.querySelector('.wp-block-pulsar-menu__submenu');
 
-					if (submenuElement && !state.submenuTraps[submenuId]) {
-						state.submenuTraps[submenuId] = createFocusTrap(
+					if (submenuElement && !context.submenuTraps[submenuId]) {
+						context.submenuTraps[submenuId] = createFocusTrap(
 							submenuElement,
 							{
 								allowOutsideClick: true,
@@ -139,9 +194,9 @@ store('pulsar/menu', {
 								returnFocusOnDeactivate: true,
 								onDeactivate: () => {
 									const index =
-										state.openSubmenus.indexOf(submenuId);
+										context.openSubmenus.indexOf(submenuId);
 									if (index !== -1) {
-										state.openSubmenus.splice(index, 1);
+										context.openSubmenus.splice(index, 1);
 									}
 								},
 							}
@@ -149,75 +204,73 @@ store('pulsar/menu', {
 
 						activateWhenReady(
 							submenuElement,
-							state.submenuTraps[submenuId]
+							context.submenuTraps[submenuId]
 						);
 					}
 				}
 			}
-			state.openSubmenus = newOpenSubmenus;
+			context.openSubmenus = newOpenSubmenus;
 		},
 		openSubmenuOnClick: () => {
-			const { state } = store('pulsar/menu');
 			const context = getContext();
 			const submenuId = context.submenuId;
-			const newOpenSubmenus = [...state.openSubmenus];
+			const newOpenSubmenus = [...context.openSubmenus];
 			newOpenSubmenus.push(submenuId);
-			state.openSubmenus = newOpenSubmenus;
+			context.openSubmenus = newOpenSubmenus;
 		},
 		closeSubmenuOnClick: () => {
-			const { state } = store('pulsar/menu');
 			const context = getContext();
 			const submenuId = context.submenuId;
-			const newOpenSubmenus = [...state.openSubmenus];
+			const newOpenSubmenus = [...context.openSubmenus];
 			const index = newOpenSubmenus.indexOf(submenuId);
 			if (index !== -1) {
-				if (state.submenuTraps[submenuId]) {
-					state.submenuTraps[submenuId].deactivate();
-					delete state.submenuTraps[submenuId];
+				if (context.submenuTraps[submenuId]) {
+					context.submenuTraps[submenuId].deactivate();
+					delete context.submenuTraps[submenuId];
 				}
 				newOpenSubmenus.splice(index, 1);
-				state.openSubmenus = newOpenSubmenus;
+				context.openSubmenus = newOpenSubmenus;
 			}
 		},
 		openSubmenuOnHover: () => {
 			const { state } = store('pulsar/menu');
-			if (state.isCollapsed || state.isTouchEnabled) return;
-
 			const context = getContext();
-			const newOpenSubmenus = [...state.openSubmenus];
+			if (context.isCollapsed || state.isTouchEnabled) return;
+
+			const newOpenSubmenus = [...context.openSubmenus];
 			newOpenSubmenus.push(context.submenuId);
-			state.openSubmenus = newOpenSubmenus;
+			context.openSubmenus = newOpenSubmenus;
 		},
 		closeSubmenuOnHover: () => {
 			const { state } = store('pulsar/menu');
-			if (state.isCollapsed || state.isTouchEnabled) return;
-
 			const context = getContext();
-			const newOpenSubmenus = [...state.openSubmenus];
+			if (context.isCollapsed || state.isTouchEnabled) return;
+
+			const newOpenSubmenus = [...context.openSubmenus];
 			const index = newOpenSubmenus.indexOf(context.submenuId);
 			if (index !== -1) {
 				newOpenSubmenus.splice(index, 1);
-				state.openSubmenus = newOpenSubmenus;
+				context.openSubmenus = newOpenSubmenus;
 			}
 		},
 		handleKeydown: (event) => {
-			const { state } = store('pulsar/menu');
+			const context = getContext();
 			const { ref } = getElement();
 
 			// Only handle Escape in non-collapsed mode
-			if (!state.isCollapsed && event.key === 'Escape') {
+			if (!context.isCollapsed && event.key === 'Escape') {
 				const menuItem = ref.closest('.wp-block-pulsar-menu__item');
 				if (menuItem) {
 					const submenuId = parseInt(
 						menuItem.dataset.wpContext.match(/\d+/)[0],
 						10
 					);
-					if (state.openSubmenus.includes(submenuId)) {
-						const newOpenSubmenus = [...state.openSubmenus];
+					if (context.openSubmenus.includes(submenuId)) {
+						const newOpenSubmenus = [...context.openSubmenus];
 						const index = newOpenSubmenus.indexOf(submenuId);
 						if (index !== -1) {
 							newOpenSubmenus.splice(index, 1);
-							state.openSubmenus = newOpenSubmenus;
+							context.openSubmenus = newOpenSubmenus;
 
 							// Focus the parent menu item's link
 							const menuToggle = menuItem.querySelector(
@@ -238,14 +291,14 @@ store('pulsar/menu', {
 			state.isLoading = false;
 		},
 		isCollapsed: () => {
-			const { state } = store('pulsar/menu');
+			const context = getContext();
 			const { ref } = getElement();
 			const isAlwaysCollapsed =
 				ref.classList.contains('collapses-always');
 			const breakpoint = ref.dataset.breakpoint;
 			const mq = window.matchMedia(`(min-width: ${breakpoint}px)`);
 
-			state.isCollapsed =
+			context.isCollapsed =
 				isAlwaysCollapsed || (!isAlwaysCollapsed && !mq.matches);
 		},
 		isTouchEnabled: () => {
@@ -260,13 +313,12 @@ store('pulsar/menu', {
 			return hasTouchSupport;
 		},
 		isAriaHidden: () => {
-			const { state } = store('pulsar/menu');
-			return !state.isMenuOpen && state.isCollapsed;
+			const context = getContext();
+			return !context.isMenuOpen && context.isCollapsed;
 		},
 		isSubmenuOpen: () => {
-			const { state } = store('pulsar/menu');
 			const context = getContext();
-			return state.openSubmenus.includes(context.submenuId);
+			return context.openSubmenus.includes(context.submenuId);
 		},
 	},
 });
