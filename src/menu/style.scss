@@ -90,7 +90,7 @@
 		width: var(--pb--menu--open--icon-size);
 	}
 
-	:where(.has-open-menu) & .wp-block-pulsar-menu__open-icon {
+	.wp-block-pulsar-menu__open:where([aria-expanded="true"]) .wp-block-pulsar-menu__open-icon {
 		mask-image: url("../../assets/svg/menu-close.svg");
 	}
 
