@@ -26,11 +26,31 @@ store('pulsar/menu', {
 	state: {
 		isLoading: true,
 		isTouchEnabled: false,
+		activeMenuId: null,
+		menuInstances: {},
 	},
 	actions: {
 		toggleMenuOnClick: () => {
+			const { state } = store('pulsar/menu');
 			const context = getContext();
 			const { ref } = getElement();
+
+			// If opening this menu, close any other open menu first
+			if (
+				!context.isMenuOpen &&
+				state.activeMenuId &&
+				state.activeMenuId !== context.menuId
+			) {
+				const otherMenuContext =
+					state.menuInstances[state.activeMenuId];
+				if (otherMenuContext) {
+					otherMenuContext.isMenuOpen = false;
+					if (otherMenuContext.menuTrap) {
+						otherMenuContext.menuTrap.deactivate();
+					}
+					otherMenuContext.openSubmenus = [];
+				}
+			}
 
 			context.isMenuOpen = !context.isMenuOpen;
 			document.documentElement.classList.toggle(
@@ -39,6 +59,9 @@ store('pulsar/menu', {
 			);
 
 			if (context.isMenuOpen) {
+				// Register this menu as active
+				state.activeMenuId = context.menuId;
+				state.menuInstances[context.menuId] = context;
 				if (!context.menuTrap) {
 					const nav = ref.closest('.wp-block-pulsar-menu');
 					const container = nav.querySelector(
@@ -53,6 +76,13 @@ store('pulsar/menu', {
 							onDeactivate: () => {
 								context.isMenuOpen = false;
 								context.openSubmenus = [];
+
+								// Clear this menu as active
+								if (state.activeMenuId === context.menuId) {
+									state.activeMenuId = null;
+									delete state.menuInstances[context.menuId];
+								}
+
 								document.documentElement.classList.remove(
 									'has-open-menu'
 								);
@@ -85,20 +115,51 @@ store('pulsar/menu', {
 					}
 				});
 				context.openSubmenus = [];
+
+				// Clear this menu as active if it's closing
+				if (state.activeMenuId === context.menuId) {
+					state.activeMenuId = null;
+					delete state.menuInstances[context.menuId];
+				}
 			}
 		},
 		openMenuOnClick: () => {
+			const { state } = store('pulsar/menu');
 			const context = getContext();
+
+			// Close any other open menu first
+			if (state.activeMenuId && state.activeMenuId !== context.menuId) {
+				const otherMenuContext =
+					state.menuInstances[state.activeMenuId];
+				if (otherMenuContext) {
+					otherMenuContext.isMenuOpen = false;
+					if (otherMenuContext.menuTrap) {
+						otherMenuContext.menuTrap.deactivate();
+					}
+					otherMenuContext.openSubmenus = [];
+				}
+			}
+
 			context.isMenuOpen = true;
+			state.activeMenuId = context.menuId;
+			state.menuInstances[context.menuId] = context;
 			document.documentElement.classList.add('has-open-menu');
 		},
 		closeMenuOnClick: () => {
+			const { state } = store('pulsar/menu');
 			const context = getContext();
 			if (context.menuTrap) {
 				context.menuTrap.deactivate();
 			}
 			context.isMenuOpen = false;
 			context.openSubmenus = [];
+
+			// Clear this menu as active if it's closing
+			if (state.activeMenuId === context.menuId) {
+				state.activeMenuId = null;
+				delete state.menuInstances[context.menuId];
+			}
+
 			document.documentElement.classList.remove('has-open-menu');
 		},
 		toggleSubmenuOnClick: () => {

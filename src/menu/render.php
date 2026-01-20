@@ -52,7 +52,16 @@ $default_attributes = [
 
 $collapse_attributes = [
 	'data-wp-interactive'             => 'pulsar/menu',
-	'data-wp-context'                 => '{ "isMenuOpen": false, "isCollapsed": false, "openSubmenus": [], "menuTrap": null, "submenuTraps": {} }',
+	'data-wp-context'                 => wp_json_encode(
+		[
+			'menuId'        => $location,
+			'isMenuOpen'    => false,
+			'isCollapsed'   => false,
+			'openSubmenus'  => [],
+			'menuTrap'      => null,
+			'submenuTraps'  => (object) [],
+		]
+	),
 	'data-wp-init--collapsed'         => 'callbacks.isCollapsed',
 	'data-wp-init--touch'             => 'callbacks.isTouchEnabled',
 	'data-wp-on-window--resize'       => 'callbacks.isCollapsed',
