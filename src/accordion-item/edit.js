@@ -55,7 +55,11 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 				return null;
 			}
 			try {
-				const post = select('core').getEntityRecord('postType', postType, postId);
+				const post = select('core').getEntityRecord(
+					'postType',
+					postType,
+					postId
+				);
 				return post?.title?.rendered || post?.title || '';
 			} catch (e) {
 				return null;
@@ -77,7 +81,8 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 
 	// Generate unique ID, combining with postId when in query loop
 	useEffect(() => {
-		let uniqueId = 'pulsar-accordion-' + clientId.slice(2, 9).replace('-', '');
+		let uniqueId =
+			'pulsar-accordion-' + clientId.slice(2, 9).replace('-', '');
 
 		if (inQueryLoop && postId) {
 			uniqueId = `${uniqueId}-${postId}`;
@@ -112,7 +117,9 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 							tagName="span"
 							className="wp-block-pulsar-accordion__title"
 							allowedFormats={['core/bold', 'core/italic']}
-							onChange={(value) => setAttributes({ title: value })}
+							onChange={(value) =>
+								setAttributes({ title: value })
+							}
 							value={title}
 							placeholder={__('Add a title…', 'pulsar-blocks')}
 						/>
