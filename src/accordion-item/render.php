@@ -9,7 +9,9 @@
  * @package PulsarBlocks
  */
 
-$h                = "h{$block->context['level']}";
+// Get level from context, with fallback to default
+$level            = $block->context['level'] ?? 3;
+$h                = "h{$level}";
 $post_id          = $block->context['postId'] ?? false;
 $in_query_loop    = $attributes['inQueryLoop'] ?? false;
 $accordion_item_id = $attributes['id'] ?? '';
