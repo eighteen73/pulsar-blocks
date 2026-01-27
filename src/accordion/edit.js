@@ -19,7 +19,11 @@ import { __ } from '@wordpress/i18n';
 
 import SingleBlockTypeAppender from '../components/single-block-type-appender';
 
-const ALLOWED_BLOCKS = ['pulsar/accordion-item'];
+const ALLOWED_BLOCKS = [
+	'pulsar/accordion-item',
+	'core/query',
+	'woocommerce/product-collection',
+];
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -55,6 +59,19 @@ export default function Edit({
 
 	const isInnerBlockSelected = useSelect((select) =>
 		select('core/block-editor').hasSelectedInnerBlock(clientId, true)
+	);
+
+	const innerBlocks = useSelect((select) =>
+		select('core/block-editor').getBlock(clientId)
+			? select('core/block-editor').getBlock(clientId).innerBlocks
+			: []
+	);
+
+	// Detect if there's a query loop block
+	const hasQueryLoop = innerBlocks.find(
+		(block) =>
+			block.name === 'core/query' ||
+			block.name === 'woocommerce/product-collection'
 	);
 
 	const blockProps = useBlockProps();
@@ -135,15 +152,17 @@ export default function Edit({
 
 			{children}
 
-			<SingleBlockTypeAppender
-				onClickAfter={() => {}}
-				variant="secondary"
-				text={__('Add item', 'pulsar-blocks')}
-				allowedBlock="pulsar/accordion-item"
-				style={{ width: '100%', justifyContent: 'center' }}
-				clientId={clientId}
-				isEnabled={isSelected || isInnerBlockSelected}
-			/>
+			{!hasQueryLoop && (
+				<SingleBlockTypeAppender
+					onClickAfter={() => {}}
+					variant="secondary"
+					text={__('Add item', 'pulsar-blocks')}
+					allowedBlock="pulsar/accordion-item"
+					style={{ width: '100%', justifyContent: 'center' }}
+					clientId={clientId}
+					isEnabled={isSelected || isInnerBlockSelected}
+				/>
+			)}
 		</div>
 	);
 }
