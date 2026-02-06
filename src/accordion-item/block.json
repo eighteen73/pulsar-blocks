@@ -5,7 +5,7 @@
 	"version": "1.0.0",
 	"title": "Accordion Item",
 	"category": "design",
-	"parent": ["pulsar/accordion"],
+	"ancestor": ["pulsar/accordion"],
 	"supports": {
 		"inserter": false,
 		"reusable": false,
@@ -19,9 +19,13 @@
 		"id": {
       "type": "string",
       "default": ""
+		},
+		"inQueryLoop": {
+			"type": "boolean",
+			"default": false
 		}
 	},
-	"usesContext": ["level"],
+	"usesContext": ["level", "postId", "postType", "queryId"],
   "textdomain": "pulsar-blocks",
 	"editorScript": "file:./index.js",
 	"render": "file:./render.php"

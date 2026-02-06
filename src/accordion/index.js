@@ -21,6 +21,7 @@ import json from './block.json';
 import Edit from './edit';
 import Save from './save';
 import { Accordion as Icon } from '../components/icons';
+import variations from './variations';
 
 const { name } = json;
 
@@ -31,6 +32,7 @@ const { name } = json;
  */
 registerBlockType(name, {
 	...json,
+	variations,
 
 	/**
 	 * @see ./components/icon.js

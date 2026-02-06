@@ -5,8 +5,10 @@ import {
 	RichText,
 	useBlockProps,
 	useInnerBlocksProps,
+	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import { useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -21,21 +23,75 @@ import { __ } from '@wordpress/i18n';
  * @return {WPElement} Element to render.
  */
 export default function Edit({ attributes, setAttributes, clientId, context }) {
-	const { title, id } = attributes;
-	const { level } = context;
+	const { title, id, inQueryLoop } = attributes;
+	const { level, postId, postType } = context;
 
 	const TagName = 'h' + level;
+
+	const { getBlockParentsByBlockName } = useSelect((select) => {
+		return {
+			getBlockParentsByBlockName:
+				select(blockEditorStore).getBlockParentsByBlockName,
+		};
+	}, []);
+
+	// Detect if we're inside a query loop
+	useEffect(() => {
+		const queryLoopParents = getBlockParentsByBlockName(
+			clientId,
+			'core/query'
+		);
+		const isWithinQueryLoop = queryLoopParents.length > 0;
+
+		if (isWithinQueryLoop !== inQueryLoop) {
+			setAttributes({ inQueryLoop: isWithinQueryLoop });
+		}
+	}, [clientId, inQueryLoop, getBlockParentsByBlockName, setAttributes]);
+
+	// Get post title when in query loop
+	const postTitle = useSelect(
+		(select) => {
+			if (!inQueryLoop || !postId || !postType) {
+				return null;
+			}
+			try {
+				const post = select('core').getEntityRecord(
+					'postType',
+					postType,
+					postId
+				);
+				return post?.title?.rendered || post?.title || '';
+			} catch (e) {
+				return null;
+			}
+		},
+		[inQueryLoop, postId, postType]
+	);
+
+	// Use post title when in query loop and no manual title is set
+	useEffect(() => {
+		if (inQueryLoop && postTitle && !title) {
+			setAttributes({ title: postTitle });
+		}
+	}, [inQueryLoop, postTitle, title, setAttributes]);
 
 	const blockProps = useBlockProps({
 		className: 'wp-block-pulsar-accordion__item',
 	});
 
+	// Generate unique ID, combining with postId when in query loop
 	useEffect(() => {
-		const uniqueId =
+		let uniqueId =
 			'pulsar-accordion-' + clientId.slice(2, 9).replace('-', '');
 
-		setAttributes({ id: uniqueId });
-	}, [clientId, id, setAttributes]);
+		if (inQueryLoop && postId) {
+			uniqueId = `${uniqueId}-${postId}`;
+		}
+
+		if (id !== uniqueId) {
+			setAttributes({ id: uniqueId });
+		}
+	}, [clientId, id, inQueryLoop, postId, setAttributes]);
 
 	const innerBlocksProps = useInnerBlocksProps(
 		{
@@ -52,14 +108,22 @@ export default function Edit({ attributes, setAttributes, clientId, context }) {
 		<div {...blockProps}>
 			<TagName className="wp-block-pulsar-accordion__heading">
 				<button className="wp-block-pulsar-accordion__trigger">
-					<RichText
-						tagName="span"
-						className="wp-block-pulsar-accordion__title"
-						allowedFormats={['core/bold', 'core/italic']}
-						onChange={(value) => setAttributes({ title: value })}
-						value={title}
-						placeholder={__('Add a title…', 'pulsar-blocks')}
-					/>
+					{inQueryLoop && postTitle ? (
+						<span className="wp-block-pulsar-accordion__title">
+							{postTitle}
+						</span>
+					) : (
+						<RichText
+							tagName="span"
+							className="wp-block-pulsar-accordion__title"
+							allowedFormats={['core/bold', 'core/italic']}
+							onChange={(value) =>
+								setAttributes({ title: value })
+							}
+							value={title}
+							placeholder={__('Add a title…', 'pulsar-blocks')}
+						/>
+					)}
 
 					<span className="wp-block-pulsar-accordion__icon"></span>
 				</button>

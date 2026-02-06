@@ -5,6 +5,11 @@
   "version": "1.0.0",
   "title": "Accordion",
   "category": "design",
+  "allowedBlocks": [
+    "pulsar/accordion-item",
+    "core/query",
+    "woocommerce/product-collection"
+  ],
   "attributes": {
     "openMultiple": {
       "type": "boolean",
