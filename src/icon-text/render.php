@@ -70,21 +70,28 @@ $tag = $has_link ? 'a' : 'div';
 
 						// Define allowed SVG tags and attributes for security
 						$allowed_svg_tags = [
-							'svg'   => [
-								'class'           => true,
-								'aria-hidden'     => true,
-								'aria-labelledby' => true,
-								'role'            => true,
-								'xmlns'           => true,
-								'width'           => true,
-								'height'          => true,
-								'viewbox'         => true,
+							'svg'     => [
+								'class'       => true,
+								'xmlns'       => true,
+								'width'       => true,
+								'height'      => true,
+								'viewbox'     => true,
+								'aria-hidden' => true,
+								'role'        => true,
+								'focusable'   => true,
 							],
-							'g'     => [ 'fill' => true ],
-							'title' => [ 'title' => true ],
-							'path'  => [
-								'd'    => true,
-								'fill' => true,
+							'path'    => [
+								'fill'      => true,
+								'fill-rule' => true,
+								'd'         => true,
+								'transform' => true,
+							],
+							'polygon' => [
+								'fill'      => true,
+								'fill-rule' => true,
+								'points'    => true,
+								'transform' => true,
+								'focusable' => true,
 							],
 						];
 
