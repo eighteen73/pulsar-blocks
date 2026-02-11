@@ -85,6 +85,8 @@ $tag = $has_link ? 'a' : 'div';
 							'path'  => [
 								'd'    => true,
 								'fill' => true,
+								'fill-rule' => true,
+                                'clip-rule' => true,
 							],
 						];
 
