@@ -72,6 +72,7 @@ export default function Edit({
 	const [emblaRef, emblaApi] = useEmblaCarousel({
 		...options,
 		container: getContainer(),
+		slides: ':scope > :not(.block-list-appender)',
 	});
 
 	useEffect(() => {
