@@ -433,6 +433,15 @@ class Menu {
 			];
 		}
 
+		/**
+		 * Filters formatted menu items for a location before ancestor classes are applied.
+		 *
+		 * @param array<int, array<string, mixed>> $formatted_items Flat menu rows for the block renderer.
+		 * @param string                           $location_slug   Theme menu location slug.
+		 * @param array<int, WP_Post>|false        $menu_items      Raw menu item posts from the transient or `wp_get_nav_menu_items()`.
+		 */
+		$formatted_items = apply_filters( 'pulsar_blocks/menu/formatted_items', $formatted_items, $location_slug, $menu_items );
+
 		// Process ancestor/parent relationships after all items are formatted
 		self::add_ancestor_classes( $formatted_items );
 
@@ -614,9 +623,10 @@ class Menu {
 	 * @param bool   $submenu_opens_on_click Whether to open the submenus on click.
 	 * @param bool   $has_submenu_label Whether to show the submenu label.
 	 * @param bool   $has_view_all Whether to show the view all link.
+	 * @param int    $depth The current menu depth (0-based).
 	 * @return void
 	 */
-	public static function render_menu_items_list( string $location, array $items, int $parent_id = 0, bool $collapses = false, bool $submenu_opens_on_click = false, bool $has_submenu_label = false, bool $has_view_all = false ): void {
+	public static function render_menu_items_list( string $location, array $items, int $parent_id = 0, bool $collapses = false, bool $submenu_opens_on_click = false, bool $has_submenu_label = false, bool $has_view_all = false, int $depth = 0 ): void {
 		$is_submenu = $parent_id !== 0;
 		$children   = array_filter( $items, fn( $item ) => $item['parent_id'] === $parent_id );
 		usort( $children, fn( $a, $b ) => $a['order'] <=> $b['order'] );
@@ -634,7 +644,8 @@ class Menu {
 		>
 
 		<?php
-		do_action( 'pulsar/menu/before-items', $location );
+		do_action( 'pulsar/menu/before-items', $location, $depth ); // Deprecated.
+		do_action( 'pulsar_blocks/menu/before_items', $location, $depth );
 
 		foreach ( $children as $item ) {
 			$has_children        = ! empty( array_filter( $items, fn( $child ) => $child['parent_id'] === $item['id'] ) );
@@ -657,9 +668,13 @@ class Menu {
 
 			$aria_current = in_array( 'current-menu-item', $li_classes, true ) ? 'page' : '';
 			$li_classes   = implode( ' ', array_map( 'esc_attr', array_unique( array_filter( $li_classes ) ) ) );
+			$item_style   = isset( $item['style'] ) ? trim( (string) $item['style'] ) : '';
 			?>
 			<li
 				class="<?php echo esc_attr( $li_classes ); ?>"
+				<?php if ( '' !== $item_style ) : ?>
+					style="<?php echo esc_attr( $item_style ); ?>"
+				<?php endif; ?>
 				<?php if ( ! empty( $aria_current ) ) : ?>
 					aria-current="<?php echo esc_attr( $aria_current ); ?>"
 				<?php endif; ?>
@@ -727,7 +742,7 @@ class Menu {
 				<?php if ( $has_children ) : ?>
 					<?php self::render_submenu_header( $items, $item['id'], $location, $has_submenu_label, $has_view_all ); ?>
 
-					<?php self::render_menu_items_list( $location, $items, $item['id'], $collapses, $submenu_opens_on_click, $has_submenu_label, $has_view_all ); ?>
+					<?php self::render_menu_items_list( $location, $items, $item['id'], $collapses, $submenu_opens_on_click, $has_submenu_label, $has_view_all, $depth + 1 ); ?>
 				<?php endif; ?>
 
 				<?php if ( ! empty( $template_part_slug ) && $collapses && ! $has_children ) : ?>
@@ -745,7 +760,8 @@ class Menu {
 			<?php
 		}
 
-		do_action( 'pulsar/menu/after-items', $location );
+		do_action( 'pulsar/menu/after-items', $location, $depth ); // Deprecated.
+		do_action( 'pulsar_blocks/menu/after_items', $location, $depth );
 
 		echo '</ul>';
 	}
@@ -770,7 +786,7 @@ class Menu {
 				aria-label="<?php esc_html_e( 'Back to main menu', 'pulsar' ); ?>"
 			>
 				<span class="wp-block-pulsar-menu__back-icon" aria-hidden="true"></span>
-				<span><?php echo wp_kses_post( apply_filters( 'pulsar/menu/back-label', esc_html__( 'Back', 'pulsar' ), $items, $parent_id, $has_submenu_label, $location ) ); ?></span>
+				<span><?php echo wp_kses_post( apply_filters( 'pulsar_blocks/menu/back_label', esc_html__( 'Back', 'pulsar' ), $items, $parent_id, $has_submenu_label, $location ) ); ?></span>
 			</button>
 
 			<?php if ( $has_submenu_label || $has_view_all ) : ?>
