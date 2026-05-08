@@ -172,7 +172,7 @@ export default function Edit({
 		};
 
 		if (!bindControls()) {
-			controlsObserver = new MutationObserver(() => {
+			controlsObserver = new window.MutationObserver(() => {
 				if (!controlsBound && bindControls()) {
 					controlsObserver?.disconnect();
 				}
