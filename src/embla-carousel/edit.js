@@ -39,6 +39,14 @@ export default function Edit({
 		innerBlocks.find(
 			(block) => block.name === 'pulsar/embla-carousel-viewport'
 		) || false;
+	const buttonsBlock =
+		innerBlocks.find(
+			(block) => block.name === 'pulsar/embla-carousel-buttons'
+		) || false;
+	const dotsBlock =
+		innerBlocks.find(
+			(block) => block.name === 'pulsar/embla-carousel-dots'
+		) || false;
 
 	const viewportInnerBlocks = useSelect((select) =>
 		viewportBlock &&
@@ -121,30 +129,73 @@ export default function Edit({
 		if (!emblaApi) return;
 
 		setAttributes({ emblaApi });
+		let removePrevNextBtnsClickHandlers = null;
+		let removeDotBtnsAndClickHandlers = null;
+		let controlsObserver = null;
+		let controlsBound = false;
 
-		const block = document.querySelector(`[data-block="${clientId}"]`);
-		const buttons = block?.querySelectorAll('.embla__button');
-		const dotsNode = block?.querySelector('.embla__dots');
+		const bindControls = () => {
+			const blockCandidates = Array.from(
+				document.querySelectorAll(`[data-block="${clientId}"]`)
+			);
+			const block =
+				blockCandidates.find((node) => node.querySelector('.embla')) ||
+				blockCandidates[0] ||
+				null;
+			const buttonsNode = buttonsBlock?.clientId
+				? block?.querySelector(
+						`[data-block="${buttonsBlock.clientId}"]`
+					)
+				: block?.querySelector('.embla__buttons');
+			const dotsNodeById = dotsBlock?.clientId
+				? block?.querySelector(`[data-block="${dotsBlock.clientId}"]`)
+				: block?.querySelector('.embla__dots');
+			const buttons = buttonsNode?.querySelectorAll('.embla__button');
+			const dotsNode =
+				dotsNodeById || block?.querySelector('.embla__dots');
 
-		if (!buttons || buttons.length < 2 || !dotsNode) {
-			return;
+			if (!buttons || buttons.length < 2 || !dotsNode) {
+				return false;
+			}
+
+			removePrevNextBtnsClickHandlers = addPrevNextBtnsClickHandlers(
+				emblaApi,
+				buttons[0],
+				buttons[1]
+			);
+			removeDotBtnsAndClickHandlers = addDotBtnsAndClickHandlers(
+				emblaApi,
+				dotsNode
+			);
+			controlsBound = true;
+			return true;
+		};
+
+		if (!bindControls()) {
+			controlsObserver = new MutationObserver(() => {
+				if (!controlsBound && bindControls()) {
+					controlsObserver?.disconnect();
+				}
+			});
+			controlsObserver.observe(document.body, {
+				childList: true,
+				subtree: true,
+			});
 		}
 
-		const removePrevNextBtnsClickHandlers = addPrevNextBtnsClickHandlers(
-			emblaApi,
-			buttons[0],
-			buttons[1]
-		);
-		const removeDotBtnsAndClickHandlers = addDotBtnsAndClickHandlers(
-			emblaApi,
-			dotsNode
-		);
-
 		return () => {
-			removePrevNextBtnsClickHandlers();
-			removeDotBtnsAndClickHandlers();
+			controlsObserver?.disconnect();
+			removePrevNextBtnsClickHandlers?.();
+			removeDotBtnsAndClickHandlers?.();
 		};
-	}, [clientId, emblaApi, innerBlocks, setAttributes]);
+	}, [
+		clientId,
+		emblaApi,
+		innerBlocks,
+		setAttributes,
+		buttonsBlock,
+		dotsBlock,
+	]);
 
 	useEffect(() => {
 		if (!emblaApi || !selectedBlockClientId || !viewportBlock) return;
