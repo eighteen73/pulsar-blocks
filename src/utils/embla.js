@@ -13,6 +13,10 @@ export const addTogglePrevNextBtnsActive = (emblaApi, prevBtn, nextBtn) => {
 		.on('reInit', togglePrevNextBtnsState);
 
 	return () => {
+		emblaApi
+			.off('select', togglePrevNextBtnsState)
+			.off('init', togglePrevNextBtnsState)
+			.off('reInit', togglePrevNextBtnsState);
 		prevBtn.removeAttribute('disabled');
 		nextBtn.removeAttribute('disabled');
 	};
@@ -63,6 +67,7 @@ export const addDotBtnsAndClickHandlers = (emblaApi, dotsNode) => {
 	const toggleDotBtnsActive = () => {
 		const previous = emblaApi.previousScrollSnap();
 		const selected = emblaApi.selectedScrollSnap();
+
 		dotNodes[previous].classList.remove('embla__dot--selected');
 		dotNodes[selected].classList.add('embla__dot--selected');
 	};
@@ -75,6 +80,12 @@ export const addDotBtnsAndClickHandlers = (emblaApi, dotsNode) => {
 		.on('select', toggleDotBtnsActive);
 
 	return () => {
+		emblaApi
+			.off('init', addDotBtnsWithClickHandlers)
+			.off('reInit', addDotBtnsWithClickHandlers)
+			.off('init', toggleDotBtnsActive)
+			.off('reInit', toggleDotBtnsActive)
+			.off('select', toggleDotBtnsActive);
 		dotsNode.innerHTML = '';
 	};
 };

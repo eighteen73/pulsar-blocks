@@ -47,6 +47,38 @@ export default function Edit({
 					.innerBlocks
 			: []
 	);
+	const {
+		selectedBlockClientId,
+		selectedBlockParents,
+		selectedBlockDescendants,
+	} = useSelect((select) => {
+		const store = select('core/block-editor');
+		const currentSelectedBlockClientId = store.getSelectedBlockClientId();
+		const selectedBlock = currentSelectedBlockClientId
+			? store.getBlock(currentSelectedBlockClientId)
+			: null;
+		const descendantIds = [];
+
+		const collectDescendants = (block) => {
+			if (!block?.innerBlocks?.length) {
+				return;
+			}
+
+			block.innerBlocks.forEach((innerBlock) => {
+				descendantIds.push(innerBlock.clientId);
+				collectDescendants(innerBlock);
+			});
+		};
+		collectDescendants(selectedBlock);
+
+		return {
+			selectedBlockClientId: currentSelectedBlockClientId,
+			selectedBlockParents: currentSelectedBlockClientId
+				? store.getBlockParents(currentSelectedBlockClientId)
+				: [],
+			selectedBlockDescendants: descendantIds,
+		};
+	});
 
 	const hasQueryLoop = viewportInnerBlocks.find(
 		(block) =>
@@ -72,7 +104,11 @@ export default function Edit({
 	const [emblaRef, emblaApi] = useEmblaCarousel({
 		...options,
 		container: getContainer(),
-		slides: ':scope > :not(.block-list-appender)',
+		// Gutenberg can temporarily wrap inner blocks during selection/focus changes.
+		// Target real block nodes instead of direct children to keep snap count stable.
+		slides: '.block-editor-block-list__block:not(.block-list-appender)',
+		// Prevent editor focus changes from auto-scrolling to a different slide.
+		watchFocus: false,
 	});
 
 	useEffect(() => {
@@ -90,7 +126,9 @@ export default function Edit({
 		const buttons = block?.querySelectorAll('.embla__button');
 		const dotsNode = block?.querySelector('.embla__dots');
 
-		if (!buttons || buttons.length < 2 || !dotsNode) return;
+		if (!buttons || buttons.length < 2 || !dotsNode) {
+			return;
+		}
 
 		const removePrevNextBtnsClickHandlers = addPrevNextBtnsClickHandlers(
 			emblaApi,
@@ -107,6 +145,119 @@ export default function Edit({
 			removeDotBtnsAndClickHandlers();
 		};
 	}, [clientId, emblaApi, innerBlocks, setAttributes]);
+
+	useEffect(() => {
+		if (!emblaApi || !selectedBlockClientId || !viewportBlock) return;
+		if (
+			selectedBlockClientId !== clientId &&
+			!selectedBlockParents.includes(clientId)
+		) {
+			return;
+		}
+
+		const getDescendantIds = (block) => {
+			if (!block?.innerBlocks?.length) {
+				return [];
+			}
+
+			const ids = [];
+			const collect = (innerBlock) => {
+				ids.push(innerBlock.clientId);
+				innerBlock.innerBlocks?.forEach(collect);
+			};
+			block.innerBlocks.forEach(collect);
+
+			return ids;
+		};
+
+		const rootSlideDescendantMaps = viewportInnerBlocks.map(
+			(block, index) => ({
+				index,
+				rootClientId: block.clientId,
+				allRelatedIds: [block.clientId, ...getDescendantIds(block)],
+			})
+		);
+		const carouselContainerNode = document.querySelector(
+			`[data-block="${clientId}"] .embla__container`
+		);
+		const domMatchedBlockClientId =
+			[selectedBlockClientId, ...selectedBlockParents].find((id) =>
+				carouselContainerNode?.querySelector(`[data-block="${id}"]`)
+			) || null;
+		const domMatchedBlockNode = domMatchedBlockClientId
+			? carouselContainerNode?.querySelector(
+					`[data-block="${domMatchedBlockClientId}"]`
+				)
+			: null;
+		const domDirectSlideNodes = carouselContainerNode
+			? Array.from(carouselContainerNode.children).filter(
+					(node) => !node.classList.contains('block-list-appender')
+				)
+			: [];
+		const domMatchedViewportIndex =
+			domMatchedBlockNode && domDirectSlideNodes.length > 0
+				? domDirectSlideNodes.findIndex(
+						(node) =>
+							node === domMatchedBlockNode ||
+							node.contains(domMatchedBlockNode)
+					)
+				: -1;
+
+		const exactSelectedViewportIndex = viewportInnerBlocks.findIndex(
+			(block) => block.clientId === selectedBlockClientId
+		);
+		const parentMatchedViewportIndex =
+			exactSelectedViewportIndex === -1
+				? viewportInnerBlocks.findIndex((block) =>
+						selectedBlockParents.includes(block.clientId)
+					)
+				: -1;
+		const descendantMatchedViewportIndex =
+			exactSelectedViewportIndex === -1 &&
+			parentMatchedViewportIndex === -1
+				? viewportInnerBlocks.findIndex((block) =>
+						selectedBlockDescendants.includes(block.clientId)
+					)
+				: -1;
+		const ancestryMatchedViewportIndex =
+			exactSelectedViewportIndex === -1 &&
+			parentMatchedViewportIndex === -1 &&
+			descendantMatchedViewportIndex === -1
+				? (rootSlideDescendantMaps.find((slideMap) =>
+						[selectedBlockClientId, ...selectedBlockParents].some(
+							(id) => slideMap.allRelatedIds.includes(id)
+						)
+					)?.index ?? -1)
+				: -1;
+		let selectedViewportIndex = domMatchedViewportIndex;
+
+		if (exactSelectedViewportIndex !== -1) {
+			selectedViewportIndex = exactSelectedViewportIndex;
+		} else if (parentMatchedViewportIndex !== -1) {
+			selectedViewportIndex = parentMatchedViewportIndex;
+		} else if (descendantMatchedViewportIndex !== -1) {
+			selectedViewportIndex = descendantMatchedViewportIndex;
+		} else if (ancestryMatchedViewportIndex !== -1) {
+			selectedViewportIndex = ancestryMatchedViewportIndex;
+		}
+		const currentSnap = emblaApi.selectedScrollSnap();
+
+		if (
+			selectedViewportIndex > -1 &&
+			currentSnap !== selectedViewportIndex &&
+			selectedViewportIndex < emblaApi.scrollSnapList().length
+		) {
+			emblaApi.scrollTo(selectedViewportIndex);
+		}
+	}, [
+		emblaApi,
+		selectedBlockClientId,
+		selectedBlockParents,
+		selectedBlockDescendants,
+		viewportInnerBlocks,
+		viewportBlock,
+		clientId,
+	]);
 
 	useEffect(() => {
 		if (!emblaApi) return;
